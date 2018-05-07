@@ -1,25 +1,30 @@
 import React from 'react';
 import { Route, Switch,Redirect} from 'dva/router';
-import Fills from './fills';
+import Pages from './pages';
+
 const UnLogged = ()=>{
-  return <div>UnLogged</div>
+  return (
+    <div>UnLogged</div>
+  )      
 }
 const Logged = ()=>{
-  return <div>Logged</div>
+  return (
+      <div>Logged</div>
+  )
 }
 
 export default class Routes extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
   }
   render() {
     return (
       <div>
           <Switch>
-            <Route path="/" exact component={UnLogged} />
-            <Route path="/home" exact component={UnLogged} />
-            <Route path="/wallet" render={Logged} />
-            <Route path="/trade" render={Logged} />
+            <Route path="/" exact component={Pages.Home} />
+            <Route path="/home" exact component={Pages.Home} />
+            <Route path="/wallet" exact component={Pages.Wallet} />
+            <Route path="/trade" exact component={Pages.Trade} />
           </Switch>
       </div>
     );
