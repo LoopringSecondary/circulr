@@ -1,14 +1,14 @@
-import ListTable from './ListTable'
-import ListTableHeader from './ListTableHeader'
-import ListTableHeaderForm from './ListTableHeaderForm'
+import ListDataTable from './ListDataTable'
+import ListDataTableHeader from './ListDataTableHeader'
+import ListDataTableHeaderForm from './ListDataTableHeaderForm'
 import ListOrderBook from './ListOrderBook'
 import Detail from './Detail'
 import Modals from './Modals'
 
 export default {
-  ListTable,
-  ListTableHeader,
-  ListTableHeaderForm,
+  ListDataTable,
+  ListDataTableHeader,
+  ListDataTableHeaderForm,
   ListOrderBook,
   Detail,
   Modals,
