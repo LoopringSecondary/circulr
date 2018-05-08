@@ -26,7 +26,7 @@ const getComponent = (namespace)=>{
   }
 }
 
-function getContainer(model,config) {
+function getContainer({model,path=''}) {
   const namespace =  model.namespace
   const reducersKeys = Object.keys(model.reducers)
   const stateKeys = Object.keys(model.reducers)
@@ -36,8 +36,7 @@ function getContainer(model,config) {
   const actionCreators = getActionCreators(namespace,keys)
   const dispatch 
   const actions = bindActionCreators(actionCreators,dispatch)
-  let path = ''
-  if(config && config.path){
+  if(path){
     // TODO flat nest 
     path = config.path
   }else{
