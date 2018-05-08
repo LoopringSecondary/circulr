@@ -4,10 +4,11 @@ export default {
 	],
   disableCSSModules: true,
   hash:true,
-	// "alias":{
- //    "Loopring":`${__dirname}/src/common/Loopring`,
-	// 	"Loopr":`${__dirname}/src/components/common`
-	// },
+	"alias":{
+    "Loopring":`${__dirname}/src/common/Loopring`,
+    "Loopr":`${__dirname}/src/components/common`
+		"common":`${__dirname}/src/common`
+	},
   "theme": {
     "@font-family-no-number"  : "Roboto ,PingFang SC",
     "@font-family"            : "@font-family-no-number",
