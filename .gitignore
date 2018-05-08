@@ -6,6 +6,7 @@
 # production
 /dist
 /release
+/src/common/Loopring
 /mocks
 
 package-lock.json

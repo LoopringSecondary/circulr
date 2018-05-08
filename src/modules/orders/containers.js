@@ -1,9 +1,8 @@
-import {getContainer} from 'common/redux'
+import redux from 'common/redux'
 import ListModel from './ListModel'
 import PlaceOrderModel from './PlaceOrderModel'
-
 export default {
-	ListContainer:getContainer({model:ListModel}),
-	PlaceOrderContainer:getContainer({model:PlaceOrderModel}),
+	ListContainer:redux.getContainer({model:ListModel}),
+	PlaceOrderContainer:redux.getContainer({model:PlaceOrderModel}),
 }
 

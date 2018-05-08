@@ -1,5 +1,5 @@
-import {getTransactionCount} from "Loopring/ethereum/utils";
-import {toNumber} from "Loopring/common/formatter";
+import {getTransactionCount} from "LoopringJS/ethereum/utils";
+import {toNumber} from "LoopringJS/common/formatter";
 import validator from 'Loopring/ethereum/validator';
 
 const setWallet = (wallet) => {
