@@ -1,4 +1,4 @@
-import {getContainer} from '@/common/redux'
+import {getContainer} from 'common/redux'
 import ListModel from './ListModel'
 import PlaceOrderModel from './PlaceOrderModel'
 
