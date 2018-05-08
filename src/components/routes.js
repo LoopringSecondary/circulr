@@ -25,6 +25,7 @@ export default class Routes extends React.Component {
             <Route path="/home" exact component={Pages.Home} />
             <Route path="/wallet" exact component={Pages.Wallet} />
             <Route path="/trade" exact component={Pages.Trade} />
+            <Route path="/dev" exact component={Pages.Test} />
           </Switch>
       </div>
     );
