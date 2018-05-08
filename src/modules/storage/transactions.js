@@ -1,4 +1,4 @@
-import {getTransactionByhash} from "Loopring/ethereum/utils";
+import {getTransactionByhash} from "LoopringJS/ethereum/utils";
 import validator from 'Loopring/ethereum/validator';
 import filter from 'async/filter';
 

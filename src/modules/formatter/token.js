@@ -1,4 +1,4 @@
-import {toNumber} from "Loopring/common/formatter";
+import {toNumber} from "LoopringJS/common/formatter";
 
 export function getPrice(){
   // TODO

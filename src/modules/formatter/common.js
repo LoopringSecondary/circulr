@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import {toNumber,toBig} from "Loopring/common/formatter";
+import {toNumber,toBig} from "LoopringJS/common/formatter";
 import TokenFormatter from './token'
 import TickerFormatter from './ticker'
 import {getPrice} from './token'
