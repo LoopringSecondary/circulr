@@ -1,4 +1,4 @@
-import {configs} from '../config/data'
+import {configs} from 'common/config/data'
 const set = (settings)=>{
   localStorage.settings = JSON.stringify(settings)
 }

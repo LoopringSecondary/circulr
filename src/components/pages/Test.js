@@ -5,11 +5,10 @@ const OrderList = (props)=>{
 	console.log('OrderList props',props)
 	return (
 		<div>
-			Orders List		
+			Orders List
 		</div>
 	)
 }
-console.log('orders',Orders)
 const Test = (props)=>{
   return (
     <div>

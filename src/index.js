@@ -14,6 +14,17 @@ const app = dva();
 // 4. Router
 app.router(require('./router').default);
 
+let models  = [
+  require('./modules/orders/ListModel').default,
+  require('./modules/orders/PlaceOrderModel').default,
+  require('./modules/tokens/ListModel').default,
+  require('./modules/tokens/TransferModel').default,
+  require('./modules/tokens/ConvertModel').default,
+]
+models.map(model=>{
+  app.model(model)
+});
+
 // 5. Start
 app.start('#root');
 
