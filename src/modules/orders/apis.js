@@ -1,4 +1,5 @@
 import {getOrders} from 'Loopring/relay/order'
+import config from '@common/config'
 
 export async function fetchList(payload){
     let {page,filters,sort} = payload
@@ -10,13 +11,13 @@ export async function fetchList(payload){
       filter.pageIndex = page.current
       filter.pageSize = page.size
     }
-    filter.delegateAddress = window.CONFIG.getDelegateAddress();
+    filter.delegateAddress = config.getDelegateAddress();
     filter.owner = window.WALLET && window.WALLET.getAddress();
     return getOrders(filter).then(res=>{
       if(!res.error && res.result.data){
-        const orders = res.result.data.filter(order => window.CONFIG.getTokenBySymbol(order.originalOrder.tokenB) && window.CONFIG.getTokenBySymbol(order.originalOrder.tokenB).digits &&
-          window.CONFIG.getTokenBySymbol(order.originalOrder.tokenS)&&  window.CONFIG.getTokenBySymbol(order.originalOrder.tokenS).digits &&
-          window.CONFIG.getMarketBySymbol(order.originalOrder.tokenB,order.originalOrder.tokenS) && window.CONFIG.getMarketBySymbol(order.originalOrder.tokenB,order.originalOrder.tokenS).pricePrecision);
+        const orders = res.result.data.filter(order => config.getTokenBySymbol(order.originalOrder.tokenB) && config.getTokenBySymbol(order.originalOrder.tokenB).digits &&
+          config.getTokenBySymbol(order.originalOrder.tokenS)&&  config.getTokenBySymbol(order.originalOrder.tokenS).digits &&
+          config.getMarketBySymbol(order.originalOrder.tokenB,order.originalOrder.tokenS) && config.getMarketBySymbol(order.originalOrder.tokenB,order.originalOrder.tokenS).pricePrecision);
         return {
           items:orders,
           page:{
