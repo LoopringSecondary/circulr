@@ -6,7 +6,7 @@ export default {
   hash:true,
 	"alias":{
     "Loopring":`${__dirname}/src/common/Loopring`,
-    "Loopr":`${__dirname}/src/components/common`
+    "Loopr":`${__dirname}/src/components/common`,
 		"common":`${__dirname}/src/common`
 	},
   "theme": {
