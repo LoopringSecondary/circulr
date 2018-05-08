@@ -1,32 +1,10 @@
-import {toNumber} from "Loopring/common/formatter";
+import {toBig,toFixed} from "Loopring/common/formatter";
+import {formatLength} from "./common";
 
 export function getPrice(){
   // TODO
 }
 
-const formatLength = (value)=>{
-  value =  Number(value)
-  // fix bug: value == string
-  if(value && typeof value === 'number'){
-  }else{
-     value = 0
-  }
-  if(value>1000){
-    return value.toFixed(2)
-  }
-  if(value<=1000 && value>=1){
-    return value.toFixed(2)
-  }
-  if(value<1 && value>=0.001){
-    return value.toFixed(5)
-  }
-  if(value<0.001 & value>0){
-    return value.toFixed(8)
-  }
-  if(value===0){
-    return 0.00
-  }
-}
 
 export default class TokenFormatter {
   constructor(token){

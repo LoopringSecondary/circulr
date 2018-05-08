@@ -7,7 +7,7 @@ export default {
 	"alias":{
     "Loopring":`${__dirname}/src/common/Loopring`,
     "Loopr":`${__dirname}/src/components/common`,
-    "common":`${__dirname}/src/common`
+    "common":`${__dirname}/src/common`,
 		"modules":`${__dirname}/src/modules`
 	},
   "theme": {
