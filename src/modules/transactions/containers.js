@@ -1,7 +1,7 @@
-import {getContainer} from 'common/redux'
+import redux from 'common/redux'
 import ListModel from './ListModel'
 
 export default {
-	ListContainer:getContainer({model:ListModel}),
+	ListContainer:redux.getContainer({model:ListModel}),
 }
 
