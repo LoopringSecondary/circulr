@@ -64,10 +64,13 @@ export function formatLength(value, ceil) {
   }
 }
 
-export function getAmount(amount,digits){
+export function toUnitAmount(amount,digits){
  return toBig(amount).div('1e'+digits)
 }
 
+export function toDecimalsAmount(amount,digits) {
+  return toBig(amount).times('1e'+digits)
+}
 
 export function fromNow(miliSeconds,suffix) {
   suffix = suffix || true;
@@ -82,6 +85,7 @@ export default {
   getSeconds,
   getFormatNum,
   formatLength,
-  getAmount,
+  toUnitAmount,
+  toDecimalsAmount,
   fromNow
 }
