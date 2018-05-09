@@ -1,4 +1,4 @@
-import {toNumber} from "LoopringJS/common/formatter";
+import {toNumber,toBig} from "LoopringJS/common/formatter";
 
 export function getPrice(){
   // TODO
@@ -20,7 +20,7 @@ const formatLength = (value)=>{
   if(value<1 && value>=0.001){
     return value.toFixed(5)
   }
-  if(value<0.001 & value>0){
+  if(value<0.001 && value>0){
     return value.toFixed(8)
   }
   if(value===0){
@@ -59,7 +59,7 @@ export default class TokenFormatter {
   getAmount(amount){
     let number
     if(amount){
-      number = (toNumber(amount) / Number('1e' + this.digits)).toFixed(this.precision)
+      number = (toBig(amount).div('1e' + this.digits)).toFixed(this.precision)
     }else{
       number = 0
     }

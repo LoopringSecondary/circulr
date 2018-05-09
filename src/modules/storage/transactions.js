@@ -1,5 +1,5 @@
 import {getTransactionByhash} from "LoopringJS/ethereum/utils";
-import validator from 'Loopring/ethereum/validator';
+import validator from 'LoopringJS/ethereum/validator';
 import filter from 'async/filter';
 
 const addTx = (tx) => {
