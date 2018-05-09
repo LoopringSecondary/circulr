@@ -1,21 +1,22 @@
 import React from 'react';
 import Orders from 'modules/orders/containers'
 
-const OrderList = (props)=>{
-	console.log('OrderList props',props)
+const TestComp = (props)=>{
 	return (
 		<div>
-			Orders List		
+			{props.title}
 		</div>
 	)
 }
-console.log('orders',Orders)
 const Test = (props)=>{
   return (
     <div>
     	<Orders.ListContainer>
-    		<OrderList />
-    	</Orders.ListContainer>
+        <TestComp title="Orders List"/>
+      </Orders.ListContainer>
+      <Orders.PlaceOrderContainer>
+    		<TestComp title="PlaceOrder Form" />
+    	</Orders.PlaceOrderContainer>
     </div>
   )
 }

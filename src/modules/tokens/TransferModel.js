@@ -1,6 +1,6 @@
 
 export default {
-  namespace: 'placeOrder',
+  namespace: 'transfer',
   state: {
    sell:{},
    buy:{},

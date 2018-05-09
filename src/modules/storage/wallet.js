@@ -1,6 +1,6 @@
 import {getTransactionCount} from "LoopringJS/ethereum/utils";
 import {toNumber} from "LoopringJS/common/formatter";
-import validator from 'Loopring/ethereum/validator';
+import validator from 'LoopringJS/ethereum/validator';
 
 const setWallet = (wallet) => {
   const wallets = localStorage.wallet ? JSON.parse(localStorage.wallet) : [];

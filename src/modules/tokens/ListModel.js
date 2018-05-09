@@ -1,5 +1,5 @@
-import congfig from 'common/config'
-import storage from 'common/storage'
+import config from 'common/config'
+import storage from 'modules/storage'
 const initTokens = storage.tokens.getTokens()
 const configTokens = config.getTokens()
 export default {

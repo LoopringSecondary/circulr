@@ -51,7 +51,5 @@ export default {
   getFormatTime,
   getFormattedTime,
   getSeconds,
-  TokenFormatter,
-  TickerFormatter,
   getFormatNum
 }
