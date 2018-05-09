@@ -8,6 +8,7 @@ const getComponent = (namespace,keys)=>{
       const { children,dispatch,[namespace]:data,...rest} = this.props
       const actionCreators = getActionCreators(namespace,keys)
       const actions = bindActionCreators(actionCreators,dispatch)
+      window[namespace]=actions
       const childProps = {
         ...rest,
         [namespace]:{
