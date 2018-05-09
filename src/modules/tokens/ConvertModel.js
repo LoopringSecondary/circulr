@@ -1,5 +1,5 @@
 import {getAssetsByToken} from "../formatter/selectors";
-import {toBig} from "LoopringJS/src/common/formatter";
+import {toBig} from "LoopringJS/common/formatter";
 
 export default {
   namespace: 'convert',
