@@ -1,7 +1,7 @@
 import config from 'common/config'
 import storage from 'modules/storage'
-const initTokens = storage.tokens.getTokens()
-const configTokens = config.getTokens()
+const initTokens = storage.tokens.getTokens();
+const configTokens = config.getTokens();
 export default {
   namespace: 'tokens',
   state: {
@@ -22,8 +22,8 @@ export default {
   },
   reducers: {
     updateItem(state,{payload}){
-      const { items } = state
-      const { item } = payload
+      const { items } = state;
+      const { item } = payload;
       items.forEach((token,index)=>{
        if(token.symbol===item.symbol){
          items[index] = {
@@ -31,7 +31,7 @@ export default {
            ...item,
          }
        }
-      })
+      });
       return {
        ...state,
        items,
@@ -43,7 +43,7 @@ export default {
           ...state.selected,
           ...action.payload.selected,
         }
-      })
+      });
       return {
         ...state,
         selected:{
@@ -58,7 +58,7 @@ export default {
           ...state.favored,
           ...action.payload.favored,
         }
-      })
+      });
       return {
         ...state,
         favored:{
@@ -81,7 +81,7 @@ export default {
           ...filters,
           ...action.payload.filters
         }
-      })
+      });
       return {
         ...state,
         filters:{
@@ -92,7 +92,6 @@ export default {
           current:1,
         }
       }
-
     },
     columnsChange(state,action){
       return {...state,columns:action.payload.columns}
