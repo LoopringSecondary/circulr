@@ -1,31 +1,8 @@
-import {toNumber,toBig,toFixed} from "LoopringJS/common/formatter";
+import {toBig, toNumber,toFixed} from "LoopringJS/common/formatter";
+import {formatLength} from "../formatter/common";
 
 export function getPrice(){
   // TODO
-}
-
-const formatLength = (value)=>{
-  value =  Number(value)
-  // fix bug: value == string
-  if(value && typeof value === 'number'){
-  }else{
-     value = 0
-  }
-  if(value>1000){
-    return toFixed(value,2)
-  }
-  if(value<=1000 && value>=1){
-    return value.toFixed(2)
-  }
-  if(value<1 && value>=0.001){
-    return value.toFixed(5)
-  }
-  if(value<0.001 && value>0){
-    return value.toFixed(8)
-  }
-  if(value===0){
-    return 0.00
-  }
 }
 
 export default class TokenFormatter {
@@ -48,32 +25,33 @@ export default class TokenFormatter {
       })
   }
   getToken(){
-    let keys = Object.keys(this)
-    let token = {}
+    let keys = Object.keys(this);
+    let token = {};
     keys.forEach(key=>{
       token[key] = this[key]
-    })
+    });
     return token
   }
 
-  getAmount(amount){
-    let number
-    if(amount){
-      number = (toBig(amount).div('1e' + this.digits)).toFixed(this.precision)
-    }else{
-      number = 0
-    }
-    return formatLength(number)
+  getUnitAmount(amount){
+    amount = amount || 0;
+    return toBig(amount).div('1e' + this.digits)
+  }
+  getUnitAmountValue(amount,price){
+    const unitAmount = this.getUnitAmount(amount);
+    return unitAmount.times(toBig(price))
+  }
+  getUnitBalance(){
+    return this.getUnitAmount(this.balance)
+  }
+  getUnitBalanceValue(price){
+    return this.getUnitAmountValue(this.balance,price)
+  }
 
+  toPricisionFixed(amount,ceil){
+    toFixed(amount,this.precision,ceil)
   }
-  getAmountValue(amount,price){
-    const formattedAmount = this.getAmount(amount)
-    return formatLength(formattedAmount * price)
-  }
-  getBalance(){
-    return this.getAmount(this.balance)
-  }
-  getBalanceValue(price){
-    return this.getAmountValue(this.balance,price)
+  toFormatLength(amount,ceil){
+    formatLength(amount,ceil)
   }
 }
