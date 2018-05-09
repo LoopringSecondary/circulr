@@ -1,4 +1,4 @@
-import {getOrders} from 'LoopringJS/relay/order'
+import {getOrders} from 'LoopringJS/relay/rpc/order'
 import config from 'common/config'
 
 export async function fetchList(payload){
