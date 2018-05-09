@@ -46,25 +46,20 @@ export function getFormatNum(number) {
 }
 
 export function formatLength(value, ceil) {
-  value = Number(value)
-  // fix bug: value == string
-  if (value && typeof value === 'number') {
-  } else {
-    value = 0
-  }
-  if (value > 1000) {
+  value = toBig(value);
+  if (value.gt(1000)) {
     return toFixed(value, 2, ceil)
   }
-  if (value <= 1000 && value >= 1) {
+  if (value.lte(1000) && value.gte(1) ) {
     return toFixed(value, 2, ceil)
   }
-  if (value < 1 && value >= 0.001) {
+  if (value.lt(1) && value.gte(0.001)) {
     return toFixed(value, 5, ceil)
   }
-  if (value < 0.001 && value > 0) {
+  if (value.lt(0.001) && value.isPositive()) {
     return toFixed(value, 8, ceil)
   }
-  if (value === 0) {
+  if (value.isZero()) {
     return 0.00
   }
 }
