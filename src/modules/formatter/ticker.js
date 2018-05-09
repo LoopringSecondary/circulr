@@ -62,7 +62,7 @@ fm.getChangeSide = (value)=>{
   if(Number(change)<0){
     return 'down'
   }
-  if(Number(change) == 0){
+  if(Number(change) === 0){
     return 'none'
   }
 
