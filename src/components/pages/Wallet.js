@@ -7,75 +7,32 @@ import Tickers from '../tickers'
 function Wallet(props) {
   return (
     <div>
-    	{
-    		false &&
-    		<div>
-    			<Tokens.ListDefault />
-		    	<Transactions.ListDefault />
-		    	<Charts.PriceChart />
-		    	<Tickers.ListDefault />
-		    	<Tickers.ListDefault />
-    		</div>
-    	}
-    	<div className="card-header bordered">
-            <h4>Reference Markets</h4>
-        </div>
-        <div style={{height: "100%", overflow: "hidden", padding:"0 0 485px",minHeight:"300px"}}>
-            <div className="content-scroll">
-                <table className="table table-striped table-inverse text-center text-left-col1 text-right-last">
-                    <col width="35%" />
-                    <thead>
-                        <tr>
-                            <th>Markets</th>
-                            <th>Price</th>
-                            <th>Change</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>OKEX</td>
-                            <td>0.56 USD</td>
-                            <td className="text-up">+9.8%</td>
-                        </tr>
-                        <tr>
-                            <td>Binance</td>
-                            <td>0.56 USD</td>
-                            <td className="text-down">-1.45%</td>
-                        </tr>
-                        <tr>
-                            <td>Coinbase</td>
-                            <td>0.56 USD</td>
-                            <td className="text-up">+9.8%</td>
-                        </tr>
-                        <tr>
-                            <td>Bittrex</td>
-                            <td>0.56 USD</td>
-                            <td className="text-up">+9.8%</td>
-                        </tr>
-                        <tr>
-                            <td>Poloniex</td>
-                            <td>0.56 USD</td>
-                            <td className="text-down">-1.45%</td>
-                        </tr>
-                        <tr>
-                            <td>Bitfinex</td>
-                            <td>0.56 USD</td>
-                            <td className="text-up">+9.8%</td>
-                        </tr>
-                        <tr>
-                            <td>Bitmex</td>
-                            <td>0.56 USD</td>
-                            <td className="text-up">+9.8%</td>
-                        </tr>
-                        <tr>
-                            <td>GDAX</td>
-                            <td>0.56 USD</td>
-                            <td className="text-down">-1.45%</td>
-                        </tr>
-                    </tbody>
-                </table>
+   
+        <header id="header" style={{ position:"fixed",width:"100%"}}>
+            <div className="bg w-control d-flex justify-content-between align-items-center">
+                <h2>LRC<span>Ethereum</span></h2>
+                <div className="account"><img  src={require('../../assets/images/user.png')} className="photo" /><span className="msg"><i className="icon-bell"></i></span></div>
             </div>
+        </header>
+
+    <div className="side-fixed" style={{top:"0",left: "0",width: "280px",padding: "20px 0"}} id="tokenSide">
+        <div className="loopring-brand"><img src={require('../../assets/images/logo.png')} className="img" /></div> 
+        <Tokens.ListDefault />
+    </div>
+
+    <div className="m-container h-full" style={{marginLeft: "280px", marginRight: "454px"}} id="transactions"> 
+        <div className="card h-full">
+            <Transactions.ListDefault />
+        </div>          
+    </div>
+
+    <div className="side-fixed" style={{top:"0",right: "0",width: "450px",paddingTop:"74px"}} id="sideMarkets">
+        <div className="card h-full">
+            <Charts.PriceChart />
+            <Tickers.ListDefault />              
         </div>
+    </div>
+
     </div>
 
 
