@@ -1,45 +1,51 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { bindActionCreators } from 'redux';
+import {Modal} from 'antd';
 import getActionCreators from './getActionCreators';
+
 const getComponent = (namespace,keys)=>{
   return class Container extends React.Component {
     render() {
-      const { children,dispatch,[namespace]:data,...rest} = this.props
+      const {
+        children,dispatch,[namespace]:data,id,
+        width,mask,closable=true,maskClosable=false,
+        ...rest
+      } = this.props
+      const {...rest} = this.props
       const actionCreators = getActionCreators(namespace,keys)
       const actions = bindActionCreators(actionCreators,dispatch)
-      window[namespace]=actions
-      const childProps = {
-        ...rest,
-        [namespace]:{
-          ...data,
-          ...actions,
-        }
-      }
+      const thisData = data[id] || {}
       const modalProps = {
-        visible:thisModal.visible,
-        width,
         destroyOnClose:true,
         title:null,
         footer:null,
-        closable,
+        visible:thisData.visible,
+        width,
+        closable, // if u want to custom onCancel for x , set this false
         maskClosable,
-        // wrapClassName:"rs", // reset modal
-        className:"rs", // reset modal
-        onCancel:hideModal.bind(this,{id}),
+        onCancel:actions.hideModal.bind(this,{id}),
+      }
+      const childProps = {
+        ...rest,
+        modal:{
+          ...thisData,
+          ...actions,
+        }
       }
       return (
-        <div>
+        <Modal {...modalProps}>
           {
             React.Children.map(this.props.children, child => {
                 return React.cloneElement(child, {...childProps})
             })
           }
-        </div>
+        </Modal>
       )
     }
   }
 }
+
 const getContainer = ({model,path=''})=>{
   const namespace =  model.namespace
   const reducersKeys = Object.keys(model.reducers)

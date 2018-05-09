@@ -5,6 +5,17 @@ export default {
     current:[],
   },
   effects:{
+    *changeModal({payload},{call, select,put}){
+      yield put({
+        type:'modalChange',
+        payload:{
+          ...payload,
+        }
+      })
+    },
+    *resetModal({payload},{call, select,put}){
+      // TODO
+    },
     *showModal({payload},{call, select,put}){
       // yield put({type:'currentChange',payload})
       yield put({
