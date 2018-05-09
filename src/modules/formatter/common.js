@@ -50,7 +50,7 @@ export function formatLength(value, ceil) {
   if (value.gt(1000)) {
     return toFixed(value, 2, ceil)
   }
-  if (value.lte(1000) && value.gte(1) ) {
+  if (value.lte(1000) && value.gte(1)) {
     return toFixed(value, 2, ceil)
   }
   if (value.lt(1) && value.gte(0.001)) {
@@ -64,6 +64,16 @@ export function formatLength(value, ceil) {
   }
 }
 
+export function getAmount(amount,digits){
+ return toBig(amount).div('1e'+digits)
+}
+
+
+export function fromNow(miliSeconds,suffix) {
+  suffix = suffix || true;
+  moment(miliSeconds).fromNow(!suffix)
+}
+
 
 export default {
   getShortAddress,
@@ -71,5 +81,7 @@ export default {
   getFormattedTime,
   getSeconds,
   getFormatNum,
-  formatLength
+  formatLength,
+  getAmount,
+  fromNow
 }

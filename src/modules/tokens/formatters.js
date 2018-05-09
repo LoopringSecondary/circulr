@@ -1,5 +1,5 @@
 import {toBig, toNumber,toFixed} from "LoopringJS/common/formatter";
-import {formatLength} from "../formatter/common";
+import {formatLength,getAmount} from "../formatter/common";
 
 export default class TokenFormatter {
   constructor(token){
@@ -31,7 +31,7 @@ export default class TokenFormatter {
 
   getUnitAmount(amount){
     amount = amount || 0;
-    return toBig(amount).div('1e' + this.digits)
+    return getAmount(amount,this.digits)
   }
   getUnitAmountValue(amount,price){
     const unitAmount = this.getUnitAmount(amount);
