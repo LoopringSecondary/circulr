@@ -15,11 +15,11 @@ export default class TokenFormatter {
         if(address){
           tokenConfig = window.CONFIG.getTokenByAddress(address) || {}
         }else{
-          console.error('token.symbol or token.symbol must not be empty')
+          throw new Error('token.symbol or token.symbol must not be empty')
         }
       }
-      let newToken = {...tokenConfig,...token}
-      let keys = Object.keys(newToken)
+      let newToken = {...tokenConfig,...token};
+      let keys = Object.keys(newToken);
       keys.forEach(key=>{
         this[key] = newToken[key]
       })
