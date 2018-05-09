@@ -1,4 +1,4 @@
-import {toNumber,toBig} from "LoopringJS/common/formatter";
+import {toNumber,toBig,toFixed} from "LoopringJS/common/formatter";
 
 export function getPrice(){
   // TODO
@@ -12,7 +12,7 @@ const formatLength = (value)=>{
      value = 0
   }
   if(value>1000){
-    return value.toFixed(2)
+    return toFixed(value,2)
   }
   if(value<=1000 && value>=1){
     return value.toFixed(2)
