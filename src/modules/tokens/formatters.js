@@ -1,14 +1,10 @@
 import {toBig, toNumber,toFixed} from "LoopringJS/common/formatter";
 import {formatLength} from "../formatter/common";
 
-export function getPrice(){
-  // TODO
-}
-
 export default class TokenFormatter {
   constructor(token){
-      const {symbol,address} = token
-      let tokenConfig = {}
+      const {symbol,address} = token;
+      let tokenConfig = {};
       if(symbol){
         tokenConfig = window.CONFIG.getTokenBySymbol(symbol) || {}
       }else{
