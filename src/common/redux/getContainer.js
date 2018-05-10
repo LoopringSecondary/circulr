@@ -17,15 +17,17 @@ const getComponent = (namespace,keys)=>{
       }
     }
     render() {
-      const { children,dispatch,[namespace]:data,id,...rest} = this.props
+      const { children,dispatch,[namespace]:data,id,render,...rest} = this.props
+      console.log('this.props',this.props)
       const actionCreators = getActionCreators({namespace,keys,id})
       const actions = bindActionCreators(actionCreators,dispatch)
+      const thisData = data[id] || {}
       let childProps = {}
       if(id){
         childProps = {
           ...rest,
           [id]:{
-            ...data[id],
+            ...thisData,
             ...actions,
           }
         }
@@ -39,6 +41,9 @@ const getComponent = (namespace,keys)=>{
         }
       }
       window[namespace]=actions
+      if(render){
+        return render.call(this,childProps)
+      }
       return (
         <div>
           {
@@ -54,9 +59,8 @@ const getComponent = (namespace,keys)=>{
 const getContainer = ({model,path=''})=>{
   const namespace = model.namespace
   const reducersKeys = Object.keys(model.reducers)
-  const stateKeys = Object.keys(model.reducers)
   const effectsKeys = Object.keys(model.effects)
-  let keys = [...reducersKeys,...reducersKeys]
+  let keys = [...reducersKeys,...effectsKeys]
   keys = keys.map(key=>key.replace(`${namespace}/`,''))
   if(!path){
     path = namespace

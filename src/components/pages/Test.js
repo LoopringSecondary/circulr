@@ -1,5 +1,6 @@
 import React from 'react';
 import Orders from 'modules/orders/containers'
+import ModalContainer from 'modules/modals/container'
 
 const TestComp = (props)=>{
   console.log(props.title,props)
@@ -17,7 +18,10 @@ const Test = (props)=>{
       </Orders.ListContainer>
       <Orders.PlaceOrderContainer>
     		<TestComp title="PlaceOrder Form" />
-    	</Orders.PlaceOrderContainer>
+      </Orders.PlaceOrderContainer>
+      <ModalContainer id="test">
+        <TestComp title="PlaceOrder Form" />
+      </ModalContainer>
     </div>
   )
 }

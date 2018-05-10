@@ -1,4 +1,4 @@
-const namespace = 'modals',
+const namespace = 'modals'
 export default {
   namespace,
   state: {
