@@ -3,13 +3,11 @@ import {connect} from 'dva'
 import {Modal} from 'antd'
 import redux from 'common/redux'
 import model from './model'
-
 const Container = redux.getContainer({model})
-
 const ModalContainer = (props)=>{
   const {
     children,id,
-    width,mask,closable=true,maskClosable=false,
+    width,mask,closable=true,maskClosable=false,apisOnly=false,
   } = props
   return (
     <Container id={id} render={(renderProps)=>{
@@ -27,6 +25,17 @@ const ModalContainer = (props)=>{
         mask,
         onCancel:model.hideModal.bind(this,{id}),
       }
+      if(apisOnly){
+        return (
+          <div>
+            {
+              React.Children.map(children, child => {
+                  return React.cloneElement(child, {...childProps})
+              })
+            }
+          </div>
+        )
+      }
       return (
         <Modal {...modalProps}>
           {
@@ -39,5 +48,4 @@ const ModalContainer = (props)=>{
     }}/>
   )
 }
-
 export default ModalContainer
