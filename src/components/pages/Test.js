@@ -4,7 +4,6 @@ import Orders from 'modules/orders/containers'
 import ModalContainer from 'modules/modals/container'
 
 const TestComp = (props)=>{
-  console.log(props.title,props)
   const showModal =()=>{
     window.STORE.dispatch({
       type:'modals/showModal',
@@ -25,7 +24,7 @@ const TestModal = (props)=>{
 	return (
 		<div className="p10">
 			TestModal
-      <Button type="primary">Show Modal</Button>
+      <Button type="primary" onClick={props.test.hideModal}>hide Modal</Button>
 		</div>
 	)
 }
@@ -33,11 +32,9 @@ const TestModal = (props)=>{
 const Test = (props)=>{
   return (
     <div>
-      <ModalContainer apisOnly={true}>
-      	<Orders.ListContainer id="orders/trade">
-          <TestComp title="Orders List"/>
-        </Orders.ListContainer>
-      </ModalContainer>
+    	<Orders.ListContainer id="orders/trade">
+        <TestComp title="Orders List"/>
+      </Orders.ListContainer>
       <Orders.PlaceOrderContainer>
     		<TestComp title="PlaceOrder Form" />
       </Orders.PlaceOrderContainer>

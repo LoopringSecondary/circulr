@@ -11,20 +11,7 @@ const ModalContainer = (props)=>{
   } = props
   return (
     <Container id={id} render={(renderProps)=>{
-      console.log('renderProps',renderProps)
-      const {[id]:model} = renderProps
       const childProps = {...renderProps}
-      const modalProps = {
-        destroyOnClose:true,
-        title:null,
-        footer:null,
-        visible:model.visible,
-        width,
-        closable,
-        maskClosable,
-        mask,
-        onCancel:model.hideModal.bind(this,{id}),
-      }
       if(apisOnly){
         return (
           <div>
@@ -35,16 +22,30 @@ const ModalContainer = (props)=>{
             }
           </div>
         )
+      }else{
+        const {[id]:module} = renderProps
+        const modalProps = {
+          destroyOnClose:true,
+          title:null,
+          footer:null,
+          visible:module.visible,
+          width,
+          closable,
+          maskClosable,
+          mask,
+          onCancel:module.hideModal.bind(this,{id}),
+        }
+        return (
+          <Modal {...modalProps}>
+            {
+              React.Children.map(children, child => {
+                  return React.cloneElement(child, {...childProps})
+              })
+            }
+          </Modal>
+        )
       }
-      return (
-        <Modal {...modalProps}>
-          {
-            React.Children.map(children, child => {
-                return React.cloneElement(child, {...childProps})
-            })
-          }
-        </Modal>
-      )
+
     }}/>
   )
 }
