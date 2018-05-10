@@ -1,28 +1,30 @@
-function getActionCreators(module,keys = []) {
-  let actionCreators = {};
+function getActionCreators({namespace,keys = [],id}) {
+  let actionCreators = {}
   keys.forEach(key=>{
     function actionCreator(payload,custom){
         let action = {}
-        if(module){
-          action = {
-            type:module+"/"+key,
-            payload
-          }
+        let type =''
+        if(namespace){
+          type= namespace+"/"+key
         }else{
-          action = {
-            type:key,
-            payload
+          type=key
+        }
+        if(id){
+          payload = {
+            id,
+            ...payload,
           }
         }
-        console.log('action',action);
+        action = {
+          type,
+          payload
+        }
+        console.log('action',action)
         return action;
     }
-
-    actionCreators[key]= actionCreator;
-
+    actionCreators[key]= actionCreator
   })
-  return  actionCreators;
-
+  return  actionCreators
 }
 
-export default getActionCreators;
+export default getActionCreators
