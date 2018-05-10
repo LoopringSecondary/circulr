@@ -81,9 +81,9 @@ const onEvent = (payload)=>{
 }
 export onEvent
 
-const init = (url)=>{
+const connect = (url)=>{
   let options = {
-      transports: ['websocket']
+    transports: ['websocket']
   }
   const socket = io(url,options)
   socket.on('disconnect', (data) => {
@@ -92,18 +92,8 @@ const init = (url)=>{
   socket.on('error', (err) => {
     console.log('socket error',err)
   })
-  socket.emit('xx1',{},(res)=>{
-    dispatch({
-      type:'',
-      payload:{},
-    })
-  })
-  socket.on('xx1',{},(res)=>{
-    dispatch({
-      type:'',
-      payload:{},
-    })
-  })
+  // balance_req()
+  // balance_res()
   return new Promise((resolve)=>{
     socket.on('connect',()=>{
       console.log('socket connect success!')
@@ -112,6 +102,7 @@ const init = (url)=>{
   })
 }
 export connect
+
 
 
 
