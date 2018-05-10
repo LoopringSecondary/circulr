@@ -8,7 +8,7 @@ function Wallet(props) {
   return (
     <div>
    
-        <header id="header" style={{ position:"fixed",width:"100%"}}>
+        <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000"}}>
             <div className="bg w-control d-flex justify-content-between align-items-center">
                 <h2>LRC<span>Ethereum</span></h2>
                 <div className="account"><img  src={require('../../assets/images/user.png')} className="photo" /><span className="msg"><i className="icon-bell"></i></span></div>

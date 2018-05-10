@@ -1,5 +1,6 @@
-import React from 'react'
-
+import React from 'react';
+import { Form,Select } from 'antd';
+const Option = Select.Option;
 function ListHeaderForm({className=''}){
   return (
     <div className={className}>
@@ -21,7 +22,18 @@ function ListBlock(props) {
     <div>
         <div className="card-header bordered">
             <h4>Transactions</h4>
-            <div className="form-inline-inverse"><span className="group-span"><span><select className="nice-select"><option value="" disabled selected>Status</option><option>Pending</option><option>Success</option><option>Failed</option></select></span><span><select  className="nice-select"><option value="" disabled selected>Type</option><option>Send</option><option>Receive</option><option>Enable</option><option>Convert</option></select></span></span>
+            <div className="form-inline-inverse"><span className="group-span"><span><Select defaultValue="All Status">
+              <Option value="Pending">All Status</Option>
+              <Option value="Pending">Pending</Option>
+              <Option value="Success">Success</Option>
+              <Option value="Failed">Failed</Option>
+            </Select></span><span><Select defaultValue="All types">
+              <Option value="Pending">All types</Option>
+              <Option value="Pending">Send</Option>
+              <Option value="Success">Receive</Option>
+              <Option value="Failed">Enable</Option>
+              <Option value="Failed">Convert</Option>
+            </Select></span></span>
             </div>
         </div>
         <div style={{height: "100%", overflow: "hidden", padding:"0 0 60px"}}>
