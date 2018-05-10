@@ -16,6 +16,8 @@ let models  = [
   require('./modules/tokens/TransferModel').default,
   require('./modules/tokens/ConvertModel').default,
   require('./modules/transactions/ListModel').default,
+  require('./modules/account/model').default,
+  require('./modules/settings/model').default,
 ]
 models.map(model=>{
   app.model(model)
