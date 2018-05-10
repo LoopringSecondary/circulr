@@ -28,29 +28,25 @@ const getNonce = async (address) => {
 const storeUnlockedAddress = (unlockType, address) => {
   localStorage.unlockedType = unlockType
   localStorage.unlockedAddress = address
-}
+};
 
 const getUnlockedAddress = () => {
   return localStorage.unlockedAddress || ''
-}
+};
 
 const getUnlockedType = () => {
   return localStorage.unlockedType || ''
-}
+};
 
 const clearUnlockedAddress = () => {
   localStorage.unlockedType = ''
   localStorage.unlockedAddress = ''
-}
+};
 
-const isInWhiteList = (address) => {
-
-}
 
 export default {
   setWallet,
   getWallet,
-  isInWhiteList,
   getNonce,
   storeUnlockedAddress,
   getUnlockedAddress,
