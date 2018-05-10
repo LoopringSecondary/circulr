@@ -17,12 +17,12 @@ export default {
    trade:{
      side:'buy',
      pair:'LRC-WETH',
-     priceInput: 0,
-     amountInput:0,
-     total:0,
+     priceInput: '',
+     amountInput:'',
+     total:'',
+     sliderMilliLrcFee:0,
      timeToLivePatternSelect: 'easy',
      timeToLivePopularSetting: true,
-     sliderMilliLrcFee:0,
      timeToLive:0,
      timeToLiveUnit:'',
      timeToLiveStart: null,
@@ -77,6 +77,19 @@ export default {
           throw new Error('Not supported market:'+pair)
         }
       }
+    },
+    *priceChangeEffects({ payload={} }, { select, put }) {
+      let {priceInput} = payload
+      const state = yield select(({ [MODULES]:data }) => data );
+      const {amountInput} = state.trade
+      if(priceInput >0) {
+        if(amountInput >0){
+          const total = fm.toBig(amountInput).times(fm.toBig(priceInput))
+        } else {
+
+        }
+        yield put({ type: 'priceChange',payload:{priceInput}});
+      }
     }
   },
   reducers: {
@@ -98,6 +111,26 @@ export default {
         trade:{
           ...state.trade,
           priceInput
+        }
+      }
+    },
+    amountChange(state, action) {
+      const {amountInput} = action.payload
+      return {
+        ...state,
+        trade:{
+          ...state.trade,
+          amountInput
+        }
+      }
+    },
+    totalChange(state, action) {
+      const {total} = action.payload
+      return {
+        ...state,
+        trade:{
+          ...state.trade,
+          total
         }
       }
     },
