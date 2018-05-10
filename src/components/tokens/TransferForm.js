@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Input,Button,Form} from 'antd';
 function TransferForm(props) {
   return (
     <div>
@@ -9,26 +9,20 @@ function TransferForm(props) {
             <a href="#" className="close close-lg close-inverse" id="sendClose"></a>
         </div>
         <div className="card-body form-inverse">
-            <div className="form-group form-group-md">
-                <div className="input-addon">
-                    <em>Price</em>
-                    <input className="form-control" placeholder="0" />
-                    <em>ETH</em>
-                </div>
-            </div>
-            <div className="form-group form-group-md">
-                <div className="input-addon">
-                    <em>Amount</em>
-                    <input className="form-control" placeholder="0" />
-                    <em className="text-primary" style={{opacity: "1"}}>Send Max</em>
-                </div>
-            </div>
+            <Form>
+            <Form.Item>
+            <Input value="0" suffix="WETH" prefix="Price" />
+            </Form.Item>
+            <Form.Item>
+            <Input value="0" suffix="LRC" prefix="Amount" />
+            </Form.Item>
+            </Form>
             <div className="form-group form-group-md text-inverse">
                 <div className="form-control-static d-flex justify-content-between mr-0">
                     <span>Gas Fee</span><span className="font-bold"><i className="icon-pencil gasfee" data-target="webuiPopover0"></i><span>0</span><span className="offset-md">0.00189 ETH ≈ $1.15</span></span>
                 </div>
             </div>
-            <button className="btn btn-primary btn-lg btn-block">Continue</button>
+            <Button type="primary" className="btn-block">Continue</Button>
         </div>     
         <div id="gasFee" style={{display: "none"}}>
             <div className="form-group">

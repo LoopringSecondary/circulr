@@ -1,8 +1,13 @@
 import React from 'react';
 
+
+
 function Trade(props) {
   return (
-    <div>Trade</div>
+    <div>
+    	
+
+    </div>
   )
 }
 export default Trade
