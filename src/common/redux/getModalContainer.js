@@ -6,6 +6,14 @@ import getActionCreators from './getActionCreators';
 
 const getComponent = (namespace,keys)=>{
   return class Container extends React.Component {
+    shouldComponentUpdate(nextProps, nextState){
+      const { id } = this.props
+      if(nextProps[namespace][id] === this.props[namespace][id]){
+        return false
+      }else{
+        return true
+      }
+    }
     render() {
       const {
         children,dispatch,[namespace]:data,id,
@@ -13,7 +21,7 @@ const getComponent = (namespace,keys)=>{
         ...rest
       } = this.props
       const {...rest} = this.props
-      const actionCreators = getActionCreators(namespace,keys)
+      const actionCreators = getActionCreators({namespace,keys,id})
       const actions = bindActionCreators(actionCreators,dispatch)
       const thisData = data[id] || {}
       const modalProps = {

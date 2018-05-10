@@ -4,30 +4,41 @@ import { bindActionCreators } from 'redux';
 import getActionCreators from './getActionCreators';
 const getComponent = (namespace,keys)=>{
   return class Container extends React.Component {
+    shouldComponentUpdate(nextProps, nextState){
+      const { id } = this.props
+      if(id){
+        if(nextProps[namespace][id] === this.props[namespace][id]){
+          return false
+        }else{
+          return true
+        }
+      }else{
+        return true
+      }
+    }
     render() {
-      const { children,dispatch,[namespace]:data,...rest} = this.props
-      const actionCreators = getActionCreators(namespace,keys)
+      const { children,dispatch,[namespace]:data,id,...rest} = this.props
+      const actionCreators = getActionCreators({namespace,keys,id})
       const actions = bindActionCreators(actionCreators,dispatch)
-      window[namespace]=actions
-      const childProps = {
-        ...rest,
-        [namespace]:{
-          ...data,
-          ...actions,
+      let childProps = {}
+      if(id){
+        childProps = {
+          ...rest,
+          [id]:{
+            ...data[id],
+            ...actions,
+          }
+        }
+      }else{
+         childProps = {
+          ...rest,
+          [namespace]:{
+            ...data,
+            ...actions,
+          }
         }
       }
-      const modalProps = {
-        visible:thisModal.visible,
-        width,
-        destroyOnClose:true,
-        title:null,
-        footer:null,
-        closable,
-        maskClosable,
-        // wrapClassName:"rs", // reset modal
-        className:"rs", // reset modal
-        onCancel:hideModal.bind(this,{id}),
-      }
+      window[namespace]=actions
       return (
         <div>
           {
