@@ -9,8 +9,8 @@ let initState = {
     size:10,
     current:0,
   },
+  sort:{},
   filters:{},
-  layer:{},
   defaultState:{},
   originQuery:{},
 }
