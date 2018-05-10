@@ -11,8 +11,8 @@ function getActionCreators({namespace,keys = [],id}) {
         }
         if(id){
           payload = {
-            ...payload,
             id,
+            ...payload,
           }
         }
         action = {
@@ -25,7 +25,6 @@ function getActionCreators({namespace,keys = [],id}) {
     actionCreators[key]= actionCreator
   })
   return  actionCreators
-
 }
 
 export default getActionCreators

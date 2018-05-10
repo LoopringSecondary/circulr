@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { bindActionCreators } from 'redux';
-import getActionCreators from './getActionCreators';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { bindActionCreators } from 'redux'
+import getActionCreators from './getActionCreators'
 const getComponent = (namespace,keys)=>{
   return class Container extends React.Component {
     shouldComponentUpdate(nextProps, nextState){
@@ -52,7 +52,7 @@ const getComponent = (namespace,keys)=>{
   }
 }
 const getContainer = ({model,path=''})=>{
-  const namespace =  model.namespace
+  const namespace = model.namespace
   const reducersKeys = Object.keys(model.reducers)
   const stateKeys = Object.keys(model.reducers)
   const effectsKeys = Object.keys(model.effects)

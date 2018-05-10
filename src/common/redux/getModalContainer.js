@@ -36,8 +36,8 @@ const getComponent = (namespace,keys)=>{
       }
       const childProps = {
         ...rest,
-        modal:{
-          ...thisData,
+        [id]:{
+          ...data[id],
           ...actions,
         }
       }
@@ -55,7 +55,7 @@ const getComponent = (namespace,keys)=>{
 }
 
 const getContainer = ({model,path=''})=>{
-  const namespace =  model.namespace
+  const namespace = model.namespace
   const reducersKeys = Object.keys(model.reducers)
   const stateKeys = Object.keys(model.reducers)
   const effectsKeys = Object.keys(model.effects)

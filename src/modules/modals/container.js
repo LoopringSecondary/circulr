@@ -1,9 +1,9 @@
-import React from 'react';
-import {connect} from 'dva';
-import {Modal} from 'antd';
-@connect(
-	({modals})=>({modals:modals})
-)
+import React from 'react'
+import {connect} from 'dva'
+import {Modal} from 'antd'
+import redux from 'common/redux'
+
+
 export default class ModalContainer extends React.Component {
   shouldComponentUpdate(nextProps, nextState){
     const { id } = this.props
