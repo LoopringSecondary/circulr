@@ -1,6 +1,5 @@
 import dva from 'dva';
-// import './index.css';
-// import './assets/css/index.less'
+import './assets/css/index.less'
 
 // 1. Initialize
 const app = dva();
@@ -10,6 +9,7 @@ const app = dva();
 
 // 3. Model
 let models  = [
+  require('./modules/modals/model').default,
   require('./modules/orders/ListModel').default,
   require('./modules/orders/PlaceOrderModel').default,
   require('./modules/tokens/ListModel').default,

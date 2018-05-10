@@ -1,5 +1,5 @@
 import * as apis from './apis'
-const MODULES = 'txs'
+const MODULES = 'txs';
 let initState = {
   items: [],
   loading: false,
