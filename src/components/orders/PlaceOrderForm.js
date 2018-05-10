@@ -1,4 +1,6 @@
 import React from 'react';
+import { Input,Button } from 'antd';
+
 
 function PlaceOrderForm(props) {
   return (
@@ -235,6 +237,12 @@ function PlaceOrderForm(props) {
                 </div>
             </div>
         </div>
+
+        <Input placeholder="Basic usage" suffix="2222" prefix="1111" />
+        
+        <Button type="primary" className="d-block w-100">
+        	Place Order
+        </Button>
     </div>
   )
 }
