@@ -94,7 +94,7 @@ class PlaceOrderForm extends React.Component {
           }
           <div className="tab-content">
             <div className="tab-pane active" id="b1">
-              <small className="balance text-inverse">{state.right.symbol} Balance: <span>{state.right.balance}</span></small>
+              <small className="balance text-inverse">{state.right.symbol} Balance: <span>{state.right.balanceDisplay}</span></small>
               <div className="blk-sm"></div>
               <Form.Item label={null} colon={false}>
                 {form.getFieldDecorator('price', {

@@ -58,22 +58,25 @@ export default {
           if(!marketConfig || !(tokenL && tokenR)) {
             throw new Error('Not supported market:'+pair)
           }
+          // TODO mock
+          const balanceL = fm.toBig('100000000000000000000')
+          const balanceR = fm.toBig('100000000000000000000')
+          const balanceLDisplay = orderFormatter.tokenDisplayBalance(tokenL.symbol, balanceL)
+          const balanceRDisplay = orderFormatter.tokenDisplayBalance(tokenR.symbol, balanceR)
+          const l = {...tokenL, balance:balanceL, balanceDisplay:balanceLDisplay}
+          const r = {...tokenR, balance:balanceR, balanceDisplay:balanceRDisplay}
+          yield put({ type: 'leftAndRightChange',payload:{tokenL:l, tokenR:r}});
           const amountPrecision = Math.max(0, tokenR.precision - marketConfig.pricePrecision)
-          yield put({ type: 'leftAndRightChange',payload:{tokenL, tokenR}});
           if(side === 'buy') {
-            const buy = {...tokenL, balance:'100000000000000000000'}
-            const sell = {...tokenR, balance:'100000000000000000000'}
-            yield put({ type: 'buyAndSellChange',payload:{buy, sell}});
+            yield put({ type: 'buyAndSellChange',payload:{buy:l, sell:r}});
             const priceInput = state.priceInput
             if(priceInput) {
-              let availableAmount = fm.toFixed(fm.toBig(sell.balance).times(priceInput), amountPrecision, false)
+              let availableAmount = fm.toFixed(r.balance.times(priceInput), amountPrecision, false)
               yield put({ type: 'availableAmountChange',payload:{side, availableAmount}});
             }
           } else {
-            const buy = {...tokenR, balance:'100000000000000000000'}
-            const sell = {...tokenL, balance:'100000000000000000000'}
-            yield put({ type: 'buyAndSellChange',payload:{buy, sell}});
-            let availableAmount = fm.toFixed(fm.toBig(sell.balance), amountPrecision, false)
+            yield put({ type: 'buyAndSellChange',payload:{buy:r, sell:l}});
+            let availableAmount = fm.toFixed(l.balance, amountPrecision, false)
             yield put({ type: 'availableAmountChange',payload:{side, availableAmount}});
           }
         } else {
