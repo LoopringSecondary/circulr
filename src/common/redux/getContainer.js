@@ -28,7 +28,8 @@ const getWrapper = (namespace,keys)=>{
           [id]:{
             ...thisData,
             ...actions,
-          }
+          },
+          dispatch,
         }
       }else{
          childProps = {
@@ -36,7 +37,8 @@ const getWrapper = (namespace,keys)=>{
           [namespace]:{
             ...data,
             ...actions,
-          }
+          },
+          dispatch,
         }
       }
       window[namespace]=actions

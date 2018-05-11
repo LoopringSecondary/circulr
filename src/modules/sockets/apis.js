@@ -4,6 +4,7 @@ const balanceHandler = (res)=>{
   return res
 }
 const balance_req = (payload)=>{
+  const {socket} = payload
   const event = 'balance_req'
   const options = {
     delegateAddress: '',
@@ -15,7 +16,8 @@ const balance_req = (payload)=>{
     })
   })
 }
-const balance_res = ()=>{
+const balance_res = (payload)=>{
+  const {socket} = payload
   const event = 'balance_res'
   return new Promise((resolve)=>{
     socket.on(event,(res)=>{
@@ -28,6 +30,7 @@ const marketcapHandler = (res)=>{
   return res
 }
 const marketcap_req = (payload)=>{
+  const {socket} = payload
   const event = 'marketcap_req'
   const options = {
     delegateAddress: '',
@@ -39,7 +42,8 @@ const marketcap_req = (payload)=>{
     })
   })
 }
-const marketcap_res = ()=>{
+const marketcap_res = (payload)=>{
+  const {socket} = payload
   const event = 'marketcap_res'
   return new Promise((resolve)=>{
     socket.on(event,(res)=>{
@@ -83,7 +87,8 @@ const onEvent = (payload)=>{
   return res
 }
 
-const connect = (url)=>{
+const connect = (payload)=>{
+  const {url}= payload
   let options = {
     transports: ['websocket']
   }

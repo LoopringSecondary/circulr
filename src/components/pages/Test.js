@@ -2,6 +2,7 @@ import React from 'react'
 import {Button} from 'antd'
 import Orders from 'modules/orders/containers'
 import ModalContainer from 'modules/modals/container'
+import Sockets from 'modules/sockets/container'
 
 const TestComp = (props)=>{
   const showModal =()=>{
@@ -21,10 +22,19 @@ const TestComp = (props)=>{
 }
 const TestModal = (props)=>{
   console.log('TestModal',props)
+  return (
+    <div className="p10">
+      TestModal
+      <Button type="primary" onClick={props.test.hideModal}>hide Modal</Button>
+    </div>
+  )
+}
+const TestScokets = (props)=>{
+  console.log('TestScokets',props)
 	return (
 		<div className="p10">
 			TestModal
-      <Button type="primary" onClick={props.test.hideModal}>hide Modal</Button>
+      <Button type="primary" onClick={props.sockets.urlChange.bind(this,{url:'//relay1.loopring.io'})}>connect</Button>
 		</div>
 	)
 }
@@ -41,6 +51,9 @@ const Test = (props)=>{
       <ModalContainer id="test">
         <TestModal />
       </ModalContainer>
+      <Sockets.SocketsContainer>
+        <TestScokets />
+      </Sockets.SocketsContainer>
     </div>
   )
 }

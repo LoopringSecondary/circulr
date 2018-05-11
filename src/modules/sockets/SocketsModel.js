@@ -33,10 +33,6 @@ export default {
       yield put({type:'pageChangeStart',payload})
       yield put({type:'fetch',payload})
     },
-    *pageChange({payload},{call,select,put}){
-      yield put({type:'pageChangeStart',payload})
-      yield put({type:'fetch',payload})
-    },
     *filtersChange({payload},{call,select,put}){
       yield put({type:'filtersChangeStart',payload})
       yield put({type:'fetch',payload})
