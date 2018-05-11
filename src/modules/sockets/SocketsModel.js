@@ -31,8 +31,8 @@ export default {
       yield put({type:'connect',payload})
     },
     *fetch({payload},{call,select,put}){
-      yield put({type:'emitEvent',payload})
       yield put({type:'onEvent',payload})
+      yield put({type:'emitEvent',payload})
     },
     *pageChange({payload},{call,select,put}){
       yield put({type:'pageChangeStart',payload})
@@ -52,10 +52,8 @@ export default {
     },
     *emitEvent({ payload={} },{call,select,put}) {
       let {id} = payload
-      const model = yield select(({ [namespace]:model }) => model )
-      const socket = model.socket
+      const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
       if(socket){
-        const {page,filters,sort} = model[id]
         let new_payload = {page,filters,sort,socket,id}
         yield put({type:'loadingChange',payload: {loading: true,loaded:false}})
         const res = yield call(apis.emitEvent, new_payload)
@@ -64,16 +62,13 @@ export default {
           yield put({type:'itemsChange',payload: {items:res.items}})
         }
       }else{
-        console.log('scoket is not connected!')
+        console.log('socket is not connected!')
       }
-
     },
     *onEvent({ payload={} }, { call, select, put }) {
       let {id} = payload
-      const model = yield select(({ [namespace]:model }) => model )
-      const socket = model.socket
+      const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
       if(socket){
-        const {page,filters,sort} = model[id]
         let new_payload = {page,filters,sort,socket,id}
         yield put({type:'loadingChange',payload: {loading: true,loaded:false}})
         const res = yield call(apis.onEvent, new_payload)
