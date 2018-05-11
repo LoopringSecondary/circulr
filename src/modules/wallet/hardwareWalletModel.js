@@ -2,7 +2,7 @@
 
 
 export default {
-  name:'hardwareWallethardwareWallet',
+  namespace:'hardwareWallet',
   state:{
     publicKey:"",
     chainCode:"",

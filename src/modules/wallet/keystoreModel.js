@@ -6,6 +6,7 @@ export default {
   state: {
     keystore: '',
     isPasswordRequired: false,
+    isValid: false,
     password: ''
   },
   reducers: {
@@ -13,21 +14,32 @@ export default {
       return {
         keystore: '',
         isPasswordRequired: false,
+        isValid: false,
         password: ''
       }
     },
     setKeystore(state, {payload}) {
       const {keystore} = payload;
-      const isPasswordRequired = isKeystorePassRequired(keystore);
+      let isPasswordRequired = false;
+      let isValid;
+      try {
+        isPasswordRequired = isKeystorePassRequired(keystore);
+        isValid = true;
+      } catch (e) {
+        isValid = false;
+      }
       return {
+        ...state,
         keystore,
         isPasswordRequired,
+        isValid,
         password: ''
       }
     },
     setPassword(state, {payload}) {
       const {password} = payload;
       return {
+        ...state,
         password
       }
     }

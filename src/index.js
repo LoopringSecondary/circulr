@@ -16,7 +16,12 @@ let models  = [
   require('./modules/tokens/TransferModel').default,
   require('./modules/tokens/ConvertModel').default,
   require('./modules/transactions/ListModel').default,
-]
+  require('./modules/wallet/airdropModel').default,
+  require('./modules/wallet/model').default,
+  require('./modules/wallet/mnemonicModel').default,
+  require('./modules/wallet/keystoreModel').default,
+  require('./modules/wallet/hardwareWalletModel').default
+];
 models.map(model=>{
   app.model(model)
 });

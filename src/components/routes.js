@@ -7,7 +7,7 @@ import Orders from './orders';
 const UnLogged = ()=>{
   return (
     <div>UnLogged</div>
-  )      
+  )
 }
 const Logged = ()=>{
   return (
@@ -30,6 +30,7 @@ export default class Routes extends React.Component {
             <Route path="/dev" exact component={Pages.Test} />
             <Route path="/transfer" exact component={Tokens.TransferForm} />
             <Route path="/placeOrder" exact component={Orders.PlaceOrderForm} />
+            <Route path="/wallet/test" exact component={Pages.WalletTest} />
           </Switch>
       </div>
     );
