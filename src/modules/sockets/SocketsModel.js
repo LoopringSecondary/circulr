@@ -50,23 +50,26 @@ export default {
       const socket = model.socket
       const {page,filters,sort} = model[id]
       let new_payload = {page,filters,sort,socket,id}
-      const res = yield call(apis.emitEvent, new_payload)
-      console.log('model emitEvent res',res)
-      if (res && res.items) {
-        yield put({
-          type: 'fetchSuccess',
-          payload: {
-            id:payload.id,
-            page:{
-              ...page,
-              ...res.page,
-            },
-            items:res.items,
-            loading: false,
-            loaded:true
-          },
-        })
-      }
+      // const res = yield call(, new_payload)
+      console.log('apis',apis)
+      apis.emitEvent(new_payload).then(res=>{
+        console.log('model emitEvent res',res)
+        if (res && res.items) {
+          // yield put({
+          //   type: 'fetchSuccess',
+          //   payload: {
+          //     id:payload.id,
+          //     page:{
+          //       ...page,
+          //       ...res.page,
+          //     },
+          //     items:res.items,
+          //     loading: false,
+          //     loaded:true
+          //   },
+          // })
+        }
+      })
     },
     *onEvent({ payload={} }, { call, select, put }) {
       let {id} = payload

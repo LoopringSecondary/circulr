@@ -55,10 +55,11 @@ const marketcap_req = (payload)=>{
   const options = {
     "currency": 'usd',
   }
+  console.log(event)
   return new Promise((resolve)=>{
     socket.emit(event,JSON.stringify(options),(res)=>{
-      res = JSON.parse(res)
       console.log(event,res)
+      res = JSON.parse(res)
       resolve(marketcapHandler(res))
     })
   })
@@ -79,20 +80,22 @@ const marketcap_res = (payload)=>{
 const emitEvent = (payload)=>{
   let {id} = payload
   console.log('emitEvent',id)
-  let res
   switch (id) {
     case 'assets':
-      res = balance_req(payload)
+      return balance_req(payload).then(res=>res)
       break;
     case 'prices':
-      res = marketcap_req(payload)
+      // return marketcap_req(payload).then(res=>res)
+      return new Promise((resolve)=>{
+        marketcap_req(payload).then(res=>resolve(res))
+      })
       break
     // default:
     //   res = marketcap_req(payload)
     //   break
   }
-  console.log('emitEvent res',res)
-  return res
+
+
 }
 
 const onEvent = (payload)=>{
@@ -100,7 +103,7 @@ const onEvent = (payload)=>{
   let res
   switch (id) {
     case 'assets':
-      res = balance_res()
+      return balance_res()
       break;
     case 'prices':
       res = marketcap_res()
