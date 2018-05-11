@@ -1,14 +1,14 @@
 ®/*---------------------
     header
 -----------------------*/
-header { position: fixed; z-index: 1000; width: 100%;  border-bottom: 4px solid rgb(8, 34, 63); } 
-header .bg{padding: 15px 20px;}
-header .w-control{ margin-left: 280px;height: 70px; }
+header { position: fixed; z-index: 1000; width: 100%;   border-bottom: 4px solid rgb(8, 34, 63); } 
+header .bg{height: 70px; padding: 15px 20px;}
+header .w-control{ margin-left: 280px; }
 header h2{ font-size: 18px; opacity: .87; }
 header h2 span{ padding-left: 5px; font-weight: normal; vertical-align: middle; opacity: .54; }
 header .account{ position: relative; }
 header .account .photo{ width: 32px; height: 32px; }
-header .account .msg{ position: absolute; bottom:-2px; right: -2px; display: block; width: 12px; height: 12px; background: rgba(254, 79, 87, 1.0); border-radius: 6px; font-size: 12px;}
+header .account .msg{ position: absolute; bottom:-2px; right: -2px; display: block; width: 12px; height: 12px; line-height: 12px; background: rgba(254, 79, 87, 1.0); border-radius: 6px; font-size: 12px;}
 header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical-align: top;}
 
 /*---------------------
@@ -209,7 +209,8 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .range-inverse .range-slider-dot.active { background:  rgba(255, 255, 255, 1.0); border-color: rgba(255, 255, 255, 1.0); }
 .range-inverse .range-slider-handle { position: absolute; top: -6px; display: inline-block; width: 16px; height: 16px; border-radius: 8px; background: #fff; border: 2px solid rgba(255, 255, 255, 1.0); }
 .range-inverse .range-progress>div { width: 25%; color: rgba(255, 255, 255, .54);}
-.token-last-quotes ul>li>em{ display: block; font-style: normal; font-weight: 800; margin-top: 8px; }
+.token-last-quotes ul{margin:0;}
+.token-last-quotes ul>li>em{ display: block; font-style: normal; font-weight: 800; margin-top: 4px; }
 .token-last-quotes ul>li>small{ opacity: .54; font-size: 13px; font-weight: 500; }
 .token-last-quotes ul>li{ padding-left: 40px; font-weight: 400; }
 #back{ width: 40px; height: 40px; text-align: center; line-height: 40px; background: rgba(255, 255, 255, .07); color: rgba(255, 255, 255, .87) }

@@ -1,15 +1,45 @@
-import React from 'react';
+import React from 'react'
+import {Button} from 'antd'
 import Orders from 'modules/orders/containers'
 import ModalContainer from 'modules/modals/container'
+import Sockets from 'modules/sockets/container'
 
 const TestComp = (props)=>{
-  console.log(props.title,props)
+  const showModal =()=>{
+    window.STORE.dispatch({
+      type:'modals/showModal',
+      payload:{
+        id:'test'
+      }
+    })
+  }
+  return (
+    <div className="p10">
+      {props.title}
+      <Button type="primary" onClick={showModal}>Show Modal</Button>
+    </div>
+  )
+}
+const TestModal = (props)=>{
+  console.log('TestModal',props)
+  return (
+    <div className="p10">
+      TestModal
+      <Button type="primary" onClick={props.test.hideModal}>hide Modal</Button>
+    </div>
+  )
+}
+const TestScokets = (props)=>{
+  console.log('TestScokets',props)
 	return (
-		<div>
-			{props.title}
+		<div className="p10">
+			TestModal
+      <Button type="primary" onClick={props.sockets.urlChange.bind(this,{url:'//relay1.loopring.io'})}>connect</Button>
+      <Button type="primary" onClick={props.sockets.emitEvent.bind(this,{id:'prices'})}>get prices</Button>
 		</div>
 	)
 }
+
 const Test = (props)=>{
   return (
     <div>
@@ -20,8 +50,11 @@ const Test = (props)=>{
     		<TestComp title="PlaceOrder Form" />
       </Orders.PlaceOrderContainer>
       <ModalContainer id="test">
-        <TestComp title="PlaceOrder Form" />
+        <TestModal />
       </ModalContainer>
+      <Sockets.SocketsContainer>
+        <TestScokets />
+      </Sockets.SocketsContainer>
     </div>
   )
 }

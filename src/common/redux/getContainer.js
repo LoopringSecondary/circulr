@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { bindActionCreators } from 'redux'
 import getActionCreators from './getActionCreators'
-const getComponent = (namespace,keys)=>{
+const getWrapper = (namespace,keys)=>{
   return class Container extends React.Component {
     shouldComponentUpdate(nextProps, nextState){
       const { id } = this.props
@@ -18,7 +18,6 @@ const getComponent = (namespace,keys)=>{
     }
     render() {
       const { children,dispatch,[namespace]:data,id,render,...rest} = this.props
-      console.log('this.props',this.props)
       const actionCreators = getActionCreators({namespace,keys,id})
       const actions = bindActionCreators(actionCreators,dispatch)
       const thisData = data[id] || {}
@@ -29,7 +28,8 @@ const getComponent = (namespace,keys)=>{
           [id]:{
             ...thisData,
             ...actions,
-          }
+          },
+          dispatch,
         }
       }else{
          childProps = {
@@ -37,7 +37,8 @@ const getComponent = (namespace,keys)=>{
           [namespace]:{
             ...data,
             ...actions,
-          }
+          },
+          dispatch,
         }
       }
       window[namespace]=actions
@@ -67,6 +68,6 @@ const getContainer = ({model,path=''})=>{
   }else{
     // TODO flat nest
   }
-  return connect(({[path]:value})=>({[path]:value}))(getComponent(path,keys))
+  return connect(({[path]:value})=>({[path]:value}))(getWrapper(path,keys))
 }
 export default getContainer
