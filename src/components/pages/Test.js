@@ -35,7 +35,7 @@ const TestScokets = (props)=>{
       <div>
         <Button type="primary" onClick={props.sockets.connect}>connect</Button>
         <Button type="primary" onClick={props.sockets.fetch.bind(this,{id:'prices'})}>get prices</Button>
-        <Button type="primary" onClick={props.sockets.urlChange.bind(this,{url:"pre-relay1.loopring.io"})}>Change Relay</Button>
+        <Button type="primary" onClick={props.sockets.urlChange.bind(this,{url:"//pre-relay1.loopring.io"})}>Change Relay</Button>
       </div>
 		</div>
 	)
