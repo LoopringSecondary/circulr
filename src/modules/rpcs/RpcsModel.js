@@ -44,7 +44,7 @@ export default {
       if(socket){
         let new_payload = {page,filters,sort,socket,id}
         yield put({type:'loadingChange',payload: {loading: true,loaded:false}})
-        const res = yield call(apis.emitEvent, new_payload)
+        const res = yield call(apis.fetchList, new_payload)
         if (res && res.items) {
           yield put({type:'loadingChange',payload: {loading: false,loaded:true}})
           yield put({type:'itemsChange',payload: {items:res.items}})

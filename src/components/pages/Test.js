@@ -1,7 +1,7 @@
 import React from 'react'
 import {Button} from 'antd'
 import Orders from 'modules/orders/containers'
-import ModalContainer from 'modules/modals/container'
+import UiContainers from 'modules/containers'
 import Sockets from 'modules/sockets/container'
 
 const TestComp = (props)=>{
@@ -50,9 +50,9 @@ const Test = (props)=>{
       <Orders.PlaceOrderContainer>
     		<TestComp title="PlaceOrder Form" />
       </Orders.PlaceOrderContainer>
-      <ModalContainer id="test">
+      <UiContainers.Modals id="test">
         <TestModal />
-      </ModalContainer>
+      </UiContainers.Modals>
       <Sockets.SocketsContainer>
         <TestScokets />
       </Sockets.SocketsContainer>
