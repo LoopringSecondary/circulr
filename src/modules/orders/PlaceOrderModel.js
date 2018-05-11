@@ -14,30 +14,29 @@ export default {
      token:null,
      availableAmount: 0,
    },
-   trade:{
-     side:'buy',
-     pair:'LRC-WETH',
-     priceInput: '',
-     amountInput:'',
-     total:'',
-     sliderMilliLrcFee:0,
-     timeToLivePatternSelect: 'easy',
-     timeToLivePopularSetting: true,
-     timeToLive:0,
-     timeToLiveUnit:'',
-     timeToLiveStart: null,
-     timeToLiveEnd: null,
-     loading: false,
-   }
+   side:'buy',
+   pair:'LRC-WETH',
+   left: null,
+   right: null,
+   priceInput: '',
+   amountInput:'',
+   total:'',
+   sliderMilliLrcFee:0,
+   timeToLivePatternSelect: 'easy',
+   timeToLivePopularSetting: true,
+   timeToLive:0,
+   timeToLiveUnit:'',
+   timeToLiveStart: null,
+   timeToLiveEnd: null,
+   loading: false,
   },
   effects:{
     *pairChangeEffects({ payload={} }, { put }) {
       let {pair} = payload
       if(pair) {
         yield put({ type: 'pairChange',payload:{pair}});
-        const priceInput = 0.001
-        yield put({ type: 'priceChange',payload:{priceInput}});
-
+        const priceInput = '0.001'
+        yield put({ type: 'priceChangeEffects',payload:{priceInput}});
         yield put({ type: 'sideOrPairChange' });
       }
     },
@@ -50,45 +49,60 @@ export default {
     },
     *sideOrPairChange({ payload={} }, { select, put }) {
       const state = yield select(({ [MODULES]:data }) => data );
-      const {pair, side} = state.trade
+      const {pair, side} = state
       if(pair && side) {
-        const tokenL = config.getTokenBySymbol(pair.split('-')[0].toUpperCase())
-        const tokenR = config.getTokenBySymbol(pair.split('-')[1].toUpperCase())
-        if(tokenL && tokenR && (side === 'buy' || side === 'sell')) {
+        if(side === 'buy' || side === 'sell'){
+          const tokenL = config.getTokenBySymbol(pair.split('-')[0].toUpperCase())
+          const tokenR = config.getTokenBySymbol(pair.split('-')[1].toUpperCase())
+          const marketConfig = config.getMarketBySymbol(tokenL.symbol, tokenR.symbol)
+          if(!marketConfig || !(tokenL && tokenR)) {
+            throw new Error('Not supported market:'+pair)
+          }
+          const amountPrecision = Math.max(0, tokenR.precision - marketConfig.pricePrecision)
+          yield put({ type: 'leftAndRightChange',payload:{tokenL, tokenR}});
           if(side === 'buy') {
-            const buy = {...tokenL, balance:100000000000000000000}
-            const sell = {...tokenR, balance:100000000000000000000}
+            const buy = {...tokenL, balance:'100000000000000000000'}
+            const sell = {...tokenR, balance:'100000000000000000000'}
             yield put({ type: 'buyAndSellChange',payload:{buy, sell}});
-            const priceInput = state.trade.priceInput
-            if(priceInput >0) {
-              let availableAmount = Math.floor(sell.balance / priceInput * ("1e"+sell.precision)) / ("1e"+sell.precision)
-              availableAmount = orderFormatter.formatAvaliableAmount(availableAmount, tokenL, tokenR)
+            const priceInput = state.priceInput
+            if(priceInput) {
+              let availableAmount = fm.toFixed(fm.toBig(sell.balance).times(priceInput), amountPrecision, false)
               yield put({ type: 'availableAmountChange',payload:{side, availableAmount}});
             }
           } else {
-            const buy = {...tokenR, balance:100000000000000000000}
-            const sell = {...tokenL, balance:100000000000000000000}
+            const buy = {...tokenR, balance:'100000000000000000000'}
+            const sell = {...tokenL, balance:'100000000000000000000'}
             yield put({ type: 'buyAndSellChange',payload:{buy, sell}});
-            let availableAmount = Math.floor(sell.balance * ("1e"+buy.precision)) / ("1e"+buy.precision)
-            availableAmount = orderFormatter.formatAvaliableAmount(availableAmount, tokenL, tokenR)
+            let availableAmount = fm.toFixed(fm.toBig(sell.balance), amountPrecision, false)
             yield put({ type: 'availableAmountChange',payload:{side, availableAmount}});
           }
         } else {
-          throw new Error('Not supported market:'+pair)
+          throw new Error('Not supported side change:'+side)
         }
       }
     },
     *priceChangeEffects({ payload={} }, { select, put }) {
       let {priceInput} = payload
       const state = yield select(({ [MODULES]:data }) => data );
-      const {amountInput} = state.trade
-      if(priceInput >0) {
-        if(amountInput >0){
-          const total = fm.toBig(amountInput).times(fm.toBig(priceInput))
-        } else {
-
+      const {amountInput} = state
+      if(priceInput) {
+        if(amountInput){
+          const total = fm.toBig(amountInput).times(priceInput)
+          yield put({ type: 'totalChange',payload:{total}});
         }
         yield put({ type: 'priceChange',payload:{priceInput}});
+      }
+    },
+    *amountChangeEffects({ payload={} }, { select, put }) {
+      let {amountInput} = payload
+      const state = yield select(({ [MODULES]:data }) => data );
+      const {priceInput} = state
+      if(amountInput) {
+        if(priceInput){
+          const total = fm.toBig(amountInput).times(priceInput)
+          yield put({ type: 'totalChange',payload:{total}});
+        }
+        yield put({ type: 'amountChange',payload:{amountInput}});
       }
     }
   },
@@ -98,50 +112,46 @@ export default {
       let {side} = payload
       return {
         ...state,
-        trade:{
-          ...state.trade,
-          side
-        }
+        side
       }
     },
     priceChange(state, action) {
       const {priceInput} = action.payload
       return {
         ...state,
-        trade:{
-          ...state.trade,
-          priceInput
-        }
+        priceInput
       }
     },
     amountChange(state, action) {
       const {amountInput} = action.payload
       return {
         ...state,
-        trade:{
-          ...state.trade,
-          amountInput
-        }
+        amountInput
       }
     },
     totalChange(state, action) {
       const {total} = action.payload
       return {
         ...state,
-        trade:{
-          ...state.trade,
-          total
-        }
+        total
       }
     },
     pairChange(state, action) {
       const {pair} = action.payload
       return {
         ...state,
-        trade:{
-          ...state.trade,
-          pair
-        }
+        pair,
+        left : pair.split('-')[0],
+        right : pair.split('-')[1],
+      }
+    },
+    leftAndRightChange(state, action) {
+      const {payload} = action
+      const {tokenL, tokenR} = payload
+      return {
+        ...state,
+        left : tokenL,
+        right : tokenR
       }
     },
     buyAndSellChange(state, action) {
