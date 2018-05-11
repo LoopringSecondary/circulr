@@ -10,12 +10,15 @@ const app = dva();
 // 3. Model
 let models  = [
   require('./modules/modals/model').default,
+  require('./modules/sockets/SocketsModel').default,
   require('./modules/orders/ListModel').default,
   require('./modules/orders/PlaceOrderModel').default,
   require('./modules/tokens/ListModel').default,
   require('./modules/tokens/TransferModel').default,
   require('./modules/tokens/ConvertModel').default,
   require('./modules/transactions/ListModel').default,
+  require('./modules/account/model').default,
+  require('./modules/settings/model').default,
 ]
 models.map(model=>{
   app.model(model)
