@@ -19,7 +19,7 @@ const balance_req = (payload)=>{
     delegateAddress: '',
     owner:'',
   }
-  return new Promise((resolve)=>{
+  return new Promise((resolve,reject)=>{
     socket.emit(event,JSON.stringify(options),(res)=>{
       res = JSON.parse(res)
       console.log(event,res)
@@ -30,7 +30,7 @@ const balance_req = (payload)=>{
 const balance_res = (payload)=>{
   const {socket} = payload
   const event = 'balance_res'
-  return new Promise((resolve)=>{
+  return new Promise((resolve,reject)=>{
     socket.on(event,(res)=>{
       res = JSON.parse(res)
       console.log(event,res)
@@ -55,11 +55,10 @@ const marketcap_req = (payload)=>{
   const options = {
     "currency": 'usd',
   }
-  console.log(event)
-  return new Promise((resolve)=>{
+  return new Promise((resolve,reject)=>{
     socket.emit(event,JSON.stringify(options),(res)=>{
-      console.log(event,res)
       res = JSON.parse(res)
+      console.log('emit res',event,res)
       resolve(marketcapHandler(res))
     })
   })
@@ -67,10 +66,10 @@ const marketcap_req = (payload)=>{
 const marketcap_res = (payload)=>{
   const {socket} = payload
   const event = 'marketcap_res'
-  return new Promise((resolve)=>{
+  return new Promise((resolve,reject)=>{
     socket.on(event,(res)=>{
       res = JSON.parse(res)
-      console.log(event,res)
+      console.log('on res',event,res)
       resolve(marketcapHandler(res))
     })
   })
@@ -79,40 +78,34 @@ const marketcap_res = (payload)=>{
 
 const emitEvent = (payload)=>{
   let {id} = payload
-  console.log('emitEvent',id)
+  let promise = null
   switch (id) {
     case 'assets':
-      return balance_req(payload).then(res=>res)
-      break;
-    case 'prices':
-      // return marketcap_req(payload).then(res=>res)
-      return new Promise((resolve)=>{
-        marketcap_req(payload).then(res=>resolve(res))
-      })
+      promise = balance_req(payload)
       break
-    // default:
-    //   res = marketcap_req(payload)
-    //   break
+    case 'prices':
+      promise = marketcap_req(payload)
+      break
+    default:
+      break
   }
-
-
+  return promise
 }
 
 const onEvent = (payload)=>{
   let {id} = payload
-  let res
+  let promise = null
   switch (id) {
     case 'assets':
-      return balance_res()
+      promise = balance_res(payload)
       break;
     case 'prices':
-      res = marketcap_res()
+      promise = marketcap_res(payload)
       break;
     default:
-      res = marketcap_res()
       break
   }
-  return res
+  return promise
 }
 
 const connect = (payload)=>{
@@ -127,9 +120,7 @@ const connect = (payload)=>{
   socket.on('error', (err) => {
     console.log('socket error',err)
   })
-  // balance_req()
-  // balance_res()
-  return new Promise((resolve)=>{
+  return new Promise((resolve,reject)=>{
     socket.on('connect',()=>{
       console.log('socket connect success!')
       resolve(socket)
@@ -140,6 +131,7 @@ export default {
   onEvent,
   emitEvent,
   connect,
+  marketcap_req,
 }
 
 

@@ -21,28 +21,34 @@ export default {
     'prices':{...initState},
   },
   effects: {
+    *connect({payload},{call,select,put}){
+      const {url} = yield select(({ [namespace]:model }) => model )
+      const socket = yield call(apis.connect, {url})
+      yield put({type:'socketChange',payload:{socket}})
+    },
     *urlChange({payload},{call,select,put}){
-      const socket = yield call(apis.connect, payload)
-      yield put({type:'socketChange',payload:{
-        socket,
-        url:payload.url,
-      }})
+      yield put({type:'urlChangeStart',payload})
+      yield put({type:'connect',payload})
+    },
+    *fetch({payload},{call,select,put}){
+      yield put({type:'emitEvent',payload})
+      yield put({type:'onEvent',payload})
     },
     *pageChange({payload},{call,select,put}){
       yield put({type:'pageChangeStart',payload})
-      yield put({type:'fetch',payload})
+      yield put({type:'emitEvent',payload})
     },
     *filtersChange({payload},{call,select,put}){
       yield put({type:'filtersChangeStart',payload})
-      yield put({type:'fetch',payload})
+      yield put({type:'emitEvent',payload})
     },
     *sortChange({payload},{call,select,put}){
       yield put({type:'sortChangeStart',payload})
-      yield put({type:'fetch',payload})
+      yield put({type:'emitEvent',payload})
     },
     *queryChange({payload},{call,select,put}){
       yield put({type:'queryChangeStart',payload})
-      yield put({type:'fetch',payload})
+      yield put({type:'emitEvent',payload})
     },
     *emitEvent({ payload={} },{call,select,put}) {
       let {id} = payload
@@ -50,26 +56,22 @@ export default {
       const socket = model.socket
       const {page,filters,sort} = model[id]
       let new_payload = {page,filters,sort,socket,id}
-      // const res = yield call(, new_payload)
-      console.log('apis',apis)
-      apis.emitEvent(new_payload).then(res=>{
-        console.log('model emitEvent res',res)
-        if (res && res.items) {
-          // yield put({
-          //   type: 'fetchSuccess',
-          //   payload: {
-          //     id:payload.id,
-          //     page:{
-          //       ...page,
-          //       ...res.page,
-          //     },
-          //     items:res.items,
-          //     loading: false,
-          //     loaded:true
-          //   },
-          // })
-        }
-      })
+      const res = yield call(apis.emitEvent, new_payload)
+      if (res && res.items) {
+        yield put({
+          type: 'fetchSuccess',
+          payload: {
+            id:payload.id,
+            // page:{
+            //   ...page,
+            //   ...res.page,
+            // },
+            items:res.items,
+            loading: false,
+            loaded:true
+          },
+        })
+      }
     },
     *onEvent({ payload={} }, { call, select, put }) {
       let {id} = payload
@@ -83,10 +85,10 @@ export default {
           type: 'fetchSuccess',
           payload: {
             id:payload.id,
-            page:{
-              ...page,
-              ...res.page,
-            },
+            // page:{
+            //   ...page,
+            //   ...res.page,
+            // },
             items:res.items,
             loading: false,
             loaded:true
@@ -96,6 +98,13 @@ export default {
     },
   },
   reducers: {
+    urlChangeStart(state, action){
+      let {payload} = action
+      return {
+        ...state,
+        ...payload
+      }
+    },
     socketChange(state, action){
       let {payload} = action
       return {
