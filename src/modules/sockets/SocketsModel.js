@@ -1,4 +1,4 @@
-import * as apis from './apis'
+import apis from './apis'
 const namespace = 'sockets'
 let initState = {
   items: [],
@@ -15,35 +15,47 @@ let initState = {
 export default {
   namespace,
   state: {
+    'url':'//relay1.loopring.io',
+    'socket':null,
     'assets':{...initState},
     'prices':{...initState},
   },
   effects: {
-    *pageChange({payload},{call, select,put}){
-      yield put({type:'pageChangeStart',payload});
-      yield put({type:'fetch',payload});
+    *urlChange({payload},{call,select,put}){
+      const socket = yield call(apis.connect, payload)
+      const new_payload = {
+        socket,
+        url:payload.url,
+      }
+      yield put({type:'socketChange',new_payload})
     },
-    *filtersChange({payload},{call, select,put}){
-      yield put({type:'filtersChangeStart',payload});
-      yield put({type:'fetch',payload});
+    *pageChange({payload},{call,select,put}){
+      yield put({type:'pageChangeStart',payload})
+      yield put({type:'fetch',payload})
     },
-    *columnsChange({payload},{call, select,put}){
-      // yield put({type:'pageChangeStart',payload});
-      // yield put({type:'fetch'});
+    *pageChange({payload},{call,select,put}){
+      yield put({type:'pageChangeStart',payload})
+      yield put({type:'fetch',payload})
     },
-    *sortChange({payload},{call, select,put}){
-      yield put({type:'sortChangeStart',payload});
-      yield put({type:'fetch',payload});
+    *filtersChange({payload},{call,select,put}){
+      yield put({type:'filtersChangeStart',payload})
+      yield put({type:'fetch',payload})
     },
-    *queryChange({payload},{call, select,put}){
-      yield put({type:'queryChangeStart',payload});
-      yield put({type:'fetch',payload});
+    *sortChange({payload},{call,select,put}){
+      yield put({type:'sortChangeStart',payload})
+      yield put({type:'fetch',payload})
     },
-    *emitEvent({ payload={} }, { call, select, put }) {
+    *queryChange({payload},{call,select,put}){
+      yield put({type:'queryChangeStart',payload})
+      yield put({type:'fetch',payload})
+    },
+    *emitEvent({ payload={} },{call,select,put}) {
       let {id} = payload
-      const {page,filters,sort} = yield select(({ [namespace]:model }) => model[id] )
-      let new_payload = {page,filters,sort}
-      const res = yield call(apis.emitEvent, new_payload);
+      const model = yield select(({ [namespace]:model }) => model )
+      const socket = model.socket
+      const {page,filters,sort} = model[id]
+      let new_payload = {page,filters,sort,socket}
+      const res = yield call(apis.emitEvent, new_payload)
       if (res.items) {
         yield put({
           type: 'fetchSuccess',
@@ -57,14 +69,16 @@ export default {
             loading: false,
             loaded:true
           },
-        });
+        })
       }
     },
     *onEvent({ payload={} }, { call, select, put }) {
       let {id} = payload
-      const {page,filters,sort} = yield select(({ [namespace]:model }) => model[id] )
-      let new_payload = {page,filters,sort}
-      const res = yield call(apis.onEvent, new_payload);
+      const model = yield select(({ [namespace]:model }) => model )
+      const socket = model.socket
+      const {page,filters,sort} = model[id]
+      let new_payload = {page,filters,sort,socket}
+      const res = yield call(apis.onEvent, new_payload)
       if (res.items) {
         yield put({
           type: 'fetchSuccess',
@@ -78,12 +92,18 @@ export default {
             loading: false,
             loaded:true
           },
-        });
+        })
       }
     },
   },
-
   reducers: {
+    socketChange(state, action){
+      let {payload} = action
+      return {
+        ...state,
+        ...payload
+      }
+    },
     fetchStart(state, action) {
       let {payload} = action
       let {id} = payload
@@ -94,7 +114,6 @@ export default {
           ...state[id],
         }
       }
-
     },
     fetchSuccess(state, action) {
       let {payload} = action
@@ -178,6 +197,6 @@ export default {
     },
   },
 
-};
+}
 
 

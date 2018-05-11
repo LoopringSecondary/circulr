@@ -51,35 +51,37 @@ const marketcap_res = ()=>{
 
 const emitEvent = (payload)=>{
   let {id} = payload
+  let res
   switch (id) {
     case 'assets':
-      return balance_req(payload)
+      res = balance_req(payload)
       break;
     case 'prices':
-      return marketcap_req(payload)
+      res = marketcap_req(payload)
       break;
     default:
-      return marketcap_req(payload)
+      res = marketcap_req(payload)
       break
   }
+  return res
 }
-export emitEvent
 
 const onEvent = (payload)=>{
   let {id} = payload
+  let res
   switch (id) {
     case 'assets':
-      return balance_res()
+      res = balance_res()
       break;
     case 'prices':
-      return marketcap_res()
+      res = marketcap_res()
       break;
     default:
-      return marketcap_res()
+      res = marketcap_res()
       break
   }
+  return res
 }
-export onEvent
 
 const connect = (url)=>{
   let options = {
@@ -101,7 +103,11 @@ const connect = (url)=>{
     })
   })
 }
-export connect
+export default {
+  onEvent,
+  emitEvent,
+  connect,
+}
 
 
 

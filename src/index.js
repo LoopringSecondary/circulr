@@ -10,6 +10,7 @@ const app = dva();
 // 3. Model
 let models  = [
   require('./modules/modals/model').default,
+  require('./modules/sockets/SocketsModel').default,
   require('./modules/orders/ListModel').default,
   require('./modules/orders/PlaceOrderModel').default,
   require('./modules/tokens/ListModel').default,
