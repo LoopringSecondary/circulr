@@ -23,11 +23,10 @@ export default {
   effects: {
     *urlChange({payload},{call,select,put}){
       const socket = yield call(apis.connect, payload)
-      const new_payload = {
+      yield put({type:'socketChange',payload:{
         socket,
         url:payload.url,
-      }
-      yield put({type:'socketChange',new_payload})
+      }})
     },
     *pageChange({payload},{call,select,put}){
       yield put({type:'pageChangeStart',payload})
@@ -50,9 +49,10 @@ export default {
       const model = yield select(({ [namespace]:model }) => model )
       const socket = model.socket
       const {page,filters,sort} = model[id]
-      let new_payload = {page,filters,sort,socket}
+      let new_payload = {page,filters,sort,socket,id}
       const res = yield call(apis.emitEvent, new_payload)
-      if (res.items) {
+      console.log('model emitEvent res',res)
+      if (res && res.items) {
         yield put({
           type: 'fetchSuccess',
           payload: {
@@ -73,9 +73,9 @@ export default {
       const model = yield select(({ [namespace]:model }) => model )
       const socket = model.socket
       const {page,filters,sort} = model[id]
-      let new_payload = {page,filters,sort,socket}
+      let new_payload = {page,filters,sort,socket,id}
       const res = yield call(apis.onEvent, new_payload)
-      if (res.items) {
+      if (res && res.items) {
         yield put({
           type: 'fetchSuccess',
           payload: {

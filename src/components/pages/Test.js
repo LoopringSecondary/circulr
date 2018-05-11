@@ -35,6 +35,7 @@ const TestScokets = (props)=>{
 		<div className="p10">
 			TestModal
       <Button type="primary" onClick={props.sockets.urlChange.bind(this,{url:'//relay1.loopring.io'})}>connect</Button>
+      <Button type="primary" onClick={props.sockets.emitEvent.bind(this,{id:'prices'})}>get prices</Button>
 		</div>
 	)
 }

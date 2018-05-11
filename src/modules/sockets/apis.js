@@ -1,7 +1,16 @@
 import io from 'socket.io-client'
 
 const balanceHandler = (res)=>{
-  return res
+  if(!res.error && res.data && res.data.tokens){
+    return {
+      // items:res.data.tokens.filter(token=>configSymbols.includes(token.symbol)) // get intersection of server config & client config
+      items:res.data.tokens
+    }
+  }else{
+    return {
+      items:[]
+    }
+  }
 }
 const balance_req = (payload)=>{
   const {socket} = payload
@@ -12,6 +21,8 @@ const balance_req = (payload)=>{
   }
   return new Promise((resolve)=>{
     socket.emit(event,JSON.stringify(options),(res)=>{
+      res = JSON.parse(res)
+      console.log(event,res)
       resolve(balanceHandler(res))
     })
   })
@@ -21,23 +32,33 @@ const balance_res = (payload)=>{
   const event = 'balance_res'
   return new Promise((resolve)=>{
     socket.on(event,(res)=>{
+      res = JSON.parse(res)
+      console.log(event,res)
       resolve(balanceHandler(res))
     })
   })
 }
-
 const marketcapHandler = (res)=>{
-  return res
+  if (!res.error && res.data && res.data.tokens) {
+    return {
+      items: res.data.tokens,
+    }
+  }else{
+    return {
+      items:[]
+    }
+  }
 }
 const marketcap_req = (payload)=>{
   const {socket} = payload
   const event = 'marketcap_req'
   const options = {
-    delegateAddress: '',
-    owner:'',
+    "currency": 'usd',
   }
   return new Promise((resolve)=>{
     socket.emit(event,JSON.stringify(options),(res)=>{
+      res = JSON.parse(res)
+      console.log(event,res)
       resolve(marketcapHandler(res))
     })
   })
@@ -47,6 +68,8 @@ const marketcap_res = (payload)=>{
   const event = 'marketcap_res'
   return new Promise((resolve)=>{
     socket.on(event,(res)=>{
+      res = JSON.parse(res)
+      console.log(event,res)
       resolve(marketcapHandler(res))
     })
   })
@@ -55,6 +78,7 @@ const marketcap_res = (payload)=>{
 
 const emitEvent = (payload)=>{
   let {id} = payload
+  console.log('emitEvent',id)
   let res
   switch (id) {
     case 'assets':
@@ -62,11 +86,12 @@ const emitEvent = (payload)=>{
       break;
     case 'prices':
       res = marketcap_req(payload)
-      break;
-    default:
-      res = marketcap_req(payload)
       break
+    // default:
+    //   res = marketcap_req(payload)
+    //   break
   }
+  console.log('emitEvent res',res)
   return res
 }
 
