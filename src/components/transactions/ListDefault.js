@@ -23,24 +23,22 @@ function ListBlock(props) {
         <div className="card-header bordered">
             <h4>Transactions</h4>
             <div className="form-inline-inverse">
-                <span className="group-span">
-                    <span>
-                      <Select defaultValue="All Status" dropdownMatchSelectWidth={false}>
-                        <Option value="all">All Status</Option>
-                        <Option value="Pending">Pending</Option>
-                        <Option value="Success">Success</Option>
-                        <Option value="Failed">Failed</Option>
-                      </Select>
-                    </span>
-                    <span>
-                    <Select defaultValue="All types" dropdownMatchSelectWidth={false}>
-                      <Option value="all">All types</Option>
-                      <Option value="Pending">Send</Option>
-                      <Option value="Success">Receive</Option>
-                      <Option value="Failed">Enable</Option>
-                      <Option value="Failed">Convert</Option>
-                    </Select>
-                    </span>
+                <span>
+                  <Select defaultValue="All Status" dropdownMatchSelectWidth={false}>
+                    <Option value="all">All Status</Option>
+                    <Option value="Pending">Pending</Option>
+                    <Option value="Success">Success</Option>
+                    <Option value="Failed">Failed</Option>
+                  </Select>
+                </span>
+                <span>
+                <Select defaultValue="All types" dropdownMatchSelectWidth={false}>
+                  <Option value="all">All types</Option>
+                  <Option value="Pending">Send</Option>
+                  <Option value="Success">Receive</Option>
+                  <Option value="Failed">Enable</Option>
+                  <Option value="Failed">Convert</Option>
+                </Select>
                 </span>
             </div>
         </div>

@@ -19,8 +19,7 @@ function ListHeader({className=''}){
 function ListBlock(props) {
   return (
     <div>
-    	<ListHeader /> 
-    	ListBlock
+    	 <div className="tab-pane" id="fill"> </div>
     </div>
   )
 }

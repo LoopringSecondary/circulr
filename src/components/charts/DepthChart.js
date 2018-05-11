@@ -2,7 +2,7 @@ import React from 'react';
 
 function DepthChart(props) {
   return (
-    <div>DepthChart</div>
+    <div><img src={require('../../assets/images/price-chart2.png' )} /></div>
   )
 }
 export default DepthChart

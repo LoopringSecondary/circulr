@@ -28,12 +28,11 @@ function PlaceOrderForm(props) {
                     <Input value="0" suffix="LRC" prefix="Amount" />
                     </Form.Item>
                     </Form>
-                    <div className="blk-sm"></div>
                     <div className="text-inverse text-secondary">
                         <div className="range-inverse">
                            <Slider marks={{ 0: '0', 25: '25%', 50: '50%', 75: '75%', 100: '100%' }} defaultValue={37} />
                         </div>
-                        <div className="blk"></div>
+                        <div className="blk-sm"></div>
                         <div className="form-group mr-0">
                             <div className="form-control-static d-flex justify-content-between">
                                 <span className="font-bold">Total</span><span><span>0</span>WETH ≈ $0</span>
