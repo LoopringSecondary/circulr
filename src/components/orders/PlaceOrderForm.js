@@ -1,11 +1,15 @@
 import React from 'react';
 import {Form,InputNumber,Button,Icon,Modal,Input,Radio,Select,Checkbox,Slider,Collapse,Tooltip,Popconfirm,Popover,DatePicker} from 'antd';
 import intl from 'react-intl-universal';
+import config from 'common/config'
+import * as fm from 'LoopringJS/common/formatter'
+import * as orderFormatter from 'modules/orders/formatters'
 
 class PlaceOrderForm extends React.Component {
+
   render() {
     const state = this.props.placeOrder
-    const {form} = this.props
+    const {form, side, left, right} = this.props
 
     function sideChange(value) {
       window.STORE.dispatch({type:'placeOrder/sideChangeEffects', payload:{side:value}})
@@ -70,7 +74,27 @@ class PlaceOrderForm extends React.Component {
     function validateAmount(value) {
       return value > 0
     }
-    console.log('state',state)
+
+    function amountSliderChange(e) {
+      window.STORE.dispatch({type:'placeOrder/amountSliderChangeEffects', payload:{amountSlider:e}})
+    }
+
+    const marks = {
+      0: '0',
+      25: '25％',
+      50: '50％',
+      75: '75％',
+      100: '100％'
+    };
+
+    const amountSlider = form.getFieldDecorator('amountSlider', {
+      initialValue: 0,
+      rules: []
+    })(
+      <Slider className="place-order-amount-percentage" min={0} max={100} marks={marks} onChange={amountSliderChange.bind(this)}
+              tipFormatter={null} disabled={state[state.side].availableAmount <= 0}/>
+    )
+
     return (
       <div>
         <div className="card-body form-inverse">
@@ -94,7 +118,7 @@ class PlaceOrderForm extends React.Component {
           }
           <div className="tab-content">
             <div className="tab-pane active" id="b1">
-              <small className="balance text-inverse">{state.right.symbol} Balance: <span>{state.right.balanceDisplay}</span></small>
+              {state.sell && <small className="balance text-inverse">{state.sell.token.symbol} Balance: <span>{state.sell.token.balanceDisplay}</span></small>}
               <div className="blk-sm"></div>
               <Form.Item label={null} colon={false}>
                 {form.getFieldDecorator('price', {
@@ -124,7 +148,7 @@ class PlaceOrderForm extends React.Component {
               </Form.Item>
               <Form.Item label={null} colon={false} extra={
                 <div>
-                  <div className="fs10" style={{marginBottom:"-10px"}}>{0}</div>
+                  <div className="fs10" style={{marginBottom:"-10px"}}>{amountSlider}</div>
                 </div>
               }>
                 {form.getFieldDecorator('amount', {
@@ -153,10 +177,6 @@ class PlaceOrderForm extends React.Component {
                 )}
               </Form.Item>
               <div className="text-inverse text-secondary">
-                <div className="range-inverse">
-                  <Slider marks={{ 0: '0', 25: '25%', 50: '50%', 75: '75%', 100: '100%' }} defaultValue={37} />
-                </div>
-                <div className="blk-sm"></div>
                 <div className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
                     <span className="font-bold">Total</span><span><span>0</span>WETH ≈ $0</span>
@@ -179,15 +199,25 @@ class PlaceOrderForm extends React.Component {
             </div>
           </div>
         </div>
-
-        <Input placeholder="Basic usage" suffix="2222" prefix="1111" />
-
-        <Button type="primary" className="d-block w-100">
-          Place Order
-        </Button>
       </div>
     )
   }
 }
 
-export default Form.create()(PlaceOrderForm)
+export default Form.create({
+  mapPropsToFields(props) {
+    return {
+      amount: Form.createFormField(
+        props.placeOrder.amountInput
+      ),
+      amountSlider: Form.createFormField(
+        props.placeOrder.amountSlider
+      ),
+      price: Form.createFormField(
+        props.placeOrder.priceInput
+      ),
+    }
+  }
+})(
+  PlaceOrderForm
+)

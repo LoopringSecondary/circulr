@@ -7,6 +7,9 @@ const Test = ({dispatch})=>{
   dispatch({
     type:'placeOrder/pairChangeEffects', payload:{pair:'EOS-WETH'}
   })
+  dispatch({
+    type:'placeOrder/sideChangeEffects', payload:{side:'sell'}
+  })
 
   return (
     <div>
