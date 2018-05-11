@@ -10,6 +10,7 @@ const app = dva();
 // 3. Model
 let models  = [
   require('./modules/modals/model').default,
+  require('./modules/sockets/SocketsModel').default,
   require('./modules/orders/ListModel').default,
   require('./modules/orders/PlaceOrderModel').default,
   require('./modules/tokens/ListModel').default,
@@ -20,8 +21,11 @@ let models  = [
   require('./modules/wallet/model').default,
   require('./modules/wallet/mnemonicModel').default,
   require('./modules/wallet/keystoreModel').default,
-  require('./modules/wallet/hardwareWalletModel').default
+  require('./modules/wallet/hardwareWalletModel').default,
+  require('./modules/account/model').default,
+  require('./modules/settings/model').default,
 ];
+
 models.map(model=>{
   app.model(model)
 });

@@ -11,7 +11,6 @@ export default {
     gasLimit:200000,
     outBalance:false
   },
-
   reducers: {
     reset(state, {payload}) {
       return {
