@@ -5,8 +5,8 @@ function Trade(props) {
   return (
     <div>
         <Form.Item label="Order Time-To-Live">
-        	<Input.Group compact>
-	        	<Input style={{ width: '70%' }} defaultValue="" />
+        	<Input.Group compact  className="d-flex">
+	        	<Input style={{ width: '100%' }} defaultValue="" />
 	        	<Select defaultValue="Second" dropdownMatchSelectWidth={false}>
 		        	<Option value="Second">Second</Option>
 		        	<Option value="Minute">Minute</Option>
@@ -20,8 +20,6 @@ function Trade(props) {
         </Form.Item>
         <Form.Item label="Default Margin Split">
             <Input defaultValue="50%" suffix="%" />
-        </Form.Item>
-        <Form.Item label="Order Time-To-Live">
         </Form.Item>
 		<Button type="primary" className="btn-block btn-xlg">Reset</Button>
     </div>
