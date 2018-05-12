@@ -57,7 +57,7 @@ const getWrapper = (namespace,keys)=>{
     }
   }
 }
-const getContainer = ({model,path=''})=>{
+export const getContainer = ({model,path=''})=>{
   const namespace = model.namespace
   const reducersKeys = Object.keys(model.reducers)
   const effectsKeys = Object.keys(model.effects)
@@ -70,4 +70,19 @@ const getContainer = ({model,path=''})=>{
   }
   return connect(({[path]:value})=>({[path]:value}))(getWrapper(path,keys))
 }
-export default getContainer
+
+export const getContainers =  models => {
+  let Containers = {}
+  models.forEach(model=>{
+    const { namespace } = model
+    Containers[namespace] = getContainer({model})
+  })
+  return Containers
+}
+
+export default {
+  getContainer,
+  getContainers,
+}
+
+
