@@ -1,9 +1,7 @@
 import React from 'react'
 import {Button} from 'antd'
-import Orders from 'modules/orders/containers'
-import UiContainers from 'modules/containers'
-import Sockets from 'modules/sockets/container'
-
+import { Containers } from 'modules'
+console.log('Containers',Containers)
 const TestComp = (props)=>{
   const showModal =()=>{
     window.STORE.dispatch({
@@ -44,18 +42,18 @@ const TestScokets = (props)=>{
 const Test = (props)=>{
   return (
     <div>
-    	<Orders.ListContainer id="orders/trade">
+    	<Containers.Orders id="orders/trade">
         <TestComp title="Orders List"/>
-      </Orders.ListContainer>
-      <Orders.PlaceOrderContainer>
+      </Containers.Orders>
+      <Containers.PlaceOrder>
     		<TestComp title="PlaceOrder Form" />
-      </Orders.PlaceOrderContainer>
-      <UiContainers.Modals id="test">
+      </Containers.PlaceOrder>
+      <Containers.Modals id="test">
         <TestModal />
-      </UiContainers.Modals>
-      <Sockets.SocketsContainer>
+      </Containers.Modals>
+      <Containers.Sockets>
         <TestScokets />
-      </Sockets.SocketsContainer>
+      </Containers.Sockets>
     </div>
   )
 }
