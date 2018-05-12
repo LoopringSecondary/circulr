@@ -6,9 +6,9 @@ export default {
   hash:true,
 	"alias":{
     "LoopringJS":`${__dirname}/src/common/loopringjs/src`,
-    // "LoopringJS":`${__dirname}/src/common/Loopring`,
+    "LoopringUI":`${__dirname}/src/common/loopringui/`,
     "common":`${__dirname}/src/common`,
-		"modules":`${__dirname}/src/modules`,
+    "modules":`${__dirname}/src/modules`,
 	},
   "theme": {
     "@font-family-no-number"  : "Roboto ,PingFang SC",

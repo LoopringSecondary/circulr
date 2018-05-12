@@ -57,12 +57,12 @@ const getWrapper = (namespace,keys)=>{
     }
   }
 }
-const getContainer = ({model,path=''})=>{
+export const getContainer = ({model,path=''})=>{
   const namespace = model.namespace
-  const reducersKeys = Object.keys(model.reducers)
-  const effectsKeys = Object.keys(model.effects)
+  const reducersKeys = Object.keys(model.reducers || {})
+  const effectsKeys = Object.keys(model.effects || {})
   let keys = [...reducersKeys,...effectsKeys]
-  keys = keys.map(key=>key.replace(`${namespace}/`,''))
+  // keys = keys.map(key=>key.replace(`${namespace}/`,''))
   if(!path){
     path = namespace
   }else{
@@ -70,4 +70,19 @@ const getContainer = ({model,path=''})=>{
   }
   return connect(({[path]:value})=>({[path]:value}))(getWrapper(path,keys))
 }
-export default getContainer
+
+export const getContainers =  models => {
+  let Containers = {}
+  models.forEach(model=>{
+    let { namespace } = model
+    Containers[namespace[0].toUpperCase() + namespace.slice(1)] = getContainer({model})
+  })
+  return Containers
+}
+
+export default {
+  getContainer,
+  getContainers,
+}
+
+

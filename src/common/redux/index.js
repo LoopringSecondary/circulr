@@ -1,7 +1,8 @@
 import getActionCreators from './getActionCreators'
-import getContainer from './getContainer'
+import {getContainer,getContainers} from './getContainer'
 
 export default {
 	getActionCreators,
-	getContainer,
+  getContainer,
+	getContainers,
 }
