@@ -17,8 +17,7 @@ let initState = {
 export default {
   namespace: MODULES,
   state: {
-    'orders/trade':{...initState},
-    'orders/wallet':{...initState}
+    'MyOpenOrders':{...initState},
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -30,6 +29,9 @@ export default {
     },
   },
   effects: {
+    *init({payload},{call, select,put}){
+      yield put({type:'fetch',payload});
+    },
     *pageChange({payload},{call, select,put}){
       yield put({type:'pageChangeStart',payload});
       yield put({type:'fetch',payload});

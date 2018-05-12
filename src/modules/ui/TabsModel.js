@@ -4,8 +4,7 @@ export default {
   state: {
   },
   effects:{
-    *initStateChange({payload},{call,select,put}){
-      console.log('tabs initStateChange')
+    *init({payload},{call,select,put}){
       yield put({type:'tabChange',payload})
     }
   },

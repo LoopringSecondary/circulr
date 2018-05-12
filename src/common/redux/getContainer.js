@@ -6,10 +6,11 @@ const getWrapper = (namespace,keys)=>{
   return class Wrapper extends React.Component {
     constructor(props){
       super(props)
-      if(props.initState && props[namespace]){
+      if(props[namespace]){
+          const initState = props.initState || {}
           props.dispatch({
-            type:`${namespace}/initStateChange`,
-            payload:{...props.initState,id:props.id}
+            type:`${namespace}/init`,
+            payload:{...initState,id:props.id}
           })
       }
     }

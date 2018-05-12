@@ -57,21 +57,21 @@ function Trade(props) {
       	            <div style={{position: "relative", height: "40%", paddingTop:"50px"}}>
                         {
                           true &&
-                          <Containers.Tabs id="myOpenOrders" initState={{activeKey:'orders'}} render={(props)=>{
+                          <Containers.Tabs id="MyOpenOrders" initState={{activeKey:'orders'}} render={(props)=>{
 
                               return (
                                   <div>
                                     <div className="tabs-header">
-                                      <span className="tab" onClick={props.myOpenOrders.activeKeyChange.bind(this,{activeKey:'orders'})}>Orders</span>
-                                      <span className="tab" onClick={props.myOpenOrders.activeKeyChange.bind(this,{activeKey:'fills'})}>Fills</span>
+                                      <span className="tab" onClick={props.MyOpenOrders.activeKeyChange.bind(this,{activeKey:'orders'})}>Orders</span>
+                                      <span className="tab" onClick={props.MyOpenOrders.activeKeyChange.bind(this,{activeKey:'fills'})}>Fills</span>
                                     </div>
                                     <div className="tabs-body">
                                       {
-                                        props.myOpenOrders.activeKey === 'orders' &&
+                                        props.MyOpenOrders.activeKey === 'orders' &&
                                         <span className="">Orders</span>
                                       }
                                       {
-                                        props.myOpenOrders.activeKey === 'fills' &&
+                                        props.MyOpenOrders.activeKey === 'fills' &&
                                         <span className="">Fills</span>
                                       }
                                     </div>
@@ -81,7 +81,7 @@ function Trade(props) {
                         }
           	            <Tabs defaultActiveKey="1" onChange={callback}>
           	                <TabPane tab="Orders" key="1">
-                              <Containers.Orders id="myOpenOrders" alias="orders" >
+                              <Containers.Orders id="MyOpenOrders" alias="orders" >
                                 <Orders.ListMyOrders />
                               </Containers.Orders>
                             </TabPane>

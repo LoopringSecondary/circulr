@@ -16,6 +16,7 @@ function ListHeader({className=''}){
   )
 }
 function ListBlock(props) {
+  const {orders={}}=props
   return (
     <div>
         <div className="order-filter d-flex justify-content-between form-inline-inverse">
@@ -72,19 +73,24 @@ function ListBlock(props) {
               </tr>
           </thead>
           <tbody>
-              <tr>
-                  <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x58...ba9b</a></td>
-                  <td>March 27, 2018 5:51 PM</td>
-                  <td><i className="text-inverse icon-success"></i></td>
-                  <td>LRC-WETH</td>
-                  <td><span className="text-success">Sell</span></td>
-                  <td>300</td>
-                  <td>0.00087</td>
-                  <td>0.259989</td>
-                  <td>0.58</td>
-                  <td className="text-center">50%</td>
-                  <td></td>
-              </tr>
+              {
+                orders.items.map((item,index)=>
+                  <tr key={index}>
+                      <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x58...ba9b</a></td>
+                      <td>March 27, 2018 5:51 PM</td>
+                      <td><i className="text-inverse icon-success"></i></td>
+                      <td>LRC-WETH</td>
+                      <td><span className="text-success">Sell</span></td>
+                      <td>300</td>
+                      <td>0.00087</td>
+                      <td>0.259989</td>
+                      <td>0.58</td>
+                      <td className="text-center">50%</td>
+                      <td></td>
+                  </tr>
+                )
+              }
+
               <tr>
                   <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x44...da11</a></td>
                   <td>March 27, 2018 5:40 PM</td>
