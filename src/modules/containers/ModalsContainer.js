@@ -2,9 +2,9 @@ import React from 'react'
 import {connect} from 'dva'
 import {Modal} from 'antd'
 import redux from 'common/redux'
-import model from './model'
-const Container = redux.getContainer({model})
-const ModalContainer = (props)=>{
+import ModalsModel from './ModalsModel'
+const Container = redux.getContainer({model:ModalsModel})
+const ModalsContainer = (props)=>{
   const {
     children,id,
     width,mask,closable=true,maskClosable=false,apisOnly=false,
@@ -49,4 +49,4 @@ const ModalContainer = (props)=>{
     }}/>
   )
 }
-export default ModalContainer
+export default ModalsContainer

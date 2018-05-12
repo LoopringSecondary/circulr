@@ -1,5 +1,5 @@
 import apis from './apis'
-const namespace = 'sockets'
+const namespace = 'rpcs'
 let initState = {
   items: [],
   loading: false,
@@ -15,63 +15,36 @@ let initState = {
 export default {
   namespace,
   state: {
-    'url':'//relay1.loopring.io',
-    'socket':null,
-    'assets':{...initState},
+    'orders':{...initState},
     'prices':{...initState},
   },
   effects: {
-    *connect({payload},{call,select,put}){
-      const {url} = yield select(({ [namespace]:model }) => model )
-      const socket = yield call(apis.connect, {url})
-      yield put({type:'socketChange',payload:{socket}})
-    },
-    *urlChange({payload},{call,select,put}){
-      yield put({type:'urlChangeStart',payload})
-      yield put({type:'connect',payload})
-    },
-    *fetch({payload},{call,select,put}){
-      yield put({type:'onEvent',payload})
-      yield put({type:'emitEvent',payload})
+    *init({payload},{call,select,put}){
+      yield put({type:'queryChange',payload})
     },
     *pageChange({payload},{call,select,put}){
       yield put({type:'pageChangeStart',payload})
-      yield put({type:'emitEvent',payload})
+      yield put({type:'fetch',payload})
     },
     *filtersChange({payload},{call,select,put}){
       yield put({type:'filtersChangeStart',payload})
-      yield put({type:'emitEvent',payload})
+      yield put({type:'fetch',payload})
     },
     *sortChange({payload},{call,select,put}){
       yield put({type:'sortChangeStart',payload})
-      yield put({type:'emitEvent',payload})
+      yield put({type:'fetch',payload})
     },
     *queryChange({payload},{call,select,put}){
       yield put({type:'queryChangeStart',payload})
-      yield put({type:'emitEvent',payload})
+      yield put({type:'fetch',payload})
     },
-    *emitEvent({ payload={} },{call,select,put}) {
+    *fetch({ payload={} },{call,select,put}) {
       let {id} = payload
       const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
       if(socket){
         let new_payload = {page,filters,sort,socket,id}
         yield put({type:'loadingChange',payload: {loading: true,loaded:false}})
-        const res = yield call(apis.emitEvent, new_payload)
-        if (res && res.items) {
-          yield put({type:'loadingChange',payload: {loading: false,loaded:true}})
-          yield put({type:'itemsChange',payload: {items:res.items}})
-        }
-      }else{
-        console.log('socket is not connected!')
-      }
-    },
-    *onEvent({ payload={} }, { call, select, put }) {
-      let {id} = payload
-      const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
-      if(socket){
-        let new_payload = {page,filters,sort,socket,id}
-        yield put({type:'loadingChange',payload: {loading: true,loaded:false}})
-        const res = yield call(apis.onEvent, new_payload)
+        const res = yield call(apis.fetchList, new_payload)
         if (res && res.items) {
           yield put({type:'loadingChange',payload: {loading: false,loaded:true}})
           yield put({type:'itemsChange',payload: {items:res.items}})
@@ -82,20 +55,6 @@ export default {
     },
   },
   reducers: {
-    urlChangeStart(state, action){
-      let {payload} = action
-      return {
-        ...state,
-        ...payload
-      }
-    },
-    socketChange(state, action){
-      let {payload} = action
-      return {
-        ...state,
-        ...payload
-      }
-    },
     loadingChange(state, action) {
       let {payload} = action
       let {id} = payload
