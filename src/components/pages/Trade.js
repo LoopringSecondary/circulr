@@ -55,30 +55,39 @@ function Trade(props) {
                          </div>
                     </div>
       	            <div style={{position: "relative", height: "40%", paddingTop:"50px"}}>
-                        <Containers.Tabs id="my_open_orders" initState={{activeKey:'orders'}} render={(props)=>{
-                            return (
-                                <div>
-                                  <div className="tabs-header">
-                                    <span className="tab">Orders</span>
-                                    <span className="tab">Fills</span>
-                                  </div>
-                                  <div className="tabs-body">
-                                    {
-                                      props.my_open_orders.activeKey === 'orders' &&
-                                      <span className="">Orders</span>
-                                    }
-                                    {
-                                      props.my_open_orders.activeKey === 'fills' &&
-                                      <span className="">Fills</span>
-                                    }
-                                  </div>
-                                </div>
-                            )
+                        {
+                          true &&
+                          <Containers.Tabs id="myOpenOrders" initState={{activeKey:'orders'}} render={(props)=>{
 
-                        }}/>
+                              return (
+                                  <div>
+                                    <div className="tabs-header">
+                                      <span className="tab" onClick={props.myOpenOrders.activeKeyChange.bind(this,{activeKey:'orders'})}>Orders</span>
+                                      <span className="tab" onClick={props.myOpenOrders.activeKeyChange.bind(this,{activeKey:'fills'})}>Fills</span>
+                                    </div>
+                                    <div className="tabs-body">
+                                      {
+                                        props.myOpenOrders.activeKey === 'orders' &&
+                                        <span className="">Orders</span>
+                                      }
+                                      {
+                                        props.myOpenOrders.activeKey === 'fills' &&
+                                        <span className="">Fills</span>
+                                      }
+                                    </div>
+                                  </div>
+                              )
+                          }}/>
+                        }
           	            <Tabs defaultActiveKey="1" onChange={callback}>
-          	                <TabPane tab="Orders" key="1"><Orders.ListDefault /></TabPane>
-          	                <TabPane tab="Fill" key="2"><Fills.ListDefault /></TabPane>
+          	                <TabPane tab="Orders" key="1">
+                              <Containers.Orders id="myOpenOrders" alias="orders" >
+                                <Orders.ListMyOrders />
+                              </Containers.Orders>
+                            </TabPane>
+          	                <TabPane tab="Fill" key="2">
+                              <Fills.ListDefault />
+                            </TabPane>
           	            </Tabs>
       	            </div>
   	            </div>

@@ -6,6 +6,12 @@ const getWrapper = (namespace,keys)=>{
   return class Wrapper extends React.Component {
     constructor(props){
       super(props)
+      if(props.initState && props[namespace]){
+          props.dispatch({
+            type:`${namespace}/initStateChange`,
+            payload:{...props.initState,id:props.id}
+          })
+      }
     }
     shouldComponentUpdate(nextProps, nextState){
       const { id } = this.props
@@ -20,15 +26,24 @@ const getWrapper = (namespace,keys)=>{
       }
     }
     componentDidMount() {
-      //todo
+      // TODO
     }
     render() {
-      const { children,dispatch,[namespace]:data,id,render,...rest} = this.props
+      const { children,dispatch,[namespace]:data,id,alias=false,render,...rest} = this.props
       const actionCreators = getActionCreators({namespace,keys,id})
       const actions = bindActionCreators(actionCreators,dispatch)
       const thisData = data[id] || {}
       let childProps = {}
-      if(id){
+      if(alias){
+        childProps = {
+          ...rest,
+          [alias]:{
+            ...thisData,
+            ...actions,
+          },
+          dispatch,
+        }
+      }else if(id){
         childProps = {
           ...rest,
           [id]:{
