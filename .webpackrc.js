@@ -6,6 +6,7 @@ export default {
   hash:true,
 	"alias":{
     "LoopringJS":`${__dirname}/src/common/loopringjs/src`,
+    "LoopringUI":`${__dirname}/src/common/loopringui/`,
     "common":`${__dirname}/src/common`,
     "modules":`${__dirname}/src/modules`,
 	},
