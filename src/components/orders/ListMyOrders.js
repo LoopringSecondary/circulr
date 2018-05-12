@@ -1,5 +1,7 @@
 import React from 'react'
-import { Form,Select } from 'antd';
+import { Form,Select } from 'antd'
+import ListHeader from './ListMyOrdersHeader'
+
 const Option = Select.Option;
 function ListHeaderForm({className=''}){
   return (
@@ -8,55 +10,53 @@ function ListHeaderForm({className=''}){
     </div>
   )
 }
-function ListHeader({className=''}){
+function ListHeader2({orders}){
   return (
-    <div className={className}>
-    	ListHeader
+    <div className="order-filter d-flex justify-content-between form-inline-inverse">
+        <div className="form-inline form-inverse d-flex justify-content-between">
+            <span>
+              <Select defaultValue="LRC-WETH" dropdownMatchSelectWidth={false}>
+                  <Option value="LRC-WETH">LRC-WETH</Option>
+                  <Option value="RND-WETH">RND-WETH</Option>
+                  <Option value="KNC-WETH">KNC-WETH</Option>
+                  <Option value="AE-WETH">AE-WETH</Option>
+                  <Option value="IND-WETH">IND-WETH</Option>
+              </Select>
+            </span>
+            <span className="offset-md">
+              <Select defaultValue="All types" dropdownMatchSelectWidth={false}>
+                  <Option value="all">All types</Option>
+                  <Option value="Pending">Send</Option>
+                  <Option value="Success">Receive</Option>
+                  <Option value="Failed">Enable</Option>
+                  <Option value="Failed">Convert</Option>
+              </Select>
+            </span>
+            <span className="offset-md">
+              <Select defaultValue="All Sides" dropdownMatchSelectWidth={false}>
+                  <Option value="all">All</Option>
+                  <Option value="sell">Sell</Option>
+                  <Option value="buy">Buy</Option>
+              </Select>
+            </span>
+        </div>
+        <span>
+            <span>
+              <button className="btn btn-primary">Cancel All</button>
+            </span>
+            <span className="offset-md">
+              <button className="btn btn-primary">Cancel All markets</button>
+            </span>
+        </span>
     </div>
   )
 }
-function ListBlock(props) {
+function ListMyOrders(props) {
   const {orders={}}=props
   return (
     <div>
-        <div className="order-filter d-flex justify-content-between form-inline-inverse">
-            <div className="form-inline form-inverse d-flex justify-content-between">
-                <span>
-                  <Select defaultValue="LRC-WETH" dropdownMatchSelectWidth={false}>
-                      <Option value="LRC-WETH">LRC-WETH</Option>
-                      <Option value="RND-WETH">RND-WETH</Option>
-                      <Option value="KNC-WETH">KNC-WETH</Option>
-                      <Option value="AE-WETH">AE-WETH</Option>
-                      <Option value="IND-WETH">IND-WETH</Option>
-                  </Select>
-                </span>
-                <span className="offset-md">
-                  <Select defaultValue="All types" dropdownMatchSelectWidth={false}>
-                      <Option value="all">All types</Option>
-                      <Option value="Pending">Send</Option>
-                      <Option value="Success">Receive</Option>
-                      <Option value="Failed">Enable</Option>
-                      <Option value="Failed">Convert</Option>
-                  </Select>
-                </span>
-                <span className="offset-md">
-                  <Select defaultValue="All Sides" dropdownMatchSelectWidth={false}>
-                      <Option value="all">All</Option>
-                      <Option value="sell">Sell</Option>
-                      <Option value="buy">Buy</Option>
-                  </Select>
-                </span>
-            </div>
-            <span>
-                <span>
-                  <button className="btn btn-primary">Cancel All</button>
-                </span>
-                <span className="offset-md">
-                  <button className="btn btn-primary">Cancel All markets</button>
-                </span>
-            </span>
-        </div>
-        <table className="table table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2">
+        <ListHeader orders={orders} />
+        <table style={{overflow:'auto'}} className="table table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2">
           <thead>
               <tr>
                   <th>Order</th>
@@ -135,4 +135,4 @@ function ListBlock(props) {
   </div>
   )
 }
-export default ListBlock
+export default ListMyOrders

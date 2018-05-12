@@ -14,12 +14,12 @@ import {toBN} from "../../common/formatter";
  */
 export function getOrders(host, filter) {
   try {
-    validator.validate({value: filter.delegateAddress, type: 'ADDRESS'});
-    validator.validate({value: filter.pageIndex, type: 'OPTION_NUMBER'});
-    filter.market && validator.validate({value: filter.market, type: 'STRING'});
-    filter.owner && validator.validate({value: filter.owner, type: 'ADDRESS'});
-    filter.orderHash && validator.validate({value: filter.orderHash, type: 'STRING'});
-    filter.pageSize && validator.validate({value: filter.pageSize, type: 'OPTION_NUMBER'});
+    // validator.validate({value: filter.delegateAddress, type: 'ADDRESS'});
+    // validator.validate({value: filter.pageIndex, type: 'OPTION_NUMBER'});
+    // filter.market && validator.validate({value: filter.market, type: 'STRING'});
+    // filter.owner && validator.validate({value: filter.owner, type: 'ADDRESS'});
+    // filter.orderHash && validator.validate({value: filter.orderHash, type: 'STRING'});
+    // filter.pageSize && validator.validate({value: filter.pageSize, type: 'OPTION_NUMBER'});
   } catch (e) {
     return  Promise.resolve(new Response(code.PARAM_INVALID.code, code.PARAM_INVALID.msg));
   }

@@ -56,9 +56,8 @@ function Trade(props) {
                     </div>
       	            <div style={{position: "relative", height: "40%", paddingTop:"50px"}}>
                         {
-                          true &&
+                          false &&
                           <Containers.Tabs id="MyOpenOrders" initState={{activeKey:'orders'}} render={(props)=>{
-
                               return (
                                   <div>
                                     <div className="tabs-header">
