@@ -23,3 +23,5 @@ app.start('#root')
 // STORE is available when current route has rendered
 // Becarefull to use STORE in render funtion
 window.STORE = app._store
+export const sotre = app._store
+export default app

@@ -72,7 +72,6 @@ export const getContainer = ({model,path=''})=>{
 }
 
 export const getContainers =  models => {
-  console.log('models',models)
   let Containers = {}
   models.forEach(model=>{
     let { namespace } = model

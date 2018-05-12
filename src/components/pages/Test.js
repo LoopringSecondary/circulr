@@ -1,10 +1,9 @@
 import React from 'react'
 import {Button} from 'antd'
 import { Containers } from 'modules'
-console.log('Containers',Containers)
 const TestComp = (props)=>{
   const showModal =()=>{
-    window.STORE.dispatch({
+    props.dispatch({
       type:'modals/showModal',
       payload:{
         id:'test'
