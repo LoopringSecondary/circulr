@@ -8,7 +8,6 @@ function ListHeaderForm({className=''}){
     </div>
   )
 }
-
 function ListHeader({className=''}){
   return (
     <div className={className}>
@@ -130,5 +129,4 @@ function ListBlock(props) {
   </div>
   )
 }
-
 export default ListBlock
