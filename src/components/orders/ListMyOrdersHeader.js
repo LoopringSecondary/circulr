@@ -1,8 +1,8 @@
-import React from 'react';
-import { Form,Button,Icon,Card,Modal,Input,Radio,Select} from 'antd';
-import SelectContainer from 'LoopringUI/components/SelectContainer';
-import {getSupportedMarket} from 'LoopringJS/relay/rpc/market';
-import config from 'common/config';
+import React from 'react'
+import { Form,Button,Icon,Card,Modal,Input,Radio,Select} from 'antd'
+import SelectContainer from 'LoopringUI/components/SelectContainer'
+import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'
+import config from 'common/config'
 import intl from 'react-intl-universal'
 
 let FiltersForm = ({
@@ -15,7 +15,6 @@ let FiltersForm = ({
     form.validateFields((err,values) => {
       console.log('values',values)
       if(!err){
-        // TODO
         orders.filtersChange({
           filters:values
         })

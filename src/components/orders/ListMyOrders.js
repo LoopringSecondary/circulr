@@ -1,5 +1,6 @@
 import React from 'react'
 import { Form,Select } from 'antd'
+import ListPagination from 'LoopringUI/components/ListPagination'
 import ListHeader from './ListMyOrdersHeader'
 
 const Option = Select.Option;
@@ -132,6 +133,7 @@ function ListMyOrders(props) {
               </tr>
           </tbody>
         </table>
+        <ListPagination list={orders}/>
   </div>
   )
 }
