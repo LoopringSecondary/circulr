@@ -63,8 +63,9 @@ export default {
           ...defaultState.filters
         }
       }
-
+      console.log('orders fetch req')
       const res = yield call(apis.fetchList, new_payload);
+      console.log('orders fetch res',res)
       if (res.items) {
         yield put({
           type: 'fetchSuccess',
@@ -87,13 +88,14 @@ export default {
     fetchStart(state, action) {
       let {payload} = action
       let {id} = payload
-      let {filters,page,sort,defaultState,originQuery}=state[id];
+      let {filters,page,sort,defaultState,originQuery,items}=state[id];
       if(!payload.defaultState){ payload.defaultState={} }
       if(!payload.originQuery){ payload.originQuery={} }
       return {
         ...state,
         [id]:{
           loading: true, loaded:false,
+          items:[...items],
           filters:{
             ...filters,
             ...payload.filters,
