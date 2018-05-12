@@ -2,7 +2,9 @@ import React from 'react';
 
 function LayoutTrade(props) {
   return (
-    <div>LayoutTrade</div>
+    <div>
+    
+    </div>
   )
 }
 export default LayoutTrade

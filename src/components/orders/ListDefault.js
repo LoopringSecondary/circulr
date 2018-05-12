@@ -20,7 +20,7 @@ function ListBlock(props) {
   return (
     <div>
         <div className="order-filter d-flex justify-content-between form-inline-inverse">
-            <div className="d-flex justify-content-between">
+            <div className="form-inline form-inverse d-flex justify-content-between">
                 <span>
                   <Select defaultValue="LRC-WETH" dropdownMatchSelectWidth={false}>
                       <Option value="LRC-WETH">LRC-WETH</Option>
