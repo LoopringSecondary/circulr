@@ -1,30 +1,30 @@
 import React from 'react';
-import { Input,Button, } from 'antd';
+import { Input,Button,Form } from 'antd';
 function AirdropList(props) {
   return (
     <div>
 	    <div>
 	        <div>AirdropList</div>
-		    <div className="listgroup">
+		    <div className="listgroup prefix">
 			    <div className="item">
 				    	<div>
-					    	<i className="icon-LRC"></i>
+					    	<i class="icon-ETH icon-token"></i>
 					    	<div>
-					    	<h4>LRN</h4>
-					    	<p>No bound address found</p>	
+						    	<h3>LRN</h3>
+						    	<p>No bound address found</p>	
 					    	</div>
 				    	</div>
-				    <div><span class="text-primary"></span><i className="icon-chevron-right"></i></div>
+				    <div><span class="text-primary">bind</span><i className="icon-chevron-right"></i></div>
 			    </div>
 			    <div className="item">
 				    	<div>
-					    	<i className="icon-LRC"></i>
-					    	<div>
-					    	<h4>LRN</h4>
-					    	<p>No bound address found</p>	
+					    	<i class="icon-ETH icon-token"></i>
+						    	<div>
+						    	<h3>LRN</h3>
+						    	<p>No bound address found</p>	
 					    	</div>
 				    	</div>
-				    <div><span class="text-primary"></span>bind <i className="icon-chevron-right"></i></div>
+				    <div><span class="text-primary">bind</span><i className="icon-chevron-right"></i></div>
 			    </div>
 		    </div>
 	    </div>

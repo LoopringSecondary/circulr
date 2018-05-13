@@ -5,6 +5,7 @@ import TransferForm from './TransferForm'
 import TransferConfirm from './TransferConfirm'
 import ConvertForm from './ConvertForm'
 import ConvertOldWeth from './ConvertOldWeth'
+import Receive from './Receive'
 
 export default {
   ListDefault,
@@ -14,4 +15,5 @@ export default {
   TransferConfirm,
   ConvertForm,
   ConvertOldWeth,
+  Receive,
 }
