@@ -9,6 +9,7 @@ const ModalsWrapper = (props)=>{
   } = props
   console.log('ModalsWrapper',props)
   const {[id]:module={}} = props
+  console.log('modals module',module)
   const modalProps = {
     destroyOnClose:true,
     title:null,
