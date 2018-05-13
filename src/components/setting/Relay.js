@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,Button,Form,Radio,Select,Col } from 'antd';
+import { Input,Button,Form,Radio,Select,Col} from 'antd';
 
 function Relay(props) {
 	const InputGroup = Input.Group;
@@ -21,24 +21,24 @@ function Relay(props) {
 	        <div className="blk"></div>
 	        <Radio value={2}  className="d-flex align-items-center">
 			    <Input.Group size="large" className="d-flex justify-content-between" style={{width:"100%"}}>
-	        	        <Col span={12}>
-	        	          <Input defaultValue="Pre-Production Relay" disabled />
-	        	        </Col>
-	        	        <Col span={12}>
-	        	          <Input defaultValue="//pre-relay1.loopring.io" disabled />
-	        	        </Col>					
-	                </Input.Group>
+	    	        <Col span={12}>
+	    	          <Input defaultValue="Pre-Production Relay" disabled />
+	    	        </Col>
+	    	        <Col span={12}>
+	    	          <Input defaultValue="//pre-relay1.loopring.io" disabled />
+	    	        </Col>					
+	            </Input.Group>
 	        </Radio>
 	        <div className="blk"></div>
 	        <Radio value={3}  className="d-flex align-items-center">
 			    <Input.Group size="large" className="d-flex justify-content-between" style={{width:"100%"}}>
-	        	        <Col span={12}>
-	        	          <Input defaultValue="Test" disabled />
-	        	        </Col>
-	        	        <Col span={12}>
-	        	          <Input defaultValue="//13.112.62.24" disabled />
+        	        <Col span={12}>
+        	          <Input defaultValue="Test" disabled />
+        	        </Col>
+        	        <Col span={12}>
+        	          <Input defaultValue="//13.112.62.24" disabled />
 	        	        </Col>					
-	                </Input.Group>
+	            </Input.Group>
 	        </Radio>
         </Radio.Group>
         <div className="blk"></div>
