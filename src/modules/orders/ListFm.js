@@ -3,7 +3,6 @@ import {Icon} from 'antd';
 import {toNumber,toBig} from "LoopringJS/common/formatter";
 import config from "common/config";
 import commonFm from "../formatter/common";
-import intl from 'react-intl-universal';
 
 const status = {
   ORDER_NEW: {},
@@ -12,7 +11,7 @@ const status = {
   ORDER_CANCEL: {},
   ORDER_CUTOFF: {}
 }
-export class OrdersFm {
+export default class OrdersFm {
   constructor(order){
     this.order = order
   }
@@ -59,26 +58,4 @@ export class OrdersFm {
   getFilled(){}
   getStatus(){return this.order.status}
 }
-export class PlaceOrderFm {
-  constructor(input){
-    this.input = input
-  }
-  getPrice(){
 
-  }
-  getAmount(){
-
-  }
-  getAvailableAmount(){
-
-  }
-  getTotal(){
-
-  }
-  getTTL(){
-
-  }
-  getLRCFee(){
-
-  }
-}
