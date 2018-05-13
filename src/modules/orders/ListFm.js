@@ -11,7 +11,7 @@ const status = {
   ORDER_CANCEL: {},
   ORDER_CUTOFF: {}
 }
-export default class OrdersFm {
+export default class ListFm {
   constructor(order){
     this.order = order
   }
@@ -57,5 +57,9 @@ export default class OrdersFm {
   getTimestamp(){return commonFm.getFormatTime(toNumber(this.order.originalOrder.validSince) * 1e3)}
   getFilled(){}
   getStatus(){return this.order.status}
+  selector1(){
+  }
+  selector2(){
+  }
 }
 
