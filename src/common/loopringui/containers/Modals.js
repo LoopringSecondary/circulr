@@ -7,9 +7,7 @@ const ModalsWrapper = (props)=>{
     width,mask,closable=true,maskClosable=false,apisOnly=false,
     ...rest
   } = props
-  console.log('ModalsWrapper',props)
   const {[id]:module={}} = props
-  console.log('modals module',module)
   const modalProps = {
     destroyOnClose:true,
     title:null,
@@ -21,7 +19,7 @@ const ModalsWrapper = (props)=>{
     mask,
     onCancel:module.hideModal.bind(this,{id}),
   }
-  const childProps = {id,...rest}
+  const childProps = {...rest}
   return (
     <Modal {...modalProps}>
       {

@@ -1,7 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { bindActionCreators } from 'redux'
-const getModel = ()=>{
+
+export const getReducer = (state,action,type)=>{
+  const { payload } = action
+  const { id } = payload
+  const data = state[id] || {}
+  delete payload.id
+  return {
+    ...state,
+    [id]:{
+     ...data,
+     ...payload,
+    }
+  }
+}
+export const getModel = ()=>{
   // TODO
 }
-export default getModel
+
+
+

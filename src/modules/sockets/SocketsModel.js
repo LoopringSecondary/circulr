@@ -21,14 +21,17 @@ export default {
     'prices':{...initState},
   },
   effects: {
-    *connect({payload},{call,select,put}){
-      const {url} = yield select(({ [namespace]:model }) => model )
-      const socket = yield call(apis.connect, {url})
-      yield put({type:'socketChange',payload:{socket}})
+    *init({payload},{call,select,put}){
+      yield put({type:'connect',payload})
     },
     *urlChange({payload},{call,select,put}){
       yield put({type:'urlChangeStart',payload})
       yield put({type:'connect',payload})
+    },
+    *connect({payload},{call,select,put}){
+      const {url} = yield select(({ [namespace]:model }) => model )
+      const socket = yield call(apis.connect, {url})
+      yield put({type:'socketChange',payload:{socket}})
     },
     *fetch({payload},{call,select,put}){
       yield put({type:'onEvent',payload})

@@ -1,8 +1,5 @@
 import redux from 'common/redux'
-
 export const models  = [
-  require('./ui/ModalsModel').default,
-  require('./ui/TabsModel').default,
   require('./sockets/SocketsModel').default,
   require('./orders/ListModel').default,
   require('./orders/PlaceOrderModel').default,
@@ -12,6 +9,8 @@ export const models  = [
   require('./transactions/ListModel').default,
   require('./account/model').default,
   require('./settings/model').default,
+  require('LoopringUI/modules/ModalsModel').default,
+  require('LoopringUI/modules/TabsModel').default,
 ]
 
 export const Containers = redux.getContainers(models)
