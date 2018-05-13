@@ -1,10 +1,3 @@
-import getActionCreators from './getActionCreators'
-import {getContainer,getContainers} from './getContainer'
-import {getReducer} from './getModel'
-
-export default {
-	getActionCreators,
-  getContainer,
-	getContainers,
-  getReducer,
-}
+export getActionCreators from './getActionCreators'
+export {getContainer,getContainers} from './getContainer'
+export {getReducer} from './getModel'

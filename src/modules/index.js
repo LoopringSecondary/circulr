@@ -1,7 +1,3 @@
-import Containers from './containers'
-import models from './models'
+export Containers from './containers'
+export models from './models'
 
-export default {
-  Containers,
-  models,
-}
