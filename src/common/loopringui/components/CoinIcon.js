@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-
 let colors = {}
 let icons = {}
 const CoinIcon = (props)=>{

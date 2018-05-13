@@ -4,7 +4,10 @@ import './assets/css/index.less'
 
 // 1. Initialize
 const app = dva()
-
+window.config = {}
+window.config.address = "0xeba7136a36da0f5e16c6bdbc739c716bb5b65a00";
+window.config.host = "//relay1.loopring.io"
+window.config.rpc_host = "//relay1.loopring.io/rpc/v2"
 // 2. Plugins
 // app.use({})
 

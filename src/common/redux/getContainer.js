@@ -3,7 +3,17 @@ import { connect } from 'dva'
 import { bindActionCreators } from 'redux'
 import getActionCreators from './getActionCreators'
 const getWrapper = (namespace,keys)=>{
-  return class Container extends React.Component {
+  return class Wrapper extends React.Component {
+    constructor(props){
+      super(props)
+      if(props[namespace]){
+          const initState = props.initState || {}
+          props.dispatch({
+            type:`${namespace}/init`,
+            payload:{...initState,id:props.id}
+          })
+      }
+    }
     shouldComponentUpdate(nextProps, nextState){
       const { id } = this.props
       if(id){
@@ -16,13 +26,25 @@ const getWrapper = (namespace,keys)=>{
         return true
       }
     }
+    componentDidMount() {
+      // TODO
+    }
     render() {
-      const { children,dispatch,[namespace]:data,id,render,...rest} = this.props
+      const { children,dispatch,[namespace]:data,id,alias=false,render,...rest} = this.props
       const actionCreators = getActionCreators({namespace,keys,id})
       const actions = bindActionCreators(actionCreators,dispatch)
       const thisData = data[id] || {}
       let childProps = {}
-      if(id){
+      if(alias){
+        childProps = {
+          ...rest,
+          [alias]:{
+            ...thisData,
+            ...actions,
+          },
+          dispatch,
+        }
+      }else if(id){
         childProps = {
           ...rest,
           [id]:{
@@ -41,7 +63,6 @@ const getWrapper = (namespace,keys)=>{
           dispatch,
         }
       }
-      window[namespace]=actions
       if(render){
         return render.call(this,childProps)
       }
@@ -63,12 +84,12 @@ export const getContainer = ({model,path=''})=>{
   const effectsKeys = Object.keys(model.effects || {})
   let keys = [...reducersKeys,...effectsKeys]
   // keys = keys.map(key=>key.replace(`${namespace}/`,''))
-  if(!path){
-    path = namespace
-  }else{
-    // TODO flat nest
-  }
-  return connect(({[path]:value})=>({[path]:value}))(getWrapper(path,keys))
+  // if(!path){
+  //   path = namespace
+  // }else{
+  //   // flat nest
+  // }
+  return connect(({[namespace]:value})=>({[namespace]:value}))(getWrapper(namespace,keys))
 }
 
 export const getContainers =  models => {
