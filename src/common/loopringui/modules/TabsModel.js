@@ -1,4 +1,4 @@
-import {getReducer} from 'common/redux'
+import redux from 'common/redux'
 const namespace = 'tabs'
 export default {
   namespace,
@@ -10,7 +10,7 @@ export default {
     }
   },
   reducers: {
-    activeKeyChange:getReducer,
-    tabChange:getReducer,
+    activeKeyChange:redux.getReducer,
+    tabChange:redux.getReducer,
   }
 };
