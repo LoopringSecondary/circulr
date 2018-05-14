@@ -1,4 +1,5 @@
 import config from 'common/config'
+import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
 import {getPriceBySymbol} from '../formatter/selectors'
 
@@ -100,8 +101,8 @@ export function calculateLrcFee(total, milliLrcFee, tokenR) {
   if(totalWorth.lt(0)) {
     return 0
   }
-  const percentage = 2; //configs.defaultLrcFeePermillage
-  const minimumLrcfeeInEth = 0.034; //configs.minimumLrcfeeInEth
+  const percentage = datas.configs.defaultLrcFeePermillage;
+  const minimumLrcfeeInEth = datas.configs.minimumLrcfeeInEth;
   if (!milliLrcFee) {
     milliLrcFee = Number(percentage)
   }
@@ -110,5 +111,13 @@ export function calculateLrcFee(total, milliLrcFee, tokenR) {
     return calculateLrcFeeByEth(userSetLrcFeeInEth)
   } else {
     return calculateLrcFeeByEth(minimumLrcfeeInEth)
+  }
+}
+
+export function validateOptionInteger(value) {
+  if (value) {
+    return integerReg.test(value)
+  } else {
+    return true
   }
 }
