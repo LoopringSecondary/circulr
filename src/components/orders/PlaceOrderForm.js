@@ -9,7 +9,7 @@ import {store} from '../../index'
 class PlaceOrderForm extends React.Component {
 
   render() {
-    const state = this.props.placeOrder
+    const placeOrder = this.props.placeOrder
     const {form, side, left, right} = this.props
 
     function sideChange(value) {
@@ -41,7 +41,7 @@ class PlaceOrderForm extends React.Component {
 
     function inputChange(type, e) {
       let price = 0, amount = 0
-      const marketConfig = config.getMarketBySymbol(state.left.symbol, state.right.symbol)
+      const marketConfig = config.getMarketBySymbol(placeOrder.left.symbol, placeOrder.right.symbol)
       if (type === 'price') {
         price = e.target.value.toString()
         if(!orderFormatter.isValidAmount(price)) return false
@@ -51,7 +51,7 @@ class PlaceOrderForm extends React.Component {
       } else if (type === 'amount') {
         amount = e.target.value.toString()
         if(!orderFormatter.isValidAmount(amount)) return false
-        const tokenRConfig = config.getTokenBySymbol(state.right.symbol)
+        const tokenRConfig = config.getTokenBySymbol(placeOrder.right.symbol)
         amount = orderFormatter.formatAmountByMarket(amount, tokenRConfig, marketConfig)
         //e.target.value = amount
         store.dispatch({type:'placeOrder/amountChangeEffects', payload:{amountInput:amount}})
@@ -81,7 +81,7 @@ class PlaceOrderForm extends React.Component {
       rules: []
     })(
       <Slider className="place-order-amount-percentage" min={0} max={100} marks={marks} onChange={amountSliderChange.bind(this)}
-              tipFormatter={null} disabled={state[state.side].availableAmount <= 0}/>
+              tipFormatter={null} disabled={placeOrder[placeOrder.side].availableAmount <= 0}/>
     )
 
     return (
@@ -89,29 +89,29 @@ class PlaceOrderForm extends React.Component {
         <div className="card-body form-inverse">
           <ul className="pair-price text-inverse">
             <li>
-              <h4>{state.left.symbol}</h4><span className="token-price">0.00009470 USD</span><span className="text-up">+0.98</span></li>
+              <h4>{placeOrder.left.symbol}</h4><span className="token-price">0.00009470 USD</span><span className="text-up">+0.98</span></li>
             <li>
-              <h4>{state.right.symbol}</h4><span className="token-price">0.56 USD</span><span className="text-up">+0.45</span></li>
+              <h4>{placeOrder.right.symbol}</h4><span className="token-price">0.56 USD</span><span className="text-up">+0.45</span></li>
           </ul>
-          {state.side === 'buy' &&
+          {placeOrder.side === 'buy' &&
           <ul className="token-tab">
-            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>Buy {state.left.symbol}</a></li>
-            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>Sell {state.left.symbol}</a></li>
+            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>Buy {placeOrder.left.symbol}</a></li>
+            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>Sell {placeOrder.left.symbol}</a></li>
           </ul>
           }
-          {state.side === 'sell' &&
+          {placeOrder.side === 'sell' &&
           <ul className="token-tab">
-            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>Buy {state.left.symbol}</a></li>
-            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>Sell {state.left.symbol}</a></li>
+            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>Buy {placeOrder.left.symbol}</a></li>
+            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>Sell {placeOrder.left.symbol}</a></li>
           </ul>
           }
           <div className="tab-content">
             <div className="tab-pane active" id="b1">
-              {state.sell && <small className="balance text-inverse">{state.sell.token.symbol} Balance: <span>{state.sell.token.balanceDisplay}</span></small>}
+              {placeOrder.sell && <small className="balance text-inverse">{placeOrder.sell.token.symbol} Balance: <span>{placeOrder.sell.token.balanceDisplay}</span></small>}
               <div className="blk-sm"></div>
               <Form.Item label={null} colon={false}>
                 {form.getFieldDecorator('price', {
-                  initialValue: state.priceInput,
+                  initialValue: placeOrder.priceInput,
                   rules: [{
                     message: intl.get('trade.price_verification_message'),
                     validator: (rule, value, cb) => validatePirce(value) ? cb() : cb(true)
@@ -119,7 +119,7 @@ class PlaceOrderForm extends React.Component {
                 })(
                   <Input placeholder="" size="large"
                          prefix={`Price`}
-                         suffix={<span className="fs14 color-black-4">{state.right.symbol}</span>}
+                         suffix={<span className="fs14 color-black-4">{placeOrder.right.symbol}</span>}
                          onChange={inputChange.bind(this, 'price')}
                          onFocus={() => {
                            const amount = form.getFieldValue("price")
@@ -149,7 +149,7 @@ class PlaceOrderForm extends React.Component {
                 })(
                   <Input placeholder="" size="large"
                          prefix={`Amount`}
-                         suffix={<span className="fs14 color-black-4">{state.left.symbol}</span>}
+                         suffix={<span className="fs14 color-black-4">{placeOrder.left.symbol}</span>}
                          onChange={inputChange.bind(this, 'amount')}
                          onFocus={() => {
                             const amount = Number(form.getFieldValue("amount"))
@@ -168,7 +168,7 @@ class PlaceOrderForm extends React.Component {
               <div className="text-inverse text-secondary">
                 <div className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
-                    <span className="font-bold">Total</span><span><span>{state.total}</span>{state.right.symbol} ≈ $0</span>
+                    <span className="font-bold">Total</span><span><span>{placeOrder.total}</span>{placeOrder.right.symbol} ≈ $0</span>
                   </div>
                 </div>
                 <div className="form-group mr-0">
