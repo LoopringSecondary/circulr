@@ -88,7 +88,7 @@ class PlaceOrderForm extends React.Component {
           )}
         </div>
       } trigger="click">
-        <a className="fs12 pointer color-black-3">{intl.get('global.custom')}<Icon type="right" /></a>
+        <a className="fs12 pointer color-black-3">{intl.get('global.custom')}<i className="icon-pencil tradingFee"></i></a>
       </Popover>
     )
 
@@ -183,10 +183,9 @@ class PlaceOrderForm extends React.Component {
                   <div className="form-control-static d-flex justify-content-between">
                     <span className="font-bold">LRC Fee <i className="icon-info tradingfeetip"></i></span>
                     <span>
-                      <i className="icon-pencil tradingFee"></i>
+                      <span>{editLRCFee}</span>
                       <span>{placeOrder.lrcFee}</span>
                       <span className="offset-md">LRC (2‰)</span>
-                      <span>{editLRCFee}</span>
                     </span>
                   </div>
                 </div>
