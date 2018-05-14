@@ -75,10 +75,11 @@ const marketcap_res = (payload)=>{
   })
 }
 
-const transactionHandler = (res)=>{
+const transactionHandler = (res,id)=>{
   if (!res.error && res.data && res.data.data) {
     return {
-      items: res.data.data,
+      id,
+      items: [...res.data.data],
       page:{
         total:res.data.total,
         current:res.data.pageIndex,
@@ -87,6 +88,7 @@ const transactionHandler = (res)=>{
     }
   }else{
     return {
+      id,
       items:[],
       page:{}
     }
@@ -94,7 +96,7 @@ const transactionHandler = (res)=>{
 }
 
 const transaction_req = (payload)=>{
-  const {socket,filters,page} = payload
+  const {socket,filters,page,id} = payload
   const event = 'transaction_req'
   const options = {
     owner:window.config.address,
@@ -108,18 +110,18 @@ const transaction_req = (payload)=>{
     socket.emit(event,JSON.stringify(options),(res)=>{
       res = JSON.parse(res)
       console.log(event,res)
-      resolve(transactionHandler(res))
+      resolve(transactionHandler(res,id))
     })
   })
 }
 const transaction_res = (payload)=>{
-  const {socket} = payload
+  const {socket,id} = payload
   const event = 'transaction_res'
   return new Promise((resolve,reject)=>{
     socket.on(event,(res)=>{
       res = JSON.parse(res)
       console.log(event,res)
-      resolve(marketcapHandler(res))
+      resolve(transactionHandler(res,id))
     })
   })
 }
@@ -127,36 +129,40 @@ const transaction_res = (payload)=>{
 
 const emitEvent = (payload)=>{
   let {id} = payload
+  let promise = null
   switch (id) {
     case 'assets':
-      return balance_req(payload)
+      promise =  balance_req(payload)
       break
     case 'prices':
-      return marketcap_req(payload)
+      promise =  marketcap_req(payload)
       break
     case 'transactions':
-      return transaction_req(payload)
+      promise =  transaction_req(payload)
       break
     default:
       break
   }
+  return promise
 }
 
 const onEvent = (payload)=>{
   let {id} = payload
+  let promise = null
   switch (id) {
     case 'assets':
-      return balance_res(payload)
+      promise =  balance_res(payload)
       break;
     case 'prices':
-      return marketcap_res(payload)
+      promise =  marketcap_res(payload)
       break;
     case 'transactions':
-      return transaction_res(payload)
+      promise =  transaction_res(payload)
       break;
     default:
       break
   }
+  return promise
 }
 
 const connect = (payload)=>{
