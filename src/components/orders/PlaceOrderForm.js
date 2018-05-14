@@ -4,7 +4,8 @@ import intl from 'react-intl-universal';
 import config from 'common/config'
 import * as fm from 'LoopringJS/common/formatter'
 import * as orderFormatter from 'modules/orders/formatters'
-import {connect} from 'dva';
+import moment from 'moment'
+import ReactDOM from 'react-dom'
 
 class PlaceOrderForm extends React.Component {
 
@@ -53,6 +54,63 @@ class PlaceOrderForm extends React.Component {
       placeOrder.milliLrcFeeChangeEffects({milliLrcFee:v})
     }
 
+    function timeToLivePatternChanged(value) {
+      if(value === 'advance') {
+        const timeToLiveTimeSelector = form.getFieldValue('timeToLiveTimeSelector')
+        if(timeToLiveTimeSelector.length === 2) {
+          placeOrder.timeToLivePatternChangeEffects({timeToLivePatternSelect:value, timeToLiveStart: timeToLiveTimeSelector[0], timeToLiveEnd: timeToLiveTimeSelector[1]})
+        }
+      } else {
+        placeOrder.timeToLivePatternChangeEffects({timeToLivePatternSelect:value})
+      }
+    }
+
+    function timeToLiveValueChange(type, e) {
+      if(type === 'popular') {
+        const ttl = e.target.value
+        let timeToLivePopularSetting = true, timeToLive = 1, timeToLiveUnit = ''
+        switch (ttl) {
+          case '1hour':
+            timeToLivePopularSetting = true
+            timeToLiveUnit = 'hour'
+            break;
+          case '1day':
+            timeToLivePopularSetting = true
+            timeToLiveUnit = 'day'
+            break;
+          case '1week':
+            timeToLivePopularSetting = true
+            timeToLiveUnit = 'week'
+            break;
+          case '1month':
+            timeToLivePopularSetting = true
+            timeToLiveUnit = 'month'
+            break;
+          case 'more':
+            timeToLivePopularSetting = false
+            break;
+        }
+        placeOrder.timeToLiveEasyTypeChangeEffects({type, timeToLivePopularSetting, timeToLive, timeToLiveUnit})
+      } else {
+        if (type === 'moreUnit') {
+          const ttl = form.getFieldValue('timeToLive')
+          const unit = e
+          placeOrder.timeToLiveEasyTypeChangeEffects({type, timeToLive: ttl, timeToLiveUnit: unit})
+        }
+        if (type === 'moreValue') {
+          const ttl = e.target.value
+          const unit = form.getFieldValue('timeToLiveUnit')
+          placeOrder.timeToLiveEasyTypeChangeEffects({type, timeToLive: ttl, timeToLiveUnit: unit})
+        }
+      }
+    }
+
+    function timeToLiveTimeSelected(value) {
+      if(value.length === 2) {
+        placeOrder.timeToLivePatternChangeEffects({timeToLivePatternSelect:'advance', timeToLiveStart: value[0], timeToLiveEnd: value[1]})
+      }
+    }
+
     const marks = {
       0: '0',
       25: '25％',
@@ -66,7 +124,7 @@ class PlaceOrderForm extends React.Component {
       rules: []
     })(
       <Slider className="place-order-amount-percentage" min={0} max={100} marks={marks} onChange={amountSliderChange.bind(this)}
-              tipFormatter={null} disabled={fm.toNumber(placeOrder[placeOrder.side].availableAmount) <= 0}/>
+              tipFormatter={null} disabled={fm.toBig(placeOrder[placeOrder.side].availableAmount).lt(0)}/>
     )
 
     const editLRCFee = (
@@ -88,6 +146,86 @@ class PlaceOrderForm extends React.Component {
           )}
         </div>
       } trigger="click">
+        <a className="fs12 pointer color-black-3">{intl.get('global.custom')}<i className="icon-pencil tradingFee"></i></a>
+      </Popover>
+    )
+
+    const customPanelStyle = {
+      background: '#fff',
+      borderRadius: 4,
+      border: 'none',
+      overflow: 'hidden',
+    };
+
+    const timeToLiveSelectAfter = form.getFieldDecorator('timeToLiveUnit', {
+      initialValue: "minute",
+      rules: []
+    })(
+      <Select style={{width: 90}} getPopupContainer={triggerNode => triggerNode.parentNode} onChange={timeToLiveValueChange.bind(this, 'moreUnit')}>
+        <Select.Option value="minute">{intl.get('trade.minute')}</Select.Option>
+        <Select.Option value="hour">{intl.get('trade.hour')}</Select.Option>
+        <Select.Option value="day">{intl.get('trade.day')}</Select.Option>
+      </Select>
+    )
+
+    const editOrderTTLPattern = (
+      <Popover overlayClassName="place-order-form-popover p0" ref="popover"
+               title={null &&<div className="pt5 pb5">{intl.get('trade.custom_time_to_live_title')}</div>}
+               content={
+                 <div style={{width:'382px'}}>
+                   <Collapse accordion style={customPanelStyle} defaultActiveKey={['easy']} onChange={timeToLivePatternChanged}>
+                     <Collapse.Panel header={intl.get('trade.order_ttl_expire_in')} key="easy">
+                       <div className="pt5 pb5">
+                         <Form.Item className="ttl mb0" colon={false} label={null}>
+                           {form.getFieldDecorator('timeToLivePopularSetting')(
+                             <Radio.Group onChange={timeToLiveValueChange.bind(this, 'popular')}>
+                               <Radio className="mb5" value="1hour">1 {intl.get('trade.hour')}</Radio>
+                               <Radio className="mb5" value="1day">1 {intl.get('trade.day')}</Radio>
+                               <Radio className="mb5" value="1week">1 {intl.get('trade.week')}</Radio>
+                               <Radio className="mb5" value="1month">1 {intl.get('trade.month')}</Radio>
+                               <Radio className="mb5" value="more">{intl.get('trade.more')}</Radio>
+                             </Radio.Group>
+                           )}
+                         </Form.Item>
+                         {!placeOrder.timeToLivePopularSetting &&
+                         <Form.Item className="mb0 d-block ttl" colon={false} label={null}>
+                           {form.getFieldDecorator('timeToLive', {
+                             rules: [{
+                               message: intl.get('trade.integer_verification_message'),
+                               validator: (rule, value, cb) => orderFormatter.validateOptionInteger(value) ? cb() : cb(true)
+                             }]
+                           })(
+                             <Input className="d-block w-100" placeholder={intl.get('trade.time_to_live_input_place_holder')} size="large" addonAfter={timeToLiveSelectAfter}
+                                    onChange={timeToLiveValueChange.bind(this, 'moreValue')}/>
+                           )}
+                         </Form.Item>}
+                       </div>
+                     </Collapse.Panel>
+                     <Collapse.Panel header={intl.get('trade.order_ttl_from_to')} key="advance">
+                       <Form.Item className="mb5 ttl" colon={false} label={null}>
+                         {form.getFieldDecorator('timeToLiveTimeSelector', {
+                           initialValue:[moment(), moment().add(1, 'days')]
+                         })(
+                           <DatePicker.RangePicker
+                             locale={'en-US'}
+                             getCalendarContainer={trigger =>
+                             {
+                               // return trigger.parentNode.parentNode.parentNode
+                               return ReactDOM.findDOMNode(this.refs.popover);
+                             }
+
+                             }
+                             showTime={{ format: 'HH:mm' }}
+                             format="YYYY-MM-DD HH:mm"
+                             placeholder={['Start Time', 'End Time']}
+                             onChange={timeToLiveTimeSelected}
+                           />
+                         )}
+                       </Form.Item>
+                     </Collapse.Panel>
+                   </Collapse>
+                 </div>
+               } trigger="click">
         <a className="fs12 pointer color-black-3">{intl.get('global.custom')}<i className="icon-pencil tradingFee"></i></a>
       </Popover>
     )
@@ -191,7 +329,12 @@ class PlaceOrderForm extends React.Component {
                 </div>
                 <div className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
-                    <span className="font-bold">Time to live <i className="icon-info"></i></span><span><i className="icon-pencil timetolive"></i><span>1</span><span className="offset-md">Day</span></span>
+                    <span className="font-bold">Time to live <i className="icon-info"></i></span>
+                    <span>
+                      <span>{editOrderTTLPattern}</span>
+                      <span>1</span>
+                      <span className="offset-md">Day</span>
+                    </span>
                   </div>
                 </div>
                 <div className="blk"></div>
