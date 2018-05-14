@@ -18,6 +18,10 @@ class  GenerateWallet extends React.Component {
     this.setState({pass:e.target.value})
   };
 
+  generate =  () => {
+
+  };
+
   render(){
     const {visible,pass} = this.state;
     const visibleIcon = (
@@ -41,7 +45,7 @@ class  GenerateWallet extends React.Component {
             <Progress percent={50} status="active" />
             <div><span classNameName="offset-md">average</span></div>
           </div>
-          <button className="btn btn-primary btn-block btn-xlg" >Generate Now</button>
+          <button className="btn btn-primary btn-block btn-xlg" onClick={this.generate}>Generate Now</button>
         </div>
       </div>
     )
