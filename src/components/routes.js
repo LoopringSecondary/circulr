@@ -3,6 +3,8 @@ import { Route, Switch,Redirect} from 'dva/router';
 import Pages from './pages';
 import Tokens from './tokens';
 import Orders from './orders';
+import Fills from './fills';
+import Transactions from './transactions';
 import Account from './account';
 import Tickers from './tickers';
 import Setting from './setting';
@@ -45,6 +47,11 @@ export default class Routes extends React.Component {
             <Route path="/ExportKeystore" exact component={Account.ExportKeystore} />
           </Switch>
           <Orders.Modals />
+          <Fills.Modals />
+          <Transactions.Modals />
+          <Tokens.Modals />
+          <Account.Modals />
+          <Setting.Modals />
       </div>
     );
   }

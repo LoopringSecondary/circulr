@@ -21,9 +21,27 @@ const TestComp = (props)=>{
 const TestModal = (props)=>{
   console.log('TestModal',props)
   return (
-    <div className="p10" style={{padding:'10px'}}>
-      <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'orderDetail'})}>order detail</Button>
-      <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'placeOrderConfirm'})}>order detail</Button>
+    <div className="group-span" style={{padding:'10px'}}>
+      <span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'orderDetail'})}>order detail</Button></span>
+      <span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'placeOrderConfirm'})}>order placeOrderConfirm</Button></span>
+      <span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'txDetail'})}>Transation detail</Button></span>
+      <span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'fillDetail'})}>Fill detail</Button></span>
+      <span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'userCenter'})}>UserCenter</Button></span>
+      <span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'setting'})}>Setting</Button></span>
+      <span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'receive'})}>Receive</Button></span>
+      <span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'transfer'})}>Transfer</Button></span>
+      <span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'transferConfirm'})}>transferConfirm</Button></span>
+      <span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'convert'})}>Convert</Button></span>
     </div>
   )
 }
