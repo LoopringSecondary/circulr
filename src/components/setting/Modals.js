@@ -1,13 +1,13 @@
 import React from 'react'
 import {Containers} from 'modules'
 import UiContianers from 'LoopringUI/containers'
-import Detail from './Detail'
+import Setting from './Setting'
 function Modals(props) {
   return (
     <div>
-      <Containers.Modals id="txDetail">
+      <Containers.Modals id="setting">
         <UiContianers.Modals>
-          <Detail />
+          <Setting />
         </UiContianers.Modals>
       </Containers.Modals>
     </div>

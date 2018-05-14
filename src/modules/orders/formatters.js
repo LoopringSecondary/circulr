@@ -1,5 +1,7 @@
 import config from 'common/config'
+import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
+import {getPriceBySymbol} from '../formatter/selectors'
 
 const integerReg = new RegExp("^[0-9]*$")
 const amountReg = new RegExp("^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$")
@@ -74,5 +76,48 @@ export function formatAmountByMarket(amount, tokenConfig, marketConfig) {
     return fm.toNumber(fm.toFixed(amount, amountPrecision, false))
   } else {
     return Math.floor(amount)
+  }
+}
+
+function calculateWorthInLegalCurrency(symbol, amount) {
+  const price = getPriceBySymbol(symbol)
+  return amount.times(price)
+}
+
+function calculateLrcFeeInEth(totalWorth, milliLrcFee) {
+  const price = getPriceBySymbol("ETH")
+  return totalWorth.times(milliLrcFee).div(1000).div(fm.toBig(price))
+}
+
+function calculateLrcFeeByEth(ethAmount) {
+  const ethPrice = getPriceBySymbol("ETH")
+  const lrcPrice = getPriceBySymbol("LRC")
+  const price = fm.toBig(lrcPrice).div(fm.toBig(ethPrice))
+  return fm.toFixed(fm.toBig(ethAmount).div(price), 2, true)
+}
+
+export function calculateLrcFee(total, milliLrcFee, tokenR) {
+  const totalWorth = calculateWorthInLegalCurrency(tokenR, fm.toBig(total))
+  if(totalWorth.lt(0)) {
+    return 0
+  }
+  const percentage = datas.configs.defaultLrcFeePermillage;
+  const minimumLrcfeeInEth = datas.configs.minimumLrcfeeInEth;
+  if (!milliLrcFee) {
+    milliLrcFee = Number(percentage)
+  }
+  let userSetLrcFeeInEth = calculateLrcFeeInEth(totalWorth, milliLrcFee)
+  if(userSetLrcFeeInEth.gt(minimumLrcfeeInEth)){
+    return calculateLrcFeeByEth(userSetLrcFeeInEth)
+  } else {
+    return calculateLrcFeeByEth(minimumLrcfeeInEth)
+  }
+}
+
+export function validateOptionInteger(value) {
+  if (value) {
+    return integerReg.test(value)
+  } else {
+    return true
   }
 }

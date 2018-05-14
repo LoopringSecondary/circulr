@@ -3,7 +3,7 @@ import React from 'react';
 function PriceChart(props) {
   return (
     <div>
-       <div className="card-header bordered">
+       <div className="card-header card-header-dark bordered">
             <h4>CMC Chart</h4>
         </div>
         <div className="card-body">

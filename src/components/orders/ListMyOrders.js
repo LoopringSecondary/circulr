@@ -13,8 +13,8 @@ function ListHeaderForm({className=''}){
 }
 function ListHeader2({orders}){
   return (
-    <div className="order-filter d-flex justify-content-between form-inline-inverse">
-        <div className="form-inline form-inverse d-flex justify-content-between">
+    <div className="order-filter d-flex justify-content-between">
+        <div className="form-inline form-dark d-flex justify-content-between">
             <span>
               <Select defaultValue="LRC-WETH" dropdownMatchSelectWidth={false}>
                   <Option value="LRC-WETH">LRC-WETH</Option>
@@ -58,7 +58,7 @@ function ListMyOrders(props) {
   return (
     <div>
         <ListHeader orders={orders} />
-        <table style={{overflow:'auto'}} className="table table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2">
+        <table style={{overflow:'auto'}} className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2">
           <thead>
               <tr>
                   <th>Order</th>
@@ -80,7 +80,7 @@ function ListMyOrders(props) {
                   <tr key={index}>
                       <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x58...ba9b</a></td>
                       <td>March 27, 2018 5:51 PM</td>
-                      <td><i className="text-inverse icon-success"></i></td>
+                      <td><i className="text-color-dark icon-success"></i></td>
                       <td>LRC-WETH</td>
                       <td><span className="text-success">Sell</span></td>
                       <td>300</td>
@@ -96,7 +96,7 @@ function ListMyOrders(props) {
               <tr>
                   <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x44...da11</a></td>
                   <td>March 27, 2018 5:40 PM</td>
-                  <td><i className="text-inverse icon-success"></i></td>
+                  <td><i className="text-color-dark icon-success"></i></td>
                   <td>LRC-WETH</td>
                   <td><span className="text-danger">Buy</span></td>
                   <td>300</td>
@@ -109,7 +109,7 @@ function ListMyOrders(props) {
               <tr>
                   <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x44...da11</a></td>
                   <td>March 27, 2018 5:40 PM</td>
-                  <td><i className="text-inverse icon-success"></i></td>
+                  <td><i className="text-color-dark icon-success"></i></td>
                   <td>LRC-WETH</td>
                   <td><span className="text-success">Sell</span></td>
                   <td>300</td>
@@ -122,7 +122,7 @@ function ListMyOrders(props) {
               <tr>
                   <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x44...da11</a></td>
                   <td>March 27, 2018 5:40 PM</td>
-                  <td><i className="text-inverse icon-success"></i></td>
+                  <td><i className="text-color-dark icon-success"></i></td>
                   <td>LRC-WETH</td>
                   <td><span className="text-danger">Buy</span></td>
                   <td>300</td>

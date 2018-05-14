@@ -90,18 +90,62 @@ export default {
       yield put({ type: 'priceChange',payload:{priceInput}});
       yield put({ type: 'totalChange' });
       yield put({ type: 'availableAmountChange' });
+      yield put({ type: 'lrcFeeChangeEffects' });
     },
     *amountChangeEffects({ payload={} }, { select, put }) {
       let {amountInput} = payload
       yield put({ type: 'amountChange',payload:{amountInput}});
       yield put({ type: 'amountSliderChange' });
       yield put({ type: 'totalChange' });
+      yield put({ type: 'lrcFeeChangeEffects' });
     },
     *amountSliderChangeEffects({ payload={} }, { select, put }) {
       let {amountSlider} = payload
       yield put({ type: 'amountSliderChange',payload:{amountSlider}});
       yield put({ type: 'amountChange' });
       yield put({ type: 'totalChange' });
+    },
+    *milliLrcFeeChangeEffects({ payload={} }, { select, put }) {
+      let {milliLrcFee} = payload
+      yield put({ type: 'milliLrcFeeChange',payload:{milliLrcFee}});
+      yield put({ type: 'lrcFeeChangeEffects' });
+    },
+    *lrcFeeChangeEffects({ payload={} }, { select, put }) {
+      if(payload.lrcFee) {
+        let {lrcFee} = payload
+        yield put({ type: 'lrcFeeChange',payload:{lrcFee}});
+      } else {
+        const state = yield select(({ [MODULES]:data }) => data );
+        const {amountInput, priceInput, sliderMilliLrcFee, right} = state
+        const amount = fm.toBig(amountInput)
+        const price = fm.toBig(priceInput)
+        if(amount.gt(0) && price.gt(0) && sliderMilliLrcFee) {
+          const total = price.times(amount)
+          const lrcFee = orderFormatter.calculateLrcFee(total, sliderMilliLrcFee, right.symbol)
+          yield put({ type: 'lrcFeeChange',payload:{lrcFee}});
+        }
+      }
+    },
+    *timeToLivePatternChangeEffects({ payload={} }, { select, put }) {
+      const {timeToLivePatternSelect} = payload
+      if(timeToLivePatternSelect === 'advance') { //[easy, advance]
+        let {timeToLiveStart, timeToLiveEnd} = payload
+        if(timeToLiveStart && timeToLiveEnd) {
+          yield put({ type: 'timeToLivePatternChange',payload:{timeToLivePatternSelect}});
+          yield put({ type: 'timeToLiveStartEndChange',payload:{timeToLiveStart, timeToLiveEnd}});
+        }
+      } else {
+        yield put({ type: 'timeToLivePatternChange',payload:{timeToLivePatternSelect}});
+      }
+    },
+    *timeToLiveEasyTypeChangeEffects({ payload={} }, { select, put }) {
+      const {type, timeToLive, timeToLiveUnit} = payload
+      if(type === 'popular') {
+        yield put({ type: 'timeToLiveEasyPopularSettingChange',payload:{timeToLivePopularSetting:payload.timeToLivePopularSetting}});
+        yield put({ type: 'timeToLiveEasyPopularValueChange',payload:{timeToLive, timeToLiveUnit}});
+      } else {
+        yield put({ type: 'timeToLiveEasyPopularValueChange',payload:{timeToLive, timeToLiveUnit}});
+      }
     }
   },
   reducers: {
@@ -164,9 +208,7 @@ export default {
       const {pair} = action.payload
       return {
         ...state,
-        pair,
-        // left : pair.split('-')[0],
-        // right : pair.split('-')[1],
+        pair
       }
     },
     leftAndRightChange(state, action) {
@@ -205,6 +247,56 @@ export default {
           ...state[side],
           availableAmount
         }
+      }
+    },
+    milliLrcFeeChange(state, action) {
+      const {payload} = action
+      let {milliLrcFee} = payload
+      return {
+        ...state,
+        sliderMilliLrcFee:milliLrcFee
+      }
+    },
+    lrcFeeChange(state, action) {
+      const {payload} = action
+      let {lrcFee} = payload
+      return {
+        ...state,
+        lrcFee:lrcFee
+      }
+    },
+    timeToLivePatternChange(state, action) {
+      const {payload} = action
+      let {timeToLivePatternSelect} = payload
+      return {
+        ...state,
+        timeToLivePatternSelect
+      }
+    },
+    timeToLiveStartEndChange(state, action) {
+      const {payload} = action
+      let {timeToLiveStart, timeToLiveEnd} = payload
+      return {
+        ...state,
+        timeToLiveStart,
+        timeToLiveEnd
+      }
+    },
+    timeToLiveEasyPopularSettingChange(state, action) {
+      const {payload} = action
+      let {timeToLivePopularSetting} = payload
+      return {
+        ...state,
+        timeToLivePopularSetting
+      }
+    },
+    timeToLiveEasyPopularValueChange(state, action) {
+      const {payload} = action
+      let {timeToLive, timeToLiveUnit} = payload
+      return {
+        ...state,
+        timeToLive,
+        timeToLiveUnit
       }
     }
   },

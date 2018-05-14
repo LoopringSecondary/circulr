@@ -3,8 +3,8 @@ import React from 'react';
 function ListTradesHistory(props) {
   return (
     <div>
-        <div className="card h-full">
-	    	<div className="card-header bordered">
+        <div className="card dark h-full">
+	    	<div className="card-header card-header-dark bordered">
 	    	    <h4>Trade History</h4>
 	    	</div>
 	    	<div className="trade-list h-full">
