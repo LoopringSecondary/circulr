@@ -20,13 +20,13 @@ export default {
     'MyOpenOrders':{...initState},
   },
   subscriptions: {
-    setup({ dispatch, history }) {
-      history.listen(location => {
-        if (location.pathname === `/${MODULES}/list`) {
-          dispatch({type: 'fetch'});
-        }
-      });
-    },
+    // setup({ dispatch, history }) {
+    //   history.listen(location => {
+    //     if (location.pathname === `/${MODULES}/list`) {
+    //       dispatch({type: 'fetch'});
+    //     }
+    //   });
+    // },
   },
   effects: {
     *init({payload},{call, select,put}){
@@ -86,8 +86,13 @@ export default {
 
   reducers: {
     fetchStart(state, action) {
+      console.log('fetchStart action',action)
       let {payload} = action
       let {id} = payload
+      if(!state[id]){
+        console.log(`model ${id} not exits`)
+        return {...state}
+      }
       let {filters,page,sort,defaultState,originQuery,items}=state[id];
       if(!payload.defaultState){ payload.defaultState={} }
       if(!payload.originQuery){ payload.originQuery={} }
@@ -123,6 +128,10 @@ export default {
     fetchSuccess(state, action) {
       let {payload} = action
       let {id} = payload
+      if(!state[id]){
+        console.log(`model ${id} not exits`)
+        return {...state}
+      }
       return {
         ...state,
         [id]:{
@@ -134,6 +143,10 @@ export default {
     pageChangeStart(state,action){
       let {payload} = action
       let {id} = payload
+      if(!state[id]){
+        console.log(`model ${id} not exits`)
+        return {...state}
+      }
       return {
         ...state,
         [id]:{
@@ -150,6 +163,10 @@ export default {
     filtersChangeStart(state,action){
       let {payload} = action
       let {id} = payload
+      if(!state[id]){
+        console.log(`model ${id} not exits`)
+        return {...state}
+      }
       return {
         ...state,
         [id]:{
@@ -168,6 +185,10 @@ export default {
     sortChangeStart(state,action){
       let {payload} = action
       let {id} = payload
+      if(!state[id]){
+        console.log(`model ${id} not exits`)
+        return {...state}
+      }
       return {
         ...state,
         [id]:{
@@ -182,6 +203,10 @@ export default {
     queryChangeStart(state,action){
       let {payload} = action
       let {id} = payload
+      if(!state[id]){
+        console.log(`model ${id} not exits`)
+        return {...state}
+      }
       return {
         ...state,
         [id]:{

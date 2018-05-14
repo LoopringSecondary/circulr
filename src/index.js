@@ -1,4 +1,5 @@
-import dva from 'dva';
+import '@babel/polyfill'
+import dva from 'dva'
 import { models } from './modules'
 import './assets/css/index.less'
 

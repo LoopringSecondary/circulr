@@ -1,6 +1,7 @@
 import React from 'react'
 import {Button} from 'antd'
 import { Containers } from 'modules'
+import UiContianers from 'LoopringUI/containers'
 const TestComp = (props)=>{
   const showModal =()=>{
     props.dispatch({
@@ -41,18 +42,44 @@ const TestScokets = (props)=>{
 const Test = (props)=>{
   return (
     <div>
-    	<Containers.Orders id="orders/trade">
+    	<Containers.Orders id="MyOpenOrders">
         <TestComp title="Orders List"/>
       </Containers.Orders>
       <Containers.PlaceOrder>
     		<TestComp title="PlaceOrder Form" />
       </Containers.PlaceOrder>
       <Containers.Modals id="test">
-        <TestModal />
+        <UiContianers.Modals>
+          <TestModal />
+        </UiContianers.Modals>
       </Containers.Modals>
       <Containers.Sockets>
         <TestScokets />
       </Containers.Sockets>
+
+      {
+        true &&
+        <Containers.Tabs id="MyOpenOrders" initState={{activeKey:'orders'}} render={(props)=>{
+            return (
+                <div>
+                  <div className="tabs-header">
+                    <span className="tab" onClick={props.MyOpenOrders.activeKeyChange.bind(this,{activeKey:'orders'})}>Orders</span>
+                    <span className="tab" onClick={props.MyOpenOrders.activeKeyChange.bind(this,{activeKey:'fills'})}>Fills</span>
+                  </div>
+                  <div className="tabs-body">
+                    {
+                      props.MyOpenOrders.activeKey === 'orders' &&
+                      <span className="">Orders</span>
+                    }
+                    {
+                      props.MyOpenOrders.activeKey === 'fills' &&
+                      <span className="">Fills</span>
+                    }
+                  </div>
+                </div>
+            )
+        }}/>
+      }
     </div>
   )
 }

@@ -38,6 +38,7 @@ const getWrapper = (namespace,keys)=>{
       if(alias){
         childProps = {
           ...rest,
+          id, // for wrapper
           [alias]:{
             ...thisData,
             ...actions,
@@ -47,6 +48,7 @@ const getWrapper = (namespace,keys)=>{
       }else if(id){
         childProps = {
           ...rest,
+          id, // for wrapper
           [id]:{
             ...thisData,
             ...actions,
@@ -56,6 +58,7 @@ const getWrapper = (namespace,keys)=>{
       }else{
          childProps = {
           ...rest,
+          id, // for wrapper
           [namespace]:{
             ...data,
             ...actions,
