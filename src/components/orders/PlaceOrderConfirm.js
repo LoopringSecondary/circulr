@@ -26,7 +26,8 @@ function PlaceOrderConfirm(props) {
         		<Input.TextArea placeholder="" autosize={{ minRows: 2, maxRows: 6 }} />
         	</div>
         </div> 
-        <div class="text-center"></div>	                      
+        <div className="text-center">提交订单是免费的，不需要消耗Gas</div>
+        <Button type="primary" className="btn-block btn-xlg btn-token">提交订单</Button>                   
     </div>
   )
 }
