@@ -22,9 +22,6 @@ export default {
     'transactions':{...initState},
   },
   effects: {
-    *init({payload},{call,select,put}){
-      yield put({type:'connect',payload})
-    },
     *urlChange({payload},{call,select,put}){
       yield put({type:'urlChangeStart',payload})
       yield put({type:'connect',payload})
