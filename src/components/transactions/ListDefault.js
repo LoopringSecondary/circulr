@@ -25,18 +25,19 @@ const getTypes = (token)=>{
   if(token.toUpperCase() === 'LRC'){
     types = [...types,...lrcTypes]
   }
-  types = [...types,...othersTypes]
+  return [...types,...othersTypes]
 }
 
 function ListBlock(props) {
   const {transactions:list}= props
-  const statusChange = (e)=>{
-    list.filtersChange({status:e.targe.value})
+  const statusChange = (value)=>{
+    list.filtersChange({status:value})
   }
-  const typeChange = (e)=>{
-    list.filtersChange({type:e.targe.value})
+  const typeChange = (value)=>{
+    list.filtersChange({type:value})
   }
   const types = getTypes('LRC')
+
   return (
     <div>
         <div className="card-header bordered">
@@ -105,6 +106,9 @@ function ListBlock(props) {
                                   <td>3 hour ago</td>
                                   <td>5241856</td>
                                   <td className="text-right text-success">+100.00 LRC</td>
+                                  {
+                                    false && <td className="text-right text-down">-100.00 LRC</td>
+                                  }
                                   <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                                   <td>→ 0xf1d48f1aaeba93</td>
                               </tr>
@@ -116,134 +120,6 @@ function ListBlock(props) {
                               <td colSpan="100">{intl.get('txs.no_txs')}</td>
                           </tr>
                         }
-                        <tr>
-                            <td>Receive LRC</td>
-                            <td>4 hour ago</td>
-                            <td>5241856</td>
-                            <td className="text-right text-success">+100.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Receive LRC</td>
-                            <td>12 hour ago</td>
-                            <td>5241856</td>
-                            <td className="text-right text-success">+100.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Receive LRC</td>
-                            <td>14 hour ago</td>
-                            <td>5241856</td>
-                            <td className="text-right text-success">+100.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Send LRC</td>
-                            <td>3 hour ago</td>
-                            <td>5241856</td>
-                            <td className="text-right text-down">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-warning"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Convert LRC To WETH</td>
-                            <td>3 hour ago</td>
-                            <td>5241856</td>
-                            <td className="text-right text-down">-100,000.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Convert LRC To WETH</td>
-                            <td>2/6/2018 10:00 PM</td>
-                            <td>5241856</td>
-                            <td className="text-right text-down">-100,000.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-clock"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Send LRC</td>
-                            <td>2/6/2018 10:00 AM</td>
-                            <td>5241856</td>
-                            <td className="text-right text-down">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Send LRC</td>
-                            <td>2/6/2018 10:00 AM</td>
-                            <td>5241856</td>
-                            <td className="text-right text-down">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Send LRC</td>
-                            <td>2/6/2018 10:00 AM</td>
-                            <td>5241856</td>
-                            <td className="text-right text-down">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Send LRC</td>
-                            <td>2/6/2018 10:00 AM</td>
-                            <td>5241856</td>
-                            <td className="text-right text-down">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Receive LRC</td>
-                            <td>14 hour ago</td>
-                            <td>5241856</td>
-                            <td className="text-right text-success">+100.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Send LRC</td>
-                            <td>3 hour ago</td>
-                            <td>5241856</td>
-                            <td className="text-right text-down">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Convert LRC To WETH</td>
-                            <td>3 hour ago</td>
-                            <td>5241856</td>
-                            <td className="text-right text-down">-100,000.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Convert LRC To WETH</td>
-                            <td>2/6/2018 10:00 PM</td>
-                            <td>5241856</td>
-                            <td className="text-right text-down">-100,000.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-clock"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Send LRC</td>
-                            <td>2/6/2018 10:00 AM</td>
-                            <td>5241856</td>
-                            <td className="text-right text-down">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
-                        <tr>
-                            <td>Send LRC</td>
-                            <td>2/6/2018 10:00 AM</td>
-                            <td>5241856</td>
-                            <td className="text-right text-down">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
