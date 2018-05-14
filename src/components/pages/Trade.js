@@ -6,6 +6,11 @@ import { Tabs } from 'antd';
 import { Containers } from 'modules';
 
 function Trade(props) {
+  const { children, match } = props
+  // let pair = match.params.pair || window.STORAGE.markets.getCurrent() || 'LRC-WETH'
+  let pair = match.params.pair || 'LRC-WETH'
+  if(pair.indexOf('-') < 0){ }
+  // TODO if market is not support or goto some route
   const TabPane = Tabs.TabPane;
   function callback(key) {
     console.log(key);
@@ -32,7 +37,9 @@ function Trade(props) {
         </header>
   	    <div className="side-fixed" style={{ top:"0", left:"0", width:"280px", paddingTop:"74px" }}>
               <div className="card h-full">
-              <Orders.PlaceOrderForm />
+                <Containers.PlaceOrder initState={{pair:pair}}>
+                  <Orders.PlaceOrderForm />
+                </Containers.PlaceOrder>
               </div>
   	    </div>
   	    <div className="m-container h-full relative" style={{marginLeft: "284px"}}>

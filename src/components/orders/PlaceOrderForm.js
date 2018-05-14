@@ -9,7 +9,7 @@ class PlaceOrderForm extends React.Component {
 
   render() {
     const {form, placeOrder} = this.props
-
+    console.log('placeOrder',placeOrder)
     function sideChange(value) {
       placeOrder.sideChangeEffects({side:value})
     }
