@@ -2,7 +2,10 @@ import React from 'react';
 import {Upload, Button, Input, Icon} from 'antd';
 import {connect} from 'dva';
 import routeActions from 'common/utils/routeActions'
-class Keystore extends React.Component {
+
+
+
+export  default class Keystore extends React.Component {
 
   state = {
     fileList: [],
@@ -66,7 +69,8 @@ class Keystore extends React.Component {
     this.setState({visible:!visible})
   };
   render() {
-    const {isPasswordRequired, password, keystore,isValid} = this.props;
+    const keyStoreModel = this.props;
+    const {isPasswordRequired, password, keystore,isValid} = keyStoreModel;
     const {fileList,visible} = this.state;
     const uploadProps = {
       action: '',
@@ -108,16 +112,16 @@ class Keystore extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    keystore: state.keystore.keystore,
-    isPasswordRequired: state.keystore.isPasswordRequired,
-    password: state.keystore.password,
-    isValid: state.keystore.isValid,
-  }
-}
-
-export default connect(mapStateToProps)(Keystore)
+// function mapStateToProps(state) {
+//   return {
+//     keystore: state.keystore.keystore,
+//     isPasswordRequired: state.keystore.isPasswordRequired,
+//     password: state.keystore.password,
+//     isValid: state.keystore.isValid,
+//   }
+// }
+//
+// export default connect(mapStateToProps)(Keystore)
 
 
 

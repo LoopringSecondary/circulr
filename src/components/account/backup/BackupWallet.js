@@ -1,16 +1,16 @@
 import React from 'react'
-import {Tabs} from 'antd'
+import {Tabs,Button,Input} from 'antd'
 
 const TabPane = Tabs.TabPane;
 
 
-class BackupWallet extends React.Commponent {
+class BackupWallet extends React.Component {
 
   render(){
     return(
       <div>
         <h2 className="text-center text-primary" style={{marginBottom: "20px" }}>Backup Wallet</h2>
-        <Tabs defaultActiveKey="1" onChange={callback}>
+        <Tabs defaultActiveKey="1">
           <TabPane tab="Keystore" key="1">
             <div className="card bg-white">
               <div className="card-body notice">
