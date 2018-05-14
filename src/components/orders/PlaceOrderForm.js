@@ -20,53 +20,41 @@ class PlaceOrderForm extends React.Component {
       return Number(value) > 0
     }
 
+    // function calculateLrcFee(total, milliLrcFee) {
+    //   const totalWorth = calculateWorthInLegalCurrency(tokenR, total)
+    //   if(totalWorth <= 0) {
+    //     calculatedLrcFee = 0
+    //     return
+    //   }
+    //   if (!milliLrcFee) {
+    //     milliLrcFee = Number(configs.defaultLrcFeePermillage)
+    //   }
+    //   let userSetLrcFeeInEth = calculateLrcFeeInEth(totalWorth, milliLrcFee)
+    //   const minimumLrcfeeInEth = configs.minimumLrcfeeInEth
+    //   if(userSetLrcFeeInEth >= minimumLrcfeeInEth){
+    //     calculatedLrcFee = calculateLrcFeeByEth(userSetLrcFeeInEth)
+    //   } else {
+    //     calculatedLrcFee = calculateLrcFeeByEth(minimumLrcfeeInEth)
+    //   }
+    // }
+
     function inputChange(type, e) {
-      // let price = 0, amount = 0
-      // if (type === 'price') {
-      //   price = e.target.value.toString()
-      //   if (!amountReg.test(price)) return false
-      //   const priceArr = price.split(".")
-      //   if(priceArr.length === 2 && priceArr[1].length > marketConfig.pricePrecision){
-      //     price = fm.toNumber(fm.toFixed(fm.toNumber(price), marketConfig.pricePrecision))
-      //   }
-      //   e.target.value = price
-      //   this.setState({priceInput: price})
-      //   amount = Number(form.getFieldValue("amount"))
-      // } else if (type === 'amount') {
-      //   amount = e.target.value.toString()
-      //   if (!amountReg.test(amount)) return false
-      //   const amountPrecision = tokenRBalance.precision - marketConfig.pricePrecision
-      //   if (amountPrecision > 0) {
-      //     amount = fm.toNumber(fm.toFixed(fm.toNumber(amount), amountPrecision))
-      //   } else {
-      //     amount = Math.floor(amount)
-      //   }
-      //   e.target.value = amount
-      //   this.setState({amountInput: amount})
-      //   price = Number(form.getFieldValue("price"))
-      // }
-      // let avalAmount = 0
-      // if(side === 'buy'){
-      //   if(price >0){
-      //     const precision = Math.max(0,tokenRBalance.precision - marketConfig.pricePrecision)
-      //     avalAmount = Math.floor(tokenRBalance.balance / Number(price) * ("1e"+precision)) / ("1e"+precision)
-      //     this.setState({availableAmount: avalAmount})
-      //   }
-      // } else {
-      //   avalAmount = Math.floor(tokenLBalance.balance * ("1e"+tokenRBalance.precision)) / ("1e"+tokenRBalance.precision)
-      //   this.setState({availableAmount: avalAmount})
-      // }
-      // let ratio = 0
-      // if(avalAmount > 0) {
-      //   if(amount >= avalAmount) {
-      //     ratio = 100
-      //   } else {
-      //     ratio = Math.floor(accMul(100,accDiv(amount, avalAmount)))
-      //   }
-      // }
-      // form.setFieldsValue({"amountSlider":ratio})
-      // const total = accMul(price, amount)
-      // this.setState({total: total})
+      let price = 0, amount = 0
+      const marketConfig = config.getMarketBySymbol(state.left.symbol, state.right.symbol)
+      if (type === 'price') {
+        price = e.target.value.toString()
+        if(!orderFormatter.isValidAmount(price)) return false
+        price = orderFormatter.formatPriceByMarket(price, marketConfig)
+        //e.target.value = price
+        window.STORE.dispatch({type:'placeOrder/priceChangeEffects', payload:{priceInput:price}})
+      } else if (type === 'amount') {
+        amount = e.target.value.toString()
+        if(!orderFormatter.isValidAmount(amount)) return false
+        const tokenRConfig = config.getTokenBySymbol(state.right.symbol)
+        amount = orderFormatter.formatAmountByMarket(amount, tokenRConfig, marketConfig)
+        //e.target.value = amount
+        window.STORE.dispatch({type:'placeOrder/amountChangeEffects', payload:{amountInput:amount}})
+      }
       // //LRC Fee
       // calculateLrcFee(total, sliderMilliLrcFee)
     }
@@ -179,7 +167,7 @@ class PlaceOrderForm extends React.Component {
               <div className="text-inverse text-secondary">
                 <div className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
-                    <span className="font-bold">Total</span><span><span>0</span>WETH ≈ $0</span>
+                    <span className="font-bold">Total</span><span><span>{state.total}</span>{state.right.symbol} ≈ $0</span>
                   </div>
                 </div>
                 <div className="form-group mr-0">
@@ -218,6 +206,4 @@ export default Form.create({
       ),
     }
   }
-})(
-  PlaceOrderForm
-)
+})(PlaceOrderForm)

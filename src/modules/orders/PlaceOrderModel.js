@@ -23,6 +23,7 @@ export default {
    amountSlider:0,
    total:'',
    sliderMilliLrcFee:0,
+   lrcFee:0,
    timeToLivePatternSelect: 'easy',
    timeToLivePopularSetting: true,
    timeToLive:0,
@@ -70,14 +71,12 @@ export default {
           const tokenL = {...l, balance:balanceL, balanceDisplay:balanceLDisplay}
           const tokenR = {...r, balance:balanceR, balanceDisplay:balanceRDisplay}
           yield put({ type: 'leftAndRightChange',payload:{tokenL, tokenR}});
-          const amountPrecision = Math.max(0, r.precision - marketConfig.pricePrecision)
           if(side === 'buy') {
             yield put({ type: 'buyAndSellChange',payload:{buy:tokenL, sell:tokenR}});
           } else {
             yield put({ type: 'buyAndSellChange',payload:{buy:tokenR, sell:tokenL}});
           }
-          const availableAmount = orderFormatter.calculateAvailableAmount(side, state.priceInput, tokenL, tokenR, amountPrecision)
-          yield put({ type: 'availableAmountChange',payload:{side, availableAmount}});
+          yield put({ type: 'availableAmountChange' });
         } else {
           throw new Error('Not supported side change:'+side)
         }
@@ -87,6 +86,7 @@ export default {
       let {priceInput} = payload
       yield put({ type: 'priceChange',payload:{priceInput}});
       yield put({ type: 'totalChange' });
+      yield put({ type: 'availableAmountChange' });
     },
     *amountChangeEffects({ payload={} }, { select, put }) {
       let {amountInput} = payload
@@ -192,7 +192,10 @@ export default {
     },
     availableAmountChange(state, action) {
       const {payload} = action
-      const {side, availableAmount} = payload
+      const side = state.side
+      const marketConfig = config.getMarketBySymbol(state.left.symbol, state.right.symbol)
+      const amountPrecision = Math.max(0, state.right.precision - marketConfig.pricePrecision)
+      const availableAmount = orderFormatter.calculateAvailableAmount(side, state.priceInput, state.left, state.right, amountPrecision)
       return {
         ...state,
         [side]:{

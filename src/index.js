@@ -35,7 +35,5 @@ app.start('#root');
 // Becarefull to use STORE in render funtion
 window.STORE = app._store
 
-//window.STORE.dispatch({type:'placeOrder/pairChange', payload:{}})
-// window.STORE.dispatch({type:'placeOrder/pairChangeEffects', payload:{pair:'EOS-WETH'}})
-// window.STORE.dispatch({type:'placeOrder/sideChangeEffects', payload:{side:'sell'}})
+export default app._store
 
