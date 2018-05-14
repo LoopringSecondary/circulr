@@ -19,7 +19,7 @@ export default {
     'socket':null,
     'assets':{...initState},
     'prices':{...initState},
-    'transactions':{...initState},
+    'transactions':{...initState,filters:{token:'LRC'}},
   },
   effects: {
     *urlChange({payload},{call,select,put}){
@@ -30,6 +30,8 @@ export default {
       const {url} = yield select(({ [namespace]:model }) => model )
       const socket = yield call(apis.connect, {url})
       yield put({type:'socketChange',payload:{socket}})
+      yield put({type:'fetch',payload:{id:'prices'}})
+      yield put({type:'fetch',payload:{id:'transactions'}})
     },
     *fetch({payload},{call,select,put}){
       yield put({type:'onEvent',payload})
