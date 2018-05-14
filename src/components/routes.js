@@ -8,7 +8,6 @@ import Tickers from './tickers';
 import Setting from './setting';
 import Tools from './tools';
 
-console.log('Tickers',Tickers)
 const UnLogged = ()=>{
   return (
     <div>UnLogged</div>
@@ -45,6 +44,7 @@ export default class Routes extends React.Component {
             <Route path="/Receive" exact component={Tokens.Receive} />
             <Route path="/ExportKeystore" exact component={Account.ExportKeystore} />
           </Switch>
+          <Orders.Modals />
       </div>
     );
   }

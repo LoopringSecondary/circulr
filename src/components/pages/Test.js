@@ -12,7 +12,7 @@ const TestComp = (props)=>{
     })
   }
   return (
-    <div className="p10">
+    <div className="p10" style={{padding:'10px'}}>
       {props.title}
       <Button type="primary" onClick={showModal}>Show Modal</Button>
     </div>
@@ -21,15 +21,15 @@ const TestComp = (props)=>{
 const TestModal = (props)=>{
   console.log('TestModal',props)
   return (
-    <div className="p10">
-      TestModal
-      <Button type="primary" onClick={props.test.hideModal}>hide Modal</Button>
+    <div className="p10" style={{padding:'10px'}}>
+      <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'orderDetail'})}>order detail</Button>
+      <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'placeOrderConfirm'})}>order detail</Button>
     </div>
   )
 }
 const TestScokets = (props)=>{
 	return (
-		<div className="p10">
+		<div className="p10" style={{padding:'10px'}}>
       <div>
         <Button type="primary" onClick={props.sockets.connect}>connect</Button>
         <Button type="primary" onClick={props.sockets.fetch.bind(this,{id:'prices'})}>get prices</Button>
@@ -43,15 +43,10 @@ const Test = (props)=>{
   return (
     <div>
     	<Containers.Orders id="MyOpenOrders">
-        <TestComp title="Orders List"/>
+        <TestComp />
       </Containers.Orders>
-      <Containers.PlaceOrder>
-    		<TestComp title="PlaceOrder Form" />
-      </Containers.PlaceOrder>
-      <Containers.Modals id="test">
-        <UiContianers.Modals>
-          <TestModal />
-        </UiContianers.Modals>
+      <Containers.Modals>
+        <TestModal />
       </Containers.Modals>
       <Containers.Sockets>
         <TestScokets />
