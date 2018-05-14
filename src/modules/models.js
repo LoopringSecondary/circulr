@@ -10,6 +10,12 @@ export default [
   require('./settings/model').default,
   require('LoopringUI/modules/ModalsModel').default,
   require('LoopringUI/modules/TabsModel').default,
+  require('./wallet/airdropModel').default,
+  require('./wallet/hardwareWalletModel').default,
+  require('./wallet/keystoreModel').default,
+  require('./wallet/mnemonicModel').default,
+  require('./wallet/privateKeyModel').default,
+  require('./wallet/model').default
 ]
 
 
