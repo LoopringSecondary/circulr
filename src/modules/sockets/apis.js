@@ -75,10 +75,9 @@ const marketcap_res = (payload)=>{
   })
 }
 
-const transactionHandler = (res,id)=>{
+const transactionHandler = (res)=>{
   if (!res.error && res.data && res.data.data) {
     return {
-      id,
       items: [...res.data.data],
       page:{
         total:res.data.total,
@@ -88,7 +87,6 @@ const transactionHandler = (res,id)=>{
     }
   }else{
     return {
-      id,
       items:[],
       page:{}
     }
@@ -110,7 +108,7 @@ const transaction_req = (payload)=>{
     socket.emit(event,JSON.stringify(options),(res)=>{
       res = JSON.parse(res)
       console.log(event,res)
-      resolve(transactionHandler(res,id))
+      resolve(transactionHandler(res))
     })
   })
 }
@@ -126,43 +124,38 @@ const transaction_res = (payload)=>{
   })
 }
 
-
 const emitEvent = (payload)=>{
   let {id} = payload
-  let promise = null
   switch (id) {
     case 'assets':
-      promise =  balance_req(payload)
+      return balance_req(payload)
       break
     case 'prices':
-      promise =  marketcap_req(payload)
+      return marketcap_req(payload)
       break
     case 'transactions':
-      promise =  transaction_req(payload)
+      return transaction_req(payload)
       break
     default:
       break
   }
-  return promise
 }
 
 const onEvent = (payload)=>{
   let {id} = payload
-  let promise = null
   switch (id) {
     case 'assets':
-      promise =  balance_res(payload)
+      return balance_res(payload)
       break;
     case 'prices':
-      promise =  marketcap_res(payload)
+      return marketcap_res(payload)
       break;
     case 'transactions':
-      promise =  transaction_res(payload)
+      return transaction_res(payload)
       break;
     default:
       break
   }
-  return promise
 }
 
 const connect = (payload)=>{

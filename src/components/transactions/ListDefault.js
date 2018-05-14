@@ -1,46 +1,80 @@
 import React from 'react';
-import { Form,Select } from 'antd';
+import { Form,Select,Spin } from 'antd';
+import intl from 'react-intl-universal';
 const Option = Select.Option;
-function ListHeaderForm({className=''}){
-  return (
-    <div className={className}>
-    	ListHeaderForm
-    </div>
-  )
-}
-
-function ListHeader({className=''}){
-  return (
-    <div className={className}>
-    	ListHeader
-    </div>
-  )
+const getTypes = (token)=>{
+  let types = [
+    {label:intl.get(`global.all`)+ ' ' +intl.get('txs.type'),value:''},
+    {label:intl.get(`txs.type_sell`),value:'sell'},
+    {label:intl.get(`txs.type_buy`),value:'buy'},
+    {label:intl.get(`txs.type_transfer`),value:'send'},
+    {label:intl.get(`txs.type_receive`),value:'receive'},
+    {label:intl.get(`txs.type_enable`),value:'approve'},
+  ]
+  let convertTypes = [{label:intl.get(`txs.type_convert`),value:'convert'}]
+  let lrcTypes = [
+     {label:intl.get(`txs.type_lrc_fee`),value:'lrc_fee'},
+     {label:intl.get(`txs.type_lrc_reward`),value:'lrc_reward'},
+  ]
+  let othersTypes = [
+     // {label:intl.get(`txs.type_others`),value:'others'},
+  ]
+  if(token.toUpperCase() === 'WETH' || token.toUpperCase() === 'ETH'){
+    types = [...types,...convertTypes]
+  }
+  if(token.toUpperCase() === 'LRC'){
+    types = [...types,...lrcTypes]
+  }
+  types = [...types,...othersTypes]
 }
 
 function ListBlock(props) {
-  console.log('transactions props',props)
   const {transactions:list}= props
+  const statusChange = (e)=>{
+    list.filtersChange({status:e.targe.value})
+  }
+  const typeChange = (e)=>{
+    list.filtersChange({type:e.targe.value})
+  }
+  const types = getTypes('LRC')
   return (
     <div>
         <div className="card-header bordered">
             <h4>Transactions</h4>
             <div className="form-inline form-dark">
                 <span>
-                  <Select defaultValue="All Status" dropdownMatchSelectWidth={false} className="form-inline form-inverse">
-                    <Option value="all">All Status</Option>
-                    <Option value="Pending">Pending</Option>
-                    <Option value="Success">Success</Option>
-                    <Option value="Failed">Failed</Option>
+                  <Select
+                      allowClear
+                      defaultValue=""
+                      placeholder={intl.get('txs.status')}
+                      className="form-inline form-inverse"
+                      optionFilterProp="children"
+                      dropdownMatchSelectWidth={false}
+                      onChange={statusChange}
+                      onFocus={()=>{}}
+                      onBlur={()=>{}}
+                      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                    <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('txs.status')}</Select.Option>
+                    <Select.Option value="pending">{intl.get('txs.status_pending')}</Select.Option>
+                    <Select.Option value="success">{intl.get('txs.status_success')}</Select.Option>
+                    <Select.Option value="failed">{intl.get('txs.status_failed')}</Select.Option>
                   </Select>
                 </span>
                 <span>
-                <Select defaultValue="All types" dropdownMatchSelectWidth={false}>
-                  <Option value="all">All types</Option>
-                  <Option value="Pending">Send</Option>
-                  <Option value="Success">Receive</Option>
-                  <Option value="Failed">Enable</Option>
-                  <Option value="Failed">Convert</Option>
-                </Select>
+                  <Select
+                    allowClear
+                    onChange={typeChange}
+                    dropdownMatchSelectWidth={false}
+                    placeholder={intl.get('txs.type')}
+                    className="form-inline form-inverse"
+                  >
+                    {
+                      types.map((item,index)=>
+                        <Select.Option value={item.value} key={index}>{item.label}</Select.Option>
+                      )
+                    }
+                  </Select>
                 </span>
             </div>
         </div>
@@ -59,7 +93,13 @@ function ListBlock(props) {
                     </thead>
                     <tbody>
                         {
-                            list.items.map((item,index)=>
+                          list.loading &&
+                          <tr>
+                              <td colSpan="100"><Spin/></td>
+                          </tr>
+                        }
+                        {
+                          list.items.map((item,index)=>
                               <tr key={index}>
                                   <td>Receive LRC</td>
                                   <td>3 hour ago</td>
@@ -69,6 +109,12 @@ function ListBlock(props) {
                                   <td>→ 0xf1d48f1aaeba93</td>
                               </tr>
                             )
+                        }
+                        {
+                          !list.loading && list.items.length === 0 &&
+                          <tr>
+                              <td colSpan="100">{intl.get('txs.no_txs')}</td>
+                          </tr>
                         }
                         <tr>
                             <td>Receive LRC</td>

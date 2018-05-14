@@ -58,11 +58,11 @@ export default {
       const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
       if(socket){
         let new_payload = {page,filters,sort,socket,id}
-        yield put({type:'loadingChange',payload: {loading: true,loaded:false}})
+        yield put({type:'loadingChange',payload: {id,loading: true,loaded:false}})
         const res = yield call(apis.emitEvent, new_payload)
         if (res && res.items) {
-          yield put({type:'loadingChange',payload: {loading: false,loaded:true}})
-          yield put({type:'itemsChange',payload: {items:res.items}})
+          yield put({type:'loadingChange',payload: {id,loading: false,loaded:true}})
+          yield put({type:'itemsChange',payload: {id,items:res.items}})
         }
       }else{
         console.log('socket is not connected!')
