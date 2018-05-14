@@ -41,7 +41,7 @@ function Unlock(props) {
                                 </li>
                             </ul>
                         </div>
-                        <div className="tab-content">
+                        <div className="">
                             <Tabs defaultActiveKey="1" onChange={callback}>
                                 <TabPane tab="Generate Wallet" key="1"><Account.GenerateWallet /></TabPane>
                                 <TabPane tab="MetaMask" key="2"><Account.UnlockByMetaMask /></TabPane>

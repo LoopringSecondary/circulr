@@ -19,7 +19,7 @@ function TransferForm(props) {
             </Form>
             <div className="form-group form-group-md text-inverse">
                 <div className="form-control-static d-flex justify-content-between mr-0">
-                    <span>Gas Fee</span><span className="font-bold"><i className="icon-pencil gasfee" data-target="webuiPopover0"></i><span>0</span><span className="offset-md">0.00189 ETH ≈ $1.15</span></span>
+                    <span>Gas Fee</span><span className="font-bold"><i className="icon-pencil gasfee"></i><span>0</span><span className="offset-md">0.00189 ETH ≈ $1.15</span></span>
                 </div>
             </div>
             <Button type="primary" className="btn-block">Continue</Button>
