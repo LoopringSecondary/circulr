@@ -2,7 +2,6 @@ const namespace = 'modals'
 export default {
   namespace,
   state: {
-    current:[],
   },
   effects:{
     *changeModal({payload},{call, select,put}){
@@ -12,9 +11,6 @@ export default {
           ...payload,
         }
       })
-    },
-    *resetModal({payload},{call, select,put}){
-      // TODO
     },
     *showModal({payload},{call, select,put}){
       // yield put({type:'currentChange',payload})
@@ -27,7 +23,6 @@ export default {
       })
     },
     *hideModal({payload},{call, select,put}){
-      // yield put({type:'currentChange',payload})
       yield put({
         type:'modalChange',
         payload:{
@@ -35,17 +30,16 @@ export default {
           visible:false,
         }
       })
+      yield put({type:'resetModal',payload})
     },
-    *hideCurrentModal({payload},{call, select,put}){
-      const { current } = yield select(({ [namespace]:data }) => data )
+    *resetModal({payload},{call, select,put}){
       yield put({
         type:'modalChange',
         payload:{
-          id:current,
-          visible:true,
+          id:payload.id,
         }
       })
-    },
+    }
   },
   reducers: {
     modalChange(state, { payload }) {
@@ -58,13 +52,6 @@ export default {
         ...thisModal,
         ...payload,
        }
-      }
-    },
-    currentChange(state, { payload }) {
-      const { id:current } = payload
-      return {
-       ...state,
-       current:[current,...state.current],
       }
     },
   },
