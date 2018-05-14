@@ -23,7 +23,6 @@ export default {
    amountSlider:0,
    total:'',
    sliderMilliLrcFee:0,
-   lrcFee:0,
    timeToLivePatternSelect: 'easy',
    timeToLivePopularSetting: true,
    timeToLive:0,
@@ -99,7 +98,7 @@ export default {
       yield put({ type: 'amountSliderChange',payload:{amountSlider}});
       yield put({ type: 'amountChange' });
       yield put({ type: 'totalChange' });
-    }
+    },
   },
   reducers: {
     sideChange(state, action) {
@@ -203,7 +202,15 @@ export default {
           availableAmount
         }
       }
-    }
+    },
+    milliLrcFeeChange(state, action) {
+      const {payload} = action
+      let {milliLrcFee} = payload
+      return {
+        ...state,
+        sliderMilliLrcFee:milliLrcFee
+      }
+    },
   },
 };
 

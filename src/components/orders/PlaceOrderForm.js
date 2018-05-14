@@ -4,10 +4,12 @@ import intl from 'react-intl-universal';
 import config from 'common/config'
 import * as fm from 'LoopringJS/common/formatter'
 import * as orderFormatter from 'modules/orders/formatters'
+import {connect} from 'dva';
 
 class PlaceOrderForm extends React.Component {
 
   render() {
+    console.log('this.props', this.props)
     const {form, placeOrder} = this.props
 
     function sideChange(value) {
@@ -66,6 +68,16 @@ class PlaceOrderForm extends React.Component {
       placeOrder.amountSliderChangeEffects({amountSlider:e})
     }
 
+    function lrcFeeChange(v) {
+      placeOrder.milliLrcFeeChange({milliLrcFee:v})
+      // const amount = Number(form.getFieldValue("amount"))
+      // const price = Number(form.getFieldValue("price"))
+      // if(amount && price) {
+      //   const total = accMul(price, amount)
+      //   calculateLrcFee(total, milliLrcFee)
+      // }
+    }
+
     const marks = {
       0: '0',
       25: '25％',
@@ -79,7 +91,30 @@ class PlaceOrderForm extends React.Component {
       rules: []
     })(
       <Slider className="place-order-amount-percentage" min={0} max={100} marks={marks} onChange={amountSliderChange.bind(this)}
-              tipFormatter={null} disabled={placeOrder[placeOrder.side].availableAmount <= 0}/>
+              tipFormatter={null} disabled={fm.toNumber(placeOrder[placeOrder.side].availableAmount) <= 0}/>
+    )
+
+    const editLRCFee = (
+      <Popover overlayClassName="place-order-form-popover" title={<div className="pt5 pb5">{intl.get('trade.custom_lrc_fee_title')}</div>} content={
+        <div>
+          <div className="pb5 fs12">{intl.get('trade.current_lrc_fee_ratio')} : {placeOrder.sliderMilliLrcFee}‰</div>
+          <div className="pb15 fs12">{intl.get('trade.current_lrc_fee')} : {placeOrder.calculatedLrcFee} LRC</div>
+          {form.getFieldDecorator('lrcFeeSlider', {
+            initialValue: placeOrder.sliderMilliLrcFee,
+            rules: []
+          })(
+            <Slider min={1} max={50} step={1}
+                    marks={{
+                      1: intl.get('token.slow'),
+                      50: intl.get('token.fast')
+                    }}
+                    onChange={lrcFeeChange.bind(this)}
+            />
+          )}
+        </div>
+      } trigger="click">
+        <a className="fs12 pointer color-black-3">{intl.get('global.custom')}<Icon type="right" /></a>
+      </Popover>
     )
 
     return (
@@ -171,7 +206,13 @@ class PlaceOrderForm extends React.Component {
                 </div>
                 <div className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
-                    <span className="font-bold">LRC Fee <i className="icon-info tradingfeetip"></i></span><span><i className="icon-pencil tradingFee"></i><span>0</span><span className="offset-md">LRC (2‰)</span></span>
+                    <span className="font-bold">LRC Fee <i className="icon-info tradingfeetip"></i></span>
+                    <span>
+                      <i className="icon-pencil tradingFee"></i>
+                      <span>0</span>
+                      <span className="offset-md">LRC (2‰)</span>
+                      <span>{editLRCFee}</span>
+                    </span>
                   </div>
                 </div>
                 <div className="form-group mr-0">
@@ -192,17 +233,17 @@ class PlaceOrderForm extends React.Component {
 }
 
 export default Form.create({
-  mapPropsToFields(props) {
-    return {
-      amount: Form.createFormField(
-        props.placeOrder.amountInput
-      ),
-      amountSlider: Form.createFormField(
-        props.placeOrder.amountSlider
-      ),
-      price: Form.createFormField(
-        props.placeOrder.priceInput
-      ),
-    }
-  }
+  // mapPropsToFields(props) {
+  //   return {
+  //     amount: Form.createFormField(
+  //       props.placeOrder.amountInput
+  //     ),
+  //     amountSlider: Form.createFormField(
+  //       props.placeOrder.amountSlider
+  //     ),
+  //     price: Form.createFormField(
+  //       props.placeOrder.priceInput
+  //     ),
+  //   }
+  // }
 })(PlaceOrderForm)
