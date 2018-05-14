@@ -10,7 +10,7 @@ function Unlock(props) {
   }
   return (
         <Layout.LayoutHome className="h-full">
-                <div className="page body home">
+                <div className="body home">
                     <div className="home-content d-flex align-items-center justify-content-center open">
                         <div>
                             <h1>Generate Wallet  &  Unlock Wallet</h1>
@@ -41,24 +41,22 @@ function Unlock(props) {
                                 </li>
                             </ul>
                         </div>
-                        <Tabs defaultActiveKey="1" onChange={callback}>
-                            <TabPane tab="Generate Wallet" key="1"><Account.GenerateWallet /></TabPane>
-                            <TabPane tab="MetaMask" key="2"><Account.UnlockByMetaMask /></TabPane>
-                            <TabPane tab="Trezor" key="3"><Account.UnlockByTrezor /></TabPane>
-                            <TabPane tab="Ledger" key="4"><Account.UnlockByLedger /></TabPane>
-                            <TabPane tab="JSON" key="5"><Account.UnlockByKeystore /></TabPane>
-                            <TabPane tab="Mnemonic" key="6"><Account.UnlockByMnemonic /></TabPane>
-                            <TabPane tab="Private Key" key="7"><Account.UnlockByPrivateKey /></TabPane>
-                            <TabPane tab={<span><i className="icon-remove"></i></span>} ></TabPane>
-                        </Tabs>
-                        
-
+                        <div className="tab-content">
+                            <Tabs defaultActiveKey="1" onChange={callback}>
+                                <TabPane tab="Generate Wallet" key="1"><Account.GenerateWallet /></TabPane>
+                                <TabPane tab="MetaMask" key="2"><Account.UnlockByMetaMask /></TabPane>
+                                <TabPane tab="Trezor" key="3"><Account.UnlockByTrezor /></TabPane>
+                                <TabPane tab="Ledger" key="4"><Account.UnlockByLedger /></TabPane>
+                                <TabPane tab="JSON" key="5"><Account.UnlockByKeystore /></TabPane>
+                                <TabPane tab="Mnemonic" key="6"><Account.UnlockByMnemonic /></TabPane>
+                                <TabPane tab="Private Key" key="7"><Account.UnlockByPrivateKey /></TabPane>
+                                <TabPane tab={<span><i className="icon-remove"></i></span>} ></TabPane>
+                            </Tabs>
+                        </div>
                     </div>
                 </div>
                 <div className="overlay" data-overlay="54"></div>
-        </Layout.LayoutHome>
-
-        
+        </Layout.LayoutHome>      
   )
 }
 export default Unlock

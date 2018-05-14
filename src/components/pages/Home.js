@@ -3,8 +3,8 @@ import Layout from '../../layout';
 import Footer from '../../layout/Footer';
 function Home(props) {
   return (
-    <div>
-	    <div className="page body home">
+    <Layout.LayoutHome className="h-full">
+	    <div className="body home">
 	        <div className="home-content d-flex align-items-center justify-content-center">
 	            <div>
 	                <h1>Generate Wallet  &  Unlock Wallet</h1>
@@ -37,8 +37,9 @@ function Home(props) {
 	            </div>
 	        </div>
 	    </div>
+	    <div className="overlay" data-overlay="54"></div>
 	    <Footer />
-    </div>
+    </Layout.LayoutHome>
   )
 }
 export default Home
