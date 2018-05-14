@@ -13,8 +13,8 @@ function ListHeaderForm({className=''}){
 }
 function ListHeader2({orders}){
   return (
-    <div className="order-filter d-flex justify-content-between form-inline-inverse">
-        <div className="form-inline form-inverse d-flex justify-content-between">
+    <div className="order-filter d-flex justify-content-between">
+        <div className="form-inline form-dark d-flex justify-content-between">
             <span>
               <Select defaultValue="LRC-WETH" dropdownMatchSelectWidth={false}>
                   <Option value="LRC-WETH">LRC-WETH</Option>
