@@ -212,13 +212,13 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .range-inverse .range-progress>div { width: 25%; color: rgba(255, 255, 255, .54);}
 .token-last-quotes ul{margin:0;}
 .token-last-quotes ul>li>em{ display: block; font-style: normal; font-weight: 800; margin-top: 4px; }
-.token-last-quotes ul>li>small{ opacity: .54; font-size: 13px; font-weight: 500; }
+.token-last-quotes ul>li>small{ color:@text-color-dark-3;font-size: @font-size-base; }
 .token-last-quotes ul>li{ padding-left: 40px; font-weight: 400; }
 #back{ width: 40px; height: 40px; text-align: center; line-height: 40px; background: rgba(255, 255, 255, .07); color: rgba(255, 255, 255, .87) }
 #back i{ font-size: 32px; }
 #back:hover{background: rgba(255, 255, 255, .27); }
 .tradeHeaderEle{ display: flex; }
-.tradeHeaderEle .pair-select{ width: 140px; font-size: 18px; font-weight: 800; margin-left: 15px; }
+.tradeHeaderEle .pair-select{ width: 160px; font-size: 18px; font-weight: 800; margin-left: 15px; }
 .tradeHeaderEle .pair-select .caret{ position: relative; top: 2px; }
 .tradeHeaderEle .token-last-quotes{ margin-left: 15px;  }
 .pair-price{padding:5px 10px; border: 1px solid rgba(255, 255, 255, .07); margin: 10px 0 20px;}
@@ -246,11 +246,12 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .token-select .token-select-body .item li span:nth-child(1){ display: block; width: 90px; text-align: left; }
 .token-select .token-select-body .item li span:nth-child(2){ display: block; width: 90px; text-align: left; }
 .token-select .token-select-body .title{ height: 20px; color: rgba(0, 0, 0, .27); padding: 0 30px; font-weight: 800; line-height: 20px; }
-.trade-list .trade-list-header{ color: rgba(255, 255, 255, .54); line-height: 30px; display: flex; justify-content: space-between; padding: 0 20px; }
-.trade-list li{ display: flex; justify-content: space-between; padding: 0 20px; line-height: 24px; font-weight: 600; color: rgba(255, 255, 255, .54) }
+.trade-list .trade-list-header{ color: @text-color-dark-3; line-height: 30px; display: flex; justify-content: space-between; padding: 0 20px; }
+.trade-list li{ display: flex; justify-content: space-between; padding: 0 20px; line-height: 24px; font-weight: 600; color: @text-color-dark-2 }
 .trade-list li:hover{ background: rgba(255,255,255,.07) }
 .trade-list li>span{ display: block; width: 80px; }
 .trade-list li>span:nth-child(2){text-align: left;}
+.trade-list li>span:nth-child(3){text-align: right;}
 .trade-list .blockbar{ display: flex; position: absolute; bottom: 0; width: 100%; height: 50px; padding: 10px 20px; border-top: 1px solid rgba(255, 255, 255, .07); justify-content: space-between;font-size: 16px;}
 .trade-list .blockbar i{ position: relative; top: -2px; font-size: 16px; color: rgba(255,255,255,.54)}
 .trade-list .blockbar i:hover{color: rgba(255,255,255,.87)}

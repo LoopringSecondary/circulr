@@ -29,7 +29,7 @@ function ListBlock(props) {
               <input id="icon" />
           </div>
       </div>
-      <div className="token-list" style={{height: "100%",overflow: "hidden",paddingBottom: "211px"}}>
+      <div className="token-list text-color-dark-1" style={{height: "100%",overflow: "hidden",paddingBottom: "211px"}}>
           <div className="content-scroll">
               <div className="item">
                   <div className="sub">
