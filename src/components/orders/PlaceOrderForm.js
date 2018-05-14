@@ -8,8 +8,7 @@ import * as orderFormatter from 'modules/orders/formatters'
 class PlaceOrderForm extends React.Component {
 
   render() {
-    const placeOrder = this.props.placeOrder
-    const {form, side, left, right} = this.props
+    const {form, placeOrder} = this.props
 
     function sideChange(value) {
       placeOrder.sideChangeEffects({side:value})
