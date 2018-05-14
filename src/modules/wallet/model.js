@@ -20,12 +20,13 @@ export default {
   },
   reducers: {
     unlock(state, {payload}) {
-      const {address, unlockType, account} = payload;
+      const {address, unlockType, account,password} = payload;
       return {
         ...state,
         address,
         unlockType,
-        account
+        account,
+        password:password || state.password
       }
     },
     lock(state, {payload}) {
@@ -40,7 +41,7 @@ export default {
   },
   effects: {
     * unlockWallet({payload}, {put, call}) {
-      yield call(register, payload.address);
+      //yield call(register, {owner:payload.address});
       yield put({type: 'unlock', payload});
     },
     * unlockAddressWallet({payload}, {put}) {
