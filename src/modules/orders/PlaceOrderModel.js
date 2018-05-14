@@ -7,17 +7,17 @@ export default {
   namespace: MODULES,
   state: {
    sell:{
-     token:null,
+     token:{},
      availableAmount: 0,
    },
    buy:{
-     token:null,
+     token:{},
      availableAmount: 0,
    },
    side:'buy',
    pair:'LRC-WETH',
-   left: null,
-   right: null,
+   left: {},
+   right: {},
    priceInput: '0',
    amountInput:'0',
    amountSlider:0,
@@ -32,6 +32,9 @@ export default {
    loading: false,
   },
   effects:{
+    *init({ payload={} }, { put }) {
+       yield put({ type: 'pairChangeEffects',payload});
+    },
     *pairChangeEffects({ payload={} }, { put }) {
       let {pair} = payload
       if(pair) {
@@ -161,8 +164,8 @@ export default {
       return {
         ...state,
         pair,
-        left : pair.split('-')[0],
-        right : pair.split('-')[1],
+        // left : pair.split('-')[0],
+        // right : pair.split('-')[1],
       }
     },
     leftAndRightChange(state, action) {
