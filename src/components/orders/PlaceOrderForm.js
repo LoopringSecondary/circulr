@@ -9,9 +9,8 @@ import {connect} from 'dva';
 class PlaceOrderForm extends React.Component {
 
   render() {
-    console.log('this.props', this.props)
     const {form, placeOrder} = this.props
-    console.log('placeOrder',placeOrder)
+
     function sideChange(value) {
       placeOrder.sideChangeEffects({side:value})
     }
@@ -20,24 +19,6 @@ class PlaceOrderForm extends React.Component {
       const result = form.validateFields(["amount"], {force:true})
       return Number(value) > 0
     }
-
-    // function calculateLrcFee(total, milliLrcFee) {
-    //   const totalWorth = calculateWorthInLegalCurrency(tokenR, total)
-    //   if(totalWorth <= 0) {
-    //     calculatedLrcFee = 0
-    //     return
-    //   }
-    //   if (!milliLrcFee) {
-    //     milliLrcFee = Number(configs.defaultLrcFeePermillage)
-    //   }
-    //   let userSetLrcFeeInEth = calculateLrcFeeInEth(totalWorth, milliLrcFee)
-    //   const minimumLrcfeeInEth = configs.minimumLrcfeeInEth
-    //   if(userSetLrcFeeInEth >= minimumLrcfeeInEth){
-    //     calculatedLrcFee = calculateLrcFeeByEth(userSetLrcFeeInEth)
-    //   } else {
-    //     calculatedLrcFee = calculateLrcFeeByEth(minimumLrcfeeInEth)
-    //   }
-    // }
 
     function inputChange(type, e) {
       let price = 0, amount = 0
@@ -69,13 +50,7 @@ class PlaceOrderForm extends React.Component {
     }
 
     function lrcFeeChange(v) {
-      placeOrder.milliLrcFeeChange({milliLrcFee:v})
-      // const amount = Number(form.getFieldValue("amount"))
-      // const price = Number(form.getFieldValue("price"))
-      // if(amount && price) {
-      //   const total = accMul(price, amount)
-      //   calculateLrcFee(total, milliLrcFee)
-      // }
+      placeOrder.milliLrcFeeChangeEffects({milliLrcFee:v})
     }
 
     const marks = {
@@ -209,7 +184,7 @@ class PlaceOrderForm extends React.Component {
                     <span className="font-bold">LRC Fee <i className="icon-info tradingfeetip"></i></span>
                     <span>
                       <i className="icon-pencil tradingFee"></i>
-                      <span>0</span>
+                      <span>{placeOrder.lrcFee}</span>
                       <span className="offset-md">LRC (2‰)</span>
                       <span>{editLRCFee}</span>
                     </span>
