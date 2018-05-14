@@ -163,9 +163,7 @@ export default {
       const {pair} = action.payload
       return {
         ...state,
-        pair,
-        // left : pair.split('-')[0],
-        // right : pair.split('-')[1],
+        pair
       }
     },
     leftAndRightChange(state, action) {
