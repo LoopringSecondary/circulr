@@ -16,8 +16,8 @@ function TransferConfirm(props) {
             <li><span>订单失效时间</span><span>2018年5月15日 16:28</span></li>
         </ul>
        <div class="d-flex justify-content-between">
-       		<span><Button type="primary" className="btn-block btn-xlg btn-token">提交订单</Button></span>
-       		<span><Button type="secondary" className="btn-block btn-xlg btn-token">提交订单</Button></span>
+       		<span><Button type="secondary" className="btn-block btn-xlg btn-token">不，取消发送</Button></span>
+       		<span><Button type="primary" className="btn-block btn-xlg btn-token">马上发送</Button></span>
 
        </div>
 
