@@ -34,7 +34,7 @@ let FiltersForm = ({
 
   let formLayout = 'inline'
   return (
-      <div className="">
+      <div className="form-inline form-dark d-flex justify-content-between">
         <Form layout="inline">
             <Form.Item label={null} >
               {form.getFieldDecorator('market', {

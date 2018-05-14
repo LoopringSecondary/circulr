@@ -49,9 +49,9 @@ function Trade(props) {
   	            </div>
   	        </div>
   	        <div className="fulid-container" style={{marginLeft:"304px", marginRight: "304px", height: "100%" }}>
-  	            <div className="card h-full">
+  	            <div className="card dark h-full">
       	            <div style={{position: "relative", height: "60%", paddingTop:"50px", marginTop: "-50px" }}>
-        	              <div className="card-header bordered">
+        	              <div className="card-header card-header-dark bordered">
         		               <h4>Price Chart</h4>
         		            </div>
         		            <div className="market-chart" style={{height: "60%" }}>
@@ -62,7 +62,7 @@ function Trade(props) {
                          </div>
                     </div>
       	            <div style={{position: "relative", height: "40%", paddingTop:"50px"}}>
-          	            <Tabs defaultActiveKey="1" onChange={callback}>
+          	            <Tabs defaultActiveKey="1" onChange={callback}  type="card">
           	                <TabPane tab="Orders" key="1">
                               <Containers.Orders id="MyOpenOrders" alias="orders" >
                                 <Orders.ListMyOrders />
