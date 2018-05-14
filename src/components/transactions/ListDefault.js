@@ -22,7 +22,7 @@ function ListBlock(props) {
     <div>
         <div className="card-header bordered">
             <h4>Transactions</h4>
-            <div className="form-inline form-inverse">
+            <div className="form-inline form-dark">
                 <span>
                   <Select defaultValue="All Status" dropdownMatchSelectWidth={false} className="form-inline form-inverse">
                     <Option value="all">All Status</Option>
@@ -44,7 +44,7 @@ function ListBlock(props) {
         </div>
         <div style={{height: "100%", overflow: "hidden", padding:"0 0 60px"}}>
             <div className="content-scroll">
-                <table className="table table-striped table-inverse text-center text-left-col1 text-left-col2 text-right-last">
+                <table className="table table-striped table-dark text-center text-left-col1 text-left-col2 text-right-col4 text-right-last">
                     <col width="20%" />
                     <col width="15%" />
                     <col width="10%" />
@@ -67,7 +67,7 @@ function ListBlock(props) {
                             <td>3 hour ago</td>
                             <td>5241856</td>
                             <td className="text-right text-success">+100.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
@@ -75,7 +75,7 @@ function ListBlock(props) {
                             <td>4 hour ago</td>
                             <td>5241856</td>
                             <td className="text-right text-success">+100.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
@@ -83,7 +83,7 @@ function ListBlock(props) {
                             <td>12 hour ago</td>
                             <td>5241856</td>
                             <td className="text-right text-success">+100.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
@@ -91,63 +91,63 @@ function ListBlock(props) {
                             <td>14 hour ago</td>
                             <td>5241856</td>
                             <td className="text-right text-success">+100.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
                             <td>Send LRC</td>
                             <td>3 hour ago</td>
                             <td>5241856</td>
-                            <td className="text-right text-danger">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-warning"></i></td>
+                            <td className="text-right text-down">-100.00 LRC</td>
+                            <td className="text-center"><i className="text-color-dark icon-warning"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
                             <td>Convert LRC To WETH</td>
                             <td>3 hour ago</td>
                             <td>5241856</td>
-                            <td className="text-right text-danger">-100,000.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-right text-down">-100,000.00 LRC</td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
                             <td>Convert LRC To WETH</td>
                             <td>2/6/2018 10:00 PM</td>
                             <td>5241856</td>
-                            <td className="text-right text-danger">-100,000.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-clock"></i></td>
+                            <td className="text-right text-down">-100,000.00 LRC</td>
+                            <td className="text-center"><i className="text-color-dark icon-clock"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
                             <td>Send LRC</td>
                             <td>2/6/2018 10:00 AM</td>
                             <td>5241856</td>
-                            <td className="text-right text-danger">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-right text-down">-100.00 LRC</td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
                             <td>Send LRC</td>
                             <td>2/6/2018 10:00 AM</td>
                             <td>5241856</td>
-                            <td className="text-right text-danger">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-right text-down">-100.00 LRC</td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
                             <td>Send LRC</td>
                             <td>2/6/2018 10:00 AM</td>
                             <td>5241856</td>
-                            <td className="text-right text-danger">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-right text-down">-100.00 LRC</td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
                             <td>Send LRC</td>
                             <td>2/6/2018 10:00 AM</td>
                             <td>5241856</td>
-                            <td className="text-right text-danger">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-right text-down">-100.00 LRC</td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
@@ -155,47 +155,47 @@ function ListBlock(props) {
                             <td>14 hour ago</td>
                             <td>5241856</td>
                             <td className="text-right text-success">+100.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
                             <td>Send LRC</td>
                             <td>3 hour ago</td>
                             <td>5241856</td>
-                            <td className="text-right text-danger">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-right text-down">-100.00 LRC</td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
                             <td>Convert LRC To WETH</td>
                             <td>3 hour ago</td>
                             <td>5241856</td>
-                            <td className="text-right text-danger">-100,000.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-right text-down">-100,000.00 LRC</td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
                             <td>Convert LRC To WETH</td>
                             <td>2/6/2018 10:00 PM</td>
                             <td>5241856</td>
-                            <td className="text-right text-danger">-100,000.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-clock"></i></td>
+                            <td className="text-right text-down">-100,000.00 LRC</td>
+                            <td className="text-center"><i className="text-color-dark icon-clock"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
                             <td>Send LRC</td>
                             <td>2/6/2018 10:00 AM</td>
                             <td>5241856</td>
-                            <td className="text-right text-danger">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-right text-down">-100.00 LRC</td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                         <tr>
                             <td>Send LRC</td>
                             <td>2/6/2018 10:00 AM</td>
                             <td>5241856</td>
-                            <td className="text-right text-danger">-100.00 LRC</td>
-                            <td className="text-center"><i className="text-inverse icon-success"></i></td>
+                            <td className="text-right text-down">-100.00 LRC</td>
+                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
                             <td>→ 0xf1d48f1aaeba93</td>
                         </tr>
                     </tbody>

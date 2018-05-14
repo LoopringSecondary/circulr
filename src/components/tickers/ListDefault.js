@@ -24,7 +24,7 @@ function ListBlock(props) {
               <h4>Loopring DEX Markets</h4>
           </div>
           <div>
-              <table className="table table-striped table-inverse text-center text-left-col1 text-right-last" id="loopringMarket">
+              <table className="table table-striped table-dark text-center text-left-col1 text-right-last" id="loopringMarket">
                   <col width="35%" />
                   <thead>
                       <tr>
@@ -59,7 +59,7 @@ function ListBlock(props) {
         </div>
         <div style={{height: "100%",overflow: "hidden",padding:"0 0 485px",minHeight: "300px"}}>
             <div className="content-scroll">
-                <table className="table table-striped table-inverse text-center text-left-col1 text-right-last">
+                <table className="table table-striped table-dark text-center text-left-col1 text-right-last">
                     <col width="35%" />
                     <thead>
                         <tr>
