@@ -4,7 +4,6 @@ import intl from 'react-intl-universal';
 import config from 'common/config'
 import * as fm from 'LoopringJS/common/formatter'
 import * as orderFormatter from 'modules/orders/formatters'
-import {store} from '../../index'
 
 class PlaceOrderForm extends React.Component {
 
@@ -13,7 +12,7 @@ class PlaceOrderForm extends React.Component {
     const {form, side, left, right} = this.props
 
     function sideChange(value) {
-      store.dispatch({type:'placeOrder/sideChangeEffects', payload:{side:value}})
+      placeOrder.sideChangeEffects({side:value})
     }
 
     function validatePirce(value) {
@@ -47,14 +46,14 @@ class PlaceOrderForm extends React.Component {
         if(!orderFormatter.isValidAmount(price)) return false
         price = orderFormatter.formatPriceByMarket(price, marketConfig)
         //e.target.value = price
-        store.dispatch({type:'placeOrder/priceChangeEffects', payload:{priceInput:price}})
+        placeOrder.priceChangeEffects({priceInput:price})
       } else if (type === 'amount') {
         amount = e.target.value.toString()
         if(!orderFormatter.isValidAmount(amount)) return false
         const tokenRConfig = config.getTokenBySymbol(placeOrder.right.symbol)
         amount = orderFormatter.formatAmountByMarket(amount, tokenRConfig, marketConfig)
         //e.target.value = amount
-        store.dispatch({type:'placeOrder/amountChangeEffects', payload:{amountInput:amount}})
+        placeOrder.amountChangeEffects({amountInput:amount})
       }
       // //LRC Fee
       // calculateLrcFee(total, sliderMilliLrcFee)
@@ -65,7 +64,7 @@ class PlaceOrderForm extends React.Component {
     }
 
     function amountSliderChange(e) {
-      store.dispatch({type:'placeOrder/amountSliderChangeEffects', payload:{amountSlider:e}})
+      placeOrder.amountSliderChangeEffects({amountSlider:e})
     }
 
     const marks = {
