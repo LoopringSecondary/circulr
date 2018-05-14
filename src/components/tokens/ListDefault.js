@@ -17,7 +17,6 @@ function ListHeader({className=''}){
 }
 
 function ListTokensSidebar(props) {
-  console.log('ListTokensSidebar props',props)
   const {tokens}= props
   return (
     <div>

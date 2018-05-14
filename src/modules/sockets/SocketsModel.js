@@ -19,6 +19,7 @@ export default {
     'socket':null,
     'assets':{...initState},
     'prices':{...initState},
+    'transactions':{...initState},
   },
   effects: {
     *init({payload},{call,select,put}){

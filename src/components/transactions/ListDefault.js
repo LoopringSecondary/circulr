@@ -18,6 +18,8 @@ function ListHeader({className=''}){
 }
 
 function ListBlock(props) {
+  console.log('transactions props',props)
+  const {transactions:list}= props
   return (
     <div>
         <div className="card-header bordered">
@@ -45,12 +47,6 @@ function ListBlock(props) {
         <div style={{height: "100%", overflow: "hidden", padding:"0 0 60px"}}>
             <div className="content-scroll">
                 <table className="table table-striped table-dark text-center text-left-col1 text-left-col2 text-right-col4 text-right-last">
-                    <col width="20%" />
-                    <col width="15%" />
-                    <col width="10%" />
-                    <col width="20%" />
-                    <col width="15%" />
-                    <col width="20%" />
                     <thead>
                         <tr>
                             <th>Type</th>
@@ -62,14 +58,18 @@ function ListBlock(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Receive LRC</td>
-                            <td>3 hour ago</td>
-                            <td>5241856</td>
-                            <td className="text-right text-success">+100.00 LRC</td>
-                            <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                            <td>→ 0xf1d48f1aaeba93</td>
-                        </tr>
+                        {
+                            list.items.map((item,index)=>
+                              <tr key={index}>
+                                  <td>Receive LRC</td>
+                                  <td>3 hour ago</td>
+                                  <td>5241856</td>
+                                  <td className="text-right text-success">+100.00 LRC</td>
+                                  <td className="text-center"><i className="text-color-dark icon-success"></i></td>
+                                  <td>→ 0xf1d48f1aaeba93</td>
+                              </tr>
+                            )
+                        }
                         <tr>
                             <td>Receive LRC</td>
                             <td>4 hour ago</td>

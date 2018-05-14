@@ -22,7 +22,9 @@ function Wallet(props) {
         </div>
         <div className="m-container h-full" style={{marginLeft: "280px", marginRight: "454px"}} id="transactions">
             <div className="card dark h-full">
+              <Containers.Sockets id="transactions">
                 <Transactions.ListDefault />
+              </Containers.Sockets>
             </div>
         </div>
         <div className="side-fixed" style={{top:"0",right: "0",width: "450px",paddingTop:"74px"}} id="sideMarkets">

@@ -75,37 +75,88 @@ const marketcap_res = (payload)=>{
   })
 }
 
+const transactionHandler = (res)=>{
+  if (!res.error && res.data && res.data.data) {
+    return {
+      items: res.data.data,
+      page:{
+        total:res.data.total,
+        current:res.data.pageIndex,
+        size:res.data.pageSize,
+      }
+    }
+  }else{
+    return {
+      items:[],
+      page:{}
+    }
+  }
+}
+
+const transaction_req = (payload)=>{
+  const {socket,filters,page} = payload
+  const event = 'transaction_req'
+  const options = {
+    owner:window.config.address,
+    symbol:filters.token,
+    status:filters.status,
+    txType:filters.txType,
+    pageIndex:page.current,
+    pageSize:page.size || 10,
+  }
+  return new Promise((resolve,reject)=>{
+    socket.emit(event,JSON.stringify(options),(res)=>{
+      res = JSON.parse(res)
+      console.log(event,res)
+      resolve(transactionHandler(res))
+    })
+  })
+}
+const transaction_res = (payload)=>{
+  const {socket} = payload
+  const event = 'transaction_res'
+  return new Promise((resolve,reject)=>{
+    socket.on(event,(res)=>{
+      res = JSON.parse(res)
+      console.log(event,res)
+      resolve(marketcapHandler(res))
+    })
+  })
+}
+
 
 const emitEvent = (payload)=>{
   let {id} = payload
-  let promise = null
   switch (id) {
     case 'assets':
-      promise = balance_req(payload)
+      return balance_req(payload)
       break
     case 'prices':
-      promise = marketcap_req(payload)
+      return marketcap_req(payload)
+      break
+    case 'transactions':
+      return transaction_req(payload)
       break
     default:
       break
   }
-  return promise
 }
 
 const onEvent = (payload)=>{
   let {id} = payload
-  let promise = null
   switch (id) {
     case 'assets':
-      promise = balance_res(payload)
+      return balance_res(payload)
       break;
     case 'prices':
-      promise = marketcap_res(payload)
+      return marketcap_res(payload)
+      break;
+    case 'transactions':
+      return transaction_res(payload)
       break;
     default:
       break
   }
-  return promise
 }
 
 const connect = (payload)=>{
