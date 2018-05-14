@@ -12,8 +12,11 @@ export async function fetchList(payload){
       filter.pageSize = page.size
     }
     filter.delegateAddress = config.getDelegateAddress();
-    filter.owner = window.WALLET && window.WALLET.getAddress();
-    return getOrders(filter).then(res=>{
+    filter.owner = window.config.address
+    const host = window.config.rpc_host
+    console.log('getOrders req',filter)
+    return getOrders(host,filter).then(res=>{
+      console.log('getOrders res',res)
       if(!res.error && res.result.data){
         const orders = res.result.data.filter(order => config.getTokenBySymbol(order.originalOrder.tokenB) && config.getTokenBySymbol(order.originalOrder.tokenB).digits &&
           config.getTokenBySymbol(order.originalOrder.tokenS)&&  config.getTokenBySymbol(order.originalOrder.tokenS).digits &&

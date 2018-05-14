@@ -58,7 +58,7 @@ const marketcap_req = (payload)=>{
   return new Promise((resolve,reject)=>{
     socket.emit(event,JSON.stringify(options),(res)=>{
       res = JSON.parse(res)
-      console.log('emit res',event,res)
+      console.log(event,res)
       resolve(marketcapHandler(res))
     })
   })
@@ -69,7 +69,7 @@ const marketcap_res = (payload)=>{
   return new Promise((resolve,reject)=>{
     socket.on(event,(res)=>{
       res = JSON.parse(res)
-      console.log('on res',event,res)
+      console.log(event,res)
       resolve(marketcapHandler(res))
     })
   })
@@ -131,7 +131,6 @@ export default {
   onEvent,
   emitEvent,
   connect,
-  marketcap_req,
 }
 
 

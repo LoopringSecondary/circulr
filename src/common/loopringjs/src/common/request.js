@@ -1,4 +1,4 @@
-import fetch from 'whatwg-fetch';
+import fetch from 'dva/fetch';
 import crypto from 'crypto';
 
 const headers = {
@@ -7,6 +7,7 @@ const headers = {
 
 
 function checkStatus(response) {
+    return response
     if (response.status >= 200 && response.status < 300) {
         return response
     } else {

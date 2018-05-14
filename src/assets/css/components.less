@@ -1,31 +1,21 @@
-@text-color:rgba(0,0,0,87);
-@text-secondary:rgba(0,0,0,.54);
-@text-white:rgba(255,255,255,1);
-@text-white-secondary:rgba(255,255,255,.87);
-@text-white-mute:rgba(255,255,255,.54);
-@bg-white:rgba(255,255,255,1);
-@primary:rgba(0, 83, 184, 1);
-@transparent:transparent;
-@box-shadow-none:none;
-@height-auto:auto;
-@bd-0:0;
-@pd-0:0;
+@import 'variables.less';
 body{ font-size: 12px !important; }
 h1,h2,h3,h4,h5,h6{ margin:0 !important; }
-.ant-select{color: @text-white !important;}
-.ant-form-item{ margin-bottom:10px !important; }
-.ant-select-selection{ height: @height-auto !important; background-color: @transparent !important; border-width:@bd-0 !important; padding:@pd-0 !important; color: @text-white !important; }
-.ant-select-arrow{ color: @text-white-mute !important; }
-.ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active{ background: @bg-white !important; box-shadow:@box-shadow-none !important; color:@text-color !important; }
-.ant-select-open .ant-select-arrow,.ant-select-focused .ant-select-arrow{ color: @text-secondary !important; }
-.ant-select-focused.ant-select-open.ant-select-enabled{ background: @bg-white !important; }
-.ant-select-focused.ant-select-open.ant-select-enabled .ant-select-selection{ color:@text-color !important;}
-.ant-select-focused.ant-select-enabled .ant-select-focused .ant-select-selection{ background: @transparent !important; }
-.ant-select-focused.ant-select-enabled .ant-select-selection{ color: @text-white !important; }
-.ant-select-focused.ant-select-enabled .ant-select-arrow{ color: @text-white-secondary !important; }
-.ant-select-focused.ant-select-open.ant-select-enabled .ant-select-selection .ant-select-arrow{ color: @text-color !important; }
-.ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active{ background: @transparent !important; }
-.ant-select-dropdown{ margin-top:-10px !important; }
-.ant-select-dropdown-menu-item-selected{ background:@primary !important; color: @text-white !important }
-.ant-select-dropdown-menu-item:hover{ background: rgba(0, 83, 184, .54) !important;color: @text-white !important }
-.ant-tabs-bar{margin:0!important;}
+.form-inline.form-inverse .ant-select{color: @text-color !important;}
+.form-inline.form-inverse .ant-form-item{ margin-bottom:10px !important; }
+.form-inline.form-inverse .ant-select-selection{ height: @h-auto !important; background-color: @transparent !important; border-width:@bd-0 !important; padding:@pd-0 !important; color: @text-color !important; }
+.form-inline.form-inverse .ant-select-arrow{ color: @text-color-secondary !important; }
+.form-inline.form-inverse .ant-select-focused .ant-select-selection, .form-inline.form-inverse .ant-select-selection:focus, .form-inline.form-inverse .ant-select-selection:active{ background: @white !important; box-shadow:@box-shadow-none !important; color:@text-color !important; }
+.form-inline.form-inverse .ant-select-open .ant-select-arrow,.form-inline.form-inverse .ant-select-focused .ant-select-arrow{ color: @text-color-secondary !important; }
+.form-inline.form-inverse .ant-select-focused.ant-select-open.ant-select-enabled{ background: @white !important; }
+.form-inline.form-inverse .ant-select-focused.ant-select-open.ant-select-enabled .ant-select-selection{ color:@text-color !important;}
+.form-inline.form-inverse .ant-select-focused.ant-select-enabled .ant-select-focused .ant-select-selection{ background: @transparent !important; }
+.form-inline.form-inverse .ant-select-focused.ant-select-enabled .ant-select-selection{ color: @text-color-dark !important; }
+.form-inline.form-inverse .ant-select-focused.ant-select-enabled .ant-select-arrow{ color: @text-color-secondary-dark !important; }
+.form-inline.form-inverse .ant-select-focused.ant-select-open.ant-select-enabled .ant-select-selection .ant-select-arrow{ color: @text-color !important; }
+.form-inline.form-inverse .ant-select-focused .ant-select-selection, .form-inline.form-inverse .ant-select-selection:focus, .form-inline.form-inverse .ant-select-selection:active{ background: @transparent !important; }
+.form-inline.form-inverse .ant-select-dropdown{ margin-top:-10px !important; }
+.form-inline.form-inverse .ant-select-dropdown-menu-item-selected{ background:@blue-dark !important; color: @text-color !important }
+.form-inline.form-inverse .ant-select-dropdown-menu-item:hover{ background: rgba(0, 83, 184, .54) !important;color: @text-color !important }
+.form-inline.form-inverse .ant-tabs-bar{margin:0!important;}
+.ant-radio-wrapper>span+span{ display: block; width: 100% }

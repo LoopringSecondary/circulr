@@ -1,12 +1,10 @@
 import React from 'react'
 import {Button} from 'antd'
-import Orders from 'modules/orders/containers'
-import ModalContainer from 'modules/modals/container'
-import Sockets from 'modules/sockets/container'
-
+import { Containers } from 'modules'
+import UiContianers from 'LoopringUI/containers'
 const TestComp = (props)=>{
   const showModal =()=>{
-    window.STORE.dispatch({
+    props.dispatch({
       type:'modals/showModal',
       payload:{
         id:'test'
@@ -44,18 +42,44 @@ const TestScokets = (props)=>{
 const Test = (props)=>{
   return (
     <div>
-    	<Orders.ListContainer id="orders/trade">
+    	<Containers.Orders id="MyOpenOrders">
         <TestComp title="Orders List"/>
-      </Orders.ListContainer>
-      <Orders.PlaceOrderContainer>
+      </Containers.Orders>
+      <Containers.PlaceOrder>
     		<TestComp title="PlaceOrder Form" />
-      </Orders.PlaceOrderContainer>
-      <ModalContainer id="test">
-        <TestModal />
-      </ModalContainer>
-      <Sockets.SocketsContainer>
+      </Containers.PlaceOrder>
+      <Containers.Modals id="test">
+        <UiContianers.Modals>
+          <TestModal />
+        </UiContianers.Modals>
+      </Containers.Modals>
+      <Containers.Sockets>
         <TestScokets />
-      </Sockets.SocketsContainer>
+      </Containers.Sockets>
+
+      {
+        true &&
+        <Containers.Tabs id="MyOpenOrders" initState={{activeKey:'orders'}} render={(props)=>{
+            return (
+                <div>
+                  <div className="tabs-header">
+                    <span className="tab" onClick={props.MyOpenOrders.activeKeyChange.bind(this,{activeKey:'orders'})}>Orders</span>
+                    <span className="tab" onClick={props.MyOpenOrders.activeKeyChange.bind(this,{activeKey:'fills'})}>Fills</span>
+                  </div>
+                  <div className="tabs-body">
+                    {
+                      props.MyOpenOrders.activeKey === 'orders' &&
+                      <span className="">Orders</span>
+                    }
+                    {
+                      props.MyOpenOrders.activeKey === 'fills' &&
+                      <span className="">Fills</span>
+                    }
+                  </div>
+                </div>
+            )
+        }}/>
+      }
     </div>
   )
 }

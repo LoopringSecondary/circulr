@@ -21,18 +21,21 @@ export default {
     'prices':{...initState},
   },
   effects: {
-    *connect({payload},{call,select,put}){
-      const {url} = yield select(({ [namespace]:model }) => model )
-      const socket = yield call(apis.connect, {url})
-      yield put({type:'socketChange',payload:{socket}})
+    *init({payload},{call,select,put}){
+      yield put({type:'connect',payload})
     },
     *urlChange({payload},{call,select,put}){
       yield put({type:'urlChangeStart',payload})
       yield put({type:'connect',payload})
     },
+    *connect({payload},{call,select,put}){
+      const {url} = yield select(({ [namespace]:model }) => model )
+      const socket = yield call(apis.connect, {url})
+      yield put({type:'socketChange',payload:{socket}})
+    },
     *fetch({payload},{call,select,put}){
-      yield put({type:'emitEvent',payload})
       yield put({type:'onEvent',payload})
+      yield put({type:'emitEvent',payload})
     },
     *pageChange({payload},{call,select,put}){
       yield put({type:'pageChangeStart',payload})
@@ -52,48 +55,32 @@ export default {
     },
     *emitEvent({ payload={} },{call,select,put}) {
       let {id} = payload
-      const model = yield select(({ [namespace]:model }) => model )
-      const socket = model.socket
-      const {page,filters,sort} = model[id]
-      let new_payload = {page,filters,sort,socket,id}
-      const res = yield call(apis.emitEvent, new_payload)
-      if (res && res.items) {
-        yield put({
-          type: 'fetchSuccess',
-          payload: {
-            id:payload.id,
-            // page:{
-            //   ...page,
-            //   ...res.page,
-            // },
-            items:res.items,
-            loading: false,
-            loaded:true
-          },
-        })
+      const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
+      if(socket){
+        let new_payload = {page,filters,sort,socket,id}
+        yield put({type:'loadingChange',payload: {loading: true,loaded:false}})
+        const res = yield call(apis.emitEvent, new_payload)
+        if (res && res.items) {
+          yield put({type:'loadingChange',payload: {loading: false,loaded:true}})
+          yield put({type:'itemsChange',payload: {items:res.items}})
+        }
+      }else{
+        console.log('socket is not connected!')
       }
     },
     *onEvent({ payload={} }, { call, select, put }) {
       let {id} = payload
-      const model = yield select(({ [namespace]:model }) => model )
-      const socket = model.socket
-      const {page,filters,sort} = model[id]
-      let new_payload = {page,filters,sort,socket,id}
-      const res = yield call(apis.onEvent, new_payload)
-      if (res && res.items) {
-        yield put({
-          type: 'fetchSuccess',
-          payload: {
-            id:payload.id,
-            // page:{
-            //   ...page,
-            //   ...res.page,
-            // },
-            items:res.items,
-            loading: false,
-            loaded:true
-          },
-        })
+      const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
+      if(socket){
+        let new_payload = {page,filters,sort,socket,id}
+        yield put({type:'loadingChange',payload: {loading: true,loaded:false}})
+        const res = yield call(apis.onEvent, new_payload)
+        if (res && res.items) {
+          yield put({type:'loadingChange',payload: {loading: false,loaded:true}})
+          yield put({type:'itemsChange',payload: {items:res.items}})
+        }
+      }else{
+        console.log('socket is not connected!')
       }
     },
   },
@@ -112,18 +99,18 @@ export default {
         ...payload
       }
     },
-    fetchStart(state, action) {
+    loadingChange(state, action) {
       let {payload} = action
       let {id} = payload
       return {
         ...state,
         [id]:{
-          loading: true, loaded:false,
           ...state[id],
-        }
+          ...payload,
+        },
       }
     },
-    fetchSuccess(state, action) {
+    itemsChange(state, action) {
       let {payload} = action
       let {id} = payload
       return {

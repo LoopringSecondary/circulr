@@ -1,4 +1,5 @@
-®/*---------------------
+@import 'variables.less';
+/*---------------------
     header
 -----------------------*/
 header { position: fixed; z-index: 1000; width: 100%;   border-bottom: 4px solid rgb(8, 34, 63); } 
@@ -53,18 +54,18 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .icon-warning{ background: rgba(236, 68, 68, 1.0); text-align: center; color: #fff; border-radius: 60px; }
 .icon-clock{ background: rgba(255, 184, 50, 1.0); text-align: center; color: #fff; border-radius: 60px; }
 .icon-question,.icon-plus-circle{ color: rgba(255, 255, 255, 1.0); text-align: center; background: #fff; border-radius: 60px; }
-.loopring-dex{ border-top: 4px solid rgba(8, 34, 63, 1.0); border-bottom: 4px solid rgba(8, 34, 63, 1.0);}
+.loopring-dex{ border-top: 4px solid @blue-darker; border-bottom: 4px solid @blue-darker;}
 .side-fixed .table.table-inverse thead th,.side-fixed .table.table-inverse tbody td{ padding: 10px 20px; }
 .text-inverse[class^="icon-"],.text-inverse[class*=" icon-"] { border: 1px solid rgba(255, 255, 255, .27) !important; background: transparent !important; color: rgba(255, 255, 255, .27) !important; }
 .icon-favorites.active{ color: rgba(255, 184, 50, 1.0); }
 
 .home{ height: 100%; background-color: #08223F; background-image: url('../images/bg.png'); background-size: cover; }
-.home-content{ position: relative; z-index: 100; height: 100%; padding-bottom: 250px;}
+.home-content{ position: relative; z-index: 100; height: 100vh; padding-bottom: 120px;}
 .home-content.open,.home-content.open .tab-content{ display: block !important; }
 .home-content.open h1{ display: none }
-.home-content h1{ font-size: 32px; text-align: center; color:rgba(28, 96, 255, 1.0); margin-bottom: 100px;  }
+.home-content h1{ font-size: 32px; text-align: center; color:rgba(28, 96, 255, 1.0) !important; margin-bottom: 100px !important;  }
 .home-content.open .tab-card{ padding-top: 90px; }
-.home-content.open .tab-content{ width: 480px; margin: 0 auto; }
+.home-content.open .tab-content{ width: 620px; background: @blue-light; border:1px solid rgba(255,255,255,.07); padding: 50px;  margin: 0 auto;  }
 .home-content.open .tab-content h2{ font-size: 32px; margin: 40px 0 60px; }
 .home-content.open .tab-content li{ font-size: 16px; }
 .home-content .password-strong{ font-size: 14px; margin: 30px 0; }
@@ -118,7 +119,7 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .tool-sm [class*="icon-"] { color: rgba(0, 0, 0, .54); font-size: 14px; cursor: pointer }
 .tool-sm [class*="icon-"]:hover { color: #40D2C5; }
 .tool-sm .danger:hover { color: #E95A5A }
-.page,.body { min-height: -webkit-calc(100% - 0px); min-height: -moz-calc(100% - 0px); height: -moz-calc(100% - 0px); padding: 60px 0 0; }
+.page,.body { height: 100% }
 [data-overlay]::before { position: absolute; content: ''; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(8, 34, 63, .54);}
 [data-overlay="54"]::before { opacity: .54}
 .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
@@ -231,9 +232,9 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .token-tab li.buy.active a{background: rgba(54, 214, 88, 1.0);}
 .token-tab li.sell.active a{background: rgba(254, 79, 87, 1.0);}
 .balance{}
-.token-select{ }
-.token-select .token-select-header{ display: flex; justify-content: space-between; align-items: center; height: 70px; padding: 0 30px; border-bottom: 1px solid rgba(0, 0, 0, .07)}
-.token-select .token-select-header input{ border: 0; height: 70px; width: 100%; padding-right: 60px; font-size: 20px; font-weight: 800; }
+.token-select{background: #fff; color:rgba(0,0,0,.87);}
+.token-select .token-select-header{ display: flex; justify-content: space-between; align-items: center; height: 71px; padding: 0 30px; border-bottom: 1px solid rgba(0, 0, 0, .07)}
+.token-select .token-select-header input{ border: 0; height: 70px; width: 100%; padding-right: 60px; font-size: 20px; font-weight: 800; vertical-align: top; }
 .token-select .token-select-header input:focus{ outline: 0; }
 .token-select .icon-star,.token-select .token-select-header h2{ font-size: 18px;}
 .token-select .token-select-body{ padding:20px 0  }
@@ -259,9 +260,9 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .order-filter{ border-bottom: 1px solid rgba(255, 255, 255, .07); padding: 10px 20px; }
 .market-chart{ border-bottom: 4px solid rgb(8,34,63) }
 .market-chart img{ width: 100%; height: 100%; }
-#account{ position: fixed; top: 0; right: -300px; z-index: 1000; width: 300px; height: 100%; -webkit-transition: right .3s; transition: right .3s; transition-delay: 0.2s;}
-#account.open { right: 0; }
-.account-side{ position: absolute; top: 0; right: 0; z-index: 2000; width: 300px; height: 100%; background: rgba(0,83,184,1); padding: 40px 0; text-align: center }
+// #account{ position: fixed; top: 0; right: -300px; z-index: 1000; width: 300px; height: 100%; -webkit-transition: right .3s; transition: right .3s; transition-delay: 0.2s;}
+// #account.open { right: 0; }
+.account-side{ position: absolute; top: 0; /*right: 0;*/ z-index: 2000; width: 300px; height: 100%; background: @blue-light; padding: 40px 0; text-align: center }
 .account-side .poweroff{ display: inline-block;  }
 .account-side .poweroff h5{ font-size: 14px; font-weight: normal; margin-top: 10px; }
 .account-side .icon-unlock i{ font-size: 32px; }
@@ -269,7 +270,7 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .account-side .address{  }
 .account-side .address .text{ display: inline-block; width: 200px; font-size: 12px; word-break: break-word; }
 .account-side .address .btn{ width: 200px; height: 40px; border: 1px solid rgba(255,255,255,1); background: transparent; color: rgba(255,255,255,1); font-size: 16px; font-weight: bold; }
-.account-side .address .btn:hover{ background: rgba(255,255,255,1); color: rgba(0,83,184,1); }
+.account-side .address .btn:hover{ background: rgba(255,255,255,1); color: @blue-light; }
 .account-side .menu{}
 .account-side .menu li{ height: 50px; line-height: 50px; text-align: center; list-style: none; font-size: 15px;  cursor: pointer }
 .account-side .menu li.active,.account-side .menu li:hover,.account-side .menu li.active:hover{ background: rgba(255,255,255,.07); font-weight: 900; }
@@ -283,9 +284,8 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
   100% { right: 0; }
 }
 
-
 .sidebar{ width: 450px !important; }
-.sidebar .webui-popover{ position: fixed; z-index: 10000; top: 0 !important; bottom: 0 !important; left: auto !important; right: 0; width: 450px !important; height: 100%; background: rgba(0,83,184,1);  -webkit-transform: translate(100%, 0) !important; transform: translate(100%, 0) !important; -webkit-transition: .5s; transition: .5s; color: rgba(255,255,255,1); }
+.sidebar .webui-popover{ position: fixed; z-index: 10000; top: 0 !important; bottom: 0 !important; left: auto !important; right: 0; width: 450px !important; height: 100%; background: @blue-light;  -webkit-transform: translate(100%, 0) !important; transform: translate(100%, 0) !important; -webkit-transition: .5s; transition: .5s; color: rgba(255,255,255,1); }
 .sidebar .webui-popover.in{  -webkit-transform: translate(100%, 0) !important; transform: translate(0, 0) !important }
 .sidebar .webui-popover .tabs a{ color: rgba(255,255,255,.54); }
 .sidebar .webui-popover .tabs li.active a{ color: rgba(255,255,255,1); }
@@ -293,3 +293,5 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .sidebar-header h3{ font-size: 18px; color: rgba(255,255,255,1); }
 .sidebar .webui-popover .webui-popover-content{padding: 50px;}
 
+.Receive-qrcode{ text-align:center; margin:15px; }
+.Receive-qrcode img{ padding: 20px; width: 160px; height: 160px; background: rgba(255,255,255,1); }

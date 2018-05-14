@@ -3,8 +3,14 @@ import Orders from '../orders'
 import Fills from '../fills'
 import Charts from '../charts'
 import { Tabs } from 'antd';
+import { Containers } from 'modules';
 
 function Trade(props) {
+  const { children, match } = props
+  // let pair = match.params.pair || window.STORAGE.markets.getCurrent() || 'LRC-WETH'
+  let pair = match.params.pair || 'LRC-WETH'
+  if(pair.indexOf('-') < 0){ }
+  // TODO if market is not support or goto some route
   const TabPane = Tabs.TabPane;
   function callback(key) {
     console.log(key);
@@ -31,7 +37,9 @@ function Trade(props) {
         </header>
   	    <div className="side-fixed" style={{ top:"0", left:"0", width:"280px", paddingTop:"74px" }}>
               <div className="card h-full">
-              <Orders.PlaceOrderForm />
+                <Containers.PlaceOrder initState={{pair:pair}}>
+                  <Orders.PlaceOrderForm />
+                </Containers.PlaceOrder>
               </div>
   	    </div>
   	    <div className="m-container h-full relative" style={{marginLeft: "284px"}}>
@@ -55,13 +63,19 @@ function Trade(props) {
                     </div>
       	            <div style={{position: "relative", height: "40%", paddingTop:"50px"}}>
           	            <Tabs defaultActiveKey="1" onChange={callback}>
-          	                <TabPane tab="Orders" key="1"><Orders.ListDefault /></TabPane>
-          	                <TabPane tab="Fill" key="2"><Fills.ListDefault /></TabPane>
+          	                <TabPane tab="Orders" key="1">
+                              <Containers.Orders id="MyOpenOrders" alias="orders" >
+                                <Orders.ListMyOrders />
+                              </Containers.Orders>
+                            </TabPane>
+          	                <TabPane tab="Fill" key="2">
+                              <Fills.ListDefault />
+                            </TabPane>
           	            </Tabs>
       	            </div>
   	            </div>
-    		        <div className="side" style={{top:"74px", right:"0", width: "300px"}}>          
-    		            <Fills.ListTradesHistory />    
+    		        <div className="side" style={{top:"74px", right:"0", width: "300px"}}>
+    		            <Fills.ListTradesHistory />
     		        </div>
   	        </div>
         </div>
