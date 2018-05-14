@@ -1,8 +1,8 @@
 import config from 'common/config'
 import * as fm from 'LoopringJS/common/formatter'
 import * as orderFormatter from './formatters'
-
 const MODULES = 'placeOrder'
+
 export default {
   namespace: MODULES,
   state: {

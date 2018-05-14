@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Orders from 'modules/orders/containers'
+import { Containers } from 'modules'
 import PlaceOrderForm from '../orders/PlaceOrderForm'
 
 const Test = ({dispatch})=>{
@@ -13,9 +13,9 @@ const Test = ({dispatch})=>{
 
   return (
     <div>
-    	<Orders.PlaceOrderContainer>
+      <Containers.PlaceOrder>
         <PlaceOrderForm />
-      </Orders.PlaceOrderContainer>
+      </Containers.PlaceOrder>
     </div>
   )
 }

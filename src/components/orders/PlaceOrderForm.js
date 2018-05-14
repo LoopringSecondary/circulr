@@ -4,6 +4,7 @@ import intl from 'react-intl-universal';
 import config from 'common/config'
 import * as fm from 'LoopringJS/common/formatter'
 import * as orderFormatter from 'modules/orders/formatters'
+import {store} from '../../index'
 
 class PlaceOrderForm extends React.Component {
 
@@ -12,7 +13,7 @@ class PlaceOrderForm extends React.Component {
     const {form, side, left, right} = this.props
 
     function sideChange(value) {
-      window.STORE.dispatch({type:'placeOrder/sideChangeEffects', payload:{side:value}})
+      store.dispatch({type:'placeOrder/sideChangeEffects', payload:{side:value}})
     }
 
     function validatePirce(value) {
@@ -46,14 +47,14 @@ class PlaceOrderForm extends React.Component {
         if(!orderFormatter.isValidAmount(price)) return false
         price = orderFormatter.formatPriceByMarket(price, marketConfig)
         //e.target.value = price
-        window.STORE.dispatch({type:'placeOrder/priceChangeEffects', payload:{priceInput:price}})
+        store.dispatch({type:'placeOrder/priceChangeEffects', payload:{priceInput:price}})
       } else if (type === 'amount') {
         amount = e.target.value.toString()
         if(!orderFormatter.isValidAmount(amount)) return false
         const tokenRConfig = config.getTokenBySymbol(state.right.symbol)
         amount = orderFormatter.formatAmountByMarket(amount, tokenRConfig, marketConfig)
         //e.target.value = amount
-        window.STORE.dispatch({type:'placeOrder/amountChangeEffects', payload:{amountInput:amount}})
+        store.dispatch({type:'placeOrder/amountChangeEffects', payload:{amountInput:amount}})
       }
       // //LRC Fee
       // calculateLrcFee(total, sliderMilliLrcFee)
@@ -64,7 +65,7 @@ class PlaceOrderForm extends React.Component {
     }
 
     function amountSliderChange(e) {
-      window.STORE.dispatch({type:'placeOrder/amountSliderChangeEffects', payload:{amountSlider:e}})
+      store.dispatch({type:'placeOrder/amountSliderChangeEffects', payload:{amountSlider:e}})
     }
 
     const marks = {

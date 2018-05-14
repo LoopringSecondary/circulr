@@ -231,9 +231,9 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .token-tab li.buy.active a{background: rgba(54, 214, 88, 1.0);}
 .token-tab li.sell.active a{background: rgba(254, 79, 87, 1.0);}
 .balance{}
-.token-select{ }
-.token-select .token-select-header{ display: flex; justify-content: space-between; align-items: center; height: 70px; padding: 0 30px; border-bottom: 1px solid rgba(0, 0, 0, .07)}
-.token-select .token-select-header input{ border: 0; height: 70px; width: 100%; padding-right: 60px; font-size: 20px; font-weight: 800; }
+.token-select{background: #fff; color:rgba(0,0,0,.87);}
+.token-select .token-select-header{ display: flex; justify-content: space-between; align-items: center; height: 71px; padding: 0 30px; border-bottom: 1px solid rgba(0, 0, 0, .07)}
+.token-select .token-select-header input{ border: 0; height: 70px; width: 100%; padding-right: 60px; font-size: 20px; font-weight: 800; vertical-align: top; }
 .token-select .token-select-header input:focus{ outline: 0; }
 .token-select .icon-star,.token-select .token-select-header h2{ font-size: 18px;}
 .token-select .token-select-body{ padding:20px 0  }
@@ -259,9 +259,9 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .order-filter{ border-bottom: 1px solid rgba(255, 255, 255, .07); padding: 10px 20px; }
 .market-chart{ border-bottom: 4px solid rgb(8,34,63) }
 .market-chart img{ width: 100%; height: 100%; }
-#account{ position: fixed; top: 0; right: -300px; z-index: 1000; width: 300px; height: 100%; -webkit-transition: right .3s; transition: right .3s; transition-delay: 0.2s;}
-#account.open { right: 0; }
-.account-side{ position: absolute; top: 0; right: 0; z-index: 2000; width: 300px; height: 100%; background: rgba(0,83,184,1); padding: 40px 0; text-align: center }
+// #account{ position: fixed; top: 0; right: -300px; z-index: 1000; width: 300px; height: 100%; -webkit-transition: right .3s; transition: right .3s; transition-delay: 0.2s;}
+// #account.open { right: 0; }
+.account-side{ position: absolute; top: 0; /*right: 0;*/ z-index: 2000; width: 300px; height: 100%; background: rgba(0,83,184,1); padding: 40px 0; text-align: center }
 .account-side .poweroff{ display: inline-block;  }
 .account-side .poweroff h5{ font-size: 14px; font-weight: normal; margin-top: 10px; }
 .account-side .icon-unlock i{ font-size: 32px; }
@@ -283,7 +283,6 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
   100% { right: 0; }
 }
 
-
 .sidebar{ width: 450px !important; }
 .sidebar .webui-popover{ position: fixed; z-index: 10000; top: 0 !important; bottom: 0 !important; left: auto !important; right: 0; width: 450px !important; height: 100%; background: rgba(0,83,184,1);  -webkit-transform: translate(100%, 0) !important; transform: translate(100%, 0) !important; -webkit-transition: .5s; transition: .5s; color: rgba(255,255,255,1); }
 .sidebar .webui-popover.in{  -webkit-transform: translate(100%, 0) !important; transform: translate(0, 0) !important }
@@ -293,3 +292,5 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .sidebar-header h3{ font-size: 18px; color: rgba(255,255,255,1); }
 .sidebar .webui-popover .webui-popover-content{padding: 50px;}
 
+.Receive-qrcode{ text-align:center; margin:15px; }
+.Receive-qrcode img{ padding: 20px; width: 160px; height: 160px; background: rgba(255,255,255,1); }

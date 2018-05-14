@@ -334,7 +334,12 @@ h3.section-title { font-size: 18px; font-weight: bold; line-height: 50px; }
 .list.bordered li:first-child { border-top-left-radius: 3px; border-top-right-radius: 3px; }
 .list.bordered li { padding: 5px 15px }
 .list.bordered.list-sm li { padding: 0 15px; }
-
+.listgroup .item{ display: flex; justify-content: space-between; align-items: center; }
+.listgroup.prefix .item>div:nth-child(1){ display: inline-flex; justify-content: space-between; align-items: center;}
+.listgroup.prefix i{ margin-right: 10px; }
+.listgroup.prefix h3{ font-size:14px; font-weight: bold }
+.listgroup p{ font-size:12px; opacity: 0.54}
+.listgroup .icon-chevron-right,.list .icon-chevron-right{ font-size: 18px; }
 /* table */
 .table.table-inverse { background: transparent; }
 .table.table-inverse thead th { color: rgba(255, 255, 255, .27) }

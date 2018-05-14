@@ -3,6 +3,7 @@ import Orders from '../orders'
 import Fills from '../fills'
 import Charts from '../charts'
 import { Tabs } from 'antd';
+import { Containers } from 'modules';
 
 function Trade(props) {
   const TabPane = Tabs.TabPane;
@@ -55,13 +56,19 @@ function Trade(props) {
                     </div>
       	            <div style={{position: "relative", height: "40%", paddingTop:"50px"}}>
           	            <Tabs defaultActiveKey="1" onChange={callback}>
-          	                <TabPane tab="Orders" key="1"><Orders.ListDefault /></TabPane>
-          	                <TabPane tab="Fill" key="2"><Fills.ListDefault /></TabPane>
+          	                <TabPane tab="Orders" key="1">
+                              <Containers.Orders id="MyOpenOrders" alias="orders" >
+                                <Orders.ListMyOrders />
+                              </Containers.Orders>
+                            </TabPane>
+          	                <TabPane tab="Fill" key="2">
+                              <Fills.ListDefault />
+                            </TabPane>
           	            </Tabs>
       	            </div>
   	            </div>
-    		        <div className="side" style={{top:"74px", right:"0", width: "300px"}}>          
-    		            <Fills.ListTradesHistory />    
+    		        <div className="side" style={{top:"74px", right:"0", width: "300px"}}>
+    		            <Fills.ListTradesHistory />
     		        </div>
   	        </div>
         </div>

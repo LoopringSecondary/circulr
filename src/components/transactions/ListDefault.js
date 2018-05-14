@@ -22,9 +22,9 @@ function ListBlock(props) {
     <div>
         <div className="card-header bordered">
             <h4>Transactions</h4>
-            <div className="form-inline-inverse">
+            <div className="form-inline form-inverse">
                 <span>
-                  <Select defaultValue="All Status" dropdownMatchSelectWidth={false}>
+                  <Select defaultValue="All Status" dropdownMatchSelectWidth={false} className="form-inline form-inverse">
                     <Option value="all">All Status</Option>
                     <Option value="Pending">Pending</Option>
                     <Option value="Success">Success</Option>
