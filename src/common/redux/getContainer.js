@@ -6,13 +6,6 @@ const getWrapper = (namespace,keys)=>{
   return class Wrapper extends React.Component {
     constructor(props){
       super(props)
-      if(props[namespace]){
-          const initState = props.initState || {}
-          props.dispatch({
-            type:`${namespace}/init`,
-            payload:{...initState,id:props.id}
-          })
-      }
     }
     shouldComponentUpdate(nextProps, nextState){
       const { id } = this.props
@@ -27,12 +20,16 @@ const getWrapper = (namespace,keys)=>{
       }
     }
     componentDidMount() {
-      // TODO
+      if(this.props[namespace] && this.props.actions.init){
+        const initState = this.props.initState || {}
+        this.props.actions.init({...initState,id:this.props.id})
+      }
     }
     render() {
       const { children,dispatch,[namespace]:data,id,alias=false,render,...rest} = this.props
+      delete rest.actions
       const actionCreators = getActionCreators({namespace,keys,id})
-      const actions = bindActionCreators(actionCreators,dispatch)
+      const actions = bindActionCreators(actionCreators, dispatch)
       const thisData = data[id] || {}
       let childProps = {}
       if(alias){
@@ -86,13 +83,11 @@ export const getContainer = ({model,path=''})=>{
   const reducersKeys = Object.keys(model.reducers || {})
   const effectsKeys = Object.keys(model.effects || {})
   let keys = [...reducersKeys,...effectsKeys]
-  // keys = keys.map(key=>key.replace(`${namespace}/`,''))
-  // if(!path){
-  //   path = namespace
-  // }else{
-  //   // flat nest
-  // }
-  return connect(({[namespace]:value})=>({[namespace]:value}))(getWrapper(namespace,keys))
+  const actionCreators = getActionCreators({namespace,keys})
+  return connect(
+    ({[namespace]:value})=>({[namespace]:value}),
+    dispatch => ({actions: bindActionCreators(actionCreators, dispatch),dispatch})
+  )(getWrapper(namespace,keys))
 }
 
 export const getContainers =  models => {

@@ -12,7 +12,7 @@ export default {
   Trade,
   Wallet,
   Test,
-  WalletTest
+  WalletTest,
   TestTrade,
   Unlock,
 }
