@@ -29,7 +29,7 @@ const getTypes = (token)=>{
 }
 
 function ListTransaction(props) {
-  console.log(props.id,'ListTransaction component render')
+  console.log('ListTransaction component render')
   const {transaction:list}= props
   const statusChange = (value)=>{
     list.filtersChange({status:value})
@@ -70,6 +70,7 @@ function ListTransaction(props) {
                     dropdownMatchSelectWidth={false}
                     placeholder={intl.get('txs.type')}
                     className="form-inline form-inverse"
+                    defaultValue=""
                   >
                     {
                       types.map((item,index)=>

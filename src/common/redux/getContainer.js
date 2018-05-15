@@ -45,7 +45,6 @@ const getWrapper = (namespace,keys)=>{
       }else if(id){
         childProps = {
           ...rest,
-          id, // for wrapper
           [id]:{
             ...thisData,
             ...actions,
@@ -53,7 +52,7 @@ const getWrapper = (namespace,keys)=>{
           dispatch,
         }
       }else{
-         childProps = {
+        childProps = {
           ...rest,
           [namespace]:{
             ...data,
