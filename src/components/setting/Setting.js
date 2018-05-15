@@ -12,20 +12,20 @@ function Setting(props) {
   return (
     <div>
 	    <div className="popover-content">
-	        <div className="sidebar-header">
-	            <h3>Settings</h3>
-	        </div>
-	        <Tabs defaultActiveKey="1" onChange={callback}>
-                <TabPane tab="Preferences" key="1">
-                	<Perfenrence />
-                </TabPane>
-                <TabPane tab="Trading" key="2">
-                	<Trade />
-                </TabPane>
-                <TabPane tab="Relays" key="3">
-                	<Relay />
-                </TabPane>
-            </Tabs>
+        <div className="sidebar-header">
+          <h3>Settings</h3>
+        </div>
+        <Tabs defaultActiveKey="1" onChange={callback}>
+          <TabPane tab="Preferences" key="1">
+            <Perfenrence />
+          </TabPane>
+          <TabPane tab="Trading" key="2">
+            <Trade />
+          </TabPane>
+          <TabPane tab="Relays" key="3">
+            <Relay />
+          </TabPane>
+        </Tabs>
 	    </div>
     </div>
   )
