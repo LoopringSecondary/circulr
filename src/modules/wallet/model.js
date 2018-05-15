@@ -9,6 +9,9 @@ import {
   TrezorAccount,
   LedgerAccount
 } from "LoopringJS/ethereum/account";
+import {mnemonictoPrivatekey} from "LoopringJS/ethereum/mnemonic";
+import {formatKey} from "LoopringJS/common/formatter";
+
 
 export default {
   namespace: 'wallet',
@@ -37,6 +40,13 @@ export default {
         password: "",
         account: null
       }
+    },
+    setPassword(state, {payload}) {
+      const {password} = payload;
+      return {
+        ...state,
+        password
+      }
     }
   },
   effects: {
@@ -54,7 +64,7 @@ export default {
         const account = fromKeystore(keystore, password);
         const address = account.getAddress();
         const unlockType = 'keystore';
-        yield put({type: 'unlockWallet', payload: {address, unlockType, account, password}})
+        yield put({type: 'unlockWallet', payload: {address, unlockType, account, password}});
         cb()
       } catch (e) {
         cb(e)
@@ -65,7 +75,7 @@ export default {
       const account = fromMnemonic(mnemonic, dpath, password);
       const address = account.getAddress();
       const unlockType = 'mnemonic';
-      yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
+      yield put({type: 'unlockWallet', payload: {address, unlockType, account, password}});
     },
     * unlockPrivateKeyWallet({payload}, {put}) {
       const {privateKey} = payload;
@@ -96,8 +106,14 @@ export default {
       yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
     },
     * createWallet({payload}, {put}) {
+      const {password, cb} = payload;
       const mnemonic = createMnemonic();
-      put({type: "unlockMnemonicWallet", payload: {mnemonic, dpath: path}})
+      const privateKey = formatKey(mnemonictoPrivatekey(mnemonic, null, path));
+      const account = fromPrivateKey(privateKey);
+      const address = account.getAddress();
+      const unlockType = 'privateKey';
+      yield put({type: "unlockWallet", payload: {address, unlockType, account,password}});
+      cb({mnemonic, privateKey, keystore: account.toV3Keystore(password),address});
     },
     * signMessage({payload}, {select}) {
       const {account, unlockType} = yield select((state) => state.wallet);
