@@ -230,6 +230,23 @@ class PlaceOrderForm extends React.Component {
       </Popover>
     )
 
+    let ttlInSecond = 0, ttlShow = ''
+    if(placeOrder.timeToLivePatternSelect === 'easy') {
+      const ttl = Number(placeOrder.timeToLive)//Number(settings.trading.timeToLive)
+      const unit = placeOrder.timeToLiveUnit //settings.trading.timeToLiveUnit
+      switch(unit){
+        case 'minute': ttlInSecond = ttl * 60 ; ttlShow = `${ttl} ${intl.get('trade.minute')}`; break;
+        case 'hour': ttlInSecond = ttl * 3600 ; ttlShow = `${ttl} ${intl.get('trade.hour')}`; break;
+        case 'day': ttlInSecond = ttl * 86400; ttlShow = `${ttl} ${intl.get('trade.day')}`; break;
+        case 'week': ttlInSecond = ttl * 7 * 86400; ttlShow = `${ttl} ${intl.get('trade.week')}`; break;
+        case 'month': ttlInSecond = ttl * 30 * 86400; ttlShow = `${ttl} ${intl.get('trade.month')}`; break;
+      }
+    } else {
+      if(placeOrder.timeToLiveStart && placeOrder.timeToLiveEnd) {
+        ttlShow = `${placeOrder.timeToLiveStart.format("lll")} ~ ${placeOrder.timeToLiveEnd.format("lll")}`
+      }
+    }
+
     return (
       <div>
         <div className="card-body form-inverse">
@@ -322,8 +339,8 @@ class PlaceOrderForm extends React.Component {
                     <span className="font-bold">LRC Fee <i className="icon-info tradingfeetip"></i></span>
                     <span>
                       <span>{editLRCFee}</span>
-                      <span>{placeOrder.lrcFee}</span>
-                      <span className="offset-md">LRC (2‰)</span>
+                      <span></span>
+                      <span className="offset-md">{placeOrder.lrcFee}LRC ({placeOrder.sliderMilliLrcFee}‰)</span>
                     </span>
                   </div>
                 </div>
@@ -332,8 +349,7 @@ class PlaceOrderForm extends React.Component {
                     <span className="font-bold">Time to live <i className="icon-info"></i></span>
                     <span>
                       <span>{editOrderTTLPattern}</span>
-                      <span>1</span>
-                      <span className="offset-md">Day</span>
+                      <span className="offset-md">{ttlShow}</span>
                     </span>
                   </div>
                 </div>
