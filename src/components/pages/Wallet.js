@@ -18,7 +18,9 @@ function Wallet(props) {
             <div className="loopring-brand"><img src={require('../../assets/images/logo.png')} className="img" /></div>
               <Containers.Tokens>
                   <Containers.Sockets id="balance">
-                    <Tokens.ListDefault />
+                    <Containers.Sockets id="marketcap">
+                      <Tokens.ListDefault />
+                    </Containers.Sockets>
                   </Containers.Sockets>
               </Containers.Tokens>
         </div>

@@ -101,15 +101,11 @@ function ListTokensSidebar(props) {
                   <Tooltip title={intl.get('tokens.hide_small_balances')}>
                     {
                       filters.ifHideSmallBalance &&
-                      <Icon onClick={toggleSmallBalance.bind(this)} className="fs18 color-primary-1 pointer"
-                            style={{position: 'relative', marginTop: '2px'}}
-                            type="eye"/>
+                      <i className="icon-eye" onClick={toggleSmallBalance.bind(this)} />
                     }
                     {
                       !filters.ifHideSmallBalance &&
-                      <Icon onClick={toggleSmallBalance.bind(this)} className="fs18 color-black-2 pointer"
-                            style={{position: 'relative', marginTop: '2px'}}
-                            type="eye-o"/>
+                      <i className="icon-eye-o" onClick={toggleSmallBalance.bind(this)} />
                     }
                   </Tooltip>
                 </div>
