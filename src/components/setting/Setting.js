@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs } from 'antd';
-import Perfenrence from './Preference';
+import Preference from './Preference';
 import Trade from './Trade';
 import Relay from './Relay';
 import {Containers} from 'modules'
@@ -19,14 +19,18 @@ function Setting(props) {
         <Tabs defaultActiveKey="1" onChange={callback}>
           <TabPane tab="Preferences" key="1">
             <Containers.Settings>
-              <Perfenrence />
+              <Preference />
             </Containers.Settings>
           </TabPane>
           <TabPane tab="Trading" key="2">
-            <Trade />
+            <Containers.Settings>
+              <Trade />
+            </Containers.Settings>
           </TabPane>
           <TabPane tab="Relays" key="3">
-            <Relay />
+            <Containers.Settings>
+              <Relay />
+            </Containers.Settings>
           </TabPane>
         </Tabs>
 	    </div>
