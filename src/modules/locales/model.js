@@ -1,5 +1,6 @@
 import {setLocale} from "../../common/utils/localeSetting";
 
+//TODO modify read and storage
 let language = '' //window.STORAGE.settings.get().preference.language;
 export default {
   namespace: 'locales',
