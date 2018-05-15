@@ -1,5 +1,6 @@
 import {toBig, toNumber,toFixed} from "LoopringJS/common/formatter";
 import {formatLength,toUnitAmount,toDecimalsAmount} from "../formatter/common";
+import {getBalanceBySymbol,getPriceBySymbol} from "./TokenFm";
 
 export default class TokensFm{
   constructor({marketcap,balances,tokens}){
@@ -12,7 +13,6 @@ export default class TokensFm{
     const sortedTokens = sortTokens(filteredTokens)
     return setBalancesAndPrices({balances:this.balances,marketcap:this.marketcap,tokens:sortedTokens})
   }
-
 }
 
 export const sortTokens = (tokens)=>{
@@ -84,90 +84,16 @@ export const filterTokens = (list)=>{
   return [...tokens]
 }
 
-
 export const setBalancesAndPrices = ({balances=[],marketcap=[],tokens})=>{
   const newTokens = [...tokens]
-  // newTokens.forEach(item => {
-  //     const tokenBalance = getBalanceBySymbol(item.symbol, true)
-  //     const tokenPrice = getPriceBySymbol(item.symbol, true)
-  //     item.balance = tokenBalance.balance
-  //     item.allowance = tokenBalance.allowance
-  //     item.price = tokenPrice.price
-  // })
+  newTokens.forEach(item => {
+      const tokenBalance = getBalanceBySymbol({balances,symbol:item.symbol})
+      const tokenPrice = getPriceBySymbol({marketcap,symbol:item.symbol})
+      item.balance = tokenBalance.balance
+      item.allowance = tokenBalance.allowance
+      item.price = tokenPrice.price
+  })
   return newTokens
 }
 
-
-// socket balance
-export function getBalanceBySymbol({symbol,balances,ifFormat}){
-  let assetToken = balances.find(item => item.symbol.toLowerCase() === symbol.toLowerCase() ) || {balance:0, allowance:0}
-  if(ifFormat){
-    if(assetToken){
-      const balance =  Number(assetToken.balance)
-      const allowance =  Number(assetToken.allowance)
-      // fix bug: balance == string
-      if(balance && typeof balance === 'number'){
-        assetToken.balance = balance
-      }else{
-         assetToken.balance = 0
-      }
-      if(allowance && typeof allowance === 'number'){
-        assetToken.allowance = allowance
-      }else{
-         assetToken.allowance = 0
-      }
-      return {...assetToken}
-    }else{
-      return {
-        balance:0,
-        allowance:0,
-      }
-    }
-  }else{
-    return {...assetToken}
-  }
-}
-
-// socket price
-export function getPriceBySymbol({symbol, prices,ifFormat}) {
-  let priceToken = prices.find(item => item.symbol.toLowerCase() === symbol.toLowerCase()) || {price: 0}
-  if (ifFormat) {
-    if (priceToken) {
-      const price = Number(priceToken.price)
-      // fix bug: price == string
-      if (price && typeof price === 'number') {
-        priceToken.price = price
-      } else {
-        priceToken.price = 0
-      }
-      return {...priceToken}
-    } else {
-      return {
-        price: 0,
-      }
-    }
-  } else {
-    return {...priceToken}
-  }
-}
-
-export function getPriceByToken(tokenx, tokeny) {
-  const market = window.CONFIG.getMarketBySymbol(tokenx, tokeny);
-  const pricex = this.getTokenBySymbol(tokenx,true);
-  const pricey = this.getTokenBySymbol(tokeny,true);
-  if (market) {
-    if (market.tokenx.toLowerCase() === tokenx.toLowerCase()) {
-    return  pricex && pricey ? (pricex / pricey).toFixed(market.pricePrecision):0
-    }else{
-     return pricex && pricey ? (pricey / pricex).toFixed(market.pricePrecision):0
-    }
-  }
-  return  0
-}
-export function getPriceByMarket(market){
-  const tokenArray = market.split('-');
-  const tokenx = tokenArray[0];
-  const tokeny = tokenArray[0];
-  return this.getPriceByToken(tokenx,tokeny)
-}
 
