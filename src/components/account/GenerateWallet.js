@@ -1,6 +1,6 @@
 import React from 'react';
 import {Input, Progress} from 'antd';
-
+import routeActions from 'common/utils/routeActions'
 
 class  GenerateWallet extends React.Component {
 
@@ -19,7 +19,15 @@ class  GenerateWallet extends React.Component {
   };
 
   generate =  () => {
-
+    const {pass} = this.state;
+    const {wallet,dispatch} = this.props;
+    wallet.createWallet({password: pass,cb:(res) => {
+      if(!res.error){
+        const {address,mnemonic,keystore,privateKey} = res;
+        dispatch({type:'backup/set',payload:{address,mnemonic,keystore,privateKey}});
+        routeActions.gotoPath(`/unlock/backup`)
+      }
+    }});
   };
 
   render(){
@@ -38,12 +46,12 @@ class  GenerateWallet extends React.Component {
     return (
       <div>
         <div>
-          <h2 classNameName="text-center text-primary">Generate Wallet</h2>
+          <h2 className="text-center text-primary">Generate Wallet</h2>
           <Input type={visible ? 'text':'password'} addonAfter={visibleIcon} onChange={this.passChange} value={pass}/>
-          <div classNameName="d-flex justify-content-start align-items-center password-strong">
+          <div className="d-flex justify-content-start align-items-center password-strong">
             <div>Password Strength</div>
             <Progress percent={50} status="active" />
-            <div><span classNameName="offset-md">average</span></div>
+            <div><span className="offset-md">average</span></div>
           </div>
           <button className="btn btn-primary btn-block btn-xlg" onClick={this.generate}>Generate Now</button>
         </div>

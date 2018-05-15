@@ -16,7 +16,6 @@ class PrivateKey extends React.Component {
   keyChange = (e) => {
     const privateKey = e.target.value;
     const privateKeyModel = this.props.privateKey;
-    console.log(privateKeyModel);
     privateKeyModel.setPrivatekey({privateKey})
   };
 

@@ -10,7 +10,7 @@ class Unlock extends React.Component {
   changeTab = (path) => {
     const {match} = this.props;
     const {url} = match;
-    console.log(Containers)
+    console.log(Containers);
     routeActions.gotoPath(`${url}/${path}`);
   };
 
@@ -62,7 +62,9 @@ class Unlock extends React.Component {
             <Switch>
               <Route path={`${url}/generateWallet`} exact render={() =>
                 <div className="tab-content">
+                  <Containers.Wallet>
                   <Account.GenerateWallet/>
+                  </Containers.Wallet>
                 </div>}
               />
               <Route path={`${url}/json`} exact render={() =>
@@ -86,7 +88,9 @@ class Unlock extends React.Component {
               />
               <Route path={`${url}/backup`} exact render={() =>
                 <div className="tab-content">
+                  <Containers.Backup>
                   <Account.BackupWallet/>
+                  </Containers.Backup>
                 </div>}
               />
               <Redirect path={`${match.url}/`} to={`${match.url}/generateWallet`}/>
