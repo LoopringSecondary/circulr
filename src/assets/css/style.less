@@ -47,6 +47,7 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .token-list .item.active,.token-list .item.active:hover{ background: rgba(12, 48, 90, 1); margin:-1px 0; border: 0; }
 .token-list .item.active h3,.token-list .item:hover h3{opacity: .87;}
 .icon-token{ display: inline-block; width: 32px; height: 32px; border: 1px solid rgba(255,255,255,.54); border-radius: 16px; font-size: 22px; text-align: center; line-height: 30px; color: rgba(255,255,255,.87)}
+.icon-token-md{ display: inline-block; width: 48px; height: 48px; border: 1px solid rgba(255,255,255,.54); border-radius: 24px; font-size: 32px; text-align: center; line-height: 46px; color: rgba(255,255,255,.87)}
 .vertical-btn-group{}
 .vertical-btn-group button{ display: block; background: rgba(0, 0, 0, 0.07); text-align: left; padding: 5px 20px; }
 .vertical-btn-group button:active,.vertical-btn-group button:focus{ background: rgba(0, 83, 184, 1.0); color: rgba(255, 255, 255, .87);  }
@@ -56,7 +57,7 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .icon-question,.icon-plus-circle{ color: rgba(255, 255, 255, 1.0); text-align: center; background: #fff; border-radius: 60px; }
 .loopring-dex{ border-top: 4px solid @blue-darker; border-bottom: 4px solid @blue-darker;}
 .side-fixed .table.table-inverse thead th,.side-fixed .table.table-inverse tbody td{ padding: 10px 20px; }
-.text-color-dark[class^="icon-"],.text-color-dark[class*=" icon-"] { border: 1px solid @bordered-drak-color-1 !important; background: transparent !important; color: @text-color-dark-3 !important; }
+.text-color-dark[class^="icon-"],.text-color-dark[class*=" icon-"] { border: 1px solid @dark-color-1 !important; background: transparent !important; color: @text-color-dark-3 !important; }
 .icon-favorites.active{ color: rgba(255, 184, 50, 1.0); }
 
 .home{ height: 100%; background-color: #08223F; background-image: url('../images/bg.png'); background-size: cover; }
@@ -270,15 +271,14 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .account-side .poweroff:hover{ opacity: .54; }
 .account-side .address{  }
 .account-side .address .text{ display: inline-block; width: 200px; font-size: 12px; word-break: break-word; }
-.account-side .address .btn{ width: 200px; height: 40px; border: 1px solid rgba(255,255,255,1); background: transparent; color: rgba(255,255,255,1); font-size: 16px; font-weight: bold; }
-.account-side .address .btn:hover{ background: rgba(255,255,255,1); color: @blue-light; }
+.account-side .address .btn{ width: 200px;margin:auto;}
 .account-side .menu{}
 .account-side .menu li{ height: 50px; line-height: 50px; text-align: center; list-style: none; font-size: 15px;  cursor: pointer }
-.account-side .menu li.active,.account-side .menu li:hover,.account-side .menu li.active:hover{ background: rgba(255,255,255,.07); font-weight: 900; }
+.account-side .menu li.active,.account-side .menu li:hover,.account-side .menu li.active:hover{ background: @dark-color-2; font-weight: 900; }
 .account-side .menu li:hover{ font-weight: 200;}
-.account-side .menu li a{display: block; color: rgba(255,255,255,.87); font-weight: 400; }
-.account-side .menu li a:hover{ color: rgba(255,255,255,1) }
-.account-side .menu li i{ position: relative; top: -1px; font-size: 16px; }
+.account-side .menu li a{display: block; color:@text-color-dark-1; font-weight: 400; }
+.account-side .menu li a:hover{ color:@text-color-dark; }
+.account-side .menu li i{ position: relative; top: -1px; font-size: @font-size-md; }
 .account-side .menu li a>span{ display: inline-block; width: 80px; padding-left: 5px; text-align: left; }
 @keyframes slideRight {
   0% { left: 100vw; }

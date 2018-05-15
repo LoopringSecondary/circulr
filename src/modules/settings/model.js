@@ -10,5 +10,16 @@ export default {
   effects:{
   },
   reducers: {
+    preferenceChange(state, { payload }) {
+      let newState =  {
+        ...state,
+        preference: {
+          ...state.preference,
+          ...payload
+        }
+      };
+      storage.settings.set(newState)
+      return newState
+    },
   }
 }

@@ -3,7 +3,7 @@ import { Input,Button,Form,Select,Slider } from 'antd';
 function Trade(props) {
   const Option = Select.Option;
   return (
-    <div>
+    <div className="form-dark">
         <Form.Item label="Order Time-To-Live">
           	<Input.Group compact  className="d-flex">
     	        	<Input style={{ width: '100%' }} defaultValue="" />
@@ -15,10 +15,10 @@ function Trade(props) {
     	        	</Select>
           	</Input.Group>
         </Form.Item>
-        <Form.Item label="Trading Fee (LRC)">
+        <Form.Item label="Trading Fee (LRC)" className="prefix">
        	    <Input defaultValue="2" suffix="‰" />
         </Form.Item>
-        <Form.Item label="Default Margin Split">
+        <Form.Item label="Default Margin Split" className="prefix">
             <Input defaultValue="50%" suffix="%" />
         </Form.Item>
         <div className="blk"></div>
@@ -26,8 +26,8 @@ function Trade(props) {
         <div className="range-inverse">
            <Slider marks={{ 0: 'Slower', 100: 'Faster' }} defaultValue={37} />
         </div>
-		<Button type="primary" className="btn-block btn-xlg">Reset</Button>
-    </div>
+		    <Button className="btn-o-dark btn-block btn-xlg">Reset</Button>
+  </div>
   )
 }
 export default Trade

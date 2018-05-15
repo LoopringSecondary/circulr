@@ -5,15 +5,15 @@ function UserCenter(props) {
     <div>
     	<div id="account">
     	    <div className="account-side">
-    	        <div className="poweroff" id="powerOff">
-    	            <div className="icon-unlock"><i className="icon-poweroff"></i></div>
+    	        <div className="poweroff text-color-dark" id="powerOff">
+    	            <div className="icon-unlock text-color-dark-1"><i className="icon-poweroff"></i></div>
     	            <h5>Quit</h5>
     	        </div>
     	        <div className="blk-lg"></div>
     	        <div className="address">
-    	            <div className="text">0xeba7136a36da0f5e16c6bdbc739c716bb5b65a00</div>
+    	            <div className="text text-color-dark-1">0xeba7136a36da0f5e16c6bdbc739c716bb5b65a00</div>
     	            <div className="blk"></div>
-    	            <button className="btn">Copy</button>
+    	            <button className="btn btn-block btn-o-dark">Copy</button>
     	        </div>
     	        <div className="blk-lg"></div>
     	        <div className="menu">
