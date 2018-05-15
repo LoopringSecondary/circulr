@@ -48,3 +48,74 @@ export default class TokenFormatter {
     formatLength(amount,ceil)
   }
 }
+
+export const getTokens = (list)=>{
+  // let customs = window.STORAGE.tokens.getCustomTokens()
+  let customs = []
+  const {items,filters,favored} = list
+  let results = [...items, ...customs]
+  results = results.filter(token => token.symbol !== 'WETH_OLD')
+
+  // eth weth lrc
+  const ethToken = results.find(token => token.symbol === 'ETH')
+  const wethToken = results.find(token => token.symbol === 'WETH')
+  const lrcToken = results.find(token => token.symbol === 'LRC')
+  // other tokens
+  let otherTokens = results.filter(token => (token.symbol !== 'ETH' && token.symbol !== 'WETH' && token.symbol !== 'LRC'))
+  otherTokens = otherTokens.map((token, index) => {
+    // let balance = 0
+    // if(token.balance){
+    //   balance = toBig(token.balance).div('1e' + token.digits).toNumber()
+    // }
+    token.sortByBalance = token.balance
+    return token
+  })
+  const sorter = (tokenA, tokenB) => {
+    const pa = Number(tokenA.sortByBalance);
+    const pb = Number(tokenB.sortByBalance);
+    if (pa === pb) {
+      return tokenA.symbol.toUpperCase() < tokenB.symbol.toUpperCase() ? -1 : 1;
+    } else {
+      return pb - pa;
+    }
+  };
+  otherTokens.sort(sorter);
+
+  let sortedTokens = new Array()
+  if (lrcToken) {
+    sortedTokens.push(lrcToken)
+  }
+  if (ethToken) {
+    sortedTokens.push(ethToken)
+  }
+  if (wethToken) {
+    sortedTokens.push(wethToken)
+  }
+
+  sortedTokens = sortedTokens.concat(otherTokens)
+
+  let formatedTokens = [...sortedTokens]
+
+  let keys = Object.keys(filters)
+  keys.map(key => {
+    const value = filters[key]
+    if (key === 'ifOnlyShowMyFavorite') {
+      if (value) {
+        formatedTokens = formatedTokens.filter(token => !!favored[token.symbol] === !!value)
+      }
+    }
+    if (key === 'ifHideSmallBalance') {
+      if (value) {
+        // formatedTokens = formatedTokens.filter(token => toNumber(token['balance']) > 0)// TODO
+        formatedTokens = formatedTokens.filter(token => token['balance'] > 0)// TODO
+      }
+    }
+    if (key === 'keywords') {
+      formatedTokens = formatedTokens.filter(token => {
+        let text = (token.symbol + token.title).toLowerCase()
+        return text.indexOf(value.toLowerCase()) > -1
+      })
+    }
+  })
+  return formatedTokens
+}

@@ -1,16 +1,16 @@
 import React from 'react';
 import Account from '../account';
-import UnlockKeystoreContainer from '../account/containers/UnlockKeystoreContainer';
 import Layout from '../../layout';
-import {Redirect, Route, Switch,Link} from 'dva/router'
+import {Link, Redirect, Route, Switch} from 'dva/router'
 import routeActions from 'common/utils/routeActions'
-import {Containers} from 'modules'
+import { Containers } from 'modules'
 
 class Unlock extends React.Component {
 
   changeTab = (path) => {
     const {match} = this.props;
     const {url} = match;
+    console.log(Containers);
     routeActions.gotoPath(`${url}/${path}`);
   };
 
@@ -62,12 +62,16 @@ class Unlock extends React.Component {
             <Switch>
               <Route path={`${url}/generateWallet`} exact render={() =>
                 <div className="tab-content">
+                  <Containers.Wallet>
                   <Account.GenerateWallet/>
+                  </Containers.Wallet>
                 </div>}
               />
               <Route path={`${url}/json`} exact render={() =>
                 <div className="tab-content">
-                 <UnlockKeystoreContainer/>
+                  <Containers.Keystore>
+                   <Account.UnlockByKeystore/>
+                  </Containers.Keystore>
                 </div>}
               />
               <Route path={`${url}/mnemonic`} exact render={() =>
@@ -77,12 +81,16 @@ class Unlock extends React.Component {
               />
               <Route path={`${url}/privateKey`} exact render={() =>
                 <div className="tab-content">
+                  <Containers.PrivateKey>
                   <Account.UnlockByPrivateKey/>
+                  </Containers.PrivateKey>
                 </div>}
               />
               <Route path={`${url}/backup`} exact render={() =>
                 <div className="tab-content">
+                  <Containers.Backup>
                   <Account.BackupWallet/>
+                  </Containers.Backup>
                 </div>}
               />
               <Redirect path={`${match.url}/`} to={`${match.url}/generateWallet`}/>
