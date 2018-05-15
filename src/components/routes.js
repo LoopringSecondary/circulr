@@ -40,7 +40,7 @@ export default class Routes extends React.Component {
             <Route path="/wallet/test" exact component={Pages.WalletTest} />
             <Route path="/usercenter" exact component={Account.UserCenter} />
             <Route path="/tickers" exact component={Tickers.ListAllTickers} />
-            <Route path="/unlock" exact component={Pages.Unlock} />
+            <Route path="/unlock" component={Pages.Unlock} />
             <Route path="/setting" exact component={Setting.Setting} />
             <Route path="/AirdropList" exact component={Tools.AirdropList} />
             <Route path="/Receive" exact component={Tokens.Receive} />

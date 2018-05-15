@@ -1,10 +1,29 @@
-const namespace = 'account'
+import {setLocale} from "../../common/utils/localeSetting";
+
+//TODO modify read and storage
+let language = '' //window.STORAGE.settings.get().preference.language;
 export default {
-  namespace,
+  namespace: 'locales',
   state: {
+    locale: language || 'en-US',
   },
-  effects:{
+  reducers: {
+    localeChange(state, { payload }) {
+      return {
+        locale: payload.locale,
+      };
+    },
   },
-  reducers:{
+
+  effects: {
+    * setLocale({payload}, {put, call}) {
+      yield put({type: "localeChange", payload: {locale: payload.locale}});
+      yield call(setLocale, payload.locale);
+      if (payload.storage) {
+        const settings = window.STORAGE.settings.get();
+        settings.preference.language = payload.locale || settings.preference.language
+        window.STORAGE.settings.set(settings);
+      }
+    }
   }
-}
+};

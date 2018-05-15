@@ -18,7 +18,7 @@ const ModalsWrapper = (props)=>{
     closable,
     maskClosable,
     mask,
-    onCancel:module.hideModal && module.hideModal.bind(this,{id}),
+    onCancel:module.hideModal && module.hideModal.bind(this),
   }
   const childProps = {...rest}
   return (

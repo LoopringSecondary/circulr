@@ -9,6 +9,9 @@ import {
   TrezorAccount,
   LedgerAccount
 } from "LoopringJS/ethereum/account";
+import {mnemonictoPrivatekey} from "LoopringJS/ethereum/mnemonic";
+import {formatKey} from "LoopringJS/common/formatter";
+
 
 export default {
   namespace: 'wallet',
@@ -20,13 +23,13 @@ export default {
   },
   reducers: {
     unlock(state, {payload}) {
-      const {address, unlockType, account,password} = payload;
+      const {address, unlockType, account, password} = payload;
       return {
         ...state,
         address,
         unlockType,
         account,
-        password:password || state.password
+        password: password || state.password
       }
     },
     lock(state, {payload}) {
@@ -36,6 +39,13 @@ export default {
         unlockType: "locked",
         password: "",
         account: null
+      }
+    },
+    setPassword(state, {payload}) {
+      const {password} = payload;
+      return {
+        ...state,
+        password
       }
     }
   },
@@ -49,18 +59,23 @@ export default {
       yield put({type: 'unlockWallet', payload: {...payload, unlockType}})
     },
     * unlockKeyStoreWallet({payload}, {put}) {
-      const {keystore, password} = payload;
-      const account = fromKeystore(keystore, password);
-      const address = account.getAddress();
-      const unlockType = 'keystore';
-      yield put({type: 'unlockWallet', payload: {address, unlockType, account}})
+      const {keystore, password, cb} = payload;
+      try {
+        const account = fromKeystore(keystore, password);
+        const address = account.getAddress();
+        const unlockType = 'keystore';
+        yield put({type: 'unlockWallet', payload: {address, unlockType, account, password}});
+        cb()
+      } catch (e) {
+        cb(e)
+      }
     },
     * unlockMnemonicWallet({payload}, {put}) {
       const {mnemonic, dpath, password} = payload;
       const account = fromMnemonic(mnemonic, dpath, password);
       const address = account.getAddress();
       const unlockType = 'mnemonic';
-      yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
+      yield put({type: 'unlockWallet', payload: {address, unlockType, account, password}});
     },
     * unlockPrivateKeyWallet({payload}, {put}) {
       const {privateKey} = payload;
@@ -91,46 +106,52 @@ export default {
       yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
     },
     * createWallet({payload}, {put}) {
+      const {password, cb} = payload;
       const mnemonic = createMnemonic();
-      put({type: "unlockMnemonicWallet", payload: {mnemonic, dpath: path}})
+      const privateKey = formatKey(mnemonictoPrivatekey(mnemonic, null, path));
+      const account = fromPrivateKey(privateKey);
+      const address = account.getAddress();
+      const unlockType = 'privateKey';
+      yield put({type: "unlockWallet", payload: {address, unlockType, account,password}});
+      cb({mnemonic, privateKey, keystore: account.toV3Keystore(password),address});
     },
     * signMessage({payload}, {select}) {
       const {account, unlockType} = yield select((state) => state.wallet);
       const {message, cb} = payload;
       if (account) {
-        try{
+        try {
           const sig = yield account.signMessage(message);
           cb({...sig})
-        }catch (e){
-          cb({error:e})
+        } catch (e) {
+          cb({error: e})
         }
       } else {
         cb({error: {message: `${unlockType} doesn't support sign message`}})
       }
     },
-    * signEthereumTx({payload},{select}){
+    * signEthereumTx({payload}, {select}) {
       const {account, unlockType} = yield select((state) => state.wallet);
       const {tx, cb} = payload;
       if (account) {
-        try{
+        try {
           const signedTx = yield account.signEthereumTx(tx);
           cb({signedTx})
-        }catch (e){
-          cb({error:e})
+        } catch (e) {
+          cb({error: e})
         }
       } else {
         cb({error: {message: `${unlockType} doesn't support sign message`}})
       }
     },
-    * signOrder({payload},{select}){
+    * signOrder({payload}, {select}) {
       const {account, unlockType} = yield select((state) => state.wallet);
       const {order, cb} = payload;
       if (account) {
-        try{
+        try {
           const order = yield account.signOrder(order);
           cb(order)
-        }catch (e){
-          cb({error:e})
+        } catch (e) {
+          cb({error: e})
         }
       } else {
         cb({error: {message: `${unlockType} doesn't support sign message`}})

@@ -2,10 +2,14 @@ import React from 'react';
 import {Form,InputNumber,Button,Icon,Modal,Input,Radio,Select,Checkbox,Slider,Collapse,Tooltip,Popconfirm,Popover,DatePicker} from 'antd';
 import intl from 'react-intl-universal';
 import config from 'common/config'
+import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
 import * as orderFormatter from 'modules/orders/formatters'
+import * as selectors from 'modules/formatter/selectors'
 import moment from 'moment'
 import ReactDOM from 'react-dom'
+import Notification from 'LoopringUI/components/Notification'
+import {store} from '../../index'
 
 class PlaceOrderForm extends React.Component {
 
@@ -38,8 +42,6 @@ class PlaceOrderForm extends React.Component {
         //e.target.value = amount
         placeOrder.amountChangeEffects({amountInput:amount})
       }
-      // //LRC Fee
-      // calculateLrcFee(total, sliderMilliLrcFee)
     }
 
     function validateAmount(value) {
@@ -127,6 +129,13 @@ class PlaceOrderForm extends React.Component {
               tipFormatter={null} disabled={fm.toBig(placeOrder[placeOrder.side].availableAmount).lt(0)}/>
     )
 
+    const totalWorth = (
+      <span className="">
+        {placeOrder.total && fm.toBig(placeOrder.total).gt(0) ? ` ≈ $${fm.toBig(placeOrder.total).toFixed(2)}` : ''}
+      </span>
+    )
+
+
     const editLRCFee = (
       <Popover overlayClassName="place-order-form-popover" title={<div className="pt5 pb5">{intl.get('trade.custom_lrc_fee_title')}</div>} content={
         <div>
@@ -146,7 +155,7 @@ class PlaceOrderForm extends React.Component {
           )}
         </div>
       } trigger="click">
-        <a className="fs12 pointer color-black-3">{intl.get('global.custom')}<i className="icon-pencil tradingFee"></i></a>
+        <a className="fs12 pointer color-black-3"><i className="icon-pencil tradingFee"></i></a>
       </Popover>
     )
 
@@ -210,10 +219,8 @@ class PlaceOrderForm extends React.Component {
                              locale={'en-US'}
                              getCalendarContainer={trigger =>
                              {
-                               // return trigger.parentNode.parentNode.parentNode
                                return ReactDOM.findDOMNode(this.refs.popover);
                              }
-
                              }
                              showTime={{ format: 'HH:mm' }}
                              format="YYYY-MM-DD HH:mm"
@@ -226,9 +233,133 @@ class PlaceOrderForm extends React.Component {
                    </Collapse>
                  </div>
                } trigger="click">
-        <a className="fs12 pointer color-black-3">{intl.get('global.custom')}<i className="icon-pencil tradingFee"></i></a>
+        <a className="fs12 pointer color-black-3"><i className="icon-pencil tradingFee"></i></a>
       </Popover>
     )
+
+    let ttlInSecond = 0, ttlShow = ''
+    if(placeOrder.timeToLivePatternSelect === 'easy') {
+      const ttl = Number(placeOrder.timeToLive)//Number(settings.trading.timeToLive)
+      const unit = placeOrder.timeToLiveUnit //settings.trading.timeToLiveUnit
+      switch(unit){
+        case 'minute': ttlInSecond = ttl * 60 ; ttlShow = `${ttl} ${intl.get('trade.minute')}`; break;
+        case 'hour': ttlInSecond = ttl * 3600 ; ttlShow = `${ttl} ${intl.get('trade.hour')}`; break;
+        case 'day': ttlInSecond = ttl * 86400; ttlShow = `${ttl} ${intl.get('trade.day')}`; break;
+        case 'week': ttlInSecond = ttl * 7 * 86400; ttlShow = `${ttl} ${intl.get('trade.week')}`; break;
+        case 'month': ttlInSecond = ttl * 30 * 86400; ttlShow = `${ttl} ${intl.get('trade.month')}`; break;
+      }
+    } else {
+      if(placeOrder.timeToLiveStart && placeOrder.timeToLiveEnd) {
+        ttlShow = `${placeOrder.timeToLiveStart.format("lll")} ~ ${placeOrder.timeToLiveEnd.format("lll")}`
+      }
+    }
+
+    async function handleSubmit() {
+      //TODO unlock check, moved before sign
+      const lrcBalance = selectors.getAssetByToken('LRC', true)
+      if(!lrcBalance || lrcBalance.balance.lessThan(900)){
+        // TODO !await config.isinWhiteList(window.WALLET.getAddress())
+        if(config.getChainId() !== 7107171){
+          Notification.open({
+            type:'warning',
+            message:intl.get('trade.not_inWhiteList'),
+            description:intl.get('trade.not_allow')
+          });
+          return
+        }
+      }
+      const address = store.getState().wallet.address
+      if(!address) {
+        //TODO
+        // Notification.open({
+        //   type:'warning',
+        //   message:intl.get('trade.not_inWhiteList'),
+        //   description:intl.get('trade.not_allow')
+        // });
+        // return
+      }
+      form.validateFields((err, values) => {
+        if (!err) {
+          placeOrder.submitButtonLoadingChange({submitButtonLoading:true})
+          const tradeInfo = {}
+          tradeInfo.amount = fm.toBig(values.amount)
+          tradeInfo.price = fm.toBig(values.price)
+          tradeInfo.total = tradeInfo.amount.times(tradeInfo.price)
+          if(placeOrder.timeToLivePatternSelect === 'easy') {
+            tradeInfo.validSince = moment().unix()
+            tradeInfo.validUntil = moment().add(ttlInSecond, 'seconds').unix()
+          } else {
+            tradeInfo.validSince = placeOrder.timeToLiveStart.unix()
+            tradeInfo.validUntil = placeOrder.timeToLiveEnd.unix()
+          }
+          if (values.marginSplit) {
+            tradeInfo.marginSplit = Number(values.marginSplit)
+          }
+          const totalWorth = orderFormatter.calculateWorthInLegalCurrency(placeOrder.right.symbol, tradeInfo.total)
+          if(!totalWorth.gt(0)) {
+            Notification.open({
+              message:intl.get('trade.send_failed'),
+              description:intl.get('trade.failed_fetch_data'),
+              type:'error'
+            })
+            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+            return
+          }
+          let allowed = false
+          let currency = 'USD';// TODO settings.preference.currency
+          let priceSymbol = fm.getDisplaySymbol(currency)
+          if(currency === 'USD') {
+            priceSymbol = '100' + priceSymbol
+            if(totalWorth.gt(100)) {
+              allowed = true
+            }
+          } else {
+            priceSymbol = '500' + priceSymbol
+            if(totalWorth.gt(500)) {
+              allowed = true
+            }
+          }
+          if(!allowed) {
+            Notification.open({
+              message:intl.get('trade.not_allowed_place_order_worth_title'),
+              description:intl.get('trade.not_allowed_place_order_worth_content', {worth: priceSymbol}),
+              type:'error'
+            })
+            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+            return
+          }
+          tradeInfo.milliLrcFee = placeOrder.sliderMilliLrcFee
+          tradeInfo.lrcFee = placeOrder.lrcFee
+          orderFormatter.tradeVerification(tradeInfo, placeOrder.sell, placeOrder.buy, this.props.txs)
+          if(tradeInfo.error) {
+            tradeInfo.error.map(item=>{
+              Notification.open({
+                message: intl.get('trade.send_failed'),
+                description: intl.get('trade.eth_is_required', {required:item.value.required}),
+                type:'error',
+              })
+            })
+            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+            return
+          }
+          showTradeModal(tradeInfo)
+          placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+        }
+      });
+    }
+
+    const showTradeModal = (tradeInfo) => {
+      this.props.dispatch({
+        type: 'modals/modalChange',
+        payload: {
+          id: 'trade/confirm',
+          visible: true,
+          side : placeOrder.side,
+          pair : placeOrder.pair,
+          ...tradeInfo
+        }
+      })
+    }
 
     return (
       <div>
@@ -314,7 +445,7 @@ class PlaceOrderForm extends React.Component {
               <div className="text-inverse text-secondary">
                 <div className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
-                    <span className="font-bold">Total</span><span><span>{placeOrder.total}</span>{placeOrder.right.symbol} ≈ $0</span>
+                    <span className="font-bold">Total</span><span><span>{placeOrder.total}</span>{placeOrder.right.symbol}{totalWorth}</span>
                   </div>
                 </div>
                 <div className="form-group mr-0">
@@ -322,8 +453,8 @@ class PlaceOrderForm extends React.Component {
                     <span className="font-bold">LRC Fee <i className="icon-info tradingfeetip"></i></span>
                     <span>
                       <span>{editLRCFee}</span>
-                      <span>{placeOrder.lrcFee}</span>
-                      <span className="offset-md">LRC (2‰)</span>
+                      <span></span>
+                      <span className="offset-md">{placeOrder.lrcFee}LRC ({placeOrder.sliderMilliLrcFee}‰)</span>
                     </span>
                   </div>
                 </div>
@@ -332,13 +463,12 @@ class PlaceOrderForm extends React.Component {
                     <span className="font-bold">Time to live <i className="icon-info"></i></span>
                     <span>
                       <span>{editOrderTTLPattern}</span>
-                      <span>1</span>
-                      <span className="offset-md">Day</span>
+                      <span className="offset-md">{ttlShow}</span>
                     </span>
                   </div>
                 </div>
                 <div className="blk"></div>
-                <Button type="primary" className="btn-block">Place Order</Button>
+                <Button type="primary" className="btn-block" onClick={handleSubmit} loading={placeOrder.submitButtonLoading}>Place Order</Button>
                 <Button type="danger" className="btn-block">Place Order</Button>
               </div>
             </div>

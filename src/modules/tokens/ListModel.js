@@ -53,12 +53,12 @@ export default {
       }
     },
     favoredChange(state,action){
-      window.STORAGE.tokens.update({
-        favored:{
-          ...state.favored,
-          ...action.payload.favored,
-        }
-      });
+      // window.STORAGE.tokens.update({
+      //   favored:{
+      //     ...state.favored,
+      //     ...action.payload.favored,
+      //   }
+      // });
       return {
         ...state,
         favored:{
@@ -76,12 +76,12 @@ export default {
     filtersChange(state,action){
       let filters = state.filters;
       let page = state.page;
-      window.STORAGE.tokens.update({
-        filters:{
-          ...filters,
-          ...action.payload.filters
-        }
-      });
+      // window.STORAGE.tokens.update({
+      //   filters:{
+      //     ...filters,
+      //     ...action.payload.filters
+      //   }
+      // });
       return {
         ...state,
         filters:{

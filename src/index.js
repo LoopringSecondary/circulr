@@ -2,6 +2,9 @@ import '@babel/polyfill'
 import dva from 'dva'
 import { models } from './modules'
 import './assets/css/index.less'
+import {setLocale} from "./common/utils/localeSetting";
+
+setLocale('en-US');
 
 // 1. Initialize
 const app = dva()
