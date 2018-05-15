@@ -32,6 +32,7 @@ export default {
       yield put({type:'socketChange',payload:{socket}})
       yield put({type:'fetch',payload:{id:'prices'}})
       yield put({type:'fetch',payload:{id:'transactions'}})
+      yield put({type:'fetch',payload:{id:'assets'}})
     },
     *fetch({payload},{call,select,put}){
       yield put({type:'onEvent',payload})

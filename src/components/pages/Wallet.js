@@ -16,9 +16,11 @@ function Wallet(props) {
         </header>
         <div className="side-fixed" style={{top:"0",left: "0",width: "280px",padding: "20px 0"}} id="tokenSide">
             <div className="loopring-brand"><img src={require('../../assets/images/logo.png')} className="img" /></div>
-            <Containers.Tokens>
-              <Tokens.ListDefault />
-            </Containers.Tokens>
+              <Containers.Tokens>
+                <Containers.Sockets id="assets">
+                  <Tokens.ListDefault />
+                </Containers.Sockets>
+              </Containers.Tokens>
         </div>
         <div className="m-container h-full" style={{marginLeft: "280px", marginRight: "454px"}} id="transactions">
             <div className="card dark h-full">

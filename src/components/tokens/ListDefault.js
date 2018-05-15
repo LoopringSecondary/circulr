@@ -3,23 +3,8 @@ import {Input,Icon,Tooltip} from 'antd'
 import intl from 'react-intl-universal'
 import {getTokens} from 'modules/tokens/formatters'
 
-function ListHeaderForm({className=''}){
-  return (
-    <div className={className}>
-    	ListHeaderForm
-    </div>
-  )
-}
-
-function ListHeader({className=''}){
-  return (
-    <div className={className}>
-    	ListHeader
-    </div>
-  )
-}
-
 function ListTokensSidebar(props) {
+  console.log('ListTokensSidebar props',props)
   const {tokens:list,dispatch}= props
   const {filters,favored,selected}= list
   const toggleMyFavorite = () => {

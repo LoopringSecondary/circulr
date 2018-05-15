@@ -16,8 +16,8 @@ const balance_req = (payload)=>{
   const {socket} = payload
   const event = 'balance_req'
   const options = {
-    delegateAddress: '',
-    owner:'',
+    delegateAddress: '0x17233e07c67d086464fD408148c3ABB56245FA64',
+    owner:window.config.address,
   }
   return new Promise((resolve,reject)=>{
     socket.emit(event,JSON.stringify(options),(res)=>{
