@@ -1,4 +1,6 @@
 import {configs} from 'common/config/data'
+import UserAgent from 'common/utils/useragent'
+
 const set = (settings)=>{
   localStorage.settings = JSON.stringify(settings)
 }
@@ -12,10 +14,11 @@ const get = ()=>{
   if(localStorage.settings){
      return JSON.parse(localStorage.settings)
   }else{
+    const userAgent = new UserAgent();
     return {
       preference: {
-        language: window.USER_AGENT.getLanguage() || 'en-US',
-        currency: window.USER_AGENT.getLanguage() === 'zh-CN' ? 'CNY':"USD",
+        language: userAgent.getLanguage() || 'en-US',
+        currency: userAgent.getLanguage() === 'zh-CN' ? 'CNY':"USD",
         timezone: "UTC+00:00"
       },
       trading: {
