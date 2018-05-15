@@ -1,6 +1,7 @@
 import io from 'socket.io-client'
 
 const balanceHandler = (res)=>{
+  res = JSON.parse(res)
   if(!res.error && res.data && res.data.tokens){
     return {
       // items:res.data.tokens.filter(token=>configSymbols.includes(token.symbol)) // get intersection of server config & client config
@@ -21,8 +22,7 @@ const balance_req = (payload)=>{
   }
   return new Promise((resolve,reject)=>{
     socket.emit(event,JSON.stringify(options),(res)=>{
-      res = JSON.parse(res)
-      console.log(event,res)
+      console.log('api layer -- emit',event)
       resolve(balanceHandler(res))
     })
   })
@@ -32,13 +32,13 @@ const balance_res = (payload)=>{
   const event = 'balance_res'
   return new Promise((resolve,reject)=>{
     socket.on(event,(res)=>{
-      res = JSON.parse(res)
-      console.log(event,res)
+      console.log('api layer -- on ',event)
       resolve(balanceHandler(res))
     })
   })
 }
 const marketcapHandler = (res)=>{
+  res = JSON.parse(res)
   if (!res.error && res.data && res.data.tokens) {
     return {
       items: res.data.tokens,
@@ -57,8 +57,7 @@ const marketcap_req = (payload)=>{
   }
   return new Promise((resolve,reject)=>{
     socket.emit(event,JSON.stringify(options),(res)=>{
-      res = JSON.parse(res)
-      console.log(event,res)
+      console.log('api layer -- emit ',event)
       resolve(marketcapHandler(res))
     })
   })
@@ -68,14 +67,14 @@ const marketcap_res = (payload)=>{
   const event = 'marketcap_res'
   return new Promise((resolve,reject)=>{
     socket.on(event,(res)=>{
-      res = JSON.parse(res)
-      console.log(event,res)
+      console.log('api layer -- on ',event)
       resolve(marketcapHandler(res))
     })
   })
 }
 
 const transactionHandler = (res)=>{
+  res = JSON.parse(res)
   if (!res.error && res.data && res.data.data) {
     return {
       items: [...res.data.data],
@@ -106,8 +105,7 @@ const transaction_req = (payload)=>{
   }
   return new Promise((resolve,reject)=>{
     socket.emit(event,JSON.stringify(options),(res)=>{
-      res = JSON.parse(res)
-      console.log(event,res)
+      console.log('api layer -- emit ',event)
       resolve(transactionHandler(res))
     })
   })
@@ -117,8 +115,7 @@ const transaction_res = (payload)=>{
   const event = 'transaction_res'
   return new Promise((resolve,reject)=>{
     socket.on(event,(res)=>{
-      res = JSON.parse(res)
-      console.log(event,res)
+      console.log('api layer -- on ',event)
       resolve(transactionHandler(res,id))
     })
   })
@@ -176,6 +173,21 @@ const connect = (payload)=>{
       resolve(socket)
     })
   })
+}
+const responseHandler = (res,id)=>{
+  switch (id) {
+    case 'assets':
+      return balanceHandler(res)
+      break;
+    case 'prices':
+      return marketcapHandler(res)
+      break;
+    case 'transactions':
+      return transactionHandler(res)
+      break;
+    default:
+      break
+  }
 }
 export default {
   onEvent,
