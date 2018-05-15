@@ -49,19 +49,17 @@ export default class TokenFormatter {
   }
 }
 
-export const getTokens = (list)=>{
+export const sortTokens = (tokens)=>{
   // let customs = window.STORAGE.tokens.getCustomTokens()
   let customs = []
-  const {items,filters,favored} = list
-  let results = [...items, ...customs]
-  results = results.filter(token => token.symbol !== 'WETH_OLD')
-
+  let _tokens = [...tokens, ...customs]
+  tokens = tokens.filter(token => token.symbol !== 'WETH_OLD')
   // eth weth lrc
-  const ethToken = results.find(token => token.symbol === 'ETH')
-  const wethToken = results.find(token => token.symbol === 'WETH')
-  const lrcToken = results.find(token => token.symbol === 'LRC')
+  const ethToken = _tokens.find(token => token.symbol === 'ETH')
+  const wethToken = _tokens.find(token => token.symbol === 'WETH')
+  const lrcToken = _tokens.find(token => token.symbol === 'LRC')
   // other tokens
-  let otherTokens = results.filter(token => (token.symbol !== 'ETH' && token.symbol !== 'WETH' && token.symbol !== 'LRC'))
+  let otherTokens = _tokens.filter(token => (token.symbol !== 'ETH' && token.symbol !== 'WETH' && token.symbol !== 'LRC'))
   otherTokens = otherTokens.map((token, index) => {
     // let balance = 0
     // if(token.balance){
@@ -80,8 +78,7 @@ export const getTokens = (list)=>{
     }
   };
   otherTokens.sort(sorter);
-
-  let sortedTokens = new Array()
+  let sortedTokens = []
   if (lrcToken) {
     sortedTokens.push(lrcToken)
   }
@@ -91,31 +88,45 @@ export const getTokens = (list)=>{
   if (wethToken) {
     sortedTokens.push(wethToken)
   }
-
   sortedTokens = sortedTokens.concat(otherTokens)
+  return sortedTokens
+}
 
-  let formatedTokens = [...sortedTokens]
-
+export const filterTokens = (list)=>{
+  const {items,filters,favored} = list
   let keys = Object.keys(filters)
+  let tokens = [...items]
   keys.map(key => {
     const value = filters[key]
     if (key === 'ifOnlyShowMyFavorite') {
       if (value) {
-        formatedTokens = formatedTokens.filter(token => !!favored[token.symbol] === !!value)
+        tokens = tokens.filter(token => !!favored[token.symbol] === !!value)
       }
     }
     if (key === 'ifHideSmallBalance') {
       if (value) {
-        // formatedTokens = formatedTokens.filter(token => toNumber(token['balance']) > 0)// TODO
-        formatedTokens = formatedTokens.filter(token => token['balance'] > 0)// TODO
+        // tokens = tokens.filter(token => toNumber(token['balance']) > 0)// TODO
+        tokens = tokens.filter(token => token['balance'] > 0)// TODO
       }
     }
     if (key === 'keywords') {
-      formatedTokens = formatedTokens.filter(token => {
+      tokens = tokens.filter(token => {
         let text = (token.symbol + token.title).toLowerCase()
         return text.indexOf(value.toLowerCase()) > -1
       })
     }
   })
-  return formatedTokens
+  return [...tokens]
 }
+export const setTokens = ({balance=[],marketcap=[],tokens})=>{
+  const newTokens = [...tokens]
+  // newTokens.forEach(item => {
+  //     const tokenBalance = balance.getTokenBySymbol(item.symbol, true)
+  //     const tokenPrice = marketcap.getTokenBySymbol(item.symbol, true)
+  //     item.balance = tokenBalance.balance
+  //     item.allowance = tokenBalance.allowance
+  //     item.price = tokenPrice.price
+  // })
+  return newTokens
+}
+

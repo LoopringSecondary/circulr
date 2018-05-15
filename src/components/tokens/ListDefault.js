@@ -1,14 +1,14 @@
 import React from 'react'
 import {Input,Icon,Tooltip} from 'antd'
 import intl from 'react-intl-universal'
-import {getTokens} from 'modules/tokens/formatters'
+import {filterTokens,sortTokens,setTokens} from 'modules/tokens/formatters'
 
 function ListTokensSidebar(props) {
   console.log('ListTokensSidebar component render',props)
-  const {tokens:list,dispatch}= props
-  const {filters,favored,selected}= list
+  const {tokens,balance,marketcap,dispatch}= props
+  const {filters,favored,selected}= tokens
   const toggleMyFavorite = () => {
-    list.filtersChange({
+    tokens.filtersChange({
       filters: {
         ...filters,
         ifOnlyShowMyFavorite: !filters.ifOnlyShowMyFavorite
@@ -16,7 +16,7 @@ function ListTokensSidebar(props) {
     })
   }
   const toggleSmallBalance = () => {
-    list.filtersChange({
+    tokens.filtersChange({
       filters: {
         ...filters,
         ifHideSmallBalance: !filters.ifHideSmallBalance
@@ -24,7 +24,7 @@ function ListTokensSidebar(props) {
     })
   }
   const searchToken = (e) => {
-    list.filtersChange({
+    tokens.filtersChange({
       filters: {
         ...filters,
         keywords: e.target.value
@@ -33,7 +33,7 @@ function ListTokensSidebar(props) {
   }
   const toggleFavored = (item, e) => {
     e.stopPropagation()
-    list.favoredChange({
+    tokens.favoredChange({
       favored: {
         [item.symbol]: !favored[item.symbol], // TODO address
       }
@@ -44,7 +44,7 @@ function ListTokensSidebar(props) {
     for (let key in selected) {
       new_selected[key] = false
     }
-    list.selectedChange({
+    tokens.selectedChange({
       selected: {
         ...new_selected,
         [item.symbol]: true, // TODO address
@@ -54,13 +54,16 @@ function ListTokensSidebar(props) {
   }
   const updateTransations = (token) => {
     dispatch({
-      type: 'transactions/filtersChange',
+      type: 'sockets/filtersChange',
       payload: {
+        id:'transaction',
         filters: {token}
       }
     })
   }
-  const filteredTokens = getTokens(list)
+  const filteredTokens = filterTokens(tokens)
+  const sortedTokens = sortTokens(filteredTokens)
+  const formatedTokens = setTokens({balance,marketcap,tokens:sortedTokens})
   return (
     <div>
     	<div className="token-total">
@@ -121,7 +124,7 @@ function ListTokensSidebar(props) {
       <div className="token-list text-color-dark-1" style={{height: "100%",overflow: "auto",paddingBottom: "211px"}}>
           <div className="">
               {
-                filteredTokens.map((item,index)=>
+                formatedTokens.map((item,index)=>
                   <div className="item" key={index} onClick={()=>{}}>
                       <div className="sub">
                           <div hidden className="favorites"><i className="icon-star"></i></div>
