@@ -9,6 +9,7 @@ import * as selectors from 'modules/formatter/selectors'
 import moment from 'moment'
 import ReactDOM from 'react-dom'
 import Notification from 'LoopringUI/components/Notification'
+import {store} from '../../index'
 
 class PlaceOrderForm extends React.Component {
 
@@ -267,6 +268,16 @@ class PlaceOrderForm extends React.Component {
           return
         }
       }
+      const address = store.getState().wallet.address
+      if(!address) {
+        //TODO
+        // Notification.open({
+        //   type:'warning',
+        //   message:intl.get('trade.not_inWhiteList'),
+        //   description:intl.get('trade.not_allow')
+        // });
+        // return
+      }
       form.validateFields((err, values) => {
         if (!err) {
           placeOrder.submitButtonLoadingChange({submitButtonLoading:true})
@@ -319,10 +330,35 @@ class PlaceOrderForm extends React.Component {
           }
           tradeInfo.milliLrcFee = placeOrder.sliderMilliLrcFee
           tradeInfo.lrcFee = placeOrder.lrcFee
-          console.log(11111,tradeInfo)
-          // toConfirm(tradeInfo, _this.props.txs)
+          orderFormatter.tradeVerification(tradeInfo, placeOrder.sell, placeOrder.buy, this.props.txs)
+          if(tradeInfo.error) {
+            tradeInfo.error.map(item=>{
+              Notification.open({
+                message: intl.get('trade.send_failed'),
+                description: intl.get('trade.eth_is_required', {required:item.value.required}),
+                type:'error',
+              })
+            })
+            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+            return
+          }
+          showTradeModal(tradeInfo)
+          placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
         }
       });
+    }
+
+    const showTradeModal = (tradeInfo) => {
+      this.props.dispatch({
+        type: 'modals/modalChange',
+        payload: {
+          id: 'trade/confirm',
+          visible: true,
+          side : placeOrder.side,
+          pair : placeOrder.pair,
+          ...tradeInfo
+        }
+      })
     }
 
     return (

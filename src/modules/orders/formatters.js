@@ -2,7 +2,8 @@ import config from 'common/config'
 import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
 import {getPriceBySymbol, getAssetByToken} from '../formatter/selectors'
-import {getEstimatedAllocatedAllowance, getFrozenLrcFee} from 'LoopringJS/relay/utils'
+import {getEstimatedAllocatedAllowance, getFrozenLrcFee} from 'LoopringJS/relay/rpc/account'
+import {store} from '../../index'
 
 const integerReg = new RegExp("^[0-9]*$")
 const amountReg = new RegExp("^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$")
@@ -151,15 +152,19 @@ function ceilDecimal(bn, precision) {
   }
 }
 
-export async function tradeWarn(tradeInfo, sell, buy, txs) {
+export async function tradeVerification(tradeInfo, sell, buy, tokenL, tokenR, side, txs) {
   const configSell = config.getTokenBySymbol(sell.symbol)
   const ethBalance = getAssetByToken('ETH', true)
   const lrcBalance = getAssetByToken('LRC', true)
   const approveGasLimit = config.getGasLimitByType('approve').gasLimit
-  let frozenSell = await getEstimatedAllocatedAllowance(window.WALLET.getAddress(), sell.symbol)
+  const address = store.getState().wallet.address
+  if(!address) {
+    //TODO
+  }
+  let frozenSell = await getEstimatedAllocatedAllowance(address, sell.symbol)
   let frozenAmountS = fm.toBig(frozenSell.result).div('1e'+configSell.digits).add(fm.toBig(tradeInfo.total))
   let approveCount = 0
-  const warn = new Array()
+  const warn = new Array(), error = new Array()
   if(buy.symbol === 'LRC') { //buy lrc, only verify eth balance could cover gas cost if approve is needed
     if(sell.balance.lessThan(frozenAmountS)) {
       warn.push({type:"BalanceNotEnough", value:{symbol:sell.symbol, balance:cutDecimal(sell.balance.toNumber(),6), required:ceilDecimal(frozenAmountS.sub(sell.balance).toNumber(),6)}})
@@ -174,38 +179,20 @@ export async function tradeWarn(tradeInfo, sell, buy, txs) {
     //TODO gas price
     const gas = fm.toBig('21').times(fm.toNumber(approveGasLimit)).div(1e9).times(approveCount)
     if(ethBalance.lessThan(gas)){
-      Notification.open({
-        message: intl.get('trade.send_failed'),
-        description: intl.get('trade.eth_is_required', {required:ceilDecimal(gas.sub(ethBalance).toNumber(),6)}),
-        type:'error',
-        actions:(
-          <div>
-            <Button className="alert-btn mr5" onClick={showModal.bind(this,{id:'token/receive',symbol:'ETH'})}>{`${intl.get('tokens.options_receive')} ETH`}</Button>
-          </div>
-        )
-      })
-      _this.setState({loading:false})
+      error.push({type:"BalanceNotEnough", value:{symbol:'ETH', balance:cutDecimal(ethBalance.balance,6), required:ceilDecimal(gas,6)}})
+      tradeInfo.error = error
       return
     }
   } else {
     //lrc balance not enough, lrcNeed = frozenLrc + lrcFee
-    const frozenLrcFee = await getFrozenLrcFee(window.WALLET.getAddress())
+    const frozenLrcFee = await getFrozenLrcFee(address)
     let frozenLrc = fm.toBig(frozenLrcFee.result).div(1e18).add(fm.toBig(tradeInfo.lrcFee))
     let failed = false
     if(lrcBalance.balance.lessThan(frozenLrc)){
-      Notification.open({
-        message: intl.get('trade.send_failed'),
-        description: intl.get('trade.lrcfee_is_required', {required:ceilDecimal(frozenLrc.sub(lrcBalance.balance).toNumber(),6)}),
-        type:'error',
-        actions:(
-          <div>
-            <Button className="alert-btn mr5" onClick={showModal.bind(this,{id:'token/receive',symbol:'LRC'})}>{`${intl.get('tokens.options_receive')} LRC`}</Button>
-          </div>
-        )
-      })
+      error.push({type:"BalanceNotEnough", value:{symbol:'LRC', balance:cutDecimal(lrcBalance.balance,6), required:ceilDecimal(frozenLrc,6)}})
       failed = true
     }
-    const frozenLrcInOrderResult = await getEstimatedAllocatedAllowance(window.WALLET.getAddress(), "LRC")
+    const frozenLrcInOrderResult = await getEstimatedAllocatedAllowance(address, "LRC")
     frozenLrc = frozenLrc.add(fm.toBig(frozenLrcInOrderResult.result).div(1e18))
     if(tokenL === 'LRC' && side === 'sell') {// sell lrc-weth
       frozenLrc = frozenLrc.add(fm.toBig(tradeInfo.amount))
@@ -233,26 +220,16 @@ export async function tradeWarn(tradeInfo, sell, buy, txs) {
       approveCount += 1
       if(pendingLRCAllowance.greaterThan(0)) approveCount += 1
     }
-    const gas = fm.toBig(settings.trading.gasPrice).times(approveGasLimit).div(1e9).times(approveCount)
+    //TODO gas price
+    const gas = fm.toBig('21').times(approveGasLimit).div(1e9).times(approveCount)
     if(ethBalance.lessThan(gas)){
-      Notification.open({
-        message: intl.get('trade.send_failed'),
-        description: intl.get('trade.eth_is_required', {required:ceilDecimal(gas.sub(ethBalance).toNumber(),6)}),
-        type:'error',
-        actions:(
-          <div>
-            <Button className="alert-btn mr5" onClick={showModal.bind(this,{id:'token/receive',symbol:'ETH'})}>{`${intl.get('tokens.options_receive')} ETH`}</Button>
-          </div>
-        )
-      })
+      error.push({type:"BalanceNotEnough", value:{symbol:'ETH', balance:cutDecimal(ethBalance.balance,6), required:ceilDecimal(gas,6)}})
       failed = true
     }
     if(failed) {
-      _this.setState({loading:false})
+      tradeInfo.error = error
       return
     }
   }
   tradeInfo.warn = warn
-  _this.setState({loading:false});
-  showTradeModal(tradeInfo)
 }
