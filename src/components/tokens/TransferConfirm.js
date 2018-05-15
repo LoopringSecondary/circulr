@@ -14,7 +14,7 @@ function TransferConfirm(props) {
         <ul className="list list-label list-dark list-justify-space-between divided">
             <li><span>发送方</span><div className="text-lg-control break-word text-right">0x58a2f1a15d97c25917e672000d80cf68b74ca192bf5542623de832918b1bba9b</div></li>
             <li><span>发送到</span><div className="text-lg-control break-word text-right">0x58a2f1a15d97c25917e672000d80cf68b74ca192bf5542623de832918b1bba9b</div></li>
-            <li><span>邮费</span><span>0.0042 ETH<p>Gas(200000)* Gas Price(21 Gwei)</p></span></li>
+            <li><span>邮费</span><span className="text-right">0.0042 ETH<br/><small className="text-color-dark-2">Gas(200000)* Gas Price(21 Gwei)</small></span></li>
             <li><span>订单失效时间</span><span>2018年5月15日 16:28</span></li>
         </ul>
         <div className="col-row">
