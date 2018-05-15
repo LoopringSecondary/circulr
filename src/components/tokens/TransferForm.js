@@ -2,10 +2,9 @@ import React from 'react';
 import { Input,Button,Form} from 'antd';
 function TransferForm(props) {
   return (
-    <div>
-
+    <div className="form-dark">
         <div className="card-header bordered">
-            <h4>Send LRC</h4>
+            <h4 className="text-dark">Send LRC</h4>
             <a href="#" className="close close-lg close-inverse" id="sendClose"></a>
         </div>
         <div className="card-body form-inverse">
@@ -17,12 +16,12 @@ function TransferForm(props) {
             <Input value="0" suffix="LRC" prefix="Amount" />
             </Form.Item>
             </Form>
-            <div className="form-group form-group-md text-inverse">
+            <div className="text-color-dark-1">
                 <div className="form-control-static d-flex justify-content-between mr-0">
                     <span>Gas Fee</span><span className="font-bold"><i className="icon-pencil gasfee"></i><span>0</span><span className="offset-md">0.00189 ETH ≈ $1.15</span></span>
                 </div>
             </div>
-            <Button type="primary" className="btn-block">Continue</Button>
+            <Button className="btn btn-o-dark btn-block btn-xlg">Continue</Button>
         </div>     
         <div id="gasFee" style={{display: "none"}}>
             <div className="form-group">

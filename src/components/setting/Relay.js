@@ -2,47 +2,48 @@ import React from 'react';
 import { Input,Button,Form,Radio,Select,Col} from 'antd';
 
 function Relay(props) {
+  const {form, settings} = props
 	const InputGroup = Input.Group;
 	const Option = Select.Option;
+	const {relay} = settings
+  const relayConfig = relay.nodes.find(item=>item.value === relay.selected) || {}
+  // const gotoEdit = (relayId, e)=>{
+  //   e.preventDefault();
+  //   modal.showModal({id:'settings/relay/edit', relayId:relayId})
+  // }
+  // const gotoAdd = ()=>{
+  //   modal.showModal({id:'settings/relay/add'})
+  // }
+  function handleChange(e) {
+    settings.relayChange({selected:e.target.value})
+  }
   return (
-  	<div>
+  	<div className="form-dark">
         <span>Choose Relay</span>
-        <Radio.Group className="d-block">
-	        <Radio value={1}  className="d-flex align-items-center">
-			    <Input.Group size="large" className="d-flex justify-content-between" style={{width:"100%"}}>
-			        <Col span={12}>
-			          <Input defaultValue="Default Loopring Relay" disabled />
-			        </Col>
-			        <Col span={12}>
-			          <Input defaultValue="//relay1.loopring.io" disabled />
-			        </Col>					
-		        </Input.Group>
-	        </Radio>
-	        <div className="blk"></div>
-	        <Radio value={2}  className="d-flex align-items-center">
-			    <Input.Group size="large" className="d-flex justify-content-between" style={{width:"100%"}}>
-	    	        <Col span={12}>
-	    	          <Input defaultValue="Pre-Production Relay" disabled />
-	    	        </Col>
-	    	        <Col span={12}>
-	    	          <Input defaultValue="//pre-relay1.loopring.io" disabled />
-	    	        </Col>					
-	            </Input.Group>
-	        </Radio>
-	        <div className="blk"></div>
-	        <Radio value={3}  className="d-flex align-items-center">
-			    <Input.Group size="large" className="d-flex justify-content-between" style={{width:"100%"}}>
-        	        <Col span={12}>
-        	          <Input defaultValue="Test" disabled />
-        	        </Col>
-        	        <Col span={12}>
-        	          <Input defaultValue="//13.112.62.24" disabled />
-	        	        </Col>					
-	            </Input.Group>
-	        </Radio>
+        <Radio.Group className="d-block" onChange={handleChange} value={relayConfig.value}>
+          {
+            relay.nodes.map((item,index)=>
+              <div>
+                <Radio className="d-flex align-items-center" value={item.value} key={index}>
+                  <Input.Group size="large" className="d-flex justify-content-between" style={{width:"100%"}}>
+                    <Col span={12}>
+                      <Input value={item.name} disabled />
+                    </Col>
+                    <Col span={12}>
+                      <Input value={item.value} disabled />
+                    </Col>
+                  </Input.Group>
+                </Radio>
+                <div className="blk"></div>
+              </div>
+            )
+          }
+
+
+
         </Radio.Group>
         <div className="blk"></div>
-        <Button type="primary" className="btn-block btn-xlg">Add Custom Relay</Button>
+        <Button className="btn-o-dark btn-block btn-xlg">Add Custom Relay</Button>
         <div className="form-inverse">
 			<Form.Item label="Relay Name">
 	                <Input value="" />
@@ -52,8 +53,8 @@ function Relay(props) {
 			</Form.Item>
 	        <div className="blk"></div>
         </div>
-		<Button type="primary" className="btn-block btn-xlg">Save</Button>
+		<Button className="btn-o-dark btn-block btn-xlg">Save</Button>
   	</div>
   )
 }
-export default Relay
+export default Form.create()(Relay);
