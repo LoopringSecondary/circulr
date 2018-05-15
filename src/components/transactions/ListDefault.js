@@ -28,7 +28,8 @@ const getTypes = (token)=>{
   return [...types,...othersTypes]
 }
 
-function ListBlock(props) {
+function ListTransaction(props) {
+  console.log(props.id,'ListTransaction component render')
   const {transaction:list}= props
   const statusChange = (value)=>{
     list.filtersChange({status:value})
@@ -127,5 +128,4 @@ function ListBlock(props) {
     </div>
   )
 }
-
-export default ListBlock
+export default ListTransaction

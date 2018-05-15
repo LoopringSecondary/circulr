@@ -9,19 +9,15 @@ const getWrapper = (namespace,keys)=>{
     }
     shouldComponentUpdate(nextProps, nextState){
       const { id } = this.props
-      // if(id){
-      //   if(nextProps[namespace][id] === this.props[namespace][id]){
-      //     console.log(id,' container not render')
-      //     return false
-      //   }else{
-      //     console.log(id,' container render')
-      //     return true
-      //   }
-      // }else{
-      //   console.log(id,' container render')
-      //   return true
-      // }
-      console.log(id,' container render')
+      if(id){
+        if(nextProps[namespace][id] === this.props[namespace][id]){
+          return false
+        }else{
+          return true
+        }
+      }else{
+        return true
+      }
       return true
     }
     componentDidMount() {

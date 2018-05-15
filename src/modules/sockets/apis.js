@@ -1,4 +1,5 @@
 import io from 'socket.io-client'
+
 const config = {
   transaction:{
     queryTransformer:(payload)=>{
@@ -13,15 +14,16 @@ const config = {
       })
     },
     resTransformer:(id,res)=>{
+      console.log(id,'res')
       res = JSON.parse(res)
-      const app = require('../../index.js').default
+      const dispatch = require('../../index.js').default._store.dispatch
       let items = []
       if (!res.error && res.data && res.data.data) {
         items =[ ...res.data.data ]
       }
-      app._store.dispatch({
+      dispatch({
         type:'sockets/itemsChange',
-        payload:{id,items}
+        payload:{id,items,loading:false}
       })
     },
   },
@@ -34,15 +36,16 @@ const config = {
       })
     },
     resTransformer:(id,res)=>{
+      console.log(id,'res')
       res = JSON.parse(res)
-      const app = require('../../index.js').default
+      const dispatch = require('../../index.js').default._store.dispatch
       let items = []
       if (!res.error && res.data && res.data.tokens) {
         items =[ ...res.data.tokens ]
       }
-      app._store.dispatch({
+      dispatch({
         type:'sockets/itemsChange',
-        payload:{id,items}
+        payload:{id,items,loading:false}
       })
     },
   },
@@ -54,32 +57,32 @@ const config = {
       })
     },
     resTransformer:(id,res)=>{
+      console.log(id,'res')
       res = JSON.parse(res)
-      const app = require('../../index.js').default
+      const dispatch = require('../../index.js').default._store.dispatch
       let items =[]
       if (!res.error && res.data && res.data.tokens) {
         items =[ ...res.data.tokens ]
       }
-      app._store.dispatch({
+      dispatch({
         type:'sockets/itemsChange',
-        payload:{id,items}
+        payload:{id,items,loading:false}
       })
     },
   },
-
 }
 const getQueryTransformer = (id)=>{
   if(config[id] && config[id].queryTransformer){
     return config[id].queryTransformer
   }else{
-    return ()=>{}
+    return ()=>{console.log(id,'no queryTransformer')}
   }
 }
 const getResTransformer = (id)=>{
   if(config[id] && config[id].resTransformer){
     return config[id].resTransformer
   }else{
-    return ()=>{}
+    return ()=>{console.log(id,'no resTransformer')}
   }
 }
 
