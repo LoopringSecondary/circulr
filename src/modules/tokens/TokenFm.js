@@ -1,15 +1,16 @@
 import {toBig, toNumber,toFixed} from "LoopringJS/common/formatter";
 import {formatLength,toUnitAmount,toDecimalsAmount} from "../formatter/common";
+import config from 'common/config'
 
 export default class TokenFm {
   constructor(token){
       const {symbol,address} = token;
       let tokenConfig = {};
       if(symbol){
-        tokenConfig = window.CONFIG.getTokenBySymbol(symbol) || {}
+        tokenConfig = config.getTokenBySymbol(symbol) || {}
       }else{
         if(address){
-          tokenConfig = window.CONFIG.getTokenByAddress(address) || {}
+          tokenConfig = config.getTokenByAddress(address) || {}
         }else{
           throw new Error('token.symbol or token.symbol must not be empty')
         }
@@ -64,7 +65,12 @@ export function getBalanceBySymbol({balances, symbol, toUnit=true}) {
     const allowance = toBig(tokenAssets.allowance);
     tokenAssets = {...tokenAssets, balance, allowance}
   }
-  return {...tokenAssets}
+
+  // return {...tokenAssets}
+  return {
+    balance: 0,
+    allowance: 0
+  }
 }
 
 export function getPriceBySymbol({marketcap,symbol, ifFormat}){
@@ -95,7 +101,7 @@ export function getPriceBySymbol({marketcap,symbol, ifFormat}){
   // }
 }
 export function getPriceByToken(tokenx, tokeny) {
-  const market = window.CONFIG.getMarketBySymbol(tokenx, tokeny);
+  const market = config.getMarketBySymbol(tokenx, tokeny);
   const pricex = this.getTokenBySymbol(tokenx,true);
   const pricey = this.getTokenBySymbol(tokeny,true);
   if (market) {
