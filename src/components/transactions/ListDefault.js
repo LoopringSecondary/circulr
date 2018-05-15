@@ -29,7 +29,7 @@ const getTypes = (token)=>{
 }
 
 function ListBlock(props) {
-  const {transactions:list}= props
+  const {transaction:list}= props
   const statusChange = (value)=>{
     list.filtersChange({status:value})
   }

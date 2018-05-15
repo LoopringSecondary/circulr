@@ -1,5 +1,4 @@
 import io from 'socket.io-client'
-
 const balanceHandler = (res)=>{
   res = JSON.parse(res)
   if(!res.error && res.data && res.data.tokens){
@@ -75,8 +74,10 @@ const marketcap_res = (payload)=>{
 
 const transactionHandler = (res)=>{
   res = JSON.parse(res)
+  const app = require('../../index.js').default
   if (!res.error && res.data && res.data.data) {
-    return {
+     const newRes = {
+      id:'transaction',
       items: [...res.data.data],
       page:{
         total:res.data.total,
@@ -84,11 +85,20 @@ const transactionHandler = (res)=>{
         size:res.data.pageSize,
       }
     }
+    app._store.dispatch({
+      type:'sockets/itemsChange',
+      payload:{...newRes}
+    })
   }else{
-    return {
+    const newRes = {
+      id:'transaction',
       items:[],
       page:{}
     }
+    app._store.dispatch({
+      type:'sockets/itemsChange',
+      payload:{...newRes}
+    })
   }
 }
 
@@ -124,13 +134,13 @@ const transaction_res = (payload)=>{
 const emitEvent = (payload)=>{
   let {id} = payload
   switch (id) {
-    case 'assets':
+    case 'balance':
       return balance_req(payload)
       break
-    case 'prices':
+    case 'marketcap':
       return marketcap_req(payload)
       break
-    case 'transactions':
+    case 'transaction':
       return transaction_req(payload)
       break
     default:
@@ -141,13 +151,13 @@ const emitEvent = (payload)=>{
 const onEvent = (payload)=>{
   let {id} = payload
   switch (id) {
-    case 'assets':
+    case 'balance':
       return balance_res(payload)
       break;
-    case 'prices':
+    case 'marketcap':
       return marketcap_res(payload)
       break;
-    case 'transactions':
+    case 'transaction':
       return transaction_res(payload)
       break;
     default:
@@ -176,13 +186,13 @@ const connect = (payload)=>{
 }
 const responseHandler = (res,id)=>{
   switch (id) {
-    case 'assets':
+    case 'balance':
       return balanceHandler(res)
       break;
-    case 'prices':
+    case 'marketcap':
       return marketcapHandler(res)
       break;
-    case 'transactions':
+    case 'transaction':
       return transactionHandler(res)
       break;
     default:
@@ -190,6 +200,7 @@ const responseHandler = (res,id)=>{
   }
 }
 export default {
+  responseHandler,
   onEvent,
   emitEvent,
   connect,

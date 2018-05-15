@@ -61,11 +61,6 @@ export default {
         let new_payload = {page,filters,sort,socket,id}
         yield put({type:'loadingChange',payload: {id,loading: true,loaded:false}})
         const res = yield call(apis.emitEvent, new_payload)
-        console.log('model layer --',id,res)
-        if (res && res.items) {
-          put({type:'loadingChange',payload: {id,loading: false,loaded:true}})
-          put({type:'itemsChange',payload: {id,items:res.items}})
-        }
       }else{
         console.log('socket is not connected!')
       }
@@ -75,16 +70,18 @@ export default {
       const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
       if(socket){
         let new_payload = {page,filters,sort,socket,id}
-        yield put({type:'loadingChange',payload: {id,loading: true,loaded:false}})
-        socket.on(`${id}_res`,res=>{
-          res = apis.responseHandler(res,id)
-          console.log('model layer --',id,res)
-          if (res && res.items) {
-            put({type:'loadingChange',payload: {id,loading: false,loaded:true}})
-            put({type:'itemsChange',payload: {id,items:res.items}})
-          }
-        })
-        // const res = yield call(apis.onEvent, new_payload)
+        put({type:'loadingChange',payload: {id,loading: true,loaded:false}})
+        const res = yield call(apis.onEvent, new_payload)
+        // socket.on(`${id}_res`,(res)=>{
+        //   res = apis.responseHandler(res,id)
+        //   console.log('model layer --',id,res)
+        //   put({type:'itemsChange',payload: {id,items:res.items}})
+        //   // put({type:'loadingChange',payload: {id,loading: false,loaded:true}})
+        //   // if (res && res.items) {
+
+        //   // }
+        // })
+        // console.log('model layer --',id,res)
       }else{
         console.log('socket is not connected!')
       }
