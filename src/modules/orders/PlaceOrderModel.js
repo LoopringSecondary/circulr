@@ -1,4 +1,5 @@
 import config from 'common/config'
+import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
 import * as orderFormatter from './formatters'
 const MODULES = 'placeOrder'
@@ -26,8 +27,8 @@ export default {
    lrcFee:0,
    timeToLivePatternSelect: 'easy',
    timeToLivePopularSetting: true,
-   timeToLive:0,
-   timeToLiveUnit:'',
+   timeToLive: 1,
+   timeToLiveUnit: 'Day',
    timeToLiveStart: null,
    timeToLiveEnd: null,
    loading: false,
