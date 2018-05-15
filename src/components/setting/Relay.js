@@ -5,7 +5,7 @@ function Relay(props) {
 	const InputGroup = Input.Group;
 	const Option = Select.Option;
   return (
-  	<div>
+  	<div className="form-dark">
         <span>Choose Relay</span>
         <Radio.Group className="d-block">
 	        <Radio value={1}  className="d-flex align-items-center">
@@ -42,7 +42,7 @@ function Relay(props) {
 	        </Radio>
         </Radio.Group>
         <div className="blk"></div>
-        <Button type="primary" className="btn-block btn-xlg">Add Custom Relay</Button>
+        <Button className="btn-o-dark btn-block btn-xlg">Add Custom Relay</Button>
         <div className="form-inverse">
 			<Form.Item label="Relay Name">
 	                <Input value="" />
@@ -52,7 +52,7 @@ function Relay(props) {
 			</Form.Item>
 	        <div className="blk"></div>
         </div>
-		<Button type="primary" className="btn-block btn-xlg">Save</Button>
+		<Button className="btn-o-dark btn-block btn-xlg">Save</Button>
   	</div>
   )
 }

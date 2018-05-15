@@ -2,7 +2,7 @@ import React from 'react';
 import { Input,Button,Form,Select} from 'antd';
 function Perfenrence(props) {
   return (
-  	<div>
+  	<div className="form-dark">
         <Form.Item label="Language">
             <Select defaultValue="English" dropdownMatchSelectWidth={false} className="d-block">
                 <option value="English">English</option>
@@ -22,7 +22,7 @@ function Perfenrence(props) {
             </Select>
         </Form.Item>
         <div className="blk"></div>
-        <Button type="primary" className="btn-block btn-xlg">I Understand, Copy Private Key</Button>
+        <Button className="btn btn-o-dark btn-block btn-xlg">I Understand, Copy Private Key</Button>
     </div>
   )
 }
