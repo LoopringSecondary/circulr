@@ -20,13 +20,13 @@ export default {
   },
   reducers: {
     unlock(state, {payload}) {
-      const {address, unlockType, account,password} = payload;
+      const {address, unlockType, account, password} = payload;
       return {
         ...state,
         address,
         unlockType,
         account,
-        password:password || state.password
+        password: password || state.password
       }
     },
     lock(state, {payload}) {
@@ -49,11 +49,16 @@ export default {
       yield put({type: 'unlockWallet', payload: {...payload, unlockType}})
     },
     * unlockKeyStoreWallet({payload}, {put}) {
-      const {keystore, password} = payload;
-      const account = fromKeystore(keystore, password);
-      const address = account.getAddress();
-      const unlockType = 'keystore';
-      yield put({type: 'unlockWallet', payload: {address, unlockType, account}})
+      const {keystore, password, cb} = payload;
+      try {
+        const account = fromKeystore(keystore, password);
+        const address = account.getAddress();
+        const unlockType = 'keystore';
+        yield put({type: 'unlockWallet', payload: {address, unlockType, account, password}})
+        cb()
+      } catch (e) {
+        cb(e)
+      }
     },
     * unlockMnemonicWallet({payload}, {put}) {
       const {mnemonic, dpath, password} = payload;
@@ -98,39 +103,39 @@ export default {
       const {account, unlockType} = yield select((state) => state.wallet);
       const {message, cb} = payload;
       if (account) {
-        try{
+        try {
           const sig = yield account.signMessage(message);
           cb({...sig})
-        }catch (e){
-          cb({error:e})
+        } catch (e) {
+          cb({error: e})
         }
       } else {
         cb({error: {message: `${unlockType} doesn't support sign message`}})
       }
     },
-    * signEthereumTx({payload},{select}){
+    * signEthereumTx({payload}, {select}) {
       const {account, unlockType} = yield select((state) => state.wallet);
       const {tx, cb} = payload;
       if (account) {
-        try{
+        try {
           const signedTx = yield account.signEthereumTx(tx);
           cb({signedTx})
-        }catch (e){
-          cb({error:e})
+        } catch (e) {
+          cb({error: e})
         }
       } else {
         cb({error: {message: `${unlockType} doesn't support sign message`}})
       }
     },
-    * signOrder({payload},{select}){
+    * signOrder({payload}, {select}) {
       const {account, unlockType} = yield select((state) => state.wallet);
       const {order, cb} = payload;
       if (account) {
-        try{
+        try {
           const order = yield account.signOrder(order);
           cb(order)
-        }catch (e){
-          cb({error:e})
+        } catch (e) {
+          cb({error: e})
         }
       } else {
         cb({error: {message: `${unlockType} doesn't support sign message`}})

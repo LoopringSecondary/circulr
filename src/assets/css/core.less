@@ -20,9 +20,11 @@ ol ol, ul ul, ol ul, ul ol { margin-bottom: 0; }
 .text-color-dark-1 { color:@text-color-dark-1; }
 .text-color-dark-2 { color:@text-color-dark-2; }
 .text-warning { color: @warning-color; }
-.text-error,.text-down { color: @error-color; }
-.text-success,.text-up { color: @success-color; }
+.text-error,.text-down { color: @error-color !important; }
+.text-success,.text-up { color: @success-color !important; }
+.text-left{ text-align: left; }
 .text-center{ text-align: center; }
+.text-right{ text-align: right; }
 .text-sm-control { display: inline-block; max-width: 80px; }
 .text-md-control { display: inline-block; max-width: 160px; }
 .text-lg-control { display: inline-block; max-width: 280px; }
@@ -95,10 +97,6 @@ ol ol, ul ul, ol ul, ul ol { margin-bottom: 0; }
 .group-span-lg>span:nth-child(n+2) { padding-left: 20px; }
 [class*=group-span] span, [class^=group-span] span { display: inline-block; white-space: nowrap; vertical-align: middle; }
 .truncation { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.icon span i { padding-right: 3px; }
-.right-control { position: absolute; top: 0; right: 0; }
-.right-control em, .right-control i { font-style: normal; }
-.right-control i { position: relative; top: 0px; font-size: inherit; }
 .col2-2 .item, .col3-3 .item, .col4-4 .item, .col5-5 .item, .col6-6 .item, .justify2-2 li, .justify3-3 li, .justify4-4 li, .justify5-5 li, .justify6-6 li { position: relative; float: left; }
 .col2-2 .item, .col3-3 .item, .col4-4 .item, .col5-5 .item, .col6-6 .item { padding: 0 15px; }
 [class*=justify] { }
@@ -195,14 +193,14 @@ section { }
 .listgroup p{ font-size:12px; opacity: 0.54}
 .listgroup .icon-chevron-right,.list .icon-chevron-right{ font-size: 18px; }
 /* table */
-.table.table-inverse { background: transparent; }
-.table.table-inverse thead th { color: rgba(255, 255, 255, .27) }
-.table.table-inverse tbody td { color: rgba(255, 255, 255, .54) }
-.table.table-inverse thead th, .table.table-inverse tbody td { background: transparent; border-bottom: 1px solid rgba(255, 255, 255, .03); font-weight: 500; vertical-align: middle }
-.table.table-inverse tbody tr:last-child td { border-bottom: 0; }
-.table.table-inverse tbody tr.active td { background: #0053B8 }
-.table.table-inverse tbody tr:hover { background: rgba(255, 255, 255, .07); }
-.table.table-inverse tbody tr:hover td { color: rgba(255, 255, 255, .87) }
+.table.table-dark { background: transparent; }
+.table.table-dark thead th { color: @text-color-dark-3 }
+.table.table-dark tbody td { color: @text-color-dark-2 }
+.table.table-dark thead th, .table.table-dark tbody td { background: transparent; border-bottom: 1px solid @bordered-drak-color-3; font-weight: 600; vertical-align: middle }
+.table.table-dark tbody tr:last-child td { border-bottom: 0; }
+.table.table-dark tbody tr.active td { background: #0053B8 }
+.table.table-dark tbody tr:hover { background: rgba(255, 255, 255, .07); }
+.table.table-dark tbody tr:hover td { color: @text-color-dark-1 }
 .table { width: 100%; max-width: 100%; background-color: #fff; }
 .table th, .table td { padding: 10px 20px; vertical-align: top; border-top: 1px solid #EBE9EF; }
 .table thead th { vertical-align: bottom; background: #f1f4f7; color: rgba(0, 0, 0, .54); border-bottom: 2px solid #EBE9EF; border-top: 0; white-space: nowrap; }
