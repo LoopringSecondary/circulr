@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-
+import {store} from '../../index.js'
 const config = {
   transaction:{
     queryTransformer:(payload)=>{

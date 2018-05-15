@@ -1,11 +1,13 @@
 import React from 'react'
 import {Input,Icon,Tooltip} from 'antd'
 import intl from 'react-intl-universal'
-import {filterTokens,sortTokens,setTokens} from 'modules/tokens/formatters'
+import TokensFm from 'modules/tokens/TokensFm'
 
 function ListTokensSidebar(props) {
   console.log('ListTokensSidebar component render',props)
   const {tokens,balance,marketcap,dispatch}= props
+  const tokensFm = new TokensFm({tokens,marketcap,balance})
+  const formatedTokens = tokensFm.getList()
   const {filters,favored,selected}= tokens
   const toggleMyFavorite = () => {
     tokens.filtersChange({
@@ -61,9 +63,7 @@ function ListTokensSidebar(props) {
       }
     })
   }
-  const filteredTokens = filterTokens(tokens)
-  const sortedTokens = sortTokens(filteredTokens)
-  const formatedTokens = setTokens({balance,marketcap,tokens:sortedTokens})
+
   return (
     <div>
     	<div className="token-total">

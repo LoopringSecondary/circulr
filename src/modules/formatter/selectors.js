@@ -1,5 +1,5 @@
 import {toBig} from "LoopringJS/common/formatter";
-import TokenFormatter from '../tokens/formatters';
+import TokenFormatter from '../tokens/TokenFm';
 import {store} from '../../index'
 
 export function getAssetsByToken(state, token, toUnit) {
