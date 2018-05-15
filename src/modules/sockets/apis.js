@@ -1,161 +1,100 @@
 import io from 'socket.io-client'
 
-const balanceHandler = (res)=>{
-  if(!res.error && res.data && res.data.tokens){
-    return {
-      // items:res.data.tokens.filter(token=>configSymbols.includes(token.symbol)) // get intersection of server config & client config
-      items:res.data.tokens
-    }
-  }else{
-    return {
-      items:[]
-    }
-  }
-}
-const balance_req = (payload)=>{
-  const {socket} = payload
-  const event = 'balance_req'
-  const options = {
-    delegateAddress: '0x17233e07c67d086464fD408148c3ABB56245FA64',
-    owner:window.config.address,
-  }
-  return new Promise((resolve,reject)=>{
-    socket.emit(event,JSON.stringify(options),(res)=>{
+const config = {
+  transaction:{
+    queryTransformer:(payload)=>{
+      const {filters,page} = payload
+      return JSON.stringify({
+        owner:window.config.address,
+        symbol:filters.token,
+        status:filters.status,
+        txType:filters.txType,
+        pageIndex:page.current,
+        pageSize:page.size || 10,
+      })
+    },
+    resTransformer:(id,res)=>{
+      console.log(id,'res')
       res = JSON.parse(res)
-      console.log(event,res)
-      resolve(balanceHandler(res))
-    })
-  })
-}
-const balance_res = (payload)=>{
-  const {socket} = payload
-  const event = 'balance_res'
-  return new Promise((resolve,reject)=>{
-    socket.on(event,(res)=>{
-      res = JSON.parse(res)
-      console.log(event,res)
-      resolve(balanceHandler(res))
-    })
-  })
-}
-const marketcapHandler = (res)=>{
-  if (!res.error && res.data && res.data.tokens) {
-    return {
-      items: res.data.tokens,
-    }
-  }else{
-    return {
-      items:[]
-    }
-  }
-}
-const marketcap_req = (payload)=>{
-  const {socket} = payload
-  const event = 'marketcap_req'
-  const options = {
-    "currency": 'usd',
-  }
-  return new Promise((resolve,reject)=>{
-    socket.emit(event,JSON.stringify(options),(res)=>{
-      res = JSON.parse(res)
-      console.log(event,res)
-      resolve(marketcapHandler(res))
-    })
-  })
-}
-const marketcap_res = (payload)=>{
-  const {socket} = payload
-  const event = 'marketcap_res'
-  return new Promise((resolve,reject)=>{
-    socket.on(event,(res)=>{
-      res = JSON.parse(res)
-      console.log(event,res)
-      resolve(marketcapHandler(res))
-    })
-  })
-}
-
-const transactionHandler = (res)=>{
-  if (!res.error && res.data && res.data.data) {
-    return {
-      items: [...res.data.data],
-      page:{
-        total:res.data.total,
-        current:res.data.pageIndex,
-        size:res.data.pageSize,
+      const dispatch = require('../../index.js').default._store.dispatch
+      let items = []
+      if (!res.error && res.data && res.data.data) {
+        items =[ ...res.data.data ]
       }
-    }
+      dispatch({
+        type:'sockets/itemsChange',
+        payload:{id,items,loading:false}
+      })
+    },
+  },
+  balance:{
+    queryTransformer:(payload)=>{
+      const {filters,page} = payload
+      return JSON.stringify({
+         delegateAddress: '0x17233e07c67d086464fD408148c3ABB56245FA64',
+         owner:window.config.address,
+      })
+    },
+    resTransformer:(id,res)=>{
+      console.log(id,'res')
+      res = JSON.parse(res)
+      const dispatch = require('../../index.js').default._store.dispatch
+      let items = []
+      if (!res.error && res.data && res.data.tokens) {
+        items =[ ...res.data.tokens ]
+      }
+      dispatch({
+        type:'sockets/itemsChange',
+        payload:{id,items,loading:false}
+      })
+    },
+  },
+  marketcap:{
+    queryTransformer:(payload)=>{
+      const {filters,page} = payload
+      return JSON.stringify({
+         "currency": 'usd',
+      })
+    },
+    resTransformer:(id,res)=>{
+      console.log(id,'res')
+      res = JSON.parse(res)
+      const dispatch = require('../../index.js').default._store.dispatch
+      let items =[]
+      if (!res.error && res.data && res.data.tokens) {
+        items =[ ...res.data.tokens ]
+      }
+      dispatch({
+        type:'sockets/itemsChange',
+        payload:{id,items,loading:false}
+      })
+    },
+  },
+}
+const getQueryTransformer = (id)=>{
+  if(config[id] && config[id].queryTransformer){
+    return config[id].queryTransformer
   }else{
-    return {
-      items:[],
-      page:{}
-    }
+    return ()=>{console.log(id,'no queryTransformer')}
   }
 }
-
-const transaction_req = (payload)=>{
-  const {socket,filters,page,id} = payload
-  const event = 'transaction_req'
-  const options = {
-    owner:window.config.address,
-    symbol:filters.token,
-    status:filters.status,
-    txType:filters.txType,
-    pageIndex:page.current,
-    pageSize:page.size || 10,
+const getResTransformer = (id)=>{
+  if(config[id] && config[id].resTransformer){
+    return config[id].resTransformer
+  }else{
+    return ()=>{console.log(id,'no resTransformer')}
   }
-  return new Promise((resolve,reject)=>{
-    socket.emit(event,JSON.stringify(options),(res)=>{
-      res = JSON.parse(res)
-      console.log(event,res)
-      resolve(transactionHandler(res))
-    })
-  })
-}
-const transaction_res = (payload)=>{
-  const {socket,id} = payload
-  const event = 'transaction_res'
-  return new Promise((resolve,reject)=>{
-    socket.on(event,(res)=>{
-      res = JSON.parse(res)
-      console.log(event,res)
-      resolve(transactionHandler(res,id))
-    })
-  })
 }
 
 const emitEvent = (payload)=>{
-  let {id} = payload
-  switch (id) {
-    case 'assets':
-      return balance_req(payload)
-      break
-    case 'prices':
-      return marketcap_req(payload)
-      break
-    case 'transactions':
-      return transaction_req(payload)
-      break
-    default:
-      break
-  }
+  let {id,socket} = payload
+  const transfromer = getQueryTransformer(id)
+  socket.emit(`${id}_req`,transfromer(payload))
 }
-
 const onEvent = (payload)=>{
-  let {id} = payload
-  switch (id) {
-    case 'assets':
-      return balance_res(payload)
-      break;
-    case 'prices':
-      return marketcap_res(payload)
-      break;
-    case 'transactions':
-      return transaction_res(payload)
-      break;
-    default:
-      break
-  }
+  let {id,socket} = payload
+  const transfromer = getResTransformer(id)
+  socket.on(`${id}_res`,transfromer.bind(this,id))
 }
 
 const connect = (payload)=>{
@@ -177,6 +116,7 @@ const connect = (payload)=>{
     })
   })
 }
+
 export default {
   onEvent,
   emitEvent,

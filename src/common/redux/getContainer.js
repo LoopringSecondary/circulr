@@ -18,6 +18,7 @@ const getWrapper = (namespace,keys)=>{
       }else{
         return true
       }
+      return true
     }
     componentDidMount() {
       if(this.props[namespace] && this.props.actions.init){

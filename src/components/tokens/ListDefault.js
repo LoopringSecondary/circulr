@@ -4,7 +4,7 @@ import intl from 'react-intl-universal'
 import {getTokens} from 'modules/tokens/formatters'
 
 function ListTokensSidebar(props) {
-  console.log('ListTokensSidebar props',props)
+  console.log(props.id,'ListTokensSidebar component render')
   const {tokens:list,dispatch}= props
   const {filters,favored,selected}= list
   const toggleMyFavorite = () => {
