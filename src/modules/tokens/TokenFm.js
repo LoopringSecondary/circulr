@@ -55,22 +55,18 @@ export function getBalanceBySymbol({balances, symbol, toUnit=true}) {
     balance: 0,
     allowance: 0
   };
-  if (toUnit) {
-    const tokenFormatter = new TokenFm({symbol: symbol});
-    const balance = tokenFormatter.getUnitAmount(tokenAssets.balance);
-    const allowance = tokenFormatter.getUnitAmount(tokenAssets.allowance);
-    tokenAssets = {...tokenAssets, balance, allowance}
-  } else {
-    const balance = toBig(tokenAssets.balance);
-    const allowance = toBig(tokenAssets.allowance);
-    tokenAssets = {...tokenAssets, balance, allowance}
-  }
+  // if (toUnit) {
+  //   const tokenFormatter = new TokenFm({symbol: symbol});
+  //   const balance = tokenFormatter.getUnitAmount(tokenAssets.balance);
+  //   const allowance = tokenFormatter.getUnitAmount(tokenAssets.allowance);
+  //   tokenAssets = {...tokenAssets, balance, allowance}
+  // } else {
+  //   const balance = toBig(tokenAssets.balance);
+  //   const allowance = toBig(tokenAssets.allowance);
+  //   tokenAssets = {...tokenAssets, balance, allowance}
+  // }
 
-  // return {...tokenAssets}
-  return {
-    balance: 0,
-    allowance: 0
-  }
+  return {...tokenAssets}
 }
 
 export function getPriceBySymbol({marketcap,symbol, ifFormat}){
