@@ -20,7 +20,7 @@ export default {
       }
       return {
         privateKey,
-        isValid:true
+        isValid
       }
     },
     reset(state, {payload}) {

@@ -5,7 +5,7 @@ import routeActions from 'common/utils/routeActions'
 
 
 
-export  default class Keystore extends React.Component {
+ class Keystore extends React.Component {
 
   state = {
     fileList: [],
@@ -23,12 +23,12 @@ export  default class Keystore extends React.Component {
     });
   };
   beforeUpload = (file) => {
-    const {dispatch} = this.props;
+    const keyStoreModel = this.props.keystore;
     const fileReader = new FileReader();
     fileReader.onload = () => {
       try{
         const keystore = fileReader.result;
-        dispatch({type: 'keystore/setKeystore', payload: {keystore}})
+        keyStoreModel.setKeystore({keystore})
       }catch (e){
 
       }
@@ -39,18 +39,19 @@ export  default class Keystore extends React.Component {
   };
 
   handleStoreChange = (e) => {
-    const {dispatch} = this.props;
+    const keyStoreModel = this.props.keystore;
     const keystore = e.target.value;
-    dispatch({type: 'keystore/setKeystore', payload: {keystore}})
+    keyStoreModel.setKeystore({keystore})
   };
 
   unlock = () => {
-    const {keystore, isPasswordRequired, password, isValid} = this.props;
+    const keyStoreModel = this.props.keystore;
+    const {keystore, isPasswordRequired, password, isValid} = keyStoreModel;
     if(isValid){
       if((isPasswordRequired && password) || !isPasswordRequired){
         this.props.dispatch({type:'wallet/unlockKeyStoreWallet',payload:{keystore,password,cb:(e) =>{
           if(!e){
-            this.props.dispatch({type:"keystore/reset"});
+            keyStoreModel.reset();
             routeActions.gotoPath('/wallet');
           }else{
             console.log(e.message)
@@ -62,14 +63,15 @@ export  default class Keystore extends React.Component {
 
   handlePassChange = (e) =>{
     const password = e.target.value;
-    this.props.dispatch({type: 'keystore/setPassword', payload: {password}})
+    const keyStoreModel = this.props.keystore;
+    keyStoreModel.setPassword({password})
   };
   togglePassword = () => {
     const {visible} = this.state;
     this.setState({visible:!visible})
   };
   render() {
-    const keyStoreModel = this.props;
+    const keyStoreModel = this.props.keystore;
     const {isPasswordRequired, password, keystore,isValid} = keyStoreModel;
     const {fileList,visible} = this.state;
     const uploadProps = {
@@ -120,8 +122,8 @@ export  default class Keystore extends React.Component {
 //     isValid: state.keystore.isValid,
 //   }
 // }
-//
-// export default connect(mapStateToProps)(Keystore)
+
+export default Keystore
 
 
 

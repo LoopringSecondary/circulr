@@ -15,20 +15,23 @@ class PrivateKey extends React.Component {
   };
   keyChange = (e) => {
     const privateKey = e.target.value;
-    this.props.dispatch({type:'privateKey/setPrivatekey',payload:{privateKey}})
+    const privateKeyModel = this.props.privateKey;
+    privateKeyModel.setPrivatekey({privateKey})
   };
 
   unlock = () => {
-    const {privateKey,isValid,dispatch} = this.props;
+    const privateKeyModel = this.props.privateKey;
+    const {privateKey,isValid} = privateKeyModel;
     if(isValid){
-      dispatch({type:"wallet/unlockPrivateKeyWallet",payload:{privateKey}});
-      dispatch({type:'privateKey/reset'});
+      this.props.dispatch({type:"wallet/unlockPrivateKeyWallet",payload:{privateKey}});
+      privateKeyModel.reset();
       routeActions.gotoPath('/wallet');
     }
   };
 
   render(){
-    const {privateKey,isValid} = this.props;
+    const privateKeyModel = this.props.privateKey;
+    const {privateKey,isValid} = privateKeyModel;
     const {visible} = this.state;
 
     const visibleIcon = (
@@ -54,13 +57,4 @@ class PrivateKey extends React.Component {
     )
   }
 }
-
-
-function mapStateToProps(state) {
-  return {
-    privateKey : state.privateKey.privateKey,
-    isValid: state.privateKey.isValid,
-  }
-}
-
-export default connect(mapStateToProps)(PrivateKey)
+export default PrivateKey
