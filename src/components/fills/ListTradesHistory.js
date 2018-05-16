@@ -8,9 +8,11 @@ function ListTradesHistory(props) {
 	    	    <h4>Trade History</h4>
 	    	</div>
 	    	<div className="trade-list h-full">
-	    	    <div className="content-scroll" style={{paddingBottom: "124px"}}>
 	    	        <ul>
 	    	            <li className="trade-list-header"><span>Price(ETH)</span><span>Amount(LRC)</span><span>Total(ETH)</span></li>
+	    	        </ul>
+	    	        <div style={{position: "relative", height: "100%", overflow:"auto",paddingBottom:"170px", }}>
+	    	        <ul>
 	    	            <li><span className="text-down">0.00009470</span><span>127</span><span>0.01202690</span></li>
 	    	            <li><span className="text-down">0.00009469</span><span>46</span><span>0.00435574</span></li>
 	    	            <li><span className="text-down">0.00009468</span><span>231</span><span>0.02187108</span></li>
