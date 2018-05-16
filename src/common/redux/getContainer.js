@@ -8,16 +8,18 @@ const getWrapper = (namespace,keys)=>{
       super(props)
     }
     shouldComponentUpdate(nextProps, nextState){
-      const { id } = this.props
-      if(id){
-        if(nextProps[namespace][id] === this.props[namespace][id]){
-          return false
-        }else{
-          return true
-        }
-      }else{
-        return true
-      }
+      // const { id } = this.props
+      // if(id){
+      //   if(nextProps[namespace][id] === this.props[namespace][id]){
+      //     console.log(id,'wrapper not render')
+      //     return false
+      //   }else{
+      //     console.log(id,'wrapper render')
+      //     return true
+      //   }
+      // }else{
+      //   return true
+      // }
       return true
     }
     componentDidMount() {
@@ -45,7 +47,6 @@ const getWrapper = (namespace,keys)=>{
       }else if(id){
         childProps = {
           ...rest,
-          id, // for wrapper
           [id]:{
             ...thisData,
             ...actions,
@@ -53,7 +54,7 @@ const getWrapper = (namespace,keys)=>{
           dispatch,
         }
       }else{
-         childProps = {
+        childProps = {
           ...rest,
           [namespace]:{
             ...data,
