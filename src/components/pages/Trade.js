@@ -39,7 +39,13 @@ function Trade(props) {
               <div className="card h-full">
                 <Containers.PlaceOrder initState={{pair:pair}}>
                   <Containers.Settings>
-                    <Orders.PlaceOrderForm />
+                    <Containers.Sockets id="balance">
+                      <Containers.Sockets id="marketcap">
+                        <Containers.Wallet>
+                          <Orders.PlaceOrderForm />
+                        </Containers.Wallet>
+                      </Containers.Sockets>
+                    </Containers.Sockets>
                   </Containers.Settings>
                 </Containers.PlaceOrder>
               </div>

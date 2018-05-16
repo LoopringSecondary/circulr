@@ -15,7 +15,11 @@ function Modals(props) {
       </Containers.Modals>
       <Containers.Modals id="transfer">
         <UiContianers.Modals id="transfer">
-          <Transfer />
+          <Containers.Sockets id="balance">
+            <Containers.Transfer>
+              <Transfer />
+            </Containers.Transfer>
+          </Containers.Sockets>
         </UiContianers.Modals>
       </Containers.Modals>
       <Containers.Modals id="transferConfirm">

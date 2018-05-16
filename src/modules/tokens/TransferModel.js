@@ -1,11 +1,10 @@
 import {getAssetsByToken} from "../formatter/selectors";
 import {toBig} from "LoopringJS/common/formatter";
 
-
 export default {
   namespace: 'transfer',
   state: {
-    token:'ETH',
+    token:'',
     amount: 0,
     isMax: false,
     gasPrice: 10,
@@ -98,10 +97,8 @@ export default {
       yield put({type:'setGasPrice',payload:{gasPrice}})
     },
     * tokenChange({payload},{select,put}){
-      const {to} = yield select((state) => state.transfer);
       yield put({type:"reset",payload});
       yield put({type:'setToken',payload});
-      yield put({type:"setTo",payload:{to}});
     }
   }
 };

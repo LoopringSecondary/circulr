@@ -1,6 +1,46 @@
 import React from 'react';
-import { Input,Button,Form} from 'antd';
+import { Input,Button,Form,Select} from 'antd';
+import intl from 'react-intl-universal';
+import config from 'common/config'
+import * as datas from 'common/config/data'
+import * as fm from 'LoopringJS/common/formatter'
+
+import * as selectors from 'modules/formatter/selectors'
+
+var _ = require('lodash');
+
 function TransferForm(props) {
+  const {transfer, balance, form} = props
+  console.log(222222, balance, transfer, props)
+
+  function validateTokenSelect(value) {
+    const result = form.validateFields(["amount"], {force:true});
+    if(value) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  function validateAmount(value) {
+    let tokenSymbol = this.state.tokenSymbol
+    if(this.state.showTokenSelector) {
+      tokenSymbol = form.getFieldValue("token")
+    }
+    if(tokenSymbol && _.isNumber(value)) {
+      const token = selectors.getAssetByToken(balance.items, tokenSymbol, true)
+      const v = fm.toBig(value)
+      return !v.lessThan(fm.toBig('0')) && !v.greaterThan(token.balance)
+    } else {
+      return false
+    }
+  }
+
+  const assetsSorted = balance.items.map((token,index) => {
+    return selectors.getAssetByToken(balance.items, token.symbol, true)
+  })
+  assetsSorted.sort(selectors.sorter);
+
   return (
     <div className="form-dark">
         <div className="card-header bordered">
@@ -9,12 +49,48 @@ function TransferForm(props) {
         </div>
         <div className="card-body form-inverse">
             <Form>
-            <Form.Item>
-            <Input value="0" suffix="WETH" prefix="Price" />
-            </Form.Item>
-            <Form.Item>
-            <Input value="0" suffix="LRC" prefix="Amount" />
-            </Form.Item>
+              {
+                !transfer.to &&
+                <Form.Item colon={false}>
+                  {form.getFieldDecorator('token', {
+                    initialValue: '',
+                    rules: [
+                      {message: intl.get("token.token_select_verification_message"),
+                        validator: (rule, value, cb) => validateTokenSelect(value) ? cb() : cb(true)
+                      }
+                    ]
+                  })(
+                    <Select
+                      size="large"
+                      className="d-block w-100 transfer-form-token-select"
+                      showSearch={false}
+                      allowClear
+                      style={{ width: 300 }}
+                      placeholder={intl.get('token.token_selector_placeholder')}
+                      optionFilterProp="children"
+                      //onChange={handleChange.bind(this)}
+                      onFocus={()=>{}}
+                      onBlur={()=>{}}
+                      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+                      {assetsSorted.map((token,index) => {
+                        const balance = selectors.getAssetByToken(balance.items, token.symbol, true)
+                        return <Select.Option value={token.symbol} key={index}>
+                          <div className="row mr0">
+                            <div className="col color-black-2">{token.symbol}</div>
+                            <div className="col-atuo color-black-3">{fm.toNumber(balance.balance).gt(0) ? '' : balance.balance.toString(10)}</div>
+                          </div>
+                        </Select.Option>}
+                      )}
+                    </Select>
+                  )}
+                </Form.Item>
+              }
+              <Form.Item>
+                <Input suffix="WETH" prefix="Recipient" />
+              </Form.Item>
+              <Form.Item>
+                <Input suffix="LRC" prefix="Amount" />
+              </Form.Item>
             </Form>
             <div className="text-color-dark-1">
                 <div className="form-control-static d-flex justify-content-between mr-0">
@@ -22,7 +98,7 @@ function TransferForm(props) {
                 </div>
             </div>
             <Button className="btn btn-o-dark btn-block btn-xlg">Continue</Button>
-        </div>     
+        </div>
         <div id="gasFee" style={{display: "none"}}>
             <div className="form-group">
                 <div className="tab-pane active" id="popularOption1">
@@ -70,4 +146,4 @@ function TransferForm(props) {
     </div>
   )
 }
-export default TransferForm
+export default Form.create()(TransferForm);
