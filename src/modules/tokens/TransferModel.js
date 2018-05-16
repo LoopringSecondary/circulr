@@ -4,12 +4,16 @@ import {toBig} from "LoopringJS/common/formatter";
 export default {
   namespace: 'transfer',
   state: {
+    assignedToken:'',
     token:'',
     to:"",
-    amount: 0,
+    amount: toBig(0),
     data:'0x',
     isMax: false,
-    outBalance:false
+    gasPopularSetting: true,
+    sliderGasPrice:0,
+    selectedGasPrice: 0,
+    selectedGasLimit: 0,
   },
   reducers: {
     reset(state, {payload}) {
@@ -22,18 +26,20 @@ export default {
         to:""
       }
     },
-    setOutBalance(state,{payload}){
-      const {outBalance} = payload;
+    setAssignedToken(state,{payload}){
+      const {assignedToken} = payload;
       return {
         ...state,
-        outBalance
+        assignedToken,
+        token:assignedToken
       }
     },
     setAmount(state,{payload}){
       const {amount} = payload;
       return {
         ...state,
-        amount
+        amount,
+        isMax:false
       }
     },
     setIsMax(state,{payload}){
@@ -63,7 +69,35 @@ export default {
         ...state,
         to
       }
-    }
+    },
+    setGasPopularSetting(state,{payload}){
+      const {gasPopularSetting} = payload;
+      return {
+        ...state,
+        gasPopularSetting
+      }
+    },
+    setSliderGasPrice(state,{payload}){
+      const {sliderGasPrice} = payload;
+      return {
+        ...state,
+        sliderGasPrice
+      }
+    },
+    setSelectedGasPrice(state,{payload}){
+      const {selectedGasPrice} = payload;
+      return {
+        ...state,
+        selectedGasPrice
+      }
+    },
+    setSelectedGasLimit(state,{payload}){
+      const {selectedGasLimit} = payload;
+      return {
+        ...state,
+        selectedGasLimit
+      }
+    },
   },
   effects:{
     * amountChange({payload}, {select, put}) {

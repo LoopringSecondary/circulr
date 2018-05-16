@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,Button,Form,Select} from 'antd';
+import { Input,Button,Form,Select,Popover,Slider,Icon} from 'antd';
 import intl from 'react-intl-universal';
 import config from 'common/config'
 import * as datas from 'common/config/data'
@@ -12,8 +12,15 @@ function TransferForm(props) {
   const {transfer, balance, wallet, marketcap, form} = props
 
   let tokenSelected = {}
-  if(transfer.token) {
+  if(transfer.assignedToken) {
+    tokenSelected = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.assignedToken, toUnit:true})
+  } else if(transfer.token) {
     tokenSelected = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.token, toUnit:true})
+  }
+
+  let GasLimit = config.getGasLimitByType('eth_transfer').gasLimit
+  if(transfer.token && transfer.token !== "ETH") {
+    GasLimit = config.getGasLimitByType('token_transfer').gasLimit
   }
 
   function validateTokenSelect(value) {
@@ -26,12 +33,8 @@ function TransferForm(props) {
   }
 
   function validateAmount(value) {
-    let tokenSymbol = this.state.tokenSymbol
-    if(this.state.showTokenSelector) {
-      tokenSymbol = form.getFieldValue("token")
-    }
-    if(tokenSymbol && _.isNumber(value)) {
-      const token = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:tokenSymbol, toUnit:true})
+    if(transfer.token && _.isNumber(value)) {
+      const token = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.token, toUnit:true})
       const v = fm.toBig(value)
       return !v.lessThan(fm.toBig('0')) && !v.greaterThan(token.balance)
     } else {
@@ -42,6 +45,13 @@ function TransferForm(props) {
   function handleChange(v) {
     if(v) {
       transfer.tokenChange({token:v})
+    }
+  }
+
+  function amountChange(e) {
+    if(e.target.value) {
+      const v = fm.toNumber(e.target.value)
+      transfer.setAmount({amount:v})
     }
   }
 
@@ -92,10 +102,151 @@ function TransferForm(props) {
     });
   }
 
+  function selectMax(e) {
+    e.preventDefault();
+    transfer.setIsMax({isMax:true})
+  }
+
+  function gasSettingChange(e) {
+    e.preventDefault();
+    transfer.setGasPopularSetting({gasPopularSetting:!transfer.gasPopularSetting})
+  }
+
+  function setGas(v) {
+    setTimeout(()=>{
+      transfer.setSliderGasPrice({sliderGasPrice:v})
+    },0)
+  }
+
+  function gasLimitChange(e) {
+    if(e.target.value){
+      transfer.setSelectedGasLimit({selectedGasLimit:fm.toNumber(e.target.value)})
+    }
+  }
+
+  function gasPriceChange(e) {
+    transfer.setSelectedGasPrice({selectedGasPrice:fm.toNumber(e)})
+  }
+
+  if(transfer.token) {
+    let tokenBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.token, toUnit:true}).balance
+    if(transfer.token === 'ETH') {
+      let gasPrice = 12; //TODO mock
+      let gasLimit = GasLimit;
+      if(transfer.gasPopularSetting) {
+        if(transfer.selectedGasPrice) {
+          gasPrice = transfer.selectedGasPrice
+        }
+        if(transfer.selectedGasLimit) {
+          gasLimit = transfer.selectedGasLimit
+        }
+      } else {
+        gasPrice = transfer.sliderGasPrice
+      }
+      const gas = fm.toBig(gasPrice).times(fm.toNumber(gasLimit)).div(1e9);
+      console.log(111111, gas.toString(10))
+      if(transfer.isMax) {
+        tokenBalance = tokenBalance.gt(gas) ?  tokenBalance.minus(gas) : fm.toBig(0);
+        console.log(22222222,tokenBalance.toString(10))
+      } else {
+        tokenBalance = transfer.amount.add(gas).gt(tokenBalance) ? tokenBalance.minus(gas) : transfer.amount
+        console.log(33333333,tokenBalance.toString(10))
+      }
+      if(!transfer.amount.equals(tokenBalance)) {
+        console.log(444444, tokenBalance.toString(10))
+        transfer.setAmount({amount:tokenBalance})
+        form.setFieldsValue({"amount": tokenBalance.toString(10)})
+      }
+    } else {
+      if(transfer.isMax && !transfer.amount.equals(tokenBalance)) {
+        transfer.setAmount({amount:tokenBalance})
+        form.setFieldsValue({"amount": tokenBalance.toString(10)})
+      }
+    }
+  }
+
   const assetsSorted = balance.items.map((token,index) => {
     return tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:token.symbol, toUnit:true})
   })
   assetsSorted.sort(tokenFormatter.sorter);
+
+  const amountAfter = (<a href="" onClick={selectMax.bind(this)}>send_max</a>)
+
+  const formatGas = (value) => {
+    const gas = fm.toBig(value).times(fm.toNumber(GasLimit)).div(1e9).toString()
+    return gas + " ETH";
+  }
+
+  const editGas = (
+    <Popover overlayClassName="place-order-form-popover"
+             title={
+               <div className="row pt5 pb5">
+                 <div className="col-auto">
+                   {intl.get('token.custum_gas_title')}
+                 </div>
+                 <div className="col"></div>
+                 <div className="col-auto"><a href="" onClick={gasSettingChange.bind(this)}>{transfer.gasPopularSetting ? 'gas_custom_setting' : 'token.gas_fast_setting' }</a></div>
+               </div>
+             }
+             content={
+               <div style={{maxWidth:'300px',padding:'5px'}}>
+                 {transfer.gasPopularSetting &&
+                 <div>
+                   <div className="pb10">custum_gas_content</div>
+                   <Form.Item className="mb0 pb10" colon={false} label={null}>
+                     {form.getFieldDecorator('transactionFee', {
+                       initialValue: 12, //TODO mock
+                       rules: []
+                     })(
+                       <Slider min={1} max={99} step={0.01}
+                               marks={
+                                 {
+                                  1: intl.get('token.slow'),
+                                  99: intl.get('token.fast')
+                                 }
+                               }
+                               tipFormatter={formatGas}
+                               onChange={setGas.bind(this)}
+                       />
+                     )}
+                   </Form.Item>
+                 </div>
+                 }
+                 {!transfer.gasPopularSetting &&
+                 <div>
+                   <div className="pb10">custum_gas_advance_content</div>
+                   <Form.Item label={<div className="fs3 color-black-2">{intl.get('token.gas_limit')}</div>} colon={false}>
+                     {form.getFieldDecorator('gasLimit', {
+                       initialValue: transfer.selectedGasLimit,
+                       rules: [{
+                         message:intl.get('trade.integer_verification_message'),
+                         validator: (rule, value, cb) => _.isNumber(value) ? cb() : cb(true)
+                       }],
+                     })(
+                       <Input className="d-block w-100" placeholder="" size="large" onChange={gasLimitChange.bind(this)}/>
+                     )}
+                   </Form.Item>
+                   <Form.Item label={<div className="fs3 color-black-2">{intl.get('token.gas_price')}</div>} colon={false}>
+                     {form.getFieldDecorator('gasPrice', {
+                       initialValue: transfer.selectedGasPrice,
+                       rules: []
+                     })(
+                       <Slider min={1} max={99} step={1}
+                               marks={{
+                                 1: intl.get('token.slow'),
+                                 99: intl.get('token.fast')
+                               }}
+                               onChange={gasPriceChange.bind(this)}
+                       />
+                     )}
+                   </Form.Item>
+                 </div>
+                 }
+               </div>
+             } trigger="click">
+      <a className="fs12 pointer color-black-3 mr5"><Icon type="edit" /></a>
+    </Popover>
+  )
 
   return (
     <div className="form-dark">
@@ -151,57 +302,45 @@ function TransferForm(props) {
                   <Input placeholder="" size="large" onKeyDown={toContinue.bind(this)}/>
                 )}
               </Form.Item>
-
+              <Form.Item label='Amount' colon={false}>
+                {form.getFieldDecorator('amount', {
+                  initialValue: 0,
+                  rules: [
+                    {
+                      message: intl.get('token.amount_verification_message'),
+                      validator: (rule, value, cb) => validateAmount.call(this, value) ? cb() : cb(true)
+                    }
+                  ]
+                })(
+                  <Input className="d-block w-100" placeholder="" size="large"
+                         suffix={amountAfter}
+                         onChange={amountChange.bind(this)} onKeyDown={toContinue.bind(this)}
+                         onFocus={() => {
+                           const amount = form.getFieldValue("amount")
+                           if (amount === 0) {
+                             form.setFieldsValue({"amount": ''})
+                           }
+                         }}
+                         onBlur={() => {
+                           const amount = form.getFieldValue("amount")
+                           if(amount === '') {
+                             form.setFieldsValue({"amount": 0})
+                           }
+                         }}/>
+                )}
+              </Form.Item>
             </Form>
             <div className="text-color-dark-1">
                 <div className="form-control-static d-flex justify-content-between mr-0">
-                    <span>Gas Fee</span><span className="font-bold"><i className="icon-pencil gasfee"></i><span>0</span><span className="offset-md">0.00189 ETH ≈ $1.15</span></span>
+                  <span>Gas Fee</span>
+                  <span className="font-bold">
+                    {editGas}
+                    <span>0</span>
+                    <span className="offset-md">0.00189 ETH ≈ $1.15</span>
+                  </span>
                 </div>
             </div>
             <Button className="btn btn-o-dark btn-block btn-xlg">Continue</Button>
-        </div>
-        <div id="gasFee" style={{display: "none"}}>
-            <div className="form-group">
-                <div className="tab-pane active" id="popularOption1">
-                    <div className="d-flex justify-content-between align-items-center webui-popover-title">
-                        <span className="font-weight">Custom Gas For This Order<i className="icon-question text-secondary offset-sm"></i></span><span><a href="#more1" data-toggle="tab" className="text-primary">Custom Settings</a></span>
-                    </div>
-                    <div className="blk"></div>
-                    <p className="text-secondary">we advice you to set 0.00090000</p>
-                    <div className="blk"></div>
-                    <div className="range-slider">
-                        <i className="range-slider-dot"></i><i className="range-slider-dot" style={{left: "100%"}}></i>
-                    </div>
-                    <div className="d-flex justify-content-between range-progress">
-                        <div>Slower</div>
-                        <div>Faster</div>
-                    </div>
-                </div>
-                <div className="tab-pane" id="more1">
-                    <div className="d-flex justify-content-between align-items-center webui-popover-title">
-                        <span className="font-weight">Adjust Gas<i className="icon-question text-secondary offset-sm"></i></span><span><a href="#popularOption1" data-toggle="tab" className="text-primary">Fast Settings</a></span>
-                    </div>
-                    <div className="blk"></div>
-                    <p className="text-secondary">we advice you to set GasLimit to 90000, set GasPrice to 10</p>
-                    <div className="blk"></div>
-                    <div>
-                        <div className="form-group ">
-                            <label>Gas Limit</label>
-                            <input className="form-control form-control-md" />
-                        </div>
-                        <div className="form-group ">
-                            <label>Gas Price</label>
-                            <div className="range-slider">
-                                <i className="range-slider-dot"></i><i className="range-slider-dot" style={{left: "100%"}}></i>
-                            </div>
-                            <div className="d-flex justify-content-between range-progress">
-                                <div>Slower</div>
-                                <div>Faster</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
     </div>
