@@ -5,13 +5,11 @@ export default {
   namespace: 'transfer',
   state: {
     token:'',
+    to:"",
     amount: 0,
-    isMax: false,
-    gasPrice: 10,
-    gasLimit:200000,
-    outBalance:false,
     data:'0x',
-    to:""
+    isMax: false,
+    outBalance:false
   },
   reducers: {
     reset(state, {payload}) {
@@ -43,14 +41,6 @@ export default {
       return {
         ...state,
         isMax
-      }
-    },
-    setGas(state,{payload}){
-      const {gasPrice,gasLimit} = payload;
-      return {
-        ...state,
-        gasPrice,
-        gasLimit
       }
     },
     setToken(state,{payload}){

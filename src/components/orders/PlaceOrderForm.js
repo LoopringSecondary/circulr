@@ -5,7 +5,7 @@ import config from 'common/config'
 import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
 import * as orderFormatter from 'modules/orders/formatters'
-import * as selectors from 'modules/formatter/selectors'
+import * as tokenFormatter from 'modules/tokens/TokenFm'
 import moment from 'moment'
 import ReactDOM from 'react-dom'
 import Notification from 'LoopringUI/components/Notification'
@@ -257,7 +257,7 @@ class PlaceOrderForm extends React.Component {
 
     async function handleSubmit() {
       //TODO unlock check, moved before sign
-      const lrcBalance = selectors.getAssetByToken(balance.items, 'LRC', true)
+      const lrcBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:'LRC', toUnit:true})
       if(!lrcBalance || lrcBalance.balance.lessThan(900)){
         // TODO !await config.isinWhiteList(window.WALLET.getAddress())
         if(config.getChainId() !== 7107171){

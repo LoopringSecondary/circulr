@@ -1,6 +1,7 @@
 import {toBig, toNumber,toFixed} from "LoopringJS/common/formatter";
 import {formatLength,toUnitAmount,toDecimalsAmount} from "../formatter/common";
 import config from 'common/config'
+import validator from 'LoopringJS/common/validator'
 
 export default class TokenFm {
   constructor(token){
@@ -29,10 +30,16 @@ export default class TokenFm {
     });
     return token
   }
-
+  isSupportedToken() {
+    return this.symbol && this.digits
+  }
   getUnitAmount(amount){
     amount = amount || 0;
-    return toUnitAmount(amount,this.digits)
+    if(this.isSupportedToken()) {
+      return toUnitAmount(amount,this.digits)
+    } else {
+      return toBig(0)
+    }
   }
   getDecimalsAmount(amount){
     toDecimalsAmount(amount,this.digits)
@@ -55,65 +62,61 @@ export function getBalanceBySymbol({balances, symbol, toUnit}) {
     balance: 0,
     allowance: 0
   };
-  // if (toUnit) {
-  //   const tokenFormatter = new TokenFm({symbol: symbol});
-  //   const balance = tokenFormatter.getUnitAmount(tokenAssets.balance);
-  //   const allowance = tokenFormatter.getUnitAmount(tokenAssets.allowance);
-  //   tokenAssets = {...tokenAssets, balance, allowance}
-  // } else {
-  //   const balance = toBig(tokenAssets.balance);
-  //   const allowance = toBig(tokenAssets.allowance);
-  //   tokenAssets = {...tokenAssets, balance, allowance}
-  // }
+  const tokenFormatter = new TokenFm({symbol: symbol});
+  if(tokenFormatter.isSupportedToken()) {
+    if (toUnit) {
+      const balance = tokenFormatter.getUnitAmount(tokenAssets.balance);
+      const allowance = tokenFormatter.getUnitAmount(tokenAssets.allowance);
+      tokenAssets = {...tokenAssets, balance, allowance}
+    } else {
+      const balance = toBig(tokenAssets.balance);
+      const allowance = toBig(tokenAssets.allowance);
+      tokenAssets = {...tokenAssets, balance, allowance}
+    }
+  } else {
+    tokenAssets = {...tokenAssets, balance:toBig(0), allowance:toBig(0)}
+  }
   return {...tokenAssets}
 }
 
-export function getPriceBySymbol({prices,symbol, ifFormat}){
-  //TODO mock
-  if(symbol === 'ETH') {
-    return 678
-  } else {
-    return 31
-  }
-  // let priceToken = prices.find(item => item.symbol.toLowerCase() === symbol.toLowerCase()) || {price: 0}
-  // if (ifFormat) {
-  //   if (priceToken) {
-  //     const price = Number(priceToken.price)
-  //     // fix bug: price == string
-  //     if (price && typeof price === 'number') {
-  //       priceToken.price = price
-  //     } else {
-  //       priceToken.price = 0
-  //     }
-  //     return {...priceToken}
-  //   } else {
-  //     return {
-  //       price: 0,
-  //     }
-  //   }
-  // } else {
-  //   return {...priceToken}
-  // }
-}
-export function getPriceByToken(tokenx, tokeny) {
-  const market = config.getMarketBySymbol(tokenx, tokeny);
-  const pricex = this.getTokenBySymbol(tokenx,true);
-  const pricey = this.getTokenBySymbol(tokeny,true);
-  if (market) {
-    if (market.tokenx.toLowerCase() === tokenx.toLowerCase()) {
-    return  pricex && pricey ? (pricex / pricey).toFixed(market.pricePrecision):0
-    }else{
-     return pricex && pricey ? (pricey / pricex).toFixed(market.pricePrecision):0
+export function getPriceBySymbol({marketcap, symbol, ifFormat}) {
+  let priceToken = marketcap.find(item => item.symbol.toLowerCase() === symbol.toLowerCase()) || {price: 0}
+  if (ifFormat) {
+    if (priceToken) {
+      const price = Number(priceToken.price)
+      // fix bug: price == string
+      if (price && typeof price === 'number') {
+        priceToken.price = price
+      } else {
+        priceToken.price = 0
+      }
+      return {...priceToken}
+    } else {
+      return {
+        price: 0,
+      }
     }
+  } else {
+    return {...priceToken}
   }
-  return  0
-}
-export function getPriceByMarket(market){
-  const tokenArray = market.split('-');
-  const tokenx = tokenArray[0];
-  const tokeny = tokenArray[0];
-  return this.getPriceByToken(tokenx,tokeny)
 }
 
+export function validateEthAddress(value) {
+  try {
+    validator.validate({value: value, type: 'ADDRESS'})
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
+export const sorter = (tokenA,tokenB)=>{
+  const pa = Number(tokenA.balance);
+  const pb = Number(tokenB.balance);
+  if(pa === pb){
+    return tokenA.symbol.toUpperCase() < tokenB.symbol.toUpperCase() ? -1 : 1;
+  }else {
+    return pb - pa;
+  }
+};
 

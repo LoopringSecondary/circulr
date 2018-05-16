@@ -4,14 +4,17 @@ import intl from 'react-intl-universal';
 import config from 'common/config'
 import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
-
-import * as selectors from 'modules/formatter/selectors'
+import * as tokenFormatter from 'modules/tokens/TokenFm'
 
 var _ = require('lodash');
 
 function TransferForm(props) {
-  const {transfer, balance, form} = props
-  console.log(222222, balance, transfer, props)
+  const {transfer, balance, wallet, marketcap, form} = props
+
+  let tokenSelected = {}
+  if(transfer.token) {
+    tokenSelected = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.token, toUnit:true})
+  }
 
   function validateTokenSelect(value) {
     const result = form.validateFields(["amount"], {force:true});
@@ -28,7 +31,7 @@ function TransferForm(props) {
       tokenSymbol = form.getFieldValue("token")
     }
     if(tokenSymbol && _.isNumber(value)) {
-      const token = selectors.getAssetByToken(balance.items, tokenSymbol, true)
+      const token = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:tokenSymbol, toUnit:true})
       const v = fm.toBig(value)
       return !v.lessThan(fm.toBig('0')) && !v.greaterThan(token.balance)
     } else {
@@ -36,15 +39,21 @@ function TransferForm(props) {
     }
   }
 
+  function handleChange(v) {
+    if(v) {
+      transfer.tokenChange({token:v})
+    }
+  }
+
   const assetsSorted = balance.items.map((token,index) => {
-    return selectors.getAssetByToken(balance.items, token.symbol, true)
+    return tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:token.symbol, toUnit:true})
   })
-  assetsSorted.sort(selectors.sorter);
+  assetsSorted.sort(tokenFormatter.sorter);
 
   return (
     <div className="form-dark">
         <div className="card-header bordered">
-            <h4 className="text-dark">Send LRC</h4>
+            <h4 className="text-dark">Send {tokenSelected && tokenSelected.symbol}</h4>
             <a href="#" className="close close-lg close-inverse" id="sendClose"></a>
         </div>
         <div className="card-body form-inverse">
@@ -62,22 +71,21 @@ function TransferForm(props) {
                   })(
                     <Select
                       size="large"
-                      className="d-block w-100 transfer-form-token-select"
                       showSearch={false}
                       allowClear
                       style={{ width: 300 }}
                       placeholder={intl.get('token.token_selector_placeholder')}
                       optionFilterProp="children"
-                      //onChange={handleChange.bind(this)}
+                      onChange={handleChange.bind(this)}
                       onFocus={()=>{}}
                       onBlur={()=>{}}
                       filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
                       {assetsSorted.map((token,index) => {
-                        const balance = selectors.getAssetByToken(balance.items, token.symbol, true)
+                        const tokenBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:token.symbol, toUnit:true})
                         return <Select.Option value={token.symbol} key={index}>
                           <div className="row mr0">
                             <div className="col color-black-2">{token.symbol}</div>
-                            <div className="col-atuo color-black-3">{fm.toNumber(balance.balance).gt(0) ? '' : balance.balance.toString(10)}</div>
+                            <div className="col-atuo color-black-3">{tokenBalance.balance.gt(0) ? tokenBalance.balance.toString(10) : ''}</div>
                           </div>
                         </Select.Option>}
                       )}
@@ -86,10 +94,10 @@ function TransferForm(props) {
                 </Form.Item>
               }
               <Form.Item>
-                <Input suffix="WETH" prefix="Recipient" />
+                <Input prefix="Recipient" />
               </Form.Item>
               <Form.Item>
-                <Input suffix="LRC" prefix="Amount" />
+                <Input prefix="Amount" />
               </Form.Item>
             </Form>
             <div className="text-color-dark-1">
