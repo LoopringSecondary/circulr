@@ -1,32 +1,8 @@
 import React from 'react';
 import { Form,Select,Spin } from 'antd';
 import intl from 'react-intl-universal';
+import {getTypes} from 'modules/transactions/formatters';
 const Option = Select.Option;
-const getTypes = (token)=>{
-  let types = [
-    {label:intl.get(`global.all`)+ ' ' +intl.get('txs.type'),value:''},
-    {label:intl.get(`txs.type_sell`),value:'sell'},
-    {label:intl.get(`txs.type_buy`),value:'buy'},
-    {label:intl.get(`txs.type_transfer`),value:'send'},
-    {label:intl.get(`txs.type_receive`),value:'receive'},
-    {label:intl.get(`txs.type_enable`),value:'approve'},
-  ]
-  let convertTypes = [{label:intl.get(`txs.type_convert`),value:'convert'}]
-  let lrcTypes = [
-     {label:intl.get(`txs.type_lrc_fee`),value:'lrc_fee'},
-     {label:intl.get(`txs.type_lrc_reward`),value:'lrc_reward'},
-  ]
-  let othersTypes = [
-     // {label:intl.get(`txs.type_others`),value:'others'},
-  ]
-  if(token.toUpperCase() === 'WETH' || token.toUpperCase() === 'ETH'){
-    types = [...types,...convertTypes]
-  }
-  if(token.toUpperCase() === 'LRC'){
-    types = [...types,...lrcTypes]
-  }
-  return [...types,...othersTypes]
-}
 
 function ListTransaction(props) {
   console.log('ListTransaction component render')
@@ -38,7 +14,6 @@ function ListTransaction(props) {
     list.filtersChange({type:value})
   }
   const types = getTypes('LRC')
-
   return (
     <div>
         <div className="card-header bordered">
@@ -48,13 +23,13 @@ function ListTransaction(props) {
                   <Select
                       allowClear
                       defaultValue=""
-                      placeholder={intl.get('txs.status')}
-                      className="form-inline form-inverse"
-                      optionFilterProp="children"
-                      dropdownMatchSelectWidth={false}
                       onChange={statusChange}
+                      placeholder={intl.get('txs.status')}
+                      dropdownMatchSelectWidth={false}
+                      className="form-inline form-inverse"
                       onFocus={()=>{}}
                       onBlur={()=>{}}
+                      optionFilterProp="children"
                       filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     >
                     <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('txs.status')}</Select.Option>
@@ -66,11 +41,11 @@ function ListTransaction(props) {
                 <span>
                   <Select
                     allowClear
-                    onChange={typeChange}
-                    dropdownMatchSelectWidth={false}
-                    placeholder={intl.get('txs.type')}
-                    className="form-inline form-inverse"
                     defaultValue=""
+                    onChange={typeChange}
+                    placeholder={intl.get('txs.type')}
+                    dropdownMatchSelectWidth={false}
+                    className="form-inline form-inverse"
                   >
                     {
                       types.map((item,index)=>

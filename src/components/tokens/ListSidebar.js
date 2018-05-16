@@ -4,7 +4,7 @@ import intl from 'react-intl-universal'
 import TokensFm from 'modules/tokens/TokensFm'
 
 function ListTokensSidebar(props) {
-  console.log('ListTokensSidebar component render',props)
+  console.log('ListTokensSidebar component render')
   const {tokens,balance,marketcap,dispatch}= props
   const tokensFm = new TokensFm({tokens,marketcap,balance})
   const formatedTokens = tokensFm.getList()
