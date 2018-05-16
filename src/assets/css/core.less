@@ -5,7 +5,7 @@ html { height: 100%; box-sizing: border-box; font-family: sans-serif; -webkit-te
 * { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 *:before, *:after { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 @-ms-viewport { width: device-width; }
-body { height: 100%; margin: 0; background: @blue-darker !important; font-family: @font-family; font-size: @font-size-base !important; font-weight: normal; color: @text-color-dark-1 !important; }
+body { height: 100%; margin: 0; background: @blue-darker !important; font-family: @font-family !important; font-size: @font-size-sm !important; font-weight: normal; color: @text-color-dark-1 !important; }
 ol, ul, dl { margin: 0; padding: 0; }
 ol ol, ul ul, ol ul, ul ol { margin-bottom: 0; }
 .list-unstyled { padding-left: 0; list-style: none; }
@@ -24,6 +24,7 @@ ol ol, ul ul, ol ul, ul ol { margin-bottom: 0; }
 .text-warning { color: @warning-color; }
 .text-error, .text-down { color: @error-color !important; }
 .text-success, .text-up { color: @success-color !important; }
+.text-link{ color: @blue-light !important }
 .text-left { text-align: left; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
@@ -145,20 +146,22 @@ section { }
 .table.table-dark { background: transparent; }
 .table.table-dark thead th { color: @text-color-dark-3 }
 .table.table-dark tbody td { color: @text-color-dark-2 }
-.table.table-dark thead th, .table.table-dark tbody td { background: transparent; border-bottom: 1px solid @dark-color-2; font-weight: 600; vertical-align: middle }
+.table.table-dark thead th, .table.table-dark tbody td { background: transparent; border-bottom: 1px solid @dark-color-2; font-weight: 500; vertical-align: middle }
 .table.table-dark tbody tr:last-child td { border-bottom: 0; }
+.table.table-dark.table-hover tbody tr:hover td{color: @text-color-dark}
 .table { width: 100%; max-width: 100%; background-color: @dark-color; }
-.table th, .table td { padding: 8px 10px; }
+.table th, .table td { padding: 10px 20px; }
+.table.table-compact th,.table.table-compact td{ padding: 5px; }
 .table thead th { background: @light-color-1; color: @text-color-2; white-space: nowrap; }
 .table tbody td { color: @text-color-1 }
 .table-bordered { border: 1px solid #EBE9EF; }
 .table-bordered th, .table-bordered td { border: 1px solid #EBE9EF; }
 .table-bordered thead th, .table-bordered thead td { border-bottom-width: 1px; }
-.table-striped tbody tr:nth-of-type(odd) { background-color: @dark-color-3 }
-.table-hover tbody tr:hover { background-color: @dark-color-3 }
+.table-striped tbody tr:nth-of-type(odd) { background-color: fade(#000, 3%); }
+.table-hover tbody tr:hover { background-color: @dark-color-3; color: @text-color-dark }
 .table-active, .table-active>th, .table-active>td { background-color: @dark-color-3 }
-.table-hover .table-active:hover { background-color: @light-color-3 }
-.table-hover .table-active:hover>td, .table-hover .table-active:hover>th { background-color: @light-color-3 }
+.table-hover .table-active:hover { background-color: @light-color-3; }
+.table-hover .table-active:hover>td, .table-hover .table-active:hover>th { background-color: @light-color-3;  }
 .table-hover>tbody>tr:hover>td:nth-child(1):before { position: absolute; top: 0; bottom: 0; margin: -1px 0; left: -1px; width: 4px; border-left: 4px solid @primary-color; content: ""; overflow: hidden }
 .table-hover>tbody>tr>td:nth-child(1) { position: relative }
 .table-nowrap th, .table-nowrap td { white-space: nowrap }
