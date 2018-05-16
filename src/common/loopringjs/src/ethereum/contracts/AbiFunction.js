@@ -34,7 +34,7 @@ export default class AbiFunction {
   }
 
   parseInputs(inputs={}) {
-   this.inputs.map(({name, type}) => {
+  return  this.inputs.map(({name, type}) => {
       if (!inputs[name]) {
         throw new Error(`Parameter ${name} of type ${type} is required!`)
       }
@@ -43,7 +43,7 @@ export default class AbiFunction {
   }
 
   parseOutputs(outputs) {
-    outputs.map(output => {
+   return outputs.map(output => {
       if(output instanceof BN){
         return toHex(output)
       }
