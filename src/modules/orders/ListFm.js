@@ -54,8 +54,17 @@ export class OrderFm {
       const total = (toNumber(this.order.originalOrder.lrcFee) / Number('1e' + token.digits)).toFixed(token.precision);
       return commonFm.getFormatNum(toNumber(total))  + ' LRC'
   }
-  getCreatetime(){return commonFm.getFormatTime(toNumber(this.order.originalOrder.validSince) * 1e3)}
-  getFilled(){}
+  getCreateTime(){return commonFm.getFormattedTime(toNumber(this.order.originalOrder.validSince),'MM-DD HH:MM')}
+  getExpiredTime(){return commonFm.getFormattedTime(toNumber(this.order.originalOrder.validUntil),'MM-DD HH:MM')}
+  getFilledPercent(){
+    let percent = 0;
+    if (!this.order.originalOrder.buyNoMoreThanAmountB) {
+      percent = (this.order.dealtAmountS / this.order.originalOrder.amountS * 100).toFixed(1)
+    } else {
+      percent = (this.order.dealtAmountB / this.order.originalOrder.amountB * 100).toFixed(1)
+    }
+    return percent
+  }
   getStatus(){return this.order.status}
   selector1(){
   }
