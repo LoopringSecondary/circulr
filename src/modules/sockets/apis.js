@@ -1,6 +1,20 @@
 import io from 'socket.io-client'
 import {store} from '../../index.js'
 import config from 'common/config'
+
+const updateItems = (items,id)=>{
+  const dispatch = require('../../index.js').default._store.dispatch
+  let items = []
+  dispatch({
+    type:'sockets/itemsChange',
+    payload:{id,items,loading:false}
+  })
+}
+
+function isArray(obj) {
+  return Object.prototype.toString.call(obj) === '[object Array]';
+}
+
 const transfromers = {
   transaction:{
     queryTransformer:(payload)=>{
@@ -17,15 +31,11 @@ const transfromers = {
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
       console.log(id,'res',res)
-      const dispatch = require('../../index.js').default._store.dispatch
       let items = []
       if (!res.error && res.data && res.data.data) {
         items =[ ...res.data.data ]
       }
-      dispatch({
-        type:'sockets/itemsChange',
-        payload:{id,items,loading:false}
-      })
+      updateItems(items,id)
     },
   },
   balance:{
@@ -39,15 +49,11 @@ const transfromers = {
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
       console.log(id,'res',res)
-      const dispatch = require('../../index.js').default._store.dispatch
       let items = []
       if (!res.error && res.data && res.data.tokens) {
         items =[ ...res.data.tokens ]
       }
-      dispatch({
-        type:'sockets/itemsChange',
-        payload:{id,items,loading:false}
-      })
+      updateItems(items,id)
     },
   },
   marketcap:{
@@ -60,15 +66,11 @@ const transfromers = {
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
       console.log(id,'res',res)
-      const dispatch = require('../../index.js').default._store.dispatch
       let items =[]
       if (!res.error && res.data && res.data.tokens) {
         items =[ ...res.data.tokens ]
       }
-      dispatch({
-        type:'sockets/itemsChange',
-        payload:{id,items,loading:false}
-      })
+      updateItems(items,id)
     },
   },
   depth:{
@@ -82,15 +84,11 @@ const transfromers = {
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
       console.log(id,'res',res)
-      const dispatch = require('../../index.js').default._store.dispatch
       let items =[]
       if(!res.error && res.data && res.data.depth){
         items =[ ...res.data.depth ]
       }
-      dispatch({
-        type:'sockets/itemsChange',
-        payload:{id,items,loading:false}
-      })
+      updateItems(items,id)
     },
   },
   trades:{
@@ -104,15 +102,69 @@ const transfromers = {
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
       console.log(id,'res',res)
-      const dispatch = require('../../index.js').default._store.dispatch
       let items =[]
       if(!res.error && res.data){
         items =[ ...res.data ]
       }
-      dispatch({
-        type:'sockets/itemsChange',
-        payload:{id,items,loading:false}
+      updateItems(items,id)
+    },
+  },
+  tickers:{
+    queryTransformer:(payload)=>{
+      const {filters,page} = payload
+      return JSON.stringify({
+         "delegateAddress" :config.getDelegateAddress(),
+         "market":filters.market, //TODO
       })
+    },
+    resTransformer:(id,res)=>{
+      res = JSON.parse(res)
+      console.log(id,'res',res)
+      let items =[]
+      if(!res.error && res.data){
+        items =[ ...res.data ]
+      }
+      updateItems(items,id)
+    },
+  },
+  loopringTickers:{
+    queryTransformer:(payload)=>{
+      const {filters,page} = payload
+      return JSON.stringify({
+         "delegateAddress" :config.getDelegateAddress(),
+         "market":filters.market, //TODO
+      })
+    },
+    resTransformer:(id,res)=>{
+      res = JSON.parse(res)
+      console.log(id,'res',res)
+      let items =[]
+      if(!res.error && res.data){
+        // filter support market
+        const supportMarket = res.data.filter(item=>{
+          return config.isSupportedMarket(item.market)
+        })
+        items =[ ...supportMarket ]
+      }
+      updateItems(items,id)
+    },
+  },
+  pengdingTx:{
+    queryTransformer:(payload)=>{
+      const {filters,page} = payload
+      return JSON.stringify({
+         "delegateAddress" :config.getDelegateAddress(),
+         "market":filters.market, //TODO
+      })
+    },
+    resTransformer:(id,res)=>{
+      res = JSON.parse(res)
+      console.log(id,'res',res)
+      let items =[]
+      if(!res.error && res.data){
+        items =[ ...res.data ]
+      }
+      updateItems(items,id)
     },
   },
 }
