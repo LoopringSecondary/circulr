@@ -14,8 +14,8 @@ const config = {
       })
     },
     resTransformer:(id,res)=>{
-      console.log(id,'res')
       res = JSON.parse(res)
+      console.log(id,'res',res)
       const dispatch = require('../../index.js').default._store.dispatch
       let items = []
       if (!res.error && res.data && res.data.data) {
@@ -36,8 +36,8 @@ const config = {
       })
     },
     resTransformer:(id,res)=>{
-      console.log(id,'res')
       res = JSON.parse(res)
+      console.log(id,'res',res)
       const dispatch = require('../../index.js').default._store.dispatch
       let items = []
       if (!res.error && res.data && res.data.tokens) {
@@ -57,8 +57,8 @@ const config = {
       })
     },
     resTransformer:(id,res)=>{
-      console.log(id,'res')
       res = JSON.parse(res)
+      console.log(id,'res',res)
       const dispatch = require('../../index.js').default._store.dispatch
       let items =[]
       if (!res.error && res.data && res.data.tokens) {

@@ -61,12 +61,12 @@ function ListTransaction(props) {
                 <table className="table table-striped table-dark text-center text-left-col1 text-left-col2 text-right-col4 text-right-last">
                     <thead>
                         <tr>
+                            <th>Hash</th>
                             <th>Type</th>
                             <th>Age</th>
-                            <th>Block</th>
+                            <th>Gas</th>
                             <th className="text-right">Value</th>
                             <th className="text-center">status</th>
-                            <th>Address</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,15 +79,25 @@ function ListTransaction(props) {
                         {
                           list.items.map((item,index)=>
                               <tr key={index}>
-                                  <td>Receive LRC</td>
-                                  <td>3 hour ago</td>
-                                  <td>5241856</td>
-                                  <td className="text-right text-success">+100.00 LRC</td>
+                                  <td>{item.txHash}</td>
+                                  <td>{item.type} {item.symbol}</td>
+                                  <td>{item.createTime}</td>
                                   {
                                     false && <td className="text-right text-down">-100.00 LRC</td>
                                   }
-                                  <td className="text-center"><i className="text-color-dark icon-success"></i></td>
-                                  <td>→ 0xf1d48f1aaeba93</td>
+                                  <td className="text-right text-success">
+                                    {item.value} {item.symbol}
+                                  </td>
+                                  <td className="text-right">
+                                    {item.gas_used} ETH
+                                  </td>
+                                  <td className="text-center">
+                                    {
+                                      false && <i className="text-color-dark icon-success"></i>
+                                    }
+                                    {item.status}
+                                  </td>
+
                               </tr>
                             )
                         }
