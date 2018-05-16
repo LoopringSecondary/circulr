@@ -5,30 +5,40 @@ import Receive from './Receive'
 import Transfer from './TransferForm'
 import Convert from './ConvertForm'
 import TransferConfirm from './TransferConfirm'
+
 function Modals(props) {
   return (
     <div>
       <Containers.Modals id="receive">
         <UiContianers.Modals id="receive">
-          <Receive />
+          <Receive/>
         </UiContianers.Modals>
       </Containers.Modals>
       <Containers.Modals id="transfer">
         <UiContianers.Modals id="transfer">
-          <Transfer />
+          <Transfer/>
         </UiContianers.Modals>
       </Containers.Modals>
       <Containers.Modals id="transferConfirm">
         <UiContianers.Modals id="transferConfirm">
-          <TransferConfirm />
+          <TransferConfirm/>
         </UiContianers.Modals>
       </Containers.Modals>
-      <Containers.Modals id="convert">
+      <Containers.Modals id="convert" >
         <UiContianers.Modals id="convert">
-          <Convert />
+          <Containers.Sockets id="balance">
+            <Containers.Sockets id="marketcap">
+          <Containers.Wallet>
+            <Containers.Convert >
+              <Convert/>
+            </Containers.Convert>
+          </Containers.Wallet>
+            </Containers.Sockets>
+          </Containers.Sockets>
         </UiContianers.Modals>
       </Containers.Modals>
     </div>
   )
 }
+
 export default Modals
