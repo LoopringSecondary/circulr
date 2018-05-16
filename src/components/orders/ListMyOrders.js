@@ -1,60 +1,13 @@
 import React from 'react'
-import { Form,Select } from 'antd'
+import { Form,Select,Badge } from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import ListHeader from './ListMyOrdersHeader'
+import {OrderFm} from 'modules/orders/ListFm'
+import {getShortAddress} from 'modules/formatter/common'
+import intl from 'react-intl-universal'
 
-const Option = Select.Option;
-function ListHeaderForm({className=''}){
-  return (
-    <div className={className}>
-    	ListHeaderForm
-    </div>
-  )
-}
-function ListHeader2({orders}){
-  return (
-    <div className="order-filter d-flex justify-content-between">
-        <div className="form-inline form-dark d-flex justify-content-between">
-            <span>
-              <Select defaultValue="LRC-WETH" dropdownMatchSelectWidth={false}>
-                  <Option value="LRC-WETH">LRC-WETH</Option>
-                  <Option value="RND-WETH">RND-WETH</Option>
-                  <Option value="KNC-WETH">KNC-WETH</Option>
-                  <Option value="AE-WETH">AE-WETH</Option>
-                  <Option value="IND-WETH">IND-WETH</Option>
-              </Select>
-            </span>
-            <span className="offset-md">
-              <Select defaultValue="All types" dropdownMatchSelectWidth={false}>
-                  <Option value="all">All types</Option>
-                  <Option value="Pending">Send</Option>
-                  <Option value="Success">Receive</Option>
-                  <Option value="Failed">Enable</Option>
-                  <Option value="Failed">Convert</Option>
-              </Select>
-            </span>
-            <span className="offset-md">
-              <Select defaultValue="All Sides" dropdownMatchSelectWidth={false}>
-                  <Option value="all">All</Option>
-                  <Option value="sell">Sell</Option>
-                  <Option value="buy">Buy</Option>
-              </Select>
-            </span>
-        </div>
-        <span>
-            <span>
-              <button className="btn btn-primary">Cancel All</button>
-            </span>
-            <span className="offset-md">
-              <button className="btn btn-primary">Cancel All markets</button>
-            </span>
-        </span>
-    </div>
-  )
-}
-function ListMyOrders(props) {
+export default function ListMyOrders(props) {
   const {orders={}}=props
-  console.log('orders',orders)
   return (
     <div>
         <ListHeader orders={orders} />
@@ -62,80 +15,98 @@ function ListMyOrders(props) {
           <thead>
               <tr>
                   <th>Order</th>
-                  <th>Time</th>
-                  <th>Status</th>
                   <th>Market</th>
                   <th>Side</th>
-                  <th>Amount<small>(LRC)</small></th>
+                  <th>Amount</th>
                   <th>Price</th>
-                  <th>Total<small>(WETH)</small></th>
-                  <th>LRC Fee<small>(LRC)</small></th>
+                  <th>Total</th>
+                  <th>LRC Fee</th>
                   <th>Filled</th>
-                  <th>Options</th>
+                  <th>Created</th>
+                  <th>Expired</th>
+                  <th>Status</th>
               </tr>
           </thead>
           <tbody>
               {
-                orders.items.map((item,index)=>
-                  <tr key={index}>
-                      <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x58...ba9b</a></td>
-                      <td>March 27, 2018 5:51 PM</td>
-                      <td><i className="text-color-dark icon-success"></i></td>
-                      <td>LRC-WETH</td>
-                      <td><span className="text-success">Sell</span></td>
-                      <td>300</td>
-                      <td>0.00087</td>
-                      <td>0.259989</td>
-                      <td>0.58</td>
-                      <td className="text-center">50%</td>
-                      <td></td>
-                  </tr>
-                )
+                orders.items.map((item,index)=>{
+                  const orderFm = new OrderFm(item)
+                  return (
+                    <tr key={index}>
+                      <td>{renders.hash(orderFm.getHash(),item,index)}</td>
+                      <td>{orderFm.getMarket()}</td>
+                      <td>{renders.side(orderFm.getSide(),item,index)}</td>
+                      <td>{orderFm.getAmount()}</td>
+                      <td>{orderFm.getPrice()}</td>
+                      <td>{orderFm.getTotal()}</td>
+                      <td>{orderFm.getLRCFee()}</td>
+                      <td>{orderFm.getFilledPercent()}%</td>
+                      <td>{orderFm.getCreateTime()}</td>
+                      <td>{orderFm.getExpiredTime()}</td>
+                      <td>{renders.status(orderFm.getStatus(),item,index)}</td>
+                   </tr>
+                  )
+                })
               }
-
-              <tr>
-                  <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x44...da11</a></td>
-                  <td>March 27, 2018 5:40 PM</td>
-                  <td><i className="text-color-dark icon-success"></i></td>
-                  <td>LRC-WETH</td>
-                  <td><span className="text-danger">Buy</span></td>
-                  <td>300</td>
-                  <td>0.00087</td>
-                  <td>0.259989</td>
-                  <td>0.23</td>
-                  <td className="text-center">50%</td>
-                  <td></td>
-              </tr>
-              <tr>
-                  <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x44...da11</a></td>
-                  <td>March 27, 2018 5:40 PM</td>
-                  <td><i className="text-color-dark icon-success"></i></td>
-                  <td>LRC-WETH</td>
-                  <td><span className="text-success">Sell</span></td>
-                  <td>300</td>
-                  <td>0.00087</td>
-                  <td>0.259989</td>
-                  <td>0.51</td>
-                  <td className="text-center">50%</td>
-                  <td></td>
-              </tr>
-              <tr>
-                  <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x44...da11</a></td>
-                  <td>March 27, 2018 5:40 PM</td>
-                  <td><i className="text-color-dark icon-success"></i></td>
-                  <td>LRC-WETH</td>
-                  <td><span className="text-danger">Buy</span></td>
-                  <td>300</td>
-                  <td>0.00087</td>
-                  <td>0.259989</td>
-                  <td>0.58</td>
-                  <td className="text-center">50%</td>
-                  <td></td>
-              </tr>
           </tbody>
         </table>
         <ListPagination list={orders}/>
   </div>
   )
 }
-export default ListMyOrders
+
+export const renders = {
+  hash: (value, item, index) => (
+    <a className="text-primary"
+       onCopy={null}
+       onClick={null}
+    >
+      {getShortAddress(value)}
+    </a>
+  ),
+  side: (value, item, index) => (
+    <div>
+      { value ==='buy' &&
+        <span className="text-success">{value}</span>
+      }
+      { value ==='sell' &&
+        <span className="text-error">{value}</span>
+      }
+    </div>
+  ),
+  status: (value, item, index) => {
+    const cancleBtn = (
+      <a className="ml5 fs12 color-black-2"
+         onClick={null}>
+        {intl.get('order.no')}
+      </a>
+    )
+    let status
+    if (item.status === 'ORDER_OPENED') {
+      status = <Badge className="text-color-dark-1" status="processing" text={intl.get('orders.status_opened')}/>
+    }
+    if (item.status === 'ORDER_FINISHED') {
+      status = <Badge className="text-color-dark-1" status="success" text={intl.get('orders.status_completed')}/>
+    }
+    if (item.status === 'ORDER_CANCELLED') {
+      status = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
+    }
+    if (item.status === 'ORDER_CUTOFF') {
+      status = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
+    }
+    if (item.status === 'ORDER_EXPIRE') {
+      status = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_expired')}/>
+    }
+    return (
+      <div className="text-left">
+        {item.status !== 'ORDER_OPENED' && status}
+        {item.status === 'ORDER_OPENED' &&
+          <span>
+            {status}
+            {cancleBtn}
+          </span>
+        }
+      </div>
+    )
+  },
+}
