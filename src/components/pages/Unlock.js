@@ -4,13 +4,37 @@ import Layout from '../../layout';
 import {Link, Redirect, Route, Switch} from 'dva/router'
 import routeActions from 'common/utils/routeActions'
 import { Containers } from 'modules'
+import {connect} from 'dva'
+import {getXPubKey as getTrezorPublicKey} from "LoopringJS/ethereum/trezor";
+import {wallets} from "../../common/config/data";
+import {trimAll} from "LoopringJS/common/utils";
 
 class Unlock extends React.Component {
 
   changeTab = (path) => {
     const {match} = this.props;
     const {url} = match;
-    console.log(Containers);
+    routeActions.gotoPath(`${url}/${path}`);
+  };
+
+  unlock = (path,walletType) => {
+    const {match,dispatch} = this.props;
+    const {url} = match;
+    dispatch({type:"hardwareWallet/setWalletType",payload:{walletType}});
+    const wallet = wallets.find(wallet => trimAll(wallet.name).toLowerCase() === walletType.toLowerCase().concat('(eth)'));
+
+    switch (walletType) {
+      case 'trezor':
+        getTrezorPublicKey(wallet.dpath).then(res => {
+          if (!res.error) {
+            const {chainCode, publicKey} = res.result;
+            dispatch({type: "hardwareWallet/setKeyAndCode", payload: {chainCode, publicKey}});
+          }
+        });
+        break;
+      case 'ledger':
+        break;
+    }
     routeActions.gotoPath(`${url}/${path}`);
   };
 
@@ -30,11 +54,10 @@ class Unlock extends React.Component {
                       Wallet</h4></a>
                 </li>
                 <li className="item">
-                  <a data-toggle="tab"><i className="icon-metamaskwallet"/><h4>MetaMask</h4></a>
+                  <a data-toggle="tab"  onClick={() => this.changeTab('metamask')}><i className="icon-metamaskwallet"/><h4>MetaMask</h4></a>
                 </li>
                 <li className="item">
-                  <a href="https://connect.trezor.io/4/popup/popup.html?v=1523254722813"><i
-                    className="icon-trezorwallet"/><h4>Trezor</h4></a>
+                  <a onClick={() => this.unlock('trezor','trezor')}><i className="icon-trezorwallet"/><h4>Trezor</h4></a>
                 </li>
                 <li className="item">
                   <a href="#error" data-toggle="tab"><i className="icon-ledgerwallet"/><h4>Ledger</h4></a>
@@ -76,7 +99,9 @@ class Unlock extends React.Component {
               />
               <Route path={`${url}/mnemonic`} exact render={() =>
                 <div className="tab-content">
+                  <Containers.Mnemonic>
                   <Account.UnlockByMnemonic/>
+                  </Containers.Mnemonic>
                 </div>}
               />
               <Route path={`${url}/privateKey`} exact render={() =>
@@ -86,12 +111,39 @@ class Unlock extends React.Component {
                   </Containers.PrivateKey>
                 </div>}
               />
+              <Route path={`${url}/trezor`} exact render={() =>
+                <div className="tab-content">
+                  <Containers.HardwareWallet>
+                    <Account.UnlockByTrezor/>
+                  </Containers.HardwareWallet>
+                </div>}
+              />
+              <Route path={`${url}/ledger`} exact render={() =>
+                <div className="tab-content">
+                  <Containers.HardwareWallet>
+                    <Account.UnlockByLedger/>
+                  </Containers.HardwareWallet>
+                </div>}
+              />
+              <Route path={`${url}/metamask`} exact render={() =>
+                <div className="tab-content">
+                    <Account.UnlockByMetaMask/>
+                </div>}
+              />
               <Route path={`${url}/backup`} exact render={() =>
                 <div className="tab-content">
                   <Containers.Backup>
                   <Account.BackupWallet/>
                   </Containers.Backup>
                 </div>}
+              />
+              <Route path={`${url}/determineWallet`} exact render={() =>
+              <div className="tab-content">
+                <Containers.DetermineWallet>
+                  <Account.DetermineWallet/>
+                </Containers.DetermineWallet>
+
+              </div>}
               />
               <Redirect path={`${match.url}/`} to={`${match.url}/generateWallet`}/>
             </Switch>
@@ -103,4 +155,4 @@ class Unlock extends React.Component {
   }
 }
 
-export default Unlock
+export default connect()(Unlock)

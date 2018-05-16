@@ -85,30 +85,27 @@ export default {
       yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
     },
     * unlockMetaMaskWallet({payload}, {put}) {
-      const {web3} = payload;
-      const account = new MetaMaskAccount({web3});
-      const address = account.getAddress();
+      const {address} = payload;
       const unlockType = 'metaMask';
-      yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
+      yield put({type: 'unlockWallet', payload: {address, unlockType}});
     },
     * unlockTrezorWallet({payload}, {put}) {
-      const {dpath} = payload;
-      const account = new TrezorAccount({dpath});
-      const address = account.getAddress();
+      const {dpath,address} = payload;
+      const account = new TrezorAccount(dpath);
       const unlockType = 'trezor';
       yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
     },
     * unlockLedgerWallet({payload}, {put}) {
       const {ledger, dpath} = payload;
       const account = new LedgerAccount({ledger, dpath});
-      const address = account.getAddress();
+      const address = yield account.getAddress();
       const unlockType = 'ledger';
       yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
     },
     * createWallet({payload}, {put}) {
       const {password, cb} = payload;
       const mnemonic = createMnemonic();
-      const privateKey = formatKey(mnemonictoPrivatekey(mnemonic, null, path));
+      const privateKey = formatKey(mnemonictoPrivatekey(mnemonic, `${path}/0`));
       const account = fromPrivateKey(privateKey);
       const address = account.getAddress();
       const unlockType = 'privateKey';
