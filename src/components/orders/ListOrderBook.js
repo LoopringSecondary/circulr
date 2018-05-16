@@ -4,15 +4,15 @@ import intl from 'react-intl-universal'
 function ListOrderBook(props) {
   return (
     <div>
-	    <div className="card dark h-full">
+	    <div className="card dark" style={{height:"-webkit-calc(100vh - 40px)"}}>
 	    	<div className="card-header card-header-dark bordered">
 	    	    <h4>Order Book</h4>
 	    	</div>
-	    	<div className="trade-list" style={{paddingBottom: "160px",paddingTop:"50px",marginTop:"-50px", height:"100%"}}>
-	    	    	<div className="bg" style={{ position: "absolute", bottom:"50%", zIndex: "100", width: "100%", height: "30px", lineHeight: "28px", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0", fontSize: "16px"}}>
+	    	<div className="trade-list" style={{height:"-webkit-calc(100% - 31px)"}}>
+    	    	    <div className="bg" style={{ position: "absolute", top:"50%", marginTop:"-45px", zIndex: "100", width: "100%", height: "40px", lineHeight: "38px", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0", fontSize: "16px"}}>
 	    	    		<div className="text-up text-center">0.00008189<span className="offset-md"><i className="icon-arrow-up"></i></span></div>
 	    	    	</div>
-	    	    	<div className="bg blockbar" style={{ position: "absolute", bottom:"70px", zIndex: "100", width: "100%", lineHeight: "28px", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0 0", fontSize: "16px"}}>
+	    	    	<div className="bg blockbar" style={{ position: "absolute", bottom:"40px", zIndex: "100", width: "100%", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0 0", fontSize: "16px"}}>
 	    		    	<span>Aggregation</span>
 	    		    	<span>1.0</span>
 	    		    	<span><i className="icon-plus-o"></i><i className="icon-minus-o"></i></span>
@@ -24,8 +24,8 @@ function ListOrderBook(props) {
 			    	        <span>Total(ETH)</span>
 		    	        </li>
 		    	    </ul>
-	    	    <div style={{position: "relative", height: "50%", overflow:"auto",paddingBottom:"20px", }}>
-	    	        <ul className="mr-0">
+	    	    <div style={{height: "-webkit-calc(50% - 85px)",marginTop:"5px",marginBottom:"0",paddiongBottom:"10" }}>
+	    	        <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0px" }}>
     	                <li><span className="text-down">0.00009470</span><span>127</span><span>0.01202690</span></li>
     	                <li><span className="text-down">0.00009469</span><span>46</span><span>0.00435574</span></li>
     	                <li><span className="text-down">0.00009468</span><span>231</span><span>0.02187108</span></li>
@@ -42,8 +42,8 @@ function ListOrderBook(props) {
     	                <li><span className="text-down">0.00009410</span><span>1,212</span><span>0.08064370</span></li>
     	            </ul>
 	    	    </div>
-	    	    <div style={{position: "relative", height: "50%", overflow:"auto",paddingTop:"20px",paddingBottom:"5px"}}>
-    	            <ul className="mr-0">
+	    	    <div style={{height: "-webkit-calc(50% - 85px)",paddingTop:"0",paddingBottom:"0",marginTop:"50px",marginBottom:"0"}}>
+    	            <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0" }}>
     	                <li><span className="text-up">0.00009417</span><span>545</span><span>0.00178923</span></li>
     	                <li><span className="text-up">0.00009416</span><span>2,245</span><span>0.00291896</span></li>
     	                <li><span className="text-up">0.00009412</span><span>767</span><span>0.00790608</span></li>

@@ -11,8 +11,8 @@ function ListTradesHistory(props) {
 	    	        <ul>
 	    	            <li className="trade-list-header"><span>Price(ETH)</span><span>Amount(LRC)</span><span>Total(ETH)</span></li>
 	    	        </ul>
-	    	        <div style={{position: "relative", height: "100%", overflow:"auto",paddingBottom:"170px", }}>
-	    	        <ul>
+	    	        <div style={{height: "100%",paddingBottom:"145px", }}>
+	    	        <ul style={{height: "100%", overflow:"auto",paddingBottom:"0" }}>
 	    	            <li><span className="text-down">0.00009470</span><span>127</span><span>0.01202690</span></li>
 	    	            <li><span className="text-down">0.00009469</span><span>46</span><span>0.00435574</span></li>
 	    	            <li><span className="text-down">0.00009468</span><span>231</span><span>0.02187108</span></li>

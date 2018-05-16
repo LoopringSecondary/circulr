@@ -163,8 +163,7 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .trade-list li>span{ display: block; width: 80px; }
 .trade-list li>span:nth-child(2){text-align: left;}
 .trade-list li>span:nth-child(3){text-align: right;}
-.trade-list ul{ padding: 5px 0 }
-.trade-list .blockbar{ display: flex; position: absolute; bottom: 0; width: 100%; height: 50px; padding: 10px 20px; border-top: 1px solid @dark-color-2; justify-content: space-between;font-size: 16px;}
+.trade-list .blockbar{ display: flex; position: absolute; bottom: 0; width: 100%; height: 40px; padding: 0 20px; border-top: 1px solid @dark-color-2; justify-content: space-between; align-items: center; font-size: 16px;}
 .trade-list .blockbar i{ position: relative; top: -2px; font-size: 16px; color: @text-color-dark-3}
 .trade-list .blockbar i:hover{color: @text-color-dark-1}
 .tab-order.tabs li{ min-width: auto; margin-right: 20px; }
@@ -172,6 +171,7 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .tab-order.tabs li.active a{ color: @text-color-dark-1 }
 .order-filter{ border-bottom: 1px solid @dark-color-2; padding: 10px 20px; }
 .market-chart{ border-bottom: 4px solid @blue-darker }
+.market-chart>div{ height: 100%; overflow: hidden; }
 .market-chart img{ width: 100%; height: 100%; }
 // #account{ position: fixed; top: 0; right: -300px; z-index: 1000; width: 300px; height: 100%; -webkit-transition: right .3s; transition: right .3s; transition-delay: 0.2s;}
 // #account.open { right: 0; }
