@@ -3,6 +3,7 @@ import Tokens from '../tokens'
 import Transactions from '../transactions'
 import Charts from '../charts'
 import Tickers from '../tickers'
+import {Containers} from 'modules'
 
 function Wallet(props) {
   return (
@@ -14,21 +15,29 @@ function Wallet(props) {
             </div>
         </header>
         <div className="side-fixed" style={{top:"0",left: "0",width: "280px",padding: "20px 0"}} id="tokenSide">
-            <div className="loopring-brand"><img src={require('../../assets/images/logo.png')} className="img" /></div> 
-            <Tokens.ListDefault />
+            <div className="loopring-brand"><img src={require('../../assets/images/logo.png')} className="img" /></div>
+              <Containers.Tokens>
+                  <Containers.Sockets id="balance">
+                    <Containers.Sockets id="marketcap">
+                      <Tokens.ListSidebar />
+                    </Containers.Sockets>
+                  </Containers.Sockets>
+              </Containers.Tokens>
         </div>
-        <div className="m-container h-full" style={{marginLeft: "280px", marginRight: "454px"}} id="transactions"> 
+        <div className="m-container h-full" style={{marginLeft: "280px", marginRight: "454px"}} id="transactions">
             <div className="card dark h-full">
+              <Containers.Sockets id="transaction">
                 <Transactions.ListDefault />
-            </div>          
+              </Containers.Sockets>
+            </div>
         </div>
         <div className="side-fixed" style={{top:"0",right: "0",width: "450px",paddingTop:"74px"}} id="sideMarkets">
             <div className="card dark h-full">
                 <Charts.PriceChart />
-                <Tickers.ListDefault />              
+                <Tickers.ListDefault />
             </div>
         </div>
-    </div>   	
+    </div>
   )
 }
 export default Wallet

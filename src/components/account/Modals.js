@@ -6,7 +6,7 @@ function Modals(props) {
   return (
     <div>
       <Containers.Modals id="userCenter">
-        <UiContianers.Modals width="20%">
+        <UiContianers.Modals id="userCenter" width="20%">
           <UserCenter />
         </UiContianers.Modals>
       </Containers.Modals>

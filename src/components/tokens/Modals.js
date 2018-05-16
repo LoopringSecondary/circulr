@@ -9,22 +9,22 @@ function Modals(props) {
   return (
     <div>
       <Containers.Modals id="receive">
-        <UiContianers.Modals>
+        <UiContianers.Modals id="receive">
           <Receive />
         </UiContianers.Modals>
       </Containers.Modals>
       <Containers.Modals id="transfer">
-        <UiContianers.Modals>
+        <UiContianers.Modals id="transfer">
           <Transfer />
         </UiContianers.Modals>
       </Containers.Modals>
       <Containers.Modals id="transferConfirm">
-        <UiContianers.Modals>
+        <UiContianers.Modals id="transferConfirm">
           <TransferConfirm />
         </UiContianers.Modals>
       </Containers.Modals>
       <Containers.Modals id="convert">
-        <UiContianers.Modals>
+        <UiContianers.Modals id="convert">
           <Convert />
         </UiContianers.Modals>
       </Containers.Modals>

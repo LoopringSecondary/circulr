@@ -1,4 +1,5 @@
 import config from 'common/config'
+import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
 import * as orderFormatter from './formatters'
 const MODULES = 'placeOrder'
@@ -22,15 +23,15 @@ export default {
    amountInput:'0',
    amountSlider:0,
    total:'',
-   sliderMilliLrcFee:0,
+   sliderMilliLrcFee:2,
    lrcFee:0,
    timeToLivePatternSelect: 'easy',
    timeToLivePopularSetting: true,
-   timeToLive:0,
-   timeToLiveUnit:'',
+   timeToLive: 1,
+   timeToLiveUnit: 'day',
    timeToLiveStart: null,
    timeToLiveEnd: null,
-   loading: false,
+   submitButtonLoading: false,
   },
   effects:{
     *init({ payload={} }, { put }) {
@@ -191,9 +192,7 @@ export default {
     totalChange(state, action) {
       let total = 0
       if(!action.payload) {
-        if(!state.amountInput || !state.priceInput) {
-          total = 0
-        } else {
+        if(state.amountInput && state.priceInput) {
           total = fm.toBig(state.amountInput).times(state.priceInput).toString(10)
         }
       } else {
@@ -297,6 +296,14 @@ export default {
         ...state,
         timeToLive,
         timeToLiveUnit
+      }
+    },
+    submitButtonLoadingChange(state, action) {
+      const {payload} = action
+      let {submitButtonLoading} = payload
+      return {
+        ...state,
+        submitButtonLoading
       }
     }
   },

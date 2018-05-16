@@ -145,7 +145,8 @@ class Unlock extends React.Component {
           </div>
         </div>
         <div className="overlay" data-overlay="54"></div>
-      </Layout.LayoutHome>)
+      </Layout.LayoutHome>
+    )
   }
 }
 

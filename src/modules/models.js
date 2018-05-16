@@ -1,4 +1,5 @@
 export default [
+  require('./locales/model').default,
   require('./sockets/SocketsModel').default,
   require('./orders/ListModel').default,
   require('./orders/PlaceOrderModel').default,

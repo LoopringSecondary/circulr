@@ -17,13 +17,11 @@ export default {
   state: {
     'url':'//relay1.loopring.io',
     'socket':null,
-    'assets':{...initState},
-    'prices':{...initState},
+    'marketcap':{...initState},
+    'balance':{...initState},
+    'transaction':{...initState,filters:{token:'LRC'}},
   },
   effects: {
-    *init({payload},{call,select,put}){
-      yield put({type:'connect',payload})
-    },
     *urlChange({payload},{call,select,put}){
       yield put({type:'urlChangeStart',payload})
       yield put({type:'connect',payload})
@@ -32,6 +30,9 @@ export default {
       const {url} = yield select(({ [namespace]:model }) => model )
       const socket = yield call(apis.connect, {url})
       yield put({type:'socketChange',payload:{socket}})
+      yield put({type:'fetch',payload:{id:'marketcap'}})
+      yield put({type:'fetch',payload:{id:'transaction'}})
+      yield put({type:'fetch',payload:{id:'balance'}})
     },
     *fetch({payload},{call,select,put}){
       yield put({type:'onEvent',payload})
@@ -58,12 +59,8 @@ export default {
       const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
       if(socket){
         let new_payload = {page,filters,sort,socket,id}
-        yield put({type:'loadingChange',payload: {loading: true,loaded:false}})
-        const res = yield call(apis.emitEvent, new_payload)
-        if (res && res.items) {
-          yield put({type:'loadingChange',payload: {loading: false,loaded:true}})
-          yield put({type:'itemsChange',payload: {items:res.items}})
-        }
+        yield put({type:'loadingChange',payload: {id,loading: true,loaded:false}})
+        yield call(apis.emitEvent, new_payload)
       }else{
         console.log('socket is not connected!')
       }
@@ -73,12 +70,8 @@ export default {
       const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
       if(socket){
         let new_payload = {page,filters,sort,socket,id}
-        yield put({type:'loadingChange',payload: {loading: true,loaded:false}})
-        const res = yield call(apis.onEvent, new_payload)
-        if (res && res.items) {
-          yield put({type:'loadingChange',payload: {loading: false,loaded:true}})
-          yield put({type:'itemsChange',payload: {items:res.items}})
-        }
+        put({type:'loadingChange',payload: {id,loading: true,loaded:false}})
+        yield call(apis.onEvent, new_payload)
       }else{
         console.log('socket is not connected!')
       }

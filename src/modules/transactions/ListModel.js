@@ -1,5 +1,5 @@
 import * as apis from './apis'
-const MODULES = 'txs';
+const MODULES = 'transactions';
 let initState = {
   items: [],
   loading: false,
@@ -17,7 +17,7 @@ let initState = {
 export default {
   namespace: MODULES,
   state: {
-    'txs/wallet':{...initState},
+    'wallet':{...initState},
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -79,7 +79,6 @@ export default {
       }
     },
   },
-
   reducers: {
     fetchStart(state, action) {
       let {payload} = action

@@ -1,14 +1,14 @@
 import {toBig} from "LoopringJS/common/formatter";
-import TokenFormatter from '../tokens/formatters';
+import TokenFormatter from '../tokens/TokenFm';
 import {store} from '../../index'
 
-export function getAssetsByToken(state, token, toUnit) {
-  let tokenAssets = state.assets.find(item => item.symbol.toLowerCase() === token.toLowerCase()) || {
+export function getAssetsByToken(state, symbol, toUnit) {
+  let tokenAssets = state.assets.find(item => item.symbol.toLowerCase() === symbol.toLowerCase()) || {
     balance: 0,
     allowance: 0
   };
   if (toUnit) {
-    const tokenFormatter = new TokenFormatter({symbol: token});
+    const tokenFormatter = new TokenFormatter({symbol: symbol});
     const balance = tokenFormatter.getUnitAmount(tokenAssets.balance);
     const allowance = tokenFormatter.getUnitAmount(tokenAssets.allowance);
     tokenAssets = {...tokenAssets, balance, allowance}
@@ -18,6 +18,12 @@ export function getAssetsByToken(state, token, toUnit) {
     tokenAssets = {...tokenAssets, balance, allowance}
   }
   return {...tokenAssets}
+}
+
+export function getAssetByToken(symbol, toUnit) {
+  // TODO mock
+  return {symbol, balance:toBig(2121341231421231231231).div(1e18)}
+  // return getAssetsByToken(store.getState().assets, symbol, toUnit)
 }
 
 export function getPriceBySymbol(symbol, ifFormat){
