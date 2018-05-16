@@ -1,10 +1,12 @@
 import React from 'react'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'
+import {getTokensByMarket} from 'modules/formatter/common'
 
 function ListOrderBook(props) {
-  const {depth} = props
   console.log('ListOrderBook render',props)
+  const {depth} = props
+  const tokens = getTokensByMarket(depth.filters.market)
   return (
     <div>
 	    <div className="card dark" style={{height:"-webkit-calc(100vh - 40px)"}}>
@@ -22,9 +24,9 @@ function ListOrderBook(props) {
 	    	    	</div>
     	        <ul className="mr-0">
 	    	            <li className="trade-list-header">
-			    	        <span>Price(ETH)</span>
-			    	        <span>Amount(LRC)</span>
-			    	        <span>Total(ETH)</span>
+			    	        <span>Price({tokens.right})</span>
+			    	        <span>Amount({tokens.left})</span>
+			    	        <span>Total({tokens.right})</span>
 		    	        </li>
 		    	    </ul>
 	    	    <div style={{height: "-webkit-calc(50% - 85px)",marginTop:"5px",marginBottom:"0",paddiongBottom:"10" }}>
