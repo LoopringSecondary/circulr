@@ -4,7 +4,7 @@ import intl from 'react-intl-universal';
 import {getTypes} from 'modules/transactions/formatters';
 const Option = Select.Option;
 
-function ListTransaction(props) {
+export default function ListTransaction(props) {
   console.log('ListTransaction component render')
   const {transaction:list}= props
   const statusChange = (value)=>{
@@ -97,7 +97,6 @@ function ListTransaction(props) {
                                     }
                                     {item.status}
                                   </td>
-
                               </tr>
                             )
                         }
@@ -114,4 +113,4 @@ function ListTransaction(props) {
     </div>
   )
 }
-export default ListTransaction
+

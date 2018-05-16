@@ -8,7 +8,6 @@ import intl from 'react-intl-universal'
 
 export default function ListMyOrders(props) {
   const {orders={}}=props
-  console.log('orders',orders)
   return (
     <div>
         <ListHeader orders={orders} />
@@ -34,35 +33,17 @@ export default function ListMyOrders(props) {
                   const orderFm = new OrderFm(item)
                   return (
                     <tr key={index}>
-                      <td>
-                        {
-                          renders.hash(orderFm.getHash(),item,index)
-                        }
-                      </td>
+                      <td>{renders.hash(orderFm.getHash(),item,index)}</td>
                       <td>{orderFm.getMarket()}</td>
-                      <td>
-                        { orderFm.getSide()==='buy' &&
-                          <span className="text-success">{orderFm.getSide()}</span>
-                        }
-                        { orderFm.getSide()==='sell' &&
-                          <span className="text-error">{orderFm.getSide()}</span>
-                        }
-                      </td>
+                      <td>{renders.side(orderFm.getSide(),item,index)}</td>
                       <td>{orderFm.getAmount()}</td>
                       <td>{orderFm.getPrice()}</td>
                       <td>{orderFm.getTotal()}</td>
                       <td>{orderFm.getLRCFee()}</td>
-                      <td className="text-center">{orderFm.getFilledPercent()}%</td>
-                      <td>{orderFm.getExpiredTime()}</td>
+                      <td>{orderFm.getFilledPercent()}%</td>
                       <td>{orderFm.getCreateTime()}</td>
-                      <td>
-                        {false &&
-                          <i className="text-color-dark icon-success"></i>
-                        }
-                        {
-                          renders.status(orderFm.getStatus(),item,index)
-                        }
-                      </td>
+                      <td>{orderFm.getExpiredTime()}</td>
+                      <td>{renders.status(orderFm.getStatus(),item,index)}</td>
                    </tr>
                   )
                 })
@@ -82,6 +63,16 @@ export const renders = {
     >
       {getShortAddress(value)}
     </a>
+  ),
+  side: (value, item, index) => (
+    <div>
+      { value ==='buy' &&
+        <span className="text-success">{value}</span>
+      }
+      { value ==='sell' &&
+        <span className="text-error">{value}</span>
+      }
+    </div>
   ),
   status: (value, item, index) => {
     const cancleBtn = (
