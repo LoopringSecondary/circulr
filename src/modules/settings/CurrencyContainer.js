@@ -9,7 +9,6 @@ class CurrencyContainer extends React.Component {
     if(this.props.currency === 'USD'){
         return '$'
     }else{
-
       return "￥"
     }
   }

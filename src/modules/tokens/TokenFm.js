@@ -50,7 +50,7 @@ export default class TokenFm {
   }
 }
 
-export function getBalanceBySymbol({balances, symbol, toUnit=true}) {
+export function getBalanceBySymbol({balances, symbol, toUnit}) {
   let tokenAssets = balances.find(item => item.symbol.toLowerCase() === symbol.toLowerCase()) || {
     balance: 0,
     allowance: 0
@@ -65,18 +65,17 @@ export function getBalanceBySymbol({balances, symbol, toUnit=true}) {
   //   const allowance = toBig(tokenAssets.allowance);
   //   tokenAssets = {...tokenAssets, balance, allowance}
   // }
-
   return {...tokenAssets}
 }
 
-export function getPriceBySymbol({marketcap,symbol, ifFormat}){
+export function getPriceBySymbol({prices,symbol, ifFormat}){
   //TODO mock
   if(symbol === 'ETH') {
     return 678
   } else {
     return 31
   }
-  // let priceToken = marketcap.find(item => item.symbol.toLowerCase() === symbol.toLowerCase()) || {price: 0}
+  // let priceToken = prices.find(item => item.symbol.toLowerCase() === symbol.toLowerCase()) || {price: 0}
   // if (ifFormat) {
   //   if (priceToken) {
   //     const price = Number(priceToken.price)

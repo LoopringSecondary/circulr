@@ -3,15 +3,15 @@ import {formatLength,toUnitAmount,toDecimalsAmount} from "../formatter/common";
 import {getBalanceBySymbol,getPriceBySymbol} from "./TokenFm";
 
 export default class TokensFm{
-  constructor({marketcap,balances,tokens}){
+  constructor({marketcap,balance,tokens}){
     this.marketcap = marketcap
-    this.balances = balances
+    this.balance = balance
     this.tokens = tokens
   }
   getList(){
     const filteredTokens = filterTokens(this.tokens)
     const sortedTokens = sortTokens(filteredTokens)
-    return setBalancesAndPrices({balances:this.balances,marketcap:this.marketcap,tokens:sortedTokens})
+    return setBalancesAndPrices({balances:this.balance.items,prices:this.marketcap.items,tokens:sortedTokens})
   }
 }
 
@@ -84,11 +84,11 @@ export const filterTokens = (list)=>{
   return [...tokens]
 }
 
-export const setBalancesAndPrices = ({balances=[],marketcap=[],tokens})=>{
+export const setBalancesAndPrices = ({balances=[],prices=[],tokens})=>{
   const newTokens = [...tokens]
   newTokens.forEach(item => {
       const tokenBalance = getBalanceBySymbol({balances,symbol:item.symbol})
-      const tokenPrice = getPriceBySymbol({marketcap,symbol:item.symbol})
+      const tokenPrice = getPriceBySymbol({prices,symbol:item.symbol})
       item.balance = tokenBalance.balance
       item.allowance = tokenBalance.allowance
       item.price = tokenPrice.price

@@ -1,10 +1,11 @@
 import React from 'react'
-import {Input,Icon,Tooltip} from 'antd'
+import {Input,Icon,Tooltip,Spin} from 'antd'
 import intl from 'react-intl-universal'
 import TokensFm from 'modules/tokens/TokensFm'
+import {Currency} from 'modules/containers'
 
 function ListTokensSidebar(props) {
-  console.log('ListTokensSidebar component render')
+  console.log('ListTokensSidebar component render',props)
   const {tokens,balance,marketcap,dispatch}= props
   const tokensFm = new TokensFm({tokens,marketcap,balance})
   const formatedTokens = tokensFm.getList()
@@ -131,10 +132,21 @@ function ListTokensSidebar(props) {
                           </div>
                       </div>
                       <div className="sub">
-                          <div className="value">
+                          {
+                            !balance.loading &&
+                            <div className="value">
                               <h3>{item.balance}</h3>
-                              <p>$35678.94</p>
-                          </div>
+                              {item.balanceValue && 
+                                <p><Currency/>{item.balanceValue}</p>
+                              }
+                            </div>
+                          }
+                          {
+                            balance.loading &&
+                            <div className="value">
+                              <Spin size="small" />
+                            </div>
+                          }
                           <div className="more token-action"><i className="icon-more"></i></div>
                       </div>
                   </div>
