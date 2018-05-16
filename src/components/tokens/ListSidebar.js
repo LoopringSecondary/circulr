@@ -1,14 +1,17 @@
 import React from 'react'
-import {Input,Icon,Tooltip} from 'antd'
+import {Input,Icon,Tooltip,Spin} from 'antd'
 import intl from 'react-intl-universal'
-import {getTokens} from 'modules/tokens/formatters'
+import TokensFm from 'modules/tokens/TokensFm'
+import {Currency} from 'modules/containers'
 
 function ListTokensSidebar(props) {
-  console.log(props.id,'ListTokensSidebar component render')
-  const {tokens:list,dispatch}= props
-  const {filters,favored,selected}= list
+  console.log('ListTokensSidebar component render',props)
+  const {tokens,balance,marketcap,dispatch}= props
+  const tokensFm = new TokensFm({tokens,marketcap,balance})
+  const formatedTokens = tokensFm.getList()
+  const {filters,favored,selected}= tokens
   const toggleMyFavorite = () => {
-    list.filtersChange({
+    tokens.filtersChange({
       filters: {
         ...filters,
         ifOnlyShowMyFavorite: !filters.ifOnlyShowMyFavorite
@@ -16,7 +19,7 @@ function ListTokensSidebar(props) {
     })
   }
   const toggleSmallBalance = () => {
-    list.filtersChange({
+    tokens.filtersChange({
       filters: {
         ...filters,
         ifHideSmallBalance: !filters.ifHideSmallBalance
@@ -24,7 +27,7 @@ function ListTokensSidebar(props) {
     })
   }
   const searchToken = (e) => {
-    list.filtersChange({
+    tokens.filtersChange({
       filters: {
         ...filters,
         keywords: e.target.value
@@ -33,7 +36,7 @@ function ListTokensSidebar(props) {
   }
   const toggleFavored = (item, e) => {
     e.stopPropagation()
-    list.favoredChange({
+    tokens.favoredChange({
       favored: {
         [item.symbol]: !favored[item.symbol], // TODO address
       }
@@ -44,7 +47,7 @@ function ListTokensSidebar(props) {
     for (let key in selected) {
       new_selected[key] = false
     }
-    list.selectedChange({
+    tokens.selectedChange({
       selected: {
         ...new_selected,
         [item.symbol]: true, // TODO address
@@ -54,13 +57,14 @@ function ListTokensSidebar(props) {
   }
   const updateTransations = (token) => {
     dispatch({
-      type: 'transactions/filtersChange',
+      type: 'sockets/filtersChange',
       payload: {
+        id:'transaction',
         filters: {token}
       }
     })
   }
-  const filteredTokens = getTokens(list)
+
   return (
     <div>
     	<div className="token-total">
@@ -98,15 +102,11 @@ function ListTokensSidebar(props) {
                   <Tooltip title={intl.get('tokens.hide_small_balances')}>
                     {
                       filters.ifHideSmallBalance &&
-                      <Icon onClick={toggleSmallBalance.bind(this)} className="fs18 color-primary-1 pointer"
-                            style={{position: 'relative', marginTop: '2px'}}
-                            type="eye"/>
+                      <i className="icon-eye" onClick={toggleSmallBalance.bind(this)} />
                     }
                     {
                       !filters.ifHideSmallBalance &&
-                      <Icon onClick={toggleSmallBalance.bind(this)} className="fs18 color-black-2 pointer"
-                            style={{position: 'relative', marginTop: '2px'}}
-                            type="eye-o"/>
+                      <i className="icon-eye-o" onClick={toggleSmallBalance.bind(this)} />
                     }
                   </Tooltip>
                 </div>
@@ -121,7 +121,7 @@ function ListTokensSidebar(props) {
       <div className="token-list text-color-dark-1" style={{height: "100%",overflow: "auto",paddingBottom: "211px"}}>
           <div className="">
               {
-                filteredTokens.map((item,index)=>
+                formatedTokens.map((item,index)=>
                   <div className="item" key={index} onClick={()=>{}}>
                       <div className="sub">
                           <div hidden className="favorites"><i className="icon-star"></i></div>
@@ -132,10 +132,21 @@ function ListTokensSidebar(props) {
                           </div>
                       </div>
                       <div className="sub">
-                          <div className="value">
+                          {
+                            !balance.loading &&
+                            <div className="value">
                               <h3>{item.balance}</h3>
-                              <p>$35678.94</p>
-                          </div>
+                              {item.balanceValue && 
+                                <p><Currency/>{item.balanceValue}</p>
+                              }
+                            </div>
+                          }
+                          {
+                            balance.loading &&
+                            <div className="value">
+                              <Spin size="small" />
+                            </div>
+                          }
                           <div className="more token-action"><i className="icon-more"></i></div>
                       </div>
                   </div>
