@@ -1,6 +1,8 @@
-import React from 'react';
+import React from 'react'
+import {connect} from 'dva'
 
 function ListTradesHistory(props) {
+  console.log('ListTradesHistory render')
   return (
     <div>
         <div className="card dark h-full">
@@ -51,4 +53,7 @@ function ListTradesHistory(props) {
     </div>
   )
 }
-export default ListTradesHistory
+
+export default connect(
+  ({sockets:{trades}})=>({trades})
+)(ListTradesHistory)

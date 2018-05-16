@@ -8,8 +8,15 @@ const updateItems = (items,id)=>{
     type:'sockets/itemsChange',
     payload:{id,items,loading:false}
   })
-
 }
+const updateItem = (item,id)=>{
+  const dispatch = require('../../index.js').default._store.dispatch
+  dispatch({
+    type:'sockets/itemChange',
+    payload:{id,item,loading:false}
+  })
+}
+
 const isArray = (obj)=>{
   return Object.prototype.toString.call(obj) === '[object Array]'
 }
@@ -82,11 +89,11 @@ const transfromers = {
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
       console.log(id,'res',res)
-      let items =[]
-      if(!res.error && res.data && isArray(res.data.depth)){
-        items =[ ...res.data.depth ]
+      let item ={}
+      if(!res.error && res.data && res.data.depth){
+        item ={ ...res.data.depth }
       }
-      updateItems(items,id)
+      updateItem(item,id)
     },
   },
   trades:{

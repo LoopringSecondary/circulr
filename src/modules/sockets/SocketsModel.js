@@ -2,6 +2,7 @@ import apis from './apis'
 const namespace = 'sockets'
 let initState = {
   items: [],
+  item: {},
   loading: false,
   loaded: false,
   page:{
@@ -20,7 +21,7 @@ export default {
     'transaction':{...initState,filters:{token:'LRC'}},
     'balance':{...initState,filters:{currency:'usd'}},
     'marketcap':{...initState},
-    'depth':{...initState,filters:{market:'LRC-WETH'}},
+    'depth':{...initState,filters:{market:'LRC-WETH'},item:{sell:[],buy:[]}},
     'trades':{...initState,filters:{market:'LRC-WETH'}},
     'tickers':{...initState,filters:{market:'LRC-WETH'}},
     'loopringTickers':{...initState},
@@ -123,6 +124,20 @@ export default {
         [id]:{
           ...state[id],
           ...payload,
+        },
+      }
+    },
+    itemChange(state, action) {
+      let {payload} = action
+      let {id} = payload
+      return {
+        ...state,
+        [id]:{
+          ...state[id],
+          item:{
+            ...state[id].item,
+            ...payload.item
+          }
         },
       }
     },
