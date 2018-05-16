@@ -87,8 +87,8 @@ export const filterTokens = (list)=>{
 export const setBalancesAndPrices = ({balances=[],prices=[],tokens})=>{
   const newTokens = [...tokens]
   newTokens.forEach(item => {
-      const tokenBalance = getBalanceBySymbol({balances,symbol:item.symbol})
-      const tokenPrice = getPriceBySymbol({prices,symbol:item.symbol})
+      const tokenBalance = getBalanceBySymbol({balances,symbol:item.symbol,toUnit:true})
+      const tokenPrice = getPriceBySymbol({prices,symbol:item.symbol,toUnit:true})
       item.balance = tokenBalance.balance
       item.allowance = tokenBalance.allowance
       item.price = tokenPrice.price

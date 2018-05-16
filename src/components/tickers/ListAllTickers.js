@@ -1,6 +1,8 @@
-import React from 'react';
+import React from 'react'
+import {connect} from 'dva'
 
 function ListAllTickers(props) {
+  const {loopringTickers} = props
   return (
     <div>
 	    <div className="token-select">
@@ -19,7 +21,7 @@ function ListAllTickers(props) {
 	                <div className="item">
 	                    <div className="title">Favorites</div>
 	                    <ul>
-	                        <li className="active"><span>LRC/ETH</span><span>0.000056</span><span className="text-up">+0.48</span></li>
+	                        <li className="_active"><span>LRC/ETH</span><span>0.000056</span><span className="text-up">+0.48</span></li>
 	                        <li><span>LRC/BTC</span><span>0.00000218</span><span className="text-down">-0.12</span></li>
 	                        <li><span>LRC/LTC</span><span>0.082</span><span className="text-up">+0.56</span></li>
 	                    </ul>
@@ -27,16 +29,11 @@ function ListAllTickers(props) {
 	                <div className="item">
 	                    <div className="title">All Markets</div>
 	                    <ul>
-	                        <li><span>LRC/ETH</span><span>0.000056</span><span className="text-up">+0.48</span></li>
-	                        <li><span>LRC/BTC</span><span>0.00000218</span><span className="text-down">-0.12</span></li>
-	                        <li><span>LRC/LTC</span><span>0.082</span><span className="text-up">+0.56</span></li>
-	                        <li><span>LRC/USD</span><span>0.068</span><span className="text-up">+0.66</span></li>
-	                        <li><span>LRC/EOS</span><span>0.2345</span><span className="text-down">-0.88</span></li>
-	                        <li><span>ETH/USD</span><span>0.082</span><span className="text-up">+0.56</span></li>
-	                        <li><span>ETH/BTC</span><span>0.000056</span><span className="text-up">+0.48</span></li>
-	                        <li><span>ETH/LRC</span><span>0.00000218</span><span className="text-down">-0.12</span></li>
-	                        <li><span>EOS/ETH</span><span>0.082</span><span className="text-up">+0.56</span></li>
-	                        <li><span>EOS/BTC</span><span>0.082</span><span className="text-up">+0.56</span></li>
+                          {
+                            loopringTickers.items.map((item,index)=>
+                              <li><span>{item.market}</span><span>{item.last}</span><span className="text-up">{item.change}</span></li>
+                            )
+                          }
 	                    </ul>
 	                </div>
 	            </div>
@@ -45,4 +42,8 @@ function ListAllTickers(props) {
     </div>
   )
 }
-export default ListAllTickers
+
+export default connect(
+  ({sockets:{loopringTickers}})=>({loopringTickers})
+)(ListAllTickers)
+

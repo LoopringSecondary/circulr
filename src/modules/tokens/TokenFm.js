@@ -79,8 +79,8 @@ export function getBalanceBySymbol({balances, symbol, toUnit}) {
   return {...tokenAssets}
 }
 
-export function getPriceBySymbol({marketcap, symbol, ifFormat}) {
-  let priceToken = marketcap.find(item => item.symbol.toLowerCase() === symbol.toLowerCase()) || {price: 0}
+export function getPriceBySymbol({prices, symbol, ifFormat}) {
+  let priceToken = prices.find(item => item.symbol.toLowerCase() === symbol.toLowerCase()) || {price: 0}
   if (ifFormat) {
     if (priceToken) {
       const price = Number(priceToken.price)

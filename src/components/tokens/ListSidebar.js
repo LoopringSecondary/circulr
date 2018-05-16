@@ -135,9 +135,9 @@ function ListTokensSidebar(props) {
                           {
                             !balance.loading &&
                             <div className="value">
-                              <h3>{item.balance}</h3>
-                              {item.balanceValue && 
-                                <p><Currency/>{item.balanceValue}</p>
+                              <h3>{item.balance.toString()}</h3>
+                              {item.balanceValue &&
+                                <p><Currency/>{item.balanceValue.toString()}</p>
                               }
                             </div>
                           }
