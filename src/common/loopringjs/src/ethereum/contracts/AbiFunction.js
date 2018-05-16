@@ -1,5 +1,5 @@
 import {rawEncode, methodID, rawDecode} from 'ethereumjs-abi';
-import {toHex, clearHexPrefix, toBuffer} from "../../common/formatter";
+import {toHex, clearHexPrefix, toBuffer, addHexPrefix} from '../../common/formatter'
 import BN from 'bn.js'
 
 export default class AbiFunction {
@@ -33,8 +33,17 @@ export default class AbiFunction {
     return this.parseOutputs(rawDecode(this.outputTypes, toBuffer(outputs)));
   }
 
+  /**
+   * @description decode encoded inputs
+   * @param encoded
+   * @returns {*}
+   */
+  decodeEncodedInputs(encoded){
+    return this.parseOutputs(rawDecode(this.inputTypes, toBuffer(addHexPrefix(encoded))));
+  }
+
   parseInputs(inputs={}) {
-  return  this.inputs.map(({name, type}) => {
+  return this.inputs.map(({name, type}) => {
       if (!inputs[name]) {
         throw new Error(`Parameter ${name} of type ${type} is required!`)
       }
