@@ -54,7 +54,7 @@ class Unlock extends React.Component {
                       Wallet</h4></a>
                 </li>
                 <li className="item">
-                  <a data-toggle="tab"><i className="icon-metamaskwallet"/><h4>MetaMask</h4></a>
+                  <a data-toggle="tab"  onClick={() => this.changeTab('metamask')}><i className="icon-metamaskwallet"/><h4>MetaMask</h4></a>
                 </li>
                 <li className="item">
                   <a onClick={() => this.unlock('trezor','trezor')}><i className="icon-trezorwallet"/><h4>Trezor</h4></a>
@@ -123,6 +123,11 @@ class Unlock extends React.Component {
                   <Containers.HardwareWallet>
                     <Account.UnlockByLedger/>
                   </Containers.HardwareWallet>
+                </div>}
+              />
+              <Route path={`${url}/metamask`} exact render={() =>
+                <div className="tab-content">
+                    <Account.UnlockByMetaMask/>
                 </div>}
               />
               <Route path={`${url}/backup`} exact render={() =>

@@ -85,11 +85,9 @@ export default {
       yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
     },
     * unlockMetaMaskWallet({payload}, {put}) {
-      const {web3} = payload;
-      const account = new MetaMaskAccount({web3});
-      const address = account.getAddress();
+      const {address} = payload;
       const unlockType = 'metaMask';
-      yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
+      yield put({type: 'unlockWallet', payload: {address, unlockType}});
     },
     * unlockTrezorWallet({payload}, {put}) {
       const {dpath,address} = payload;
