@@ -3,6 +3,8 @@ import {Button, Card, Input, Radio} from 'antd'
 import {paths} from '../../../common/config/data'
 import routeActions from 'common/utils/routeActions'
 import {getXPubKey as getTrezorPublicKey} from "LoopringJS/ethereum/trezor";
+import {getXPubKey as getLedgerPublicKey,connect} from "../../../common/loopringjs/src/ethereum/ledger";
+
 
 const ledgerPaths = ["m/44'/60'/0'/0", "m/44'/60'/0'", "m/44'/61'/0'/0", "m/44'/60'/160720'/0'", "m/44'/1'/0'/0"];
 
@@ -22,8 +24,6 @@ export default class DetermineWallet extends React.Component {
   handlePathChange = async (e) => {
     const {determineWallet} = this.props;
     const {walletType, mnemonic} = determineWallet;
-    let publicKey = '';
-    let chainCode = '';
     const dpath = e.target.value;
     switch (walletType) {
       case 'mnemonic':
@@ -32,12 +32,24 @@ export default class DetermineWallet extends React.Component {
       case 'trezor':
         await getTrezorPublicKey(dpath).then(res => {
           if (!res.error) {
-            publicKey = res.result.publicKey;
-            chainCode = res.result.chainCode;
+           const {chainCode,publicKey}  = res.result;
             determineWallet.setHardwareWallet({dpath, publicKey, chainCode, walletType})
           }
         });
-        break
+        break;
+      case 'ledger':
+        connect().then(res =>{
+          if(!res.error) {
+            const ledger = res.result;
+            getLedgerPublicKey(dpath, ledger).then(resp => {
+              if (!resp.error) {
+                const {chainCode, publicKey} = resp.result;
+                determineWallet.setHardwareWallet({dpath, publicKey, chainCode, walletType})
+              }
+            });
+          }});
+        break;
+
     }
   };
   onCustomPathChange = (e) => {
@@ -66,7 +78,12 @@ export default class DetermineWallet extends React.Component {
         dispatch({type: 'wallet/unlockTrezorWallet', payload: {dpath: `${dpath}/${pageNum * pageSize + index}`,address}});
         break;
       case 'ledger':
-        dispatch({type: 'wallet/unlockLedgerWallet', payload: {dpath: `${dpath}/${pageNum * pageSize + index}`}});
+        connect().then(res => {
+          if(!res.error){
+            const ledger = res.result;
+            dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger,dpath: `${dpath}/${pageNum * pageSize + index}`}});
+          }
+        });
         break;
       default:
     }

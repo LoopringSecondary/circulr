@@ -13,6 +13,7 @@ import {mnemonictoPrivatekey} from "LoopringJS/ethereum/mnemonic";
 import {formatKey} from "LoopringJS/common/formatter";
 
 
+
 export default {
   namespace: 'wallet',
   state: {
@@ -87,6 +88,7 @@ export default {
     * unlockMetaMaskWallet({payload}, {put}) {
       const {address} = payload;
       const unlockType = 'metaMask';
+      window.account = new MetaMaskAccount(window.web3);
       yield put({type: 'unlockWallet', payload: {address, unlockType}});
     },
     * unlockTrezorWallet({payload}, {put}) {
@@ -97,7 +99,7 @@ export default {
     },
     * unlockLedgerWallet({payload}, {put}) {
       const {ledger, dpath} = payload;
-      const account = new LedgerAccount({ledger, dpath});
+      const account = new LedgerAccount(ledger, dpath);
       const address = yield account.getAddress();
       const unlockType = 'ledger';
       yield put({type: 'unlockWallet', payload: {address, unlockType, account}});

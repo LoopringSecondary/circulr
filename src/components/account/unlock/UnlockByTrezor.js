@@ -1,7 +1,6 @@
 import React from 'react';
 import {Input, Button, Select} from 'antd';
 import routeActions from 'common/utils/routeActions'
-import {getAddress} from "../../../common/loopringjs/src/ethereum/trezor";
 
 
 function UnlockByTrezor(props) {
