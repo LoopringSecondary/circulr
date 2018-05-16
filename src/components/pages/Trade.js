@@ -50,11 +50,11 @@ function Trade(props) {
   	        </div>
   	        <div className="fulid-container" style={{marginLeft:"304px", marginRight: "304px", height: "100%" }}>
   	            <div className="card dark h-full">
-      	            <div style={{position: "relative", height: "50%"}}>
+      	            <div style={{position: "relative", height: "-webkit-calc(50% - 40px)", overflow:"hidden" }}>
         	              <div className="card-header card-header-dark bordered">
         		               <h4>Price Chart</h4>
         		            </div>
-                        <div style={{height: "100%",paddingBottom:"160px" }}>
+                        <div style={{height:"-webkit-calc(100% - 40px)"}}>
             		            <div className="market-chart" style={{height: "60%" }}>
             		               <Charts.KlineChart />
             		            </div>
@@ -63,11 +63,11 @@ function Trade(props) {
                             </div>
                         </div>
                     </div>
-      	            <div style={{position: "relative", height: "50%", paddingTop:"0"}}>
+      	            <div style={{position: "relative", height:"50%", paddingTop:"0"}}>
           	            <Tabs defaultActiveKey="1" onChange={callback}  type="card">
           	                <TabPane tab="Orders" key="1">
-                              <Containers.Orders id="MyOpenOrders" alias="orders" >
-                                <Orders.ListMyOrders />
+                              <Containers.Orders id="MyOpenOrders" alias="orders"  >
+                                <Orders.ListMyOrders style={{height:"100%",overflow:"auto"}} />
                               </Containers.Orders>
                             </TabPane>
           	                <TabPane tab="Fill" key="2">

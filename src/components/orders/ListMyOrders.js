@@ -9,47 +9,50 @@ import intl from 'react-intl-universal'
 export default function ListMyOrders(props) {
   const {orders={}}=props
   return (
-    <div>
+    <div className="">
         <ListHeader orders={orders} />
-        <table style={{overflow:'auto'}} className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2">
-          <thead>
-              <tr>
-                  <th>Order</th>
-                  <th>Market</th>
-                  <th>Side</th>
-                  <th>Amount</th>
-                  <th>Price</th>
-                  <th>Total</th>
-                  <th>LRC Fee</th>
-                  <th>Filled</th>
-                  <th>Created</th>
-                  <th>Expired</th>
-                  <th>Status</th>
-              </tr>
-          </thead>
-          <tbody>
-              {
-                orders.items.map((item,index)=>{
-                  const orderFm = new OrderFm(item)
-                  return (
-                    <tr key={index}>
-                      <td>{renders.hash(orderFm.getHash(),item,index)}</td>
-                      <td>{orderFm.getMarket()}</td>
-                      <td>{renders.side(orderFm.getSide(),item,index)}</td>
-                      <td>{orderFm.getAmount()}</td>
-                      <td>{orderFm.getPrice()}</td>
-                      <td>{orderFm.getTotal()}</td>
-                      <td>{orderFm.getLRCFee()}</td>
-                      <td>{orderFm.getFilledPercent()}%</td>
-                      <td>{orderFm.getCreateTime()}</td>
-                      <td>{orderFm.getExpiredTime()}</td>
-                      <td>{renders.status(orderFm.getStatus(),item,index)}</td>
-                   </tr>
-                  )
-                })
-              }
-          </tbody>
-        </table>
+
+        <div style={{height:"160px",overflow:"auto"}}>
+          <table style={{overflow:'auto'}} className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2" >
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Market</th>
+                    <th>Side</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>LRC Fee</th>
+                    <th>Filled</th>
+                    <th>Created</th>
+                    <th>Expired</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                  orders.items.map((item,index)=>{
+                    const orderFm = new OrderFm(item)
+                    return (
+                      <tr key={index}>
+                        <td>{renders.hash(orderFm.getHash(),item,index)}</td>
+                        <td>{orderFm.getMarket()}</td>
+                        <td>{renders.side(orderFm.getSide(),item,index)}</td>
+                        <td>{orderFm.getAmount()}</td>
+                        <td>{orderFm.getPrice()}</td>
+                        <td>{orderFm.getTotal()}</td>
+                        <td>{orderFm.getLRCFee()}</td>
+                        <td>{orderFm.getFilledPercent()}%</td>
+                        <td>{orderFm.getCreateTime()}</td>
+                        <td>{orderFm.getExpiredTime()}</td>
+                        <td>{renders.status(orderFm.getStatus(),item,index)}</td>
+                     </tr>
+                    )
+                  })
+                }
+            </tbody>
+          </table>
+        </div>
         <ListPagination list={orders}/>
   </div>
   )
