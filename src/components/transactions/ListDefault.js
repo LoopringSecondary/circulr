@@ -59,7 +59,7 @@ export default function ListTransaction(props) {
         </div>
         <div style={{height: "100%", overflow: "hidden", padding:"0 0 60px"}}>
             <div className="content-scroll">
-                <table className="table table-striped table-dark text-center">
+                <table className="table table-hover table-striped table-dark text-center">
                     <thead>
                         <tr>
                             <th className="text-center">Status</th>
