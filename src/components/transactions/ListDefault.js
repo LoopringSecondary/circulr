@@ -62,40 +62,36 @@ export default function ListTransaction(props) {
                 <table className="table table-hover table-striped table-dark text-center">
                     <thead>
                         <tr>
-                            <th className="text-center">Status</th>
-                            <th className="text-left">TxHash</th>
-                            <th className="text-left">Created</th>
                             <th className="text-left">Type</th>
+                            <th className="text-left">Created</th>
+                            <th className="text-left">Block</th>
                             <th className="text-right">Value</th>
                             <th className="text-right">Gas</th>
+                            <th className="text-center">Status</th>
+                            <th className="text-right">TxHash</th>
                             <th hidden className="text-right">Note</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                           list.items.map((item,index)=>
-                              <tr key={index}>
-                                  <td className="text-center">{renders.status(item,index)}</td>
-                                  <td className="text-left">{renders.txHash(item,index)}</td>
-                                  <td className="text-left">{renders.createTime(item,index)}</td>
-                                  <td className="text-left">{renders.type(item,index)}</td>
-                                  <td className="text-right">{renders.value(item,index)}</td>
-                                  <td className="text-right">{renders.gas(item,index)}</td>
-                                  <td hidden className="text-right">{renders.miner(item,index)}</td>
-                              </tr>
-                            )
+                            <tr key={index}>
+                              <td className="text-left">{renders.type(item,index)}</td>
+                              <td className="text-left">{renders.createTime(item,index)}</td>
+                              <td className="text-left">{item.block || 5241856}</td>
+                              <td className="text-right">{renders.value(item,index)}</td>
+                              <td className="text-right">{renders.gas(item,index)}</td>
+                              <td className="text-center">{renders.status(item,index)}</td>
+                              <td className="text-right">{renders.txHash(item,index)}</td>
+                              <td hidden className="text-right">{renders.miner(item,index)}</td>
+                            </tr>
+                          )
                         }
-                        {
-                          list.loading &&
-                          <tr>
-                              <td colSpan="100" className="text-center"><Spin/></td>
-                          </tr>
+                        {list.loading &&
+                          <tr><td colSpan="100" className="text-center"><Spin/></td></tr>
                         }
-                        {
-                          !list.loading && list.items.length === 0 &&
-                          <tr>
-                              <td colSpan="100" className="text-center">{intl.get('txs.no_txs')}</td>
-                          </tr>
+                        {!list.loading && list.items.length === 0 &&
+                          <tr><td colSpan="100" className="text-center">{intl.get('txs.no_txs')}</td></tr>
                         }
                     </tbody>
                 </table>
@@ -106,9 +102,7 @@ export default function ListTransaction(props) {
 }
 export const renders = {
   createTime:(item) => (
-    <span>
-      {getFormattedTime(item.createTime,'MM-DD HH:SS')}
-    </span>
+    <span>{getFormattedTime(item.createTime,'MM-DD HH:SS')}</span>
   ),
   txHash:(item, index) => (
     <span
@@ -152,7 +146,6 @@ export const renders = {
 
     )
   },
-
   status:(item)=>{
     return (
       <div>
