@@ -17,12 +17,12 @@ function Trade(props) {
 
   const validateLrcFee = (value) => {
     let v = Number(value);
-    return value && v.toString() === value && v >=0 && v <=50
+    return value && v.toString() === value && settingsFormatter.isValidInteger(v) && v >=0 && v <=50
   }
 
   const validateMarginSplit = (value) => {
     let v = Number(value);
-    return value && v.toString() === value && v >=0 && v <=100
+    return value && v.toString() === value && settingsFormatter.isValidInteger(v) && v >=0 && v <=100
   }
 
   const handleChangeValue = (type, v) => {

@@ -5,16 +5,18 @@ import config from 'common/config'
 import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
 import * as orderFormatter from 'modules/orders/formatters'
-import * as selectors from 'modules/formatter/selectors'
+import * as tokenFormatter from 'modules/tokens/TokenFm'
 import moment from 'moment'
 import ReactDOM from 'react-dom'
 import Notification from 'LoopringUI/components/Notification'
-import {store} from '../../index'
 
 class PlaceOrderForm extends React.Component {
 
   render() {
-    const {form, placeOrder} = this.props
+    const {form, placeOrder, settings, balance, wallet, marketcap} = this.props
+    const milliLrcFee = placeOrder.sliderMilliLrcFee >0 ? placeOrder.sliderMilliLrcFee : settings.trading.lrcFee
+    const ttlValue = placeOrder.timeToLive >0 ? placeOrder.timeToLive : settings.trading.timeToLive
+    const ttlUnit = placeOrder.timeToLiveUnit >0 ? placeOrder.timeToLiveUnit : settings.trading.timeToLiveUnit
 
     function sideChange(value) {
       placeOrder.sideChangeEffects({side:value})
@@ -135,14 +137,13 @@ class PlaceOrderForm extends React.Component {
       </span>
     )
 
-
     const editLRCFee = (
       <Popover overlayClassName="place-order-form-popover" title={<div className="pt5 pb5">{intl.get('trade.custom_lrc_fee_title')}</div>} content={
         <div>
-          <div className="pb5 fs12">{intl.get('trade.current_lrc_fee_ratio')} : {placeOrder.sliderMilliLrcFee}‰</div>
-          <div className="pb15 fs12">{intl.get('trade.current_lrc_fee')} : {placeOrder.calculatedLrcFee} LRC</div>
+          <div className="pb5 fs12">{intl.get('trade.current_lrc_fee_ratio')} : {milliLrcFee}‰</div>
+          <div className="pb15 fs12">{intl.get('trade.current_lrc_fee')} : {placeOrder.lrcFee} LRC</div>
           {form.getFieldDecorator('lrcFeeSlider', {
-            initialValue: placeOrder.sliderMilliLrcFee,
+            initialValue: milliLrcFee,
             rules: []
           })(
             <Slider min={1} max={50} step={1}
@@ -239,8 +240,8 @@ class PlaceOrderForm extends React.Component {
 
     let ttlInSecond = 0, ttlShow = ''
     if(placeOrder.timeToLivePatternSelect === 'easy') {
-      const ttl = Number(placeOrder.timeToLive)//Number(settings.trading.timeToLive)
-      const unit = placeOrder.timeToLiveUnit //settings.trading.timeToLiveUnit
+      const ttl = Number(ttlValue)
+      const unit = ttlUnit
       switch(unit){
         case 'minute': ttlInSecond = ttl * 60 ; ttlShow = `${ttl} ${intl.get('trade.minute')}`; break;
         case 'hour': ttlInSecond = ttl * 3600 ; ttlShow = `${ttl} ${intl.get('trade.hour')}`; break;
@@ -256,7 +257,7 @@ class PlaceOrderForm extends React.Component {
 
     async function handleSubmit() {
       //TODO unlock check, moved before sign
-      const lrcBalance = selectors.getAssetByToken('LRC', true)
+      const lrcBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:'LRC', toUnit:true})
       if(!lrcBalance || lrcBalance.balance.lessThan(900)){
         // TODO !await config.isinWhiteList(window.WALLET.getAddress())
         if(config.getChainId() !== 7107171){
@@ -268,7 +269,7 @@ class PlaceOrderForm extends React.Component {
           return
         }
       }
-      const address = store.getState().wallet.address
+      const address = wallet.address
       if(!address) {
         //TODO
         // Notification.open({
@@ -295,7 +296,7 @@ class PlaceOrderForm extends React.Component {
           if (values.marginSplit) {
             tradeInfo.marginSplit = Number(values.marginSplit)
           }
-          const totalWorth = orderFormatter.calculateWorthInLegalCurrency(placeOrder.right.symbol, tradeInfo.total)
+          const totalWorth = orderFormatter.calculateWorthInLegalCurrency(marketcap, placeOrder.right.symbol, tradeInfo.total)
           if(!totalWorth.gt(0)) {
             Notification.open({
               message:intl.get('trade.send_failed'),
@@ -328,9 +329,9 @@ class PlaceOrderForm extends React.Component {
             placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
             return
           }
-          tradeInfo.milliLrcFee = placeOrder.sliderMilliLrcFee
+          tradeInfo.milliLrcFee = milliLrcFee
           tradeInfo.lrcFee = placeOrder.lrcFee
-          orderFormatter.tradeVerification(tradeInfo, placeOrder.sell, placeOrder.buy, this.props.txs)
+          orderFormatter.tradeVerification(wallet, tradeInfo, placeOrder.sell, placeOrder.buy, this.props.txs)
           if(tradeInfo.error) {
             tradeInfo.error.map(item=>{
               Notification.open({
@@ -454,7 +455,7 @@ class PlaceOrderForm extends React.Component {
                     <span>
                       <span>{editLRCFee}</span>
                       <span></span>
-                      <span className="offset-md">{placeOrder.lrcFee}LRC ({placeOrder.sliderMilliLrcFee}‰)</span>
+                      <span className="offset-md">{placeOrder.lrcFee}LRC ({milliLrcFee}‰)</span>
                     </span>
                   </div>
                 </div>

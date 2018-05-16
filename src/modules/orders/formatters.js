@@ -3,7 +3,6 @@ import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
 import {getPriceBySymbol, getAssetByToken} from '../formatter/selectors'
 import {getEstimatedAllocatedAllowance, getFrozenLrcFee} from 'LoopringJS/relay/rpc/account'
-import {store} from '../../index'
 
 const integerReg = new RegExp("^[0-9]*$")
 const amountReg = new RegExp("^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$")
@@ -81,25 +80,25 @@ export function formatAmountByMarket(amount, tokenConfig, marketConfig) {
   }
 }
 
-export function calculateWorthInLegalCurrency(symbol, amount) {
-  const price = getPriceBySymbol(symbol)
-  return amount.times(price)
+export function calculateWorthInLegalCurrency(marketcapItems, symbol, amount) {
+  const price = getPriceBySymbol(marketcapItems, symbol)
+  return amount.times(price.price)
 }
 
-export function calculateLrcFeeInEth(totalWorth, milliLrcFee) {
-  const price = getPriceBySymbol("ETH")
-  return totalWorth.times(milliLrcFee).div(1000).div(fm.toBig(price))
+export function calculateLrcFeeInEth(marketcapItems, totalWorth, milliLrcFee) {
+  const price = getPriceBySymbol(marketcapItems, "ETH")
+  return totalWorth.times(milliLrcFee).div(1000).div(fm.toBig(price.price))
 }
 
-export function calculateLrcFeeByEth(ethAmount) {
-  const ethPrice = getPriceBySymbol("ETH")
-  const lrcPrice = getPriceBySymbol("LRC")
-  const price = fm.toBig(lrcPrice).div(fm.toBig(ethPrice))
+export function calculateLrcFeeByEth(marketcapItems, ethAmount) {
+  const ethPrice = getPriceBySymbol(marketcapItems, "ETH")
+  const lrcPrice = getPriceBySymbol(marketcapItems, "LRC")
+  const price = fm.toBig(lrcPrice.price).div(fm.toBig(ethPrice.price))
   return fm.toFixed(fm.toBig(ethAmount).div(price), 2, true)
 }
 
-export function calculateLrcFee(total, milliLrcFee, tokenR) {
-  const totalWorth = calculateWorthInLegalCurrency(tokenR, fm.toBig(total))
+export function calculateLrcFee(marketcapItems, total, milliLrcFee, tokenR) {
+  const totalWorth = calculateWorthInLegalCurrency(marketcapItems, tokenR, fm.toBig(total))
   if(totalWorth.lt(0)) {
     return 0
   }
@@ -108,11 +107,11 @@ export function calculateLrcFee(total, milliLrcFee, tokenR) {
   if (!milliLrcFee) {
     milliLrcFee = Number(percentage)
   }
-  let userSetLrcFeeInEth = calculateLrcFeeInEth(totalWorth, milliLrcFee)
+  let userSetLrcFeeInEth = calculateLrcFeeInEth(marketcapItems, totalWorth, milliLrcFee)
   if(userSetLrcFeeInEth.gt(minimumLrcfeeInEth)){
-    return calculateLrcFeeByEth(userSetLrcFeeInEth)
+    return calculateLrcFeeByEth(marketcapItems, userSetLrcFeeInEth)
   } else {
-    return calculateLrcFeeByEth(minimumLrcfeeInEth)
+    return calculateLrcFeeByEth(marketcapItems, minimumLrcfeeInEth)
   }
 }
 
@@ -152,12 +151,12 @@ function ceilDecimal(bn, precision) {
   }
 }
 
-export async function tradeVerification(tradeInfo, sell, buy, tokenL, tokenR, side, txs) {
+export async function tradeVerification(walletState, tradeInfo, sell, buy, tokenL, tokenR, side, txs) {
   const configSell = config.getTokenBySymbol(sell.symbol)
   const ethBalance = getAssetByToken('ETH', true)
   const lrcBalance = getAssetByToken('LRC', true)
   const approveGasLimit = config.getGasLimitByType('approve').gasLimit
-  const address = store.getState().wallet.address
+  const address = walletState.address
   if(!address) {
     //TODO
   }
