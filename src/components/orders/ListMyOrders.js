@@ -2,6 +2,7 @@ import React from 'react'
 import { Form,Select } from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import ListHeader from './ListMyOrdersHeader'
+import {OrderFm} from 'modules/orders/ListFm'
 
 const Option = Select.Option;
 function ListHeaderForm({className=''}){
@@ -63,7 +64,6 @@ function ListMyOrders(props) {
               <tr>
                   <th>Order</th>
                   <th>Time</th>
-                  <th>Status</th>
                   <th>Market</th>
                   <th>Side</th>
                   <th>Amount<small>(LRC)</small></th>
@@ -71,67 +71,43 @@ function ListMyOrders(props) {
                   <th>Total<small>(WETH)</small></th>
                   <th>LRC Fee<small>(LRC)</small></th>
                   <th>Filled</th>
-                  <th>Options</th>
+                  <th>Status</th>
               </tr>
           </thead>
           <tbody>
               {
-                orders.items.map((item,index)=>
-                  <tr key={index}>
-                      <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x58...ba9b</a></td>
-                      <td>March 27, 2018 5:51 PM</td>
-                      <td><i className="text-color-dark icon-success"></i></td>
-                      <td>LRC-WETH</td>
-                      <td><span className="text-success">Sell</span></td>
-                      <td>300</td>
-                      <td>0.00087</td>
-                      <td>0.259989</td>
-                      <td>0.58</td>
-                      <td className="text-center">50%</td>
-                      <td></td>
-                  </tr>
-                )
+                orders.items.map((item,index)=>{
+                  const orderFm = new OrderFm(item)
+                  return (
+                    <tr key={index}>
+                      <td><a href="#orderDetail" data-toggle="modal" className="text-primary">{orderFm.getHash()}</a></td>
+                      <td>{orderFm.getCreatetime()}</td>
+                      <td>{orderFm.getMarket()}</td>
+                      <td>
+                        { orderFm.getSide()==='buy' &&
+                          <span className="text-up">{orderFm.getSide()}</span>
+                        }
+                        { orderFm.getSide()==='sell' &&
+                          <span className="text-down">{orderFm.getSide()}</span>
+                        }
+                      </td>
+                      <td>{orderFm.getAmount()}</td>
+                      <td>{orderFm.getPrice()}</td>
+                      <td>{orderFm.getTotal()}</td>
+                      <td>{orderFm.getLRCFee()}</td>
+                      <td className="text-center">{orderFm.getFilled()}</td>
+                      <td>
+                        {false &&
+                          <i className="text-color-dark icon-success"></i>
+                        }
+                        {
+                          orderFm.getStatus()
+                        }
+                      </td>
+                   </tr>
+                  )
+                })
               }
-
-              <tr>
-                  <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x44...da11</a></td>
-                  <td>March 27, 2018 5:40 PM</td>
-                  <td><i className="text-color-dark icon-success"></i></td>
-                  <td>LRC-WETH</td>
-                  <td><span className="text-danger">Buy</span></td>
-                  <td>300</td>
-                  <td>0.00087</td>
-                  <td>0.259989</td>
-                  <td>0.23</td>
-                  <td className="text-center">50%</td>
-                  <td></td>
-              </tr>
-              <tr>
-                  <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x44...da11</a></td>
-                  <td>March 27, 2018 5:40 PM</td>
-                  <td><i className="text-color-dark icon-success"></i></td>
-                  <td>LRC-WETH</td>
-                  <td><span className="text-success">Sell</span></td>
-                  <td>300</td>
-                  <td>0.00087</td>
-                  <td>0.259989</td>
-                  <td>0.51</td>
-                  <td className="text-center">50%</td>
-                  <td></td>
-              </tr>
-              <tr>
-                  <td><a href="#orderDetail" data-toggle="modal" className="text-primary">0x44...da11</a></td>
-                  <td>March 27, 2018 5:40 PM</td>
-                  <td><i className="text-color-dark icon-success"></i></td>
-                  <td>LRC-WETH</td>
-                  <td><span className="text-danger">Buy</span></td>
-                  <td>300</td>
-                  <td>0.00087</td>
-                  <td>0.259989</td>
-                  <td>0.58</td>
-                  <td className="text-center">50%</td>
-                  <td></td>
-              </tr>
           </tbody>
         </table>
         <ListPagination list={orders}/>
