@@ -17,9 +17,14 @@ export default {
   state: {
     'url':'//relay1.loopring.io',
     'socket':null,
-    'marketcap':{...initState},
-    'balance':{...initState},
     'transaction':{...initState,filters:{token:'LRC'}},
+    'balance':{...initState},
+    'marketcap':{...initState},
+    'depth':{...initState,filters:{market:'LRC-WETH'}},
+    'trades':{...initState,filters:{market:'LRC-WETH'}},
+    'tickers':{...initState,filters:{market:'LRC-WETH'}},
+    'loopringTickers':{...initState},
+    'pendingTx':{...initState},
   },
   effects: {
     *urlChange({payload},{call,select,put}){
@@ -33,6 +38,11 @@ export default {
       yield put({type:'fetch',payload:{id:'marketcap'}})
       yield put({type:'fetch',payload:{id:'transaction'}})
       yield put({type:'fetch',payload:{id:'balance'}})
+      yield put({type:'fetch',payload:{id:'depth'}})
+      yield put({type:'fetch',payload:{id:'trades'}})
+      yield put({type:'fetch',payload:{id:'tickers'}})
+      yield put({type:'fetch',payload:{id:'loopringTickers'}})
+      yield put({type:'fetch',payload:{id:'pendingTx'}})
     },
     *fetch({payload},{call,select,put}){
       yield put({type:'onEvent',payload})
@@ -56,6 +66,7 @@ export default {
     },
     *emitEvent({ payload={} },{call,select,put}) {
       let {id} = payload
+      // todo idValidator
       const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
       if(socket){
         let new_payload = {page,filters,sort,socket,id}
@@ -67,6 +78,7 @@ export default {
     },
     *onEvent({ payload={} }, { call, select, put }) {
       let {id} = payload
+      // todo idValidator
       const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
       if(socket){
         let new_payload = {page,filters,sort,socket,id}

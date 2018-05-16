@@ -4,15 +4,14 @@ import config from 'common/config'
 
 const updateItems = (items,id)=>{
   const dispatch = require('../../index.js').default._store.dispatch
-  let items = []
   dispatch({
     type:'sockets/itemsChange',
     payload:{id,items,loading:false}
   })
-}
 
-function isArray(obj) {
-  return Object.prototype.toString.call(obj) === '[object Array]';
+}
+const isArray = (obj)=>{
+  return Object.prototype.toString.call(obj) === '[object Array]'
 }
 
 const transfromers = {
@@ -32,7 +31,7 @@ const transfromers = {
       res = JSON.parse(res)
       console.log(id,'res',res)
       let items = []
-      if (!res.error && res.data && res.data.data) {
+      if (!res.error && res.data && isArray(res.data.data)) {
         items =[ ...res.data.data ]
       }
       updateItems(items,id)
@@ -50,7 +49,7 @@ const transfromers = {
       res = JSON.parse(res)
       console.log(id,'res',res)
       let items = []
-      if (!res.error && res.data && res.data.tokens) {
+      if (!res.error && res.data && isArray(res.data.tokens)) {
         items =[ ...res.data.tokens ]
       }
       updateItems(items,id)
@@ -67,7 +66,7 @@ const transfromers = {
       res = JSON.parse(res)
       console.log(id,'res',res)
       let items =[]
-      if (!res.error && res.data && res.data.tokens) {
+      if (!res.error && res.data && isArray(res.data.tokens)) {
         items =[ ...res.data.tokens ]
       }
       updateItems(items,id)
@@ -85,7 +84,7 @@ const transfromers = {
       res = JSON.parse(res)
       console.log(id,'res',res)
       let items =[]
-      if(!res.error && res.data && res.data.depth){
+      if(!res.error && res.data && isArray(res.data.depth)){
         items =[ ...res.data.depth ]
       }
       updateItems(items,id)
@@ -103,7 +102,7 @@ const transfromers = {
       res = JSON.parse(res)
       console.log(id,'res',res)
       let items =[]
-      if(!res.error && res.data){
+      if(!res.error && isArray(res.data)){
         items =[ ...res.data ]
       }
       updateItems(items,id)
@@ -121,7 +120,7 @@ const transfromers = {
       res = JSON.parse(res)
       console.log(id,'res',res)
       let items =[]
-      if(!res.error && res.data){
+      if(!res.error && isArray(res.data)){
         items =[ ...res.data ]
       }
       updateItems(items,id)
@@ -139,7 +138,7 @@ const transfromers = {
       res = JSON.parse(res)
       console.log(id,'res',res)
       let items =[]
-      if(!res.error && res.data){
+      if(!res.error && isArray(res.data)){
         // filter support market
         const supportMarket = res.data.filter(item=>{
           return config.isSupportedMarket(item.market)
@@ -149,19 +148,18 @@ const transfromers = {
       updateItems(items,id)
     },
   },
-  pengdingTx:{
+  pendingTx:{
     queryTransformer:(payload)=>{
       const {filters,page} = payload
       return JSON.stringify({
-         "delegateAddress" :config.getDelegateAddress(),
-         "market":filters.market, //TODO
+         owner:window.config.address // TODO
       })
     },
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
       console.log(id,'res',res)
       let items =[]
-      if(!res.error && res.data){
+      if(!res.error && isArray(res.data)){
         items =[ ...res.data ]
       }
       updateItems(items,id)
