@@ -116,7 +116,6 @@ const connect = (payload)=>{
     })
   })
 }
-
 export default {
   onEvent,
   emitEvent,

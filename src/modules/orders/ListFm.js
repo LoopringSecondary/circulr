@@ -11,13 +11,13 @@ const status = {
   ORDER_CANCEL: {},
   ORDER_CUTOFF: {}
 }
-export default class ListFm {
+export class OrderFm {
   constructor(order){
     this.order = order
   }
-  getOrderHash(){return this.order.originalOrder.hash}
+  getHash(){return this.order.originalOrder.hash}
   getMarket(){return `${this.order.originalOrder.tokenB}/${this.order.originalOrder.tokenS}`}
-  getSide(){return this.order.sidem }
+  getSide(){return this.order.originalOrder.side }
   getAmount(){
     const side = this.order.originalOrder.side.toLowerCase();
     let token =  side === 'buy' ? config.getTokenBySymbol(this.order.originalOrder.tokenB) : config.getTokenBySymbol(this.order.originalOrder.tokenS);
@@ -42,20 +42,29 @@ export default class ListFm {
       const amountS = this.order.originalOrder.amountS;
       const amountB = this.order.originalOrder.amountB;
       let token = side === 'buy' ? config.getTokenBySymbol(tokenS): config.getTokenBySymbol(tokenB);
-      token = token || {digits: 18, precision: 6};
+      token = token || {digits: 18, precision: 6}
       const amount = side === 'buy' ? amountS : amountB;
       const symbol = side === 'buy' ? tokenS : tokenB;
       const total = (toNumber(amount) / Number('1e' + token.digits)).toFixed(token.precision)
       return  commonFm.getFormatNum(toNumber(total)) + ' ' +symbol
   }
-  getLrcFee(){
+  getLRCFee(){
       let token = config.getTokenBySymbol('LRC');
       token = token || {digits: 18, precision: 6};
       const total = (toNumber(this.order.originalOrder.lrcFee) / Number('1e' + token.digits)).toFixed(token.precision);
       return commonFm.getFormatNum(toNumber(total))  + ' LRC'
   }
-  getTimestamp(){return commonFm.getFormatTime(toNumber(this.order.originalOrder.validSince) * 1e3)}
-  getFilled(){}
+  getCreateTime(){return commonFm.getFormattedTime(toNumber(this.order.originalOrder.validSince),'MM-DD HH:MM')}
+  getExpiredTime(){return commonFm.getFormattedTime(toNumber(this.order.originalOrder.validUntil),'MM-DD HH:MM')}
+  getFilledPercent(){
+    let percent = 0;
+    if (!this.order.originalOrder.buyNoMoreThanAmountB) {
+      percent = (this.order.dealtAmountS / this.order.originalOrder.amountS * 100).toFixed(1)
+    } else {
+      percent = (this.order.dealtAmountB / this.order.originalOrder.amountB * 100).toFixed(1)
+    }
+    return percent
+  }
   getStatus(){return this.order.status}
   selector1(){
   }
