@@ -45,6 +45,53 @@ function TransferForm(props) {
     }
   }
 
+  function toContinue(e) {
+    if(e.keyCode === 13) {
+      e.preventDefault();
+      handleSubmit()
+    }
+  }
+
+  function handleSubmit() {
+    form.validateFields((err, values) => {
+      if (!err) {
+        const tx = {};
+        // let tokenSymbol = _this.state.tokenSymbol
+        // let gasPrice = settings.trading.gasPrice
+        // let gasLimit = GasLimit
+        // if(_this.state.gasPopularSetting) {
+        //   gasPrice = _this.state.sliderGasPrice
+        // } else {
+        //   if(_this.state.selectedGasPrice) {
+        //     gasPrice = _this.state.selectedGasPrice
+        //   }
+        //   if(_this.state.selectedGasLimit) {
+        //     gasLimit = _this.state.selectedGasLimit
+        //   }
+        // }
+        // tx.gasPrice = fm.toHex(fm.toBig(gasPrice).times(1e9))
+        // tx.gasLimit = fm.toHex(gasLimit)
+        // if(_this.state.showTokenSelector) {
+        //   tokenSymbol = form.getFieldValue("token")
+        // }
+        // if(tokenSymbol === "ETH") {
+        //   tx.to = values.to;
+        //   tx.value = fm.toHex(fm.toBig(values.amount).times(1e18))
+        //   tx.data = fm.toHex(values.data);
+        // } else {
+        //   const tokenConfig = window.CONFIG.getTokenBySymbol(tokenSymbol)
+        //   tx.to = tokenConfig.address;
+        //   tx.value = "0x0";
+        //   let amount = fm.toHex(fm.toBig(values.amount).times("1e"+tokenConfig.digits))
+        //   tx.data = generateAbiData({method: "transfer", address:values.to, amount});
+        // }
+        // const extraData = {from:account.address, to:values.to, tokenSymbol:tokenSymbol, amount:values.amount, price:prices.getTokenBySymbol(tokenSymbol).price}
+        // // modal.hideModal({id: 'token/transfer'})
+        // modal.showModal({id: 'token/transfer/preview', tx, extraData})
+      }
+    });
+  }
+
   const assetsSorted = balance.items.map((token,index) => {
     return tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:token.symbol, toUnit:true})
   })
@@ -60,7 +107,7 @@ function TransferForm(props) {
             <Form>
               {
                 !transfer.to &&
-                <Form.Item colon={false}>
+                <Form.Item colon={false} label="Token">
                   {form.getFieldDecorator('token', {
                     initialValue: '',
                     rules: [
@@ -73,7 +120,6 @@ function TransferForm(props) {
                       size="large"
                       showSearch={false}
                       allowClear
-                      style={{ width: 300 }}
                       placeholder={intl.get('token.token_selector_placeholder')}
                       optionFilterProp="children"
                       onChange={handleChange.bind(this)}
@@ -93,12 +139,19 @@ function TransferForm(props) {
                   )}
                 </Form.Item>
               }
-              <Form.Item>
-                <Input prefix="Recipient" />
+              <Form.Item label='Recipient' colon={false}>
+                {form.getFieldDecorator('to', {
+                  initialValue: '',
+                  rules: [
+                    {message: intl.get("token.eth_address_verification_message"),
+                      validator: (rule, value, cb) => tokenFormatter.validateEthAddress(value) ? cb() : cb(true)
+                    }
+                  ]
+                })(
+                  <Input placeholder="" size="large" onKeyDown={toContinue.bind(this)}/>
+                )}
               </Form.Item>
-              <Form.Item>
-                <Input prefix="Amount" />
-              </Form.Item>
+
             </Form>
             <div className="text-color-dark-1">
                 <div className="form-control-static d-flex justify-content-between mr-0">
