@@ -14,7 +14,11 @@ import {store} from '../../index'
 class PlaceOrderForm extends React.Component {
 
   render() {
-    const {form, placeOrder} = this.props
+    const {form, placeOrder, settings} = this.props
+
+    const milliLrcFee = placeOrder.sliderMilliLrcFee >0 ? placeOrder.sliderMilliLrcFee : settings.trading.lrcFee
+    const ttlValue = placeOrder.timeToLive >0 ? placeOrder.timeToLive : settings.trading.timeToLive
+    const ttlUnit = placeOrder.timeToLiveUnit >0 ? placeOrder.timeToLiveUnit : settings.trading.timeToLiveUnit
 
     function sideChange(value) {
       placeOrder.sideChangeEffects({side:value})
@@ -135,14 +139,13 @@ class PlaceOrderForm extends React.Component {
       </span>
     )
 
-
     const editLRCFee = (
       <Popover overlayClassName="place-order-form-popover" title={<div className="pt5 pb5">{intl.get('trade.custom_lrc_fee_title')}</div>} content={
         <div>
-          <div className="pb5 fs12">{intl.get('trade.current_lrc_fee_ratio')} : {placeOrder.sliderMilliLrcFee}‰</div>
-          <div className="pb15 fs12">{intl.get('trade.current_lrc_fee')} : {placeOrder.calculatedLrcFee} LRC</div>
+          <div className="pb5 fs12">{intl.get('trade.current_lrc_fee_ratio')} : {milliLrcFee}‰</div>
+          <div className="pb15 fs12">{intl.get('trade.current_lrc_fee')} : {placeOrder.lrcFee} LRC</div>
           {form.getFieldDecorator('lrcFeeSlider', {
-            initialValue: placeOrder.sliderMilliLrcFee,
+            initialValue: milliLrcFee,
             rules: []
           })(
             <Slider min={1} max={50} step={1}
@@ -239,8 +242,8 @@ class PlaceOrderForm extends React.Component {
 
     let ttlInSecond = 0, ttlShow = ''
     if(placeOrder.timeToLivePatternSelect === 'easy') {
-      const ttl = Number(placeOrder.timeToLive)//Number(settings.trading.timeToLive)
-      const unit = placeOrder.timeToLiveUnit //settings.trading.timeToLiveUnit
+      const ttl = Number(ttlValue)
+      const unit = ttlUnit
       switch(unit){
         case 'minute': ttlInSecond = ttl * 60 ; ttlShow = `${ttl} ${intl.get('trade.minute')}`; break;
         case 'hour': ttlInSecond = ttl * 3600 ; ttlShow = `${ttl} ${intl.get('trade.hour')}`; break;
@@ -328,7 +331,7 @@ class PlaceOrderForm extends React.Component {
             placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
             return
           }
-          tradeInfo.milliLrcFee = placeOrder.sliderMilliLrcFee
+          tradeInfo.milliLrcFee = milliLrcFee
           tradeInfo.lrcFee = placeOrder.lrcFee
           orderFormatter.tradeVerification(tradeInfo, placeOrder.sell, placeOrder.buy, this.props.txs)
           if(tradeInfo.error) {
@@ -454,7 +457,7 @@ class PlaceOrderForm extends React.Component {
                     <span>
                       <span>{editLRCFee}</span>
                       <span></span>
-                      <span className="offset-md">{placeOrder.lrcFee}LRC ({placeOrder.sliderMilliLrcFee}‰)</span>
+                      <span className="offset-md">{placeOrder.lrcFee}LRC ({milliLrcFee}‰)</span>
                     </span>
                   </div>
                 </div>

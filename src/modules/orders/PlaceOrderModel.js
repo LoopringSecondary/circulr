@@ -2,8 +2,10 @@ import config from 'common/config'
 import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
 import * as orderFormatter from './formatters'
-const MODULES = 'placeOrder'
+import storage from 'modules/storage'
 
+const MODULES = 'placeOrder'
+const settings = storage.settings.get();
 export default {
   namespace: MODULES,
   state: {
@@ -23,12 +25,12 @@ export default {
    amountInput:'0',
    amountSlider:0,
    total:'',
-   sliderMilliLrcFee:2,
+   sliderMilliLrcFee:0,
    lrcFee:0,
    timeToLivePatternSelect: 'easy',
    timeToLivePopularSetting: true,
-   timeToLive: 1,
-   timeToLiveUnit: 'day',
+   timeToLive: 0,
+   timeToLiveUnit: '',
    timeToLiveStart: null,
    timeToLiveEnd: null,
    submitButtonLoading: false,
