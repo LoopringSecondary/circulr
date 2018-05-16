@@ -16,7 +16,8 @@ export default [
   require('./wallet/mnemonicModel').default,
   require('./wallet/privateKeyModel').default,
   require('./wallet/model').default,
-  require('./wallet/backupModel').default
+  require('./wallet/backupModel').default,
+  require('./wallet/determineWalletModel').default,
 ]
 
 

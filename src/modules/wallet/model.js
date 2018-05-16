@@ -92,16 +92,15 @@ export default {
       yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
     },
     * unlockTrezorWallet({payload}, {put}) {
-      const {dpath} = payload;
-      const account = new TrezorAccount({dpath});
-      const address = account.getAddress();
+      const {dpath,address} = payload;
+      const account = new TrezorAccount(dpath);
       const unlockType = 'trezor';
       yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
     },
     * unlockLedgerWallet({payload}, {put}) {
       const {ledger, dpath} = payload;
       const account = new LedgerAccount({ledger, dpath});
-      const address = account.getAddress();
+      const address = yield account.getAddress();
       const unlockType = 'ledger';
       yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
     },
