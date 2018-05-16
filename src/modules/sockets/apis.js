@@ -1,6 +1,7 @@
 import io from 'socket.io-client'
 import {store} from '../../index.js'
-const config = {
+import config from 'common/config'
+const transfromers = {
   transaction:{
     queryTransformer:(payload)=>{
       const {filters,page} = payload
@@ -70,17 +71,61 @@ const config = {
       })
     },
   },
+  depth:{
+    queryTransformer:(payload)=>{
+      const {filters,page} = payload
+      return JSON.stringify({
+         "delegateAddress" :config.getDelegateAddress(),
+         "market":filters.market,// TODO
+      })
+    },
+    resTransformer:(id,res)=>{
+      res = JSON.parse(res)
+      console.log(id,'res',res)
+      const dispatch = require('../../index.js').default._store.dispatch
+      let items =[]
+      if(!res.error && res.data && res.data.depth){
+        items =[ ...res.data.depth ]
+      }
+      dispatch({
+        type:'sockets/itemsChange',
+        payload:{id,items,loading:false}
+      })
+    },
+  },
+  trades:{
+    queryTransformer:(payload)=>{
+      const {filters,page} = payload
+      return JSON.stringify({
+         "delegateAddress" :config.getDelegateAddress(),
+         "market":filters.market, //TODO
+      })
+    },
+    resTransformer:(id,res)=>{
+      res = JSON.parse(res)
+      console.log(id,'res',res)
+      const dispatch = require('../../index.js').default._store.dispatch
+      let items =[]
+      if(!res.error && res.data){
+        items =[ ...res.data ]
+      }
+      dispatch({
+        type:'sockets/itemsChange',
+        payload:{id,items,loading:false}
+      })
+    },
+  },
 }
 const getQueryTransformer = (id)=>{
-  if(config[id] && config[id].queryTransformer){
-    return config[id].queryTransformer
+  if(transfromers[id] && transfromers[id].queryTransformer){
+    return transfromers[id].queryTransformer
   }else{
     return ()=>{console.log(id,'no queryTransformer')}
   }
 }
 const getResTransformer = (id)=>{
-  if(config[id] && config[id].resTransformer){
-    return config[id].resTransformer
+  if(transfromers[id] && transfromers[id].resTransformer){
+    return transfromers[id].resTransformer
   }else{
     return ()=>{console.log(id,'no resTransformer')}
   }
