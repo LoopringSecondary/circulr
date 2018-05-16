@@ -113,4 +113,6 @@ export default function ListTransaction(props) {
     </div>
   )
 }
+export const renders = {
 
+}
