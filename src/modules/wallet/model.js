@@ -107,7 +107,7 @@ export default {
     * createWallet({payload}, {put}) {
       const {password, cb} = payload;
       const mnemonic = createMnemonic();
-      const privateKey = formatKey(mnemonictoPrivatekey(mnemonic, null, path));
+      const privateKey = formatKey(mnemonictoPrivatekey(mnemonic, `${path}/0`));
       const account = fromPrivateKey(privateKey);
       const address = account.getAddress();
       const unlockType = 'privateKey';
