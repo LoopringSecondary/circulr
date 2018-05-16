@@ -2,6 +2,7 @@ import React from 'react';
 import { Form,Select,Spin } from 'antd';
 import intl from 'react-intl-universal';
 import {getTypes} from 'modules/transactions/formatters';
+import {getShortAddress,getFormattedTime} from 'modules/formatter/common';
 const Option = Select.Option;
 
 export default function ListTransaction(props) {
@@ -58,52 +59,42 @@ export default function ListTransaction(props) {
         </div>
         <div style={{height: "100%", overflow: "hidden", padding:"0 0 60px"}}>
             <div className="content-scroll">
-                <table className="table table-striped table-dark text-center text-left-col1 text-left-col2 text-right-col4 text-right-last">
+                <table className="table table-striped table-dark text-center">
                     <thead>
                         <tr>
-                            <th>Hash</th>
-                            <th>Type</th>
-                            <th>Age</th>
-                            <th>Gas</th>
+                            <th className="text-center">Status</th>
+                            <th className="text-left">TxHash</th>
+                            <th className="text-left">Created</th>
+                            <th className="text-left">Type</th>
                             <th className="text-right">Value</th>
-                            <th className="text-center">status</th>
+                            <th className="text-right">Gas</th>
+                            <th hidden className="text-right">Note</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                          list.loading &&
-                          <tr>
-                              <td colSpan="100"><Spin/></td>
-                          </tr>
-                        }
-                        {
                           list.items.map((item,index)=>
                               <tr key={index}>
-                                  <td>{item.txHash}</td>
-                                  <td>{item.type} {item.symbol}</td>
-                                  <td>{item.createTime}</td>
-                                  {
-                                    false && <td className="text-right text-down">-100.00 LRC</td>
-                                  }
-                                  <td className="text-right text-success">
-                                    {item.value} {item.symbol}
-                                  </td>
-                                  <td className="text-right">
-                                    {item.gas_used} ETH
-                                  </td>
-                                  <td className="text-center">
-                                    {
-                                      false && <i className="text-color-dark icon-success"></i>
-                                    }
-                                    {item.status}
-                                  </td>
+                                  <td className="text-center">{renders.status(item,index)}</td>
+                                  <td className="text-left">{renders.txHash(item,index)}</td>
+                                  <td className="text-left">{renders.createTime(item,index)}</td>
+                                  <td className="text-left">{renders.type(item,index)}</td>
+                                  <td className="text-right">{renders.value(item,index)}</td>
+                                  <td className="text-right">{renders.gas(item,index)}</td>
+                                  <td hidden className="text-right">{renders.miner(item,index)}</td>
                               </tr>
                             )
                         }
                         {
+                          list.loading &&
+                          <tr>
+                              <td colSpan="100" className="text-center"><Spin/></td>
+                          </tr>
+                        }
+                        {
                           !list.loading && list.items.length === 0 &&
                           <tr>
-                              <td colSpan="100">{intl.get('txs.no_txs')}</td>
+                              <td colSpan="100" className="text-center">{intl.get('txs.no_txs')}</td>
                           </tr>
                         }
                     </tbody>
@@ -114,5 +105,61 @@ export default function ListTransaction(props) {
   )
 }
 export const renders = {
+  createTime:(item) => (
+    <span>
+      {getFormattedTime(item.createTime,'MM-DD HH:SS')}
+    </span>
+  ),
+  txHash:(item, index) => (
+    <span
+       onCopy={null}
+       onClick={null}
+    >
+      <span className="text-primary">{getShortAddress(item.txHash)}</span>
+    </span>
+  ),
+  type:(item)=>{
+    return (
+      <div>{item.type.toUpperCase()} {item.symbol}</div>
+    )
+  },
+  value:(item)=>{
+    return (
+      <div>
+        {
+          item.type==='receive' &&
+          <span className="text-success">+ {item.value} {item.symbol}</span>
+        }
+        {
+          item.type==='send' &&
+          <span className="text-error">- {item.value} {item.symbol}</span>
+        }
+      </div>
+    )
+  },
+  gas:(item)=>{
+    return (
+      <div>
+        - {item.gas_used} ETH
+      </div>
+    )
+  },
+  miner:(item,index)=>{
+    return (
+      <span>
+       {index < 3 && <span className="">Miner</span>}
+      </span>
 
+    )
+  },
+
+  status:(item)=>{
+    return (
+      <div>
+        { item.status === 'success' && <i className="icon-success"></i> }
+        { item.status === 'failed' && <i className="icon-warning"></i> }
+        { item.status === 'pending' && <i className="icon-clock"></i> }
+      </div>
+    )
+  },
 }
