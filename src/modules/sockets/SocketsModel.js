@@ -18,7 +18,7 @@ export default {
     'url':'//relay1.loopring.io',
     'socket':null,
     'transaction':{...initState,filters:{token:'LRC'}},
-    'balance':{...initState},
+    'balance':{...initState,filters:{currency:'usd'}},
     'marketcap':{...initState},
     'depth':{...initState,filters:{market:'LRC-WETH'}},
     'trades':{...initState,filters:{market:'LRC-WETH'}},

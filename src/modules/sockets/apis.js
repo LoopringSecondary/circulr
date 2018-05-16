@@ -39,9 +39,8 @@ const transfromers = {
   },
   balance:{
     queryTransformer:(payload)=>{
-      const {filters,page} = payload
       return JSON.stringify({
-         delegateAddress: '0x17233e07c67d086464fD408148c3ABB56245FA64',
+         delegateAddress: config.getDelegateAddress(),
          owner:window.config.address,
       })
     },
@@ -57,9 +56,9 @@ const transfromers = {
   },
   marketcap:{
     queryTransformer:(payload)=>{
-      const {filters,page} = payload
+      const {filters} = payload
       return JSON.stringify({
-         "currency": 'usd',
+         "currency": filters.currency,
       })
     },
     resTransformer:(id,res)=>{
@@ -74,7 +73,7 @@ const transfromers = {
   },
   depth:{
     queryTransformer:(payload)=>{
-      const {filters,page} = payload
+      const {filters} = payload
       return JSON.stringify({
          "delegateAddress" :config.getDelegateAddress(),
          "market":filters.market,// TODO
@@ -92,7 +91,7 @@ const transfromers = {
   },
   trades:{
     queryTransformer:(payload)=>{
-      const {filters,page} = payload
+      const {filters} = payload
       return JSON.stringify({
          "delegateAddress" :config.getDelegateAddress(),
          "market":filters.market, //TODO
@@ -110,7 +109,7 @@ const transfromers = {
   },
   tickers:{
     queryTransformer:(payload)=>{
-      const {filters,page} = payload
+      const {filters} = payload
       return JSON.stringify({
          "delegateAddress" :config.getDelegateAddress(),
          "market":filters.market, //TODO
@@ -128,7 +127,7 @@ const transfromers = {
   },
   loopringTickers:{
     queryTransformer:(payload)=>{
-      const {filters,page} = payload
+      const {filters} = payload
       return JSON.stringify({
          "delegateAddress" :config.getDelegateAddress(),
          "market":filters.market, //TODO
@@ -139,10 +138,7 @@ const transfromers = {
       console.log(id,'res',res)
       let items =[]
       if(!res.error && isArray(res.data)){
-        // filter support market
-        const supportMarket = res.data.filter(item=>{
-          return config.isSupportedMarket(item.market)
-        })
+        const supportMarket = res.data.filter(item=>config.isSupportedMarket(item.market)) // filter support market
         items =[ ...supportMarket ]
       }
       updateItems(items,id)
@@ -150,7 +146,6 @@ const transfromers = {
   },
   pendingTx:{
     queryTransformer:(payload)=>{
-      const {filters,page} = payload
       return JSON.stringify({
          owner:window.config.address // TODO
       })
