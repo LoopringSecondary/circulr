@@ -38,7 +38,15 @@ function Trade(props) {
   	    <div className="side-fixed" style={{ top:"0", left:"0", width:"280px", paddingTop:"74px" }}>
               <div className="card h-full">
                 <Containers.PlaceOrder initState={{pair:pair}}>
-                  <Orders.PlaceOrderForm />
+                  <Containers.Settings>
+                    <Containers.Sockets id="balance">
+                      <Containers.Sockets id="marketcap">
+                        <Containers.Wallet>
+                          <Orders.PlaceOrderForm />
+                        </Containers.Wallet>
+                      </Containers.Sockets>
+                    </Containers.Sockets>
+                  </Containers.Settings>
                 </Containers.PlaceOrder>
               </div>
   	    </div>

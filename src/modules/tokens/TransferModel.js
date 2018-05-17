@@ -1,18 +1,20 @@
 import {getAssetsByToken} from "../formatter/selectors";
 import {toBig} from "LoopringJS/common/formatter";
-
+import * as datas from 'common/config/data'
 
 export default {
   namespace: 'transfer',
   state: {
-    token:'ETH',
-    amount: 0,
-    isMax: false,
-    gasPrice: 10,
-    gasLimit:200000,
-    outBalance:false,
+    assignedToken:'',
+    token:'',
+    to:"",
+    amount: toBig(0),
     data:'0x',
-    to:""
+    isMax: false,
+    gasPopularSetting: true,
+    sliderGasPrice:datas.configs.defaultGasPrice, //TODO read from relay
+    selectedGasPrice: datas.configs.defaultGasPrice,
+    selectedGasLimit: 0,
   },
   reducers: {
     reset(state, {payload}) {
@@ -25,18 +27,20 @@ export default {
         to:""
       }
     },
-    setOutBalance(state,{payload}){
-      const {outBalance} = payload;
+    setAssignedToken(state,{payload}){
+      const {assignedToken} = payload;
       return {
         ...state,
-        outBalance
+        assignedToken,
+        token:assignedToken
       }
     },
     setAmount(state,{payload}){
       const {amount} = payload;
       return {
         ...state,
-        amount
+        amount,
+        isMax:false
       }
     },
     setIsMax(state,{payload}){
@@ -44,14 +48,6 @@ export default {
       return {
         ...state,
         isMax
-      }
-    },
-    setGas(state,{payload}){
-      const {gasPrice,gasLimit} = payload;
-      return {
-        ...state,
-        gasPrice,
-        gasLimit
       }
     },
     setToken(state,{payload}){
@@ -74,9 +70,40 @@ export default {
         ...state,
         to
       }
-    }
+    },
+    setGasPopularSetting(state,{payload}){
+      const {gasPopularSetting} = payload;
+      return {
+        ...state,
+        gasPopularSetting
+      }
+    },
+    setSliderGasPrice(state,{payload}){
+      const {sliderGasPrice} = payload;
+      return {
+        ...state,
+        sliderGasPrice
+      }
+    },
+    setSelectedGasPrice(state,{payload}){
+      const {selectedGasPrice} = payload;
+      return {
+        ...state,
+        selectedGasPrice
+      }
+    },
+    setSelectedGasLimit(state,{payload}){
+      const {selectedGasLimit} = payload;
+      return {
+        ...state,
+        selectedGasLimit
+      }
+    },
   },
   effects:{
+    *init({ payload={} }, { put }) {
+      yield put({type:"reset",payload});
+    },
     * amountChange({payload}, {select, put}) {
       const {amount} = payload;
       const {token} = yield select((state) =>state.transfer);
@@ -98,10 +125,8 @@ export default {
       yield put({type:'setGasPrice',payload:{gasPrice}})
     },
     * tokenChange({payload},{select,put}){
-      const {to} = yield select((state) => state.transfer);
-      yield put({type:"reset",payload});
+      //yield put({type:"reset",payload});
       yield put({type:'setToken',payload});
-      yield put({type:"setTo",payload:{to}});
     }
   }
 };

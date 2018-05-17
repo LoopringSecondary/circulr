@@ -51,10 +51,11 @@ let FiltersForm = ({
                       ...options,
                     ]
                   }}
-                  style={{width:'120px'}}
                   onChange={handleChange}
                   placeholder={intl.get('orders.market')}
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                  dropdownMatchSelectWidth={false}
+                  size="small"
                 >
                 </SelectContainer>
               )}
@@ -67,11 +68,12 @@ let FiltersForm = ({
                 <Select
                   showSearch
                   allowClear
-                  style={{width:'150px'}}
                   placeholder={intl.get('orders.status')}
                   optionFilterProp="children"
                   onChange={handleChange}
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                  dropdownMatchSelectWidth={false}
+                  size="small"
                 >
                   <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.status')} </Select.Option>
                   <Select.Option value="ORDER_OPENED">{intl.get('orders.status_opened')}</Select.Option>
@@ -89,11 +91,12 @@ let FiltersForm = ({
                 <Select
                   showSearch
                   allowClear
-                  style={{width:'120px'}}
                   placeholder={intl.get('orders.side')}
                   optionFilterProp="children"
                   onChange={handleChange}
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                  dropdownMatchSelectWidth={false}
+                  size="small"
                 >
                   <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.side')}</Select.Option>
                   <Select.Option value="sell">{intl.get('orders.side_sell')}</Select.Option>

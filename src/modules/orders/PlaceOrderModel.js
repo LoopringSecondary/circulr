@@ -2,8 +2,8 @@ import config from 'common/config'
 import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
 import * as orderFormatter from './formatters'
-const MODULES = 'placeOrder'
 
+const MODULES = 'placeOrder'
 export default {
   namespace: MODULES,
   state: {
@@ -23,12 +23,12 @@ export default {
    amountInput:'0',
    amountSlider:0,
    total:'',
-   sliderMilliLrcFee:2,
+   sliderMilliLrcFee:0,
    lrcFee:0,
    timeToLivePatternSelect: 'easy',
    timeToLivePopularSetting: true,
-   timeToLive: 1,
-   timeToLiveUnit: 'day',
+   timeToLive: 0,
+   timeToLiveUnit: '',
    timeToLiveStart: null,
    timeToLiveEnd: null,
    submitButtonLoading: false,
@@ -57,8 +57,8 @@ export default {
       }
     },
     *sideOrPairChange({ payload={} }, { select, put }) {
-      const state = yield select(({ [MODULES]:data }) => data );
-      const {pair, side} = state
+      const placeOrder = yield select(({ [MODULES]:data }) => data );
+      const {pair, side} = placeOrder
       if(pair && side) {
         if(side === 'buy' || side === 'sell'){
           const l = config.getTokenBySymbol(pair.split('-')[0].toUpperCase())
@@ -67,6 +67,7 @@ export default {
           if(!marketConfig || !(l && r)) {
             throw new Error('Not supported market:'+pair)
           }
+          const balance = yield select(({ ['sockets']:socket }) => socket.balance );
           // TODO mock
           const balanceL = fm.toBig('100000000000000000000')
           const balanceR = fm.toBig('200000000000000000000')
@@ -122,7 +123,8 @@ export default {
         const price = fm.toBig(priceInput)
         if(amount.gt(0) && price.gt(0) && sliderMilliLrcFee) {
           const total = price.times(amount)
-          const lrcFee = orderFormatter.calculateLrcFee(total, sliderMilliLrcFee, right.symbol)
+          const marketcap = yield select(({ ['sockets']:socket }) => socket.marketcap );
+          const lrcFee = orderFormatter.calculateLrcFee(marketcap.items, total, sliderMilliLrcFee, right.symbol)
           yield put({ type: 'lrcFeeChange',payload:{lrcFee}});
         }
       }

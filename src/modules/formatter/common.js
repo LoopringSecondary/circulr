@@ -76,6 +76,14 @@ export function fromNow(miliSeconds,suffix) {
   suffix = suffix || true;
   moment(miliSeconds).fromNow(!suffix)
 }
+export function getTokensByMarket(market=''){
+  if(market.indexOf('-') < 0){ console.log('market pair name must has a -')}
+  let tokens= market.split('-')
+  return {
+    left:tokens[0].toUpperCase(),
+    right:tokens[1].toUpperCase(),
+  }
+}
 
 
 export default {
@@ -87,5 +95,6 @@ export default {
   formatLength,
   toUnitAmount,
   toDecimalsAmount,
-  fromNow
+  fromNow,
+  getTokensByMarket,
 }
