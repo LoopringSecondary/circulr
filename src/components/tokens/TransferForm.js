@@ -9,8 +9,6 @@ import * as tokenFormatter from 'modules/tokens/TokenFm'
 import contracts from 'LoopringJS/ethereum/contracts/Contracts'
 import Currency from 'modules/settings/CurrencyContainer'
 
-var _ = require('lodash');
-
 function TransferForm(props) {
   const {transfer, balance, wallet, marketcap, form, modals} = props
 
@@ -206,7 +204,7 @@ function TransferForm(props) {
                        initialValue: transfer.selectedGasLimit,
                        rules: [{
                          message:intl.get('trade.integer_verification_message'),
-                         validator: (rule, value, cb) => _.isNumber(value) ? cb() : cb(true)
+                         validator: (rule, value, cb) => tokenFormatter.isValidNumber(value) ? cb() : cb(true)
                        }],
                      })(
                        <Input className="d-block w-100" placeholder="" size="large" onChange={gasLimitChange.bind(this)}/>

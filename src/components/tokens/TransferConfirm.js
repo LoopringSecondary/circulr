@@ -21,20 +21,6 @@ function TransferConfirm(props) {
     </span>
   )
 
-  const signResultHandler = (response) => {
-    let result = {...tx, extraData}
-    if(response.error) {
-      result = {...result, error:response.error.message}
-      Notification.open({
-        message:intl.get('token.send_failed'),
-        description:intl.get('token.result_failed', {do:intl.get('token.send_title'), amount:result.extraData.amount, token:result.extraData.tokenSymbol, reason:result.error}),
-        type:'error'
-      })
-    } else {
-
-    }
-  }
-
   const viewInEtherscan = (txHash) => {
     window.open(`https://etherscan.io/tx/${txHash}`,'_blank')
   }
