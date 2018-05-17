@@ -80,7 +80,6 @@ function TransferForm(props) {
   function handleSubmit() {
     form.validateFields((err, values) => {
       if (!err) {
-        if(wallet.)
         const tx = {};
         tx.gasPrice = fm.toHex(fm.toBig(gasPrice).times(1e9))
         tx.gasLimit = fm.toHex(gasLimit)
