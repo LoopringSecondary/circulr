@@ -52,6 +52,7 @@ export default class Routes extends React.Component {
           <Tokens.Modals />
           <Account.Modals />
           <Setting.Modals />
+          <Tickers.Modals />
       </div>
     );
   }
