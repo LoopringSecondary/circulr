@@ -7,13 +7,17 @@ import intl from 'react-intl-universal';
 import Notification from 'LoopringUI/components/Notification'
 
 function TransferConfirm(props) {
-  const {transferConfirm, marketcap, wallet} = props
+  const {transferConfirm, marketcap, wallet, modals} = props
   const {tx, extraData} = transferConfirm
 
   const worth = (
     <span>
-      <Currency />
-      {tokenFormatter.getWorthBySymbol({prices:marketcap.items, symbol:extraData.tokenSymbol, amount:extraData.amount})}
+      { marketcap && extraData.amount > 0 &&
+        <span>
+          <Currency />
+          {tokenFormatter.getWorthBySymbol({prices:marketcap.items, symbol:extraData.tokenSymbol, amount:extraData.amount})}
+        </span>
+      }
     </span>
   )
 
@@ -27,24 +31,15 @@ function TransferConfirm(props) {
         type:'error'
       })
     } else {
-      // extraData.txHash = response.result
-      // window.STORAGE.wallet.setWallet({address:window.WALLET.getAddress(),nonce:tx.nonce})
-      // window.RELAY.account.notifyTransactionSubmitted({rawTx,txHash:response.result,from:window.WALLET.getAddress()});
-      // const worth = `${fm.getDisplaySymbol(window.STORAGE.settings.get().preference.currency)}${accMul(result.extraData.amount, result.extraData.price).toFixed(2)}`
-      // Notification.open({
-      //   message:intl.get('token.transfer_succ_notification_title'),
-      //   description:intl.get('token.result_transfer_success', {amount:result.extraData.amount, token:result.extraData.tokenSymbol}),
-      //   type:'success',
-      //   actions:(
-      //     <div>
-      //       <Button className="alert-btn mr5" onClick={viewInEtherscan.bind(this, extraData.txHash)}>{intl.get('token.transfer_result_etherscan')}</Button>
-      //     </div>
-      //   )
-      // })
+
     }
   }
 
-  const handelSubmit = ()=>{
+  const viewInEtherscan = (txHash) => {
+    window.open(`https://etherscan.io/tx/${txHash}`,'_blank')
+  }
+
+  const handelSubmit = () => {
     //modal.showLoading({id:'token/transfer/preview'})
     extraData.pageFrom = "Transfer"
     let result = {...tx, extraData}
@@ -70,39 +65,51 @@ function TransferConfirm(props) {
           type: 'info'
         })
       }
-      if(wallet.account) {
-        wallet.account.signEthereumTx({tx, cb:signResultHandler})
-      } else if(window.web3) {// MetaMask
-
-      } else {
-
-      }
-
-
-      //return window.WALLET.sendTransaction(tx)
-    }).then(({response,rawTx})=>{
+      const account = wallet.account || window.account
+      const signTx = account.signEthereumTx(tx);
+      return window.ETH.sendRawTransaction(signTx)
+    }).then(response=>{
       if(response.error) {
-
+        console.error("Error:", response.error)
+        result = {...result, error:response.error.message}
+        Notification.open({
+          message:intl.get('token.send_failed'),
+          description:intl.get('token.result_failed', {do:intl.get('token.send_title'), amount:result.extraData.amount, token:result.extraData.tokenSymbol, reason:result.error}),
+          type:'error'
+        })
       } else {
-
+        extraData.txHash = response.result
+        window.STORAGE.wallet.setWallet({address:wallet.address, nonce:tx.nonce})
+        window.RELAY.account.notifyTransactionSubmitted({tx,txHash:response.result,from:wallet.address});
+        Notification.open({
+          message:intl.get('token.transfer_succ_notification_title'),
+          description:intl.get('token.result_transfer_success', {amount:result.extraData.amount, token:result.extraData.tokenSymbol}),
+          type:'success',
+          actions:(
+            <div>
+              <Button className="alert-btn mr5" onClick={viewInEtherscan.bind(this, extraData.txHash)}>{intl.get('token.transfer_result_etherscan')}</Button>
+            </div>
+          )
+        })
       }
       // modal.hideLoading({id:'token/transfer/preview'})
-      // modal.hideModal({id:'token/transfer/preview'})
-      // modal.hideModal({id: 'token/transfer'})
-      // modal.showModal({id:'token/transfer/result', result})
+      modals.hideModal({id:'transferConfirm'})
+      modals.hideModal({id: 'transfer'})
     }).catch(e=>{
-      // console.error(e)
-      // result = {...result, error:e.message}
-      // modal.hideLoading({id:'token/transfer/preview'})
-      // modal.hideModal({id:'token/transfer/preview'})
-      // modal.hideModal({id: 'token/transfer'})
-      // // modal.showModal({id:'token/transfer/result', result})
-      // Notification.open({
-      //   message:intl.get('token.send_failed'),
-      //   description:intl.get('token.result_failed', {do:intl.get('token.send_title'), amount:result.extraData.amount, token:result.extraData.tokenSymbol, reason:result.error}),
-      //   type:'error'
-      // })
+      console.error("Error:", e)
+      result = {...result, error:e.message}
+      modals.hideModal({id:'transferConfirm'})
+      modals.hideModal({id: 'transfer'})
+      Notification.open({
+        message:intl.get('token.send_failed'),
+        description:intl.get('token.result_failed', {do:intl.get('token.send_title'), amount:result.extraData.amount, token:result.extraData.tokenSymbol, reason:result.error}),
+        type:'error'
+      })
     })
+  }
+
+  const cancel = () => {
+    modals.hideModal({id:'transferConfirm'})
   }
 
   return (
@@ -127,8 +134,8 @@ function TransferConfirm(props) {
         </ul>
         <div className="col-row">
           <div className="col2-2">
-         		<div className="item"><Button className="btn-block btn-o-dark btn-xlg">不，取消发送</Button></div>
-         		<div className="item"><Button className="btn-block btn-o-dark btn-xlg">马上发送</Button></div>
+         		<div className="item"><Button className="btn-block btn-o-dark btn-xlg" onClick={cancel}>不，取消发送</Button></div>
+         		<div className="item"><Button className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>马上发送</Button></div>
           </div>
         </div>
     </div>

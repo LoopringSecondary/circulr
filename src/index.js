@@ -14,6 +14,8 @@ const host = window.STORAGE.settings.get().relay.selected;
 window.ETH = new Eth(`${host}/eth`);
 window.RELAY = new Relay(`${host}/rpc/v2`);
 
+setLocale('en-US');
+
 // 1. Initialize
 const app = dva({
   onError:(err, dispatch) => {message.error(err.message,3)}

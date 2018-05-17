@@ -8,9 +8,8 @@ function MetaMask(props) {
 
   const unlock = () => {
     if(window.web3 && window.web3.eth.accounts[0]){
-      const account = new MetaMaskAccount(window.web3);
-      window.account = account;
-      props.dispatch({type:'wallet/unlockMetaMaskWallet',payload:{address:account.getAddress()}});
+      const address = window.web3.eth.accounts[0]
+      props.dispatch({type:'wallet/unlockMetaMaskWallet',payload:{address}});
       routeActions.gotoPath('/wallet')
     }
   };

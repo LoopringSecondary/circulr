@@ -1,5 +1,6 @@
 import {fromMnemonic, getAddresses} from "LoopringJS/ethereum/account";
 import {getXPubKey as getTrezorPublicKey} from "LoopringJS/ethereum/trezor";
+import {getXPubKey as getLedgerPublicKey, connect} from "../../common/loopringjs/src/ethereum/ledger";
 
 export default {
   namespace: 'determineWallet',
@@ -113,7 +114,7 @@ export default {
       const {pageSize} = yield select((state) => state.determineWallet);
       const pageNum = 0;
       const {publicKey, chainCode, walletType, dpath} = payload;
-      if(publicKey && chainCode){
+      if (publicKey && chainCode) {
         const addresses = getAddresses({pageSize, publicKey, chainCode, pageNum});
         yield put({type: 'setAddresses', payload: {addresses}});
       }
@@ -152,19 +153,28 @@ export default {
           case 'mnemonic':
             yield put({type: 'setMnemonicWallet', payload: {mnemonic, dpath: path}});
             break;
-          case 'trezor':
+          case 'trezor': {
             const {publicKey, chainCode} = yield getTrezorPublicKey(path).then(res => {
+              return res.result
+            });
+            yield put({type: 'setHardwareWallet', payload: {publicKey, chainCode, dpath: path, walletType}});
+            break;
+          }
+          case 'ledger':
+            const {publicKey, chainCode} = yield connect().then(res => {
               if (!res.error) {
-                return res.result
-              } else {
-                return {publicKey: '', chainCode: ''}
+                const ledger = res.result;
+                return getLedgerPublicKey(path, ledger).then(resp => {
+                  if (!resp.error) {
+                    return resp.result;
+                  }
+                });
               }
             });
-
-            yield put({type:'setHardwareWallet',payload:{publicKey, chainCode,dpath:path,walletType}});
+            yield put({type: 'setHardwareWallet', payload: {publicKey, chainCode, dpath: path, walletType}});
             break;
           default:
-            yield put({type: 'setDpath', payload: {dpath:path}});
+            yield put({type: 'setDpath', payload: {dpath: path}});
         }
       }
 

@@ -29,6 +29,7 @@ const validate = (payload) => {
       if (onError) {
         onError(errors, fields)
       } else {
+        console.log(errors)
         handleErrors(errors, fields);
       }
     } else {

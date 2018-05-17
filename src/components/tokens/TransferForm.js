@@ -80,8 +80,9 @@ function TransferForm(props) {
   function handleSubmit() {
     form.validateFields((err, values) => {
       if (!err) {
-        if(!wallet.address) {
+        if(wallet.address) {
           const tx = {};
+          tx.chainId = datas.configs.chainId
           tx.gasPrice = fm.toHex(fm.toBig(gasPrice).times(1e9))
           tx.gasLimit = fm.toHex(gasLimit)
           if(tokenSelected.symbol === "ETH") {
@@ -99,7 +100,7 @@ function TransferForm(props) {
           modals.showModal({id:'transferConfirm', tx, extraData})
         } else {
           //TODO show unlock modal
-          modals.hideModal({id:'transferConfirm'})
+          modals.hideModal({id:'transfer'})
         }
       }
     });

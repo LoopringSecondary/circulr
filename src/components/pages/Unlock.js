@@ -6,6 +6,7 @@ import routeActions from 'common/utils/routeActions'
 import { Containers } from 'modules'
 import {connect} from 'dva'
 import {getXPubKey as getTrezorPublicKey} from "LoopringJS/ethereum/trezor";
+import {getXPubKey as getLedgerPublicKey,connect as connectLedger} from "LoopringJS/ethereum/ledger";
 import {wallets} from "../../common/config/data";
 import {trimAll} from "LoopringJS/common/utils";
 
@@ -17,12 +18,11 @@ class Unlock extends React.Component {
     routeActions.gotoPath(`${url}/${path}`);
   };
 
-  unlock = (path,walletType) => {
+  unlock =  (path,walletType) => {
     const {match,dispatch} = this.props;
     const {url} = match;
     dispatch({type:"hardwareWallet/setWalletType",payload:{walletType}});
     const wallet = wallets.find(wallet => trimAll(wallet.name).toLowerCase() === walletType.toLowerCase().concat('(eth)'));
-
     switch (walletType) {
       case 'trezor':
         getTrezorPublicKey(wallet.dpath).then(res => {
@@ -33,6 +33,18 @@ class Unlock extends React.Component {
         });
         break;
       case 'ledger':
+      connectLedger().then(res =>{
+          if(!res.error){
+            console.log(res.result);
+            const ledger = res.result;
+            getLedgerPublicKey(wallet.dpath,ledger).then(resp => {
+              if(!resp.error){
+                const {chainCode, publicKey} = resp.result;
+                dispatch({type: "hardwareWallet/setKeyAndCode", payload: {chainCode, publicKey}});
+              }
+            });
+          }
+        });
         break;
     }
     routeActions.gotoPath(`${url}/${path}`);
@@ -60,7 +72,7 @@ class Unlock extends React.Component {
                   <a onClick={() => this.unlock('trezor','trezor')}><i className="icon-trezorwallet"/><h4>Trezor</h4></a>
                 </li>
                 <li className="item">
-                  <a href="#error" data-toggle="tab"><i className="icon-ledgerwallet"/><h4>Ledger</h4></a>
+                  <a  data-toggle="tab" onClick={() => this.unlock('ledger','ledger')}><i className="icon-ledgerwallet"/><h4>Ledger</h4></a>
                 </li>
                 <li className="item">
                   <a data-toggle="tab" onClick={() => this.changeTab('json')}><i className="icon-json"/><h4>JSON</h4>

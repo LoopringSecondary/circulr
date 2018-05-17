@@ -5,12 +5,13 @@ import Receive from './Receive'
 import Transfer from './TransferForm'
 import Convert from './ConvertForm'
 import TransferConfirm from './TransferConfirm'
+
 function Modals(props) {
   return (
     <div>
       <Containers.Modals id="receive">
         <UiContianers.Modals id="receive">
-          <Receive />
+          <Receive/>
         </UiContianers.Modals>
       </Containers.Modals>
       <Containers.Modals id="transfer">
@@ -32,14 +33,24 @@ function Modals(props) {
         <UiContianers.Modals id="transferConfirm">
           <Containers.Sockets id="marketcap">
             <Containers.Wallet>
-              <TransferConfirm />
+              <Containers.Modals>
+                <TransferConfirm />
+              </Containers.Modals>
             </Containers.Wallet>
           </Containers.Sockets>
         </UiContianers.Modals>
       </Containers.Modals>
-      <Containers.Modals id="convert">
+      <Containers.Modals id="convert" >
         <UiContianers.Modals id="convert">
-          <Convert />
+          <Containers.Sockets id="balance">
+            <Containers.Sockets id="marketcap">
+              <Containers.Wallet>
+                <Containers.Convert >
+                  <Convert/>
+                </Containers.Convert>
+              </Containers.Wallet>
+            </Containers.Sockets>
+          </Containers.Sockets>
         </UiContianers.Modals>
       </Containers.Modals>
     </div>

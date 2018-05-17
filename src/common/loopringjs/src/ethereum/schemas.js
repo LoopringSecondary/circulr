@@ -46,34 +46,33 @@ const ethereumSchemas = {
     }
   },
   TX: {
-    to: {
-      ...basicSchemas.ETH_ADDRESS
-    },
-    value: {
-      ...basicSchemas.ETH_VALUES
-    },
-    gasLimit: {
-      ...basicSchemas.ETH_VALUES
-    },
-    gasPrice: {
-      ...basicSchemas.ETH_VALUES
-    },
-    chainId: {
-      type: 'number',
-      required: true
-    },
-    nonce: {
-      ...basicSchemas.ETH_VALUES
-    },
-    data: {
-      type: 'string',
-      required: true,
-      pattern: /^0x[0-9a-fA-F]{8}([0-9a-fA-F]{64})*$ |^(0x)*$/g
-    },
-    signed: {
-      type: 'string'
+    type: 'object',
+    required: true,
+    fields: {
+      to: {
+        ...basicSchemas.ETH_ADDRESS
+      },
+      value: {
+        ...basicSchemas.ETH_VALUES
+      },
+      gasLimit: {
+        ...basicSchemas.ETH_VALUES
+      },
+      gasPrice: {
+        ...basicSchemas.ETH_VALUES
+      },
+      chainId: {
+        type: 'number',
+        required: true
+      },
+      nonce: {
+        ...basicSchemas.ETH_VALUES
+      },
+      data: {
+        ...basicSchemas.HEX
+      }
     }
-  },
+  }
 };
 
 export default ethereumSchemas;
