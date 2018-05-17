@@ -79,7 +79,9 @@ function Trade(props) {
                               </Containers.Orders>
                             </TabPane>
           	                <TabPane tab="Fill" key="2">
-                              <Fills.ListDefault />
+                              <Containers.Fills id="MyFills" alias="fills"  >
+                                <Fills.ListMyFills style={{height:"100%",overflow:"auto"}} />
+                              </Containers.Fills>
                             </TabPane>
           	            </Tabs>
       	            </div>

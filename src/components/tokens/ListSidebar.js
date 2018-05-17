@@ -118,8 +118,8 @@ function ListTokensSidebar(props) {
             addonAfter={null}
           />
       </div>
-      <div className="token-list text-color-dark-1" style={{height: "100%",overflow: "auto",paddingBottom: "211px"}}>
-          <div className="">
+      <div className="token-list text-color-dark-1" style={{height: "100vh",paddingBottom: "211px"}}>
+          <div style={{height: "100%",overflow: "auto",paddingBottom: "0"}}>
               {
                 formatedTokens.map((item,index)=>
                   <div className="item" key={index} onClick={()=>{}}>

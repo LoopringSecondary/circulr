@@ -66,8 +66,6 @@ let FiltersForm = ({
                 rules:[]
               })(
                 <Select
-                  showSearch
-                  allowClear
                   placeholder={intl.get('orders.status')}
                   optionFilterProp="children"
                   onChange={handleChange}
@@ -89,12 +87,8 @@ let FiltersForm = ({
                 rules:[]
               })(
                 <Select
-                  showSearch
-                  allowClear
                   placeholder={intl.get('orders.side')}
-                  optionFilterProp="children"
                   onChange={handleChange}
-                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                   dropdownMatchSelectWidth={false}
                   size="small"
                 >

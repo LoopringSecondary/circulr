@@ -52,7 +52,18 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .icon-warning{ background: @warning-color; text-align: center; color:@text-color-dark; border-radius: 60px; }
 .icon-clock{ background: @warning-color; text-align: center; color:@text-color-dark; border-radius: 60px; }
 .icon-question,.icon-plus-circle{ color: @white ; text-align: center; background-color:@white; border-radius: 60px; }
+.loopring-dex{ display: flex; flex-direction: column; height: 100% }
 .loopring-dex{ border-top: 4px solid @blue-darker; border-bottom: 4px solid @blue-darker;}
+.loopring-dex .item{ padding: 10px 20px; border-bottom:1px solid @dark-color-2; flex-direction: row; flex-grow: 1; max-height: 76px;}
+.loopring-dex .item,.loopring-dex ul{display: flex; justify-content: space-between; align-items: center}
+.loopring-dex .item h3{ color: @text-color-dark-2 }
+.loopring-dex ul{margin:0; list-style: none;}
+.loopring-dex ul li{ margin-bottom: 5px; }
+.loopring-dex ul li span{ display: block; }
+.loopring-dex ul li em{ display: block; font-style: normal; font-weight: 600; }
+.loopring-dex ul li small{ color:@text-color-dark-3;font-size: @font-size-base; }
+.loopring-dex ul li{ width: 100px; font-weight: 400; }
+
 .side-fixed .table.table-inverse thead th,.side-fixed .table.table-inverse tbody td{ padding: 10px 20px; }
 .text-color-dark[class^="icon-"],.text-color-dark[class*=" icon-"] { border: 1px solid @dark-color-1 !important; background: transparent !important; color: @text-color-dark-3 !important; }
 .icon-favorites.active{ color: @warning-color; }
@@ -65,7 +76,7 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .home-content.open h1{ display: none }
 .home-content h1{ font-size: 32px; text-align: center; color:@blue-light !important; margin-bottom: 100px !important;  }
 .home-content.open .tab-card{ padding-top: 90px; }
-.home-content.open .tab-content{ width: 620px; background: @blue-light; border:1px solid @dark-color-2; padding: 50px;  margin: 0 auto;  }
+.home-content.open .tab-content{ width: 620px; background: @transparent; border:1px solid @transparent; padding: 50px;  margin: 0 auto;  }
 .home-content.open .tab-content h2{ font-size: 32px; margin: 40px 0 60px; }
 .home-content.open .tab-content li{ font-size: 16px; }
 .home-content .password-strong{ font-size: 14px; margin: 30px 0; }
@@ -171,7 +182,7 @@ header .account .msg i{display: inline-block; transform:scale(0.6,0.6); vertical
 .tab-order.tabs li.active a{ color: @text-color-dark-1 }
 .order-filter{ border-bottom: 1px solid @dark-color-2; padding: 10px 20px; }
 .market-chart{ border-bottom: 4px solid @blue-darker }
-.market-chart>div{ height: 100%; overflow: hidden; }
+.market-chart>div{ height: 100%; overflow: hidden; padding:10px 15px; }
 .market-chart img{ width: 100%; height: 100%; }
 // #account{ position: fixed; top: 0; right: -300px; z-index: 1000; width: 300px; height: 100%; -webkit-transition: right .3s; transition: right .3s; transition-delay: 0.2s;}
 // #account.open { right: 0; }

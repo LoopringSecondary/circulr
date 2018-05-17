@@ -1,9 +1,35 @@
 import React from 'react'
 import {connect} from 'dva'
-import TickerFm from 'modules/tickers/formatter'
+import {TickersFm,TickerFm} from 'modules/tickers/formatter'
 
 function ListAllTickers(props) {
   const {loopringTickers} = props
+  const tickersFm = new TickersFm(loopringTickers)
+  const allTickers = tickersFm.getAllTickers()
+  const favoredTickers = tickersFm.getFavoredTickers()
+  const recentTickers = tickersFm.getRecentTickers()
+  const TickItem = ({item})=>{
+    const tickerFm = new TickerFm(item)
+    return (
+      <li>
+        <span>{item.market}</span>
+        <span>{tickerFm.getLast()} {tickerFm.getTokens().right}</span>
+        {
+          tickerFm.getChangeDirection() === 'up' &&
+          <span className="text-up">+{tickerFm.getChange()}</span>
+        }
+        {
+          tickerFm.getChangeDirection() === 'down' &&
+          <span className="text-down">{tickerFm.getChange()}</span>
+        }
+        {
+          tickerFm.getChangeDirection() === 'none' &&
+          <span className="">{tickerFm.getChange()}</span>
+        }
+        <span>{tickerFm.getVol()} {tickerFm.getTokens().right}</span>
+      </li>
+    )
+  }
   return (
     <div>
 	    <div className="token-select">
@@ -12,29 +38,28 @@ function ListAllTickers(props) {
 	        </div>
 	        <div className="token-select-body" style={{height: "400px"}}>
 	            <div className="content-scroll">
-	                <div className="item">
-	                    <div className="title">Recent</div>
-	                    <ul>
-	                        <li><span>LRC/ETH</span><span>0.000056</span><span className="text-up">+0.48</span></li>
-	                        <li><span>LRC/BTC</span><span>0.00000218</span><span className="text-down">-0.12</span></li>
-	                    </ul>
-	                </div>
-	                <div className="item">
-	                    <div className="title">Favorites</div>
-	                    <ul>
-	                        <li className="_active"><span>LRC/ETH</span><span>0.000056</span><span className="text-up">+0.48</span></li>
-	                        <li><span>LRC/BTC</span><span>0.00000218</span><span className="text-down">-0.12</span></li>
-	                        <li><span>LRC/LTC</span><span>0.082</span><span className="text-up">+0.56</span></li>
-	                    </ul>
-	                </div>
+	                {
+                    recentTickers.lenth >0 &&
+                    <div className="item">
+                        <div className="title">Recent</div>
+                        <ul>
+                            {recentTickers.map((item,index)=><TickItem item={item} />)}
+                        </ul>
+                    </div>
+                  }
+                  {
+                    favoredTickers.lenth >0 &&
+                    <div className="item">
+                        <div className="title">Favorites</div>
+                        <ul>
+                            {favoredTickers.map((item,index)=><TickItem item={item} />)}
+                        </ul>
+                    </div>
+                  }
 	                <div className="item">
 	                    <div className="title">All Markets</div>
 	                    <ul>
-                          {
-                            loopringTickers.items.map((item,index)=>
-                              <li><span>{item.market}</span><span>{item.last}</span><span className="text-up">{item.change}</span></li>
-                            )
-                          }
+                          {allTickers.map((item,index)=><TickItem item={item} />)}
 	                    </ul>
 	                </div>
 	            </div>

@@ -1,7 +1,6 @@
-import apis from './apis'
+import {RPCRequest} from './apis'
 const namespace = 'rpcs'
 let initState = {
-  items: [],
   loading: false,
   loaded: false,
   page:{
@@ -11,12 +10,15 @@ let initState = {
   },
   sort:{},
   filters:{},
+  items: [],
+  item:{},
+  type:'',
 }
 export default {
   namespace,
   state: {
-    'orders':{...initState},
-    'prices':{...initState},
+    'orders':{...initState,type:'loopring_getOrders'},
+    'fills':{...initState,type:'loopring_getOrders'},
   },
   effects: {
     *init({payload},{call,select,put}){
@@ -40,17 +42,13 @@ export default {
     },
     *fetch({ payload={} },{call,select,put}) {
       let {id} = payload
-      const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
-      if(socket){
-        let new_payload = {page,filters,sort,socket,id}
-        yield put({type:'loadingChange',payload: {loading: true,loaded:false}})
-        const res = yield call(apis.fetchList, new_payload)
-        if (res && res.items) {
-          yield put({type:'loadingChange',payload: {loading: false,loaded:true}})
-          yield put({type:'itemsChange',payload: {items:res.items}})
-        }
-      }else{
-        console.log('socket is not connected!')
+      const {[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
+      let new_payload = {page,filters,sort,socket,id}
+      yield put({type:'loadingChange',payload: {loading: true,loaded:false}})
+      const res = yield call(RPCRequest, new_payload)
+      if (res && res.items) {
+        yield put({type:'loadingChange',payload: {loading: false,loaded:true}})
+        yield put({type:'itemsChange',payload: {items:res.items}})
       }
     },
   },

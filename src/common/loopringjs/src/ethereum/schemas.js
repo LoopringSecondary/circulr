@@ -9,7 +9,7 @@ const ethereumSchemas = {
       } else {
         cb('private key is not an instance of Buffer')
       }
-    }
+    },
   },
   TX_HASH: {
     type: 'string',
@@ -17,33 +17,37 @@ const ethereumSchemas = {
     pattern: /^0x[0-9a-fA-F]{64}$/g,
   },
   BASIC_TX: {
-    to: {
-      ...basicSchemas.ETH_ADDRESS
+    type: 'object',
+    required: true,
+    fields: {
+      to: {
+        ...basicSchemas.ETH_ADDRESS
+      },
+      value: {
+        ...basicSchemas.ETH_VALUES
+      },
+      gasLimit: {
+        type: 'string',
+        pattern: /^0x[0-9a-fA-F]{1,64}$/g,
+      },
+      gasPrice: {
+        type: 'string',
+        pattern: /^0x[0-9a-fA-F]{1,64}$/g,
+      },
+      chainId: {
+        type: 'number',
+      },
+      nonce: {
+        type: 'string',
+        required: true,
+        pattern: /^0x[0-9a-fA-F]{1,64}$/g,
+      },
+      data: {
+        type: 'string',
+        required: true,
+        pattern: /^0x[0-9a-fA-F]*$/g,
+      },
     },
-    value: {
-      ...basicSchemas.ETH_VALUES
-    },
-    gasLimit: {
-      type: "string",
-      pattern: /^0x[0-9a-fA-F]{1,64}$/g
-    },
-    gasPrice: {
-      type: "string",
-      pattern: /^0x[0-9a-fA-F]{1,64}$/g
-    },
-    chainId: {
-      type: 'number'
-    },
-    nonce: {
-      type: "string",
-      required: true,
-      pattern: /^0x[0-9a-fA-F]{1,64}$/g
-    },
-    data: {
-      type: 'string',
-      required: true,
-      pattern: /^0x[0-9a-fA-F]*$/g
-    }
   },
   TX: {
     type: 'object',
@@ -63,16 +67,21 @@ const ethereumSchemas = {
       },
       chainId: {
         type: 'number',
-        required: true
+        required: true,
       },
       nonce: {
         ...basicSchemas.ETH_VALUES
       },
       data: {
-        ...basicSchemas.HEX
-      }
-    }
-  }
-};
+        type: 'string',
+        required: true,
+        pattern: /^0x[0-9a-fA-F]]*$/g,
+      },
+      signed: {
+        type: 'string',
+      },
+    },
+  },
+}
 
-export default ethereumSchemas;
+export default ethereumSchemas
