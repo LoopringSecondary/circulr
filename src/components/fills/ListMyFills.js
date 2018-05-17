@@ -2,10 +2,8 @@ import React from 'react'
 import { Form,Select,Badge } from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import SelectContainer from 'LoopringUI/components/SelectContainer'
-import {OrderFm} from 'modules/orders/ListFm'
-import TokenFm from 'modules/tokens/TokenFm'
-import commonFm from 'modules/formatter/common'
 import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'
+import FillFm from 'modules/fills/formatters'
 import config from 'common/config'
 import intl from 'react-intl-universal'
 
@@ -85,11 +83,12 @@ export default function ListMyFills(props) {
                       <td>{renders.ringIndex(item)}</td>
                       <td>{item.market}</td>
                       <td>{renders.side(item)}</td>
-                      <td>{renders.amount(item)}</td>
-                      <td>{renders.price(item)}</td>
-                      <td>{renders.total(item)}%</td>
-                      <td>{renders.lrcFee(item)}</td>
-                      <td>{renders.lrcReward(item)}</td>
+                      <td>{FillFm.amount(item)}</td>
+                      <td>{FillFm.price(item)}</td>
+                      <td>{FillFm.total(item)}%</td>
+                      <td>{FillFm.lrcFee(item)}</td>
+                      <td>{FillFm.lrcReward(item)}</td>
+                      <td>{FillFm.time(item)}</td>
                    </tr>
                   )
                 })
@@ -116,35 +115,6 @@ export default function ListMyFills(props) {
       if (item.side === 'buy') {
         return <div className="color-green-500">{intl.get('orders.side_buy')}</div>
       }
-    },
-    amount: (item) => {
-      const fmS = item.side.toLowerCase() === 'buy' ? new TokenFm({symbol: item.tokenB}) : new TokenFm({symbol: item.tokenS});
-      const amount = item.side.toLowerCase() === 'buy' ? fmS.getAmount(item.amountB) : fmS.getAmount(item.amountS);
-      return <span> {comonFm.getFormatNum(amount)} {item.side === 'buy' ? item.tokenB : item.tokenS} </span>
-    },
-    price: (item) => {
-      const tokenB = window.config.getTokenBySymbol(item.tokenB);
-      const tokenS = window.config.getTokenBySymbol(item.tokenS);
-      const market = window.config.getMarketByPair(item.market);
-      const price = item.side.toLowerCase() === 'buy' ? (toBig(item.amountS).div('1e' + tokenS.digits).div(toBig(item.amountB).div('1e' + tokenB.digits))).toFixed(market.pricePrecision) :
-        (toBig(item.amountB).div('1e' + tokenB.digits).div(toBig(item.amountS).div('1e' + tokenS.digits))).toFixed(market.pricePrecision);
-      return <span> {comonFm.getFormatNum(price)} </span>
-    },
-    total: (item) => {
-      const fmS = item.side.toLowerCase() === 'buy' ? new TokenFm({symbol: item.tokenS}) : new TokenFm({symbol: item.tokenB});
-      const amount = item.side.toLowerCase() === 'buy' ? fmS.getAmount(item.amountS) : fmS.getAmount(item.amountB);
-      return <span> {comonFm.getFormatNum(amount)} {item.side === 'buy' ? item.tokenS : item.tokenB} </span>
-    },
-    lrcFee: (item) => {
-      const fmLrc = new TokenFm({symbol: 'LRC'});
-      return <span> {comonFm.getFormatNum(fmLrc.getAmount(item.lrcFee))} {'LRC'} </span>
-    },
-    lrcReward: (item) => {
-      const fmLrc = new TokenFm({symbol: 'LRC'});
-      return <span> {comonFm.getFormatNum(fmLrc.getAmount(item.lrcReward))} {'LRC'} </span>
-    },
-    time: (item) => {
-      return comonFm.getFormatTime(toNumber(item.createTime) * 1e3)
     },
   }
 
