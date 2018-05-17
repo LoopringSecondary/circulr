@@ -15,10 +15,9 @@ export class TickersFm{
     return getAllTickers(this.tickers)
   }
   getTickersBySymbol(symbol){
-    return getAllTickers(this.tickers.items)
+    return this.tickers.items.filter(ticker=>ticker.market.indexOf(symbol) > -1)
   }
 }
-
 export const sortTickers = (items)=>{
   const new_items =[...items]
   const sorter = (a,b)=>{

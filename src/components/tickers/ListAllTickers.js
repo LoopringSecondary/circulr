@@ -35,6 +35,7 @@ const TickItem = ({item})=>{
 function ListAllTickers(props) {
   const {loopringTickers:list,dispatch} = props
   const tickersFm = new TickersFm(list)
+  const {extra:{favored={},keywords}} = list
   const allTickers = tickersFm.getAllTickers()
   const favoredTickers = tickersFm.getFavoredTickers()
   const recentTickers = tickersFm.getRecentTickers()
@@ -54,20 +55,30 @@ function ListAllTickers(props) {
       type:'sockets/filtersChange',
       payload:{
         id:'loopringTickers',
-        // id:'MyFills',
-        // filters:{
-        //   keywords:e.target.value
-        // }
+        extra:{
+          favored:{[item.symbol]:true}
+        }
       }
     })
   }
+
+  // TODO
+  const currentMarket = "LRC-WETH"
+  // TODO
+  // favored
 
   return (
     <div>
 	    <div className="token-select">
 	        <div className="token-select-header">
-              <span>LRC-WETH</span>
-	            <input value={list.extra.keywords && list.extra.keywords.toUpperCase()} onChange={search} />
+              {
+                keywords &&
+                <input value={keywords.toUpperCase()} onChange={search} />
+              }
+              {
+                !(keywords && keywords.length > 0) &&
+                <input value={currentMarket} onChange={search} />
+              }
               <i className="icon-search" />
               <i hidden className="icon-star icon-favorites active" />
 	        </div>
