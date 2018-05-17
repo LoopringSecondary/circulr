@@ -13,7 +13,6 @@ export async function fetchList(payload){
     filter.delegateAddress = config.getDelegateAddress();
     filter.owner = window.config.address
     const host = window.config.rpc_host
-    console.log('getFills filter',filter)
     return getFills(host,filter).then(res=>{
       if(!res.error && res.result.data){
         // const orders = res.result.data.filter(order => config.getTokenBySymbol(order.originalOrder.tokenB) && config.getTokenBySymbol(order.originalOrder.tokenB).digits &&

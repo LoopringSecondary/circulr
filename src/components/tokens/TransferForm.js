@@ -9,8 +9,6 @@ import * as tokenFormatter from 'modules/tokens/TokenFm'
 import contracts from 'LoopringJS/ethereum/contracts/Contracts'
 import Currency from 'modules/settings/CurrencyContainer'
 
-var _ = require('lodash');
-
 function TransferForm(props) {
   const {transfer, balance, wallet, marketcap, form, modals} = props
 
@@ -80,22 +78,28 @@ function TransferForm(props) {
   function handleSubmit() {
     form.validateFields((err, values) => {
       if (!err) {
-        const tx = {};
-        tx.gasPrice = fm.toHex(fm.toBig(gasPrice).times(1e9))
-        tx.gasLimit = fm.toHex(gasLimit)
-        if(tokenSelected.symbol === "ETH") {
-          tx.to = values.to;
-          tx.value = fm.toHex(fm.toBig(values.amount).times(1e18))
-          tx.data = fm.toHex(values.data);
+        if(wallet.address) {
+          const tx = {};
+          tx.chainId = datas.configs.chainId
+          tx.gasPrice = fm.toHex(fm.toBig(gasPrice).times(1e9))
+          tx.gasLimit = fm.toHex(gasLimit)
+          if(tokenSelected.symbol === "ETH") {
+            tx.to = values.to;
+            tx.value = fm.toHex(fm.toBig(values.amount).times(1e18))
+            tx.data = fm.toHex(values.data);
+          } else {
+            const tokenConfig = config.getTokenBySymbol(tokenSelected.symbol)
+            tx.to = tokenConfig.address;
+            tx.value = "0x0";
+            let amount = fm.toHex(fm.toBig(values.amount).times("1e"+tokenConfig.digits))
+            tx.data = contracts.ERC20Token.encodeInputs('transfer', {_to:values.to, _value:amount});
+          }
+          const extraData = {from:wallet.address, to:values.to, tokenSymbol:tokenSelected.symbol, amount:values.amount, gas:gas.toString(10)}
+          modals.showModal({id:'transferConfirm', tx, extraData})
         } else {
-          const tokenConfig = config.getTokenBySymbol(tokenSelected.symbol)
-          tx.to = tokenConfig.address;
-          tx.value = "0x0";
-          let amount = fm.toHex(fm.toBig(values.amount).times("1e"+tokenConfig.digits))
-          tx.data = contracts.ERC20Token.encodeInputs('transfer', {_to:values.to, _value:amount});
+          //TODO show unlock modal
+          modals.hideModal({id:'transfer'})
         }
-        const extraData = {from:'123', to:values.to, tokenSymbol:tokenSelected.symbol, amount:values.amount, gas:gas.toString(10)}
-        modals.showModal({id:'transferConfirm', tx, extraData})
       }
     });
   }
@@ -200,7 +204,7 @@ function TransferForm(props) {
                        initialValue: transfer.selectedGasLimit,
                        rules: [{
                          message:intl.get('trade.integer_verification_message'),
-                         validator: (rule, value, cb) => _.isNumber(value) ? cb() : cb(true)
+                         validator: (rule, value, cb) => tokenFormatter.isValidNumber(value) ? cb() : cb(true)
                        }],
                      })(
                        <Input className="d-block w-100" placeholder="" size="large" onChange={gasLimitChange.bind(this)}/>
