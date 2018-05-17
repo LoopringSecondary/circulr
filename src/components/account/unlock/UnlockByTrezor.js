@@ -20,18 +20,13 @@ function UnlockByTrezor(props) {
   };
   return (
     <div>
-      <div className="card bg-white">
-        <div className="card-body notice">
-          <div><i className="icon-warning"/></div>
-        </div>
+        <b>Address：{address}</b>
+        <div className="blk"></div>
         <div>
-          Address:{address}
+          <Button className="btn btn-primary btn-xlg btn-block" onClick={unlock}>解锁默认地址</Button>
+          <div className="blk"></div>
+          <Button className="btn btn-primary btn-xlg btn-block" onClick={moreAddress}>选择更多地址</Button>
         </div>
-        <div>
-          <Button type='primary' onClick={unlock}>解锁默认地址</Button>
-          <Button type='primary' onClick={moreAddress}>选择更多地址</Button>
-        </div>
-      </div>
     </div>
   )
 }
