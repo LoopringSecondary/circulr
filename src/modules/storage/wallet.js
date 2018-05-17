@@ -1,4 +1,3 @@
-import {getTransactionCount} from "LoopringJS/ethereum/utils";
 import {toNumber} from "LoopringJS/common/formatter";
 import validator from 'LoopringJS/ethereum/validator';
 
@@ -16,8 +15,8 @@ const getWallet = (address) => {
 
 const getNonce = async (address) => {
   try {
-    validator.validate({value: address, type: "ADDRESS"});
-    const nonce = toNumber((await getTransactionCount(address, 'pending')).result) || 0;
+    validator.validate({value: address, type: "ETH_ADDRESS"});
+    const nonce = toNumber((await window.ETH.getTransactionCount({address})).result) || 0;
     const localNonce = getWallet(address) && getWallet(address).nonce ? getWallet(address).nonce : 0;
     return Math.max(nonce,localNonce)
   } catch (e) {
@@ -26,7 +25,7 @@ const getNonce = async (address) => {
 };
 
 const storeUnlockedAddress = (unlockType, address) => {
-  localStorage.unlockedType = unlockType
+  localStorage.unlockedType = unlockType;
   localStorage.unlockedAddress = address
 };
 

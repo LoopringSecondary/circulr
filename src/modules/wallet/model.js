@@ -11,6 +11,7 @@ import {
 } from "LoopringJS/ethereum/account";
 import {mnemonictoPrivatekey} from "LoopringJS/ethereum/mnemonic";
 import {formatKey} from "LoopringJS/common/formatter";
+import storage from '../storage/'
 
 
 export default {
@@ -33,6 +34,7 @@ export default {
       }
     },
     lock(state, {payload}) {
+      window.wallet = null;
       return {
         ...state,
         address: "",
@@ -51,6 +53,9 @@ export default {
   },
   effects: {
     * unlockWallet({payload}, {put, call}) {
+      const {address, unlockType} = payload;
+      storage.wallet.storeUnlockedAddress(unlockType,address);
+      window.WALLET = {address, unlockType};
       //yield call(register, {owner:payload.address});
       yield put({type: 'unlock', payload});
     },
@@ -87,6 +92,7 @@ export default {
     * unlockMetaMaskWallet({payload}, {put}) {
       const {address} = payload;
       const unlockType = 'metaMask';
+      window.account = new MetaMaskAccount(window.web3);
       yield put({type: 'unlockWallet', payload: {address, unlockType}});
     },
     * unlockTrezorWallet({payload}, {put}) {
@@ -97,7 +103,7 @@ export default {
     },
     * unlockLedgerWallet({payload}, {put}) {
       const {ledger, dpath} = payload;
-      const account = new LedgerAccount({ledger, dpath});
+      const account = new LedgerAccount(ledger, dpath);
       const address = yield account.getAddress();
       const unlockType = 'ledger';
       yield put({type: 'unlockWallet', payload: {address, unlockType, account}});
@@ -111,48 +117,6 @@ export default {
       const unlockType = 'privateKey';
       yield put({type: "unlockWallet", payload: {address, unlockType, account,password}});
       cb({mnemonic, privateKey, keystore: account.toV3Keystore(password),address});
-    },
-    * signMessage({payload}, {select}) {
-      const {account, unlockType} = yield select((state) => state.wallet);
-      const {message, cb} = payload;
-      if (account) {
-        try {
-          const sig = yield account.signMessage(message);
-          cb({...sig})
-        } catch (e) {
-          cb({error: e})
-        }
-      } else {
-        cb({error: {message: `${unlockType} doesn't support sign message`}})
-      }
-    },
-    * signEthereumTx({payload}, {select}) {
-      const {account, unlockType} = yield select((state) => state.wallet);
-      const {tx, cb} = payload;
-      if (account) {
-        try {
-          const signedTx = yield account.signEthereumTx(tx);
-          cb({signedTx})
-        } catch (e) {
-          cb({error: e})
-        }
-      } else {
-        cb({error: {message: `${unlockType} doesn't support sign message`}})
-      }
-    },
-    * signOrder({payload}, {select}) {
-      const {account, unlockType} = yield select((state) => state.wallet);
-      const {order, cb} = payload;
-      if (account) {
-        try {
-          const order = yield account.signOrder(order);
-          cb(order)
-        } catch (e) {
-          cb({error: e})
-        }
-      } else {
-        cb({error: {message: `${unlockType} doesn't support sign message`}})
-      }
     }
   }
 }

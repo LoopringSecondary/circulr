@@ -9,10 +9,10 @@ import intl from 'react-intl-universal'
 
 const ListHeader = ({fills})=>{
   const sideChange = (side)=>{
-    fills.filtersChange({side})
+    fills.filtersChange({filters:{side}})
   }
   const marketChange = (market)=>{
-    fills.filtersChange({market})
+    fills.filtersChange({filters:{market}})
   }
   return (
     <div className="form-inline form-dark">
@@ -109,10 +109,10 @@ export default function ListMyFills(props) {
     },
     side: (item) => {
       if (item.side === 'sell') {
-        return <div className="color-red-500">{intl.get('orders.side_sell')}</div>
+        return <div className="text-error">Sell {intl.get('orders.side_sell')}</div>
       }
       if (item.side === 'buy') {
-        return <div className="color-green-500">{intl.get('orders.side_buy')}</div>
+        return <div className="text-success">Buy {intl.get('orders.side_buy')}</div>
       }
     },
   }

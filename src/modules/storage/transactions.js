@@ -1,4 +1,3 @@
-import {getTransactionByhash} from "LoopringJS/ethereum/utils";
 import validator from 'LoopringJS/ethereum/validator';
 import filter from 'async/filter';
 
@@ -17,7 +16,7 @@ const addTx = (tx) => {
 const updateTx = async () => {
   let txs = localStorage.txs ? JSON.parse(localStorage.txs) : [];
   await filter(txs, async function (tx, callback) {
-    const res = await getTransactionByhash(tx.hash);
+    const res = {};
     callback(null, !!res.result && !res.result.blockNumber) // callback 必须调动，使用callback 返回true or false
   }, function (err, results) {
     localStorage.txs = JSON.stringify(results);
