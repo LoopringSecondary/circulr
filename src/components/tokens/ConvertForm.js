@@ -1,52 +1,65 @@
 import React from 'react';
 import {Form, Input, Button} from 'antd';
-import {getBalanceBySymbol, getWorthBySymbol} from "../../modules/tokens/TokenFm";
+import {getBalanceBySymbol, getWorthBySymbol,isValidNumber} from "../../modules/tokens/TokenFm";
+import TokenFormatter from '../../modules/tokens/TokenFm';
 import Contracts from 'LoopringJS/ethereum/contracts/Contracts'
 import {toBig, toHex} from "../../common/loopringjs/src/common/formatter";
 import config from '../../common/config'
 import Currency from 'modules/settings/CurrencyContainer'
 
+
 const WETH = Contracts.WETH;
 
 function ConvertForm(props) {
 
-  console.log('Props:', props);
-  const {wallet, convert, dispatch, balance, marketcap} = props;
+  const {wallet, convert, dispatch, balance, marketcap,form} = props;
   const {amount, token, gasPrice, gasLimit} = convert;
   const {address} = wallet;
   const account = wallet.account || window.account;
   const assets = getBalanceBySymbol({balances: balance.items, symbol: token, toUnit: true});
 
+  const tf = new TokenFormatter({symbol:token});
 
   const handleAmountChange = (e) => {
-    convert.setAmount({amount: e.target.value})
+    convert.setAmount({amount: e.target.value});
   };
   const setMax = () => {
-    convert.setMax({balance: assets.balance})
-  };
-  const toConvert = async () => {
-    let data = '';
-    let value = '';
-    if (token.toLowerCase() === 'Eth') {
-      data = WETH.encodeInputs('deposit');
-      value = toHex(toBig(amount).times('1e18'));
-    } else {
-      data = WETH.encodeInputs('withdraw', {wad: toHex(toBig(amount).times('1e18'))});
-      value = '0x0'
+    const gas = toBig(gasPrice).times(gasLimit).div(1e9);
+    let max = balance;
+    if (token === 'ETH') {
+      max = toBig(assets.balance).minus(gas).minus(0.1).isPositive() ? toBig(assets.balance).minus(gas).minus(0.1) : toBig(0)
     }
-    const to = config.getTokenBySymbol('WETh').address;
-    const tx = {
-      gasLimit: toHex(gasLimit),
-      data,
-      to,
-      gasPrice: toHex(toBig(gasPrice).times(1e9)),
-      chainId: config.getChainId(),
-      value,
-      nonce: toHex(await window.STORAGE.wallet.getNonce(address))
-    };
-    const signTx = account.signEthereumTx(tx);
-    const res = await window.ETH.sendRawTransaction(signTx)
-    console.log(res)
+    convert.setMax({amount: max});
+    form.setFieldsValue({amount:max})
+  };
+  const toConvert =  () => {
+    form.validateFields(async  (err,values) => {
+      if(!err){
+        let data = '';
+        let value = '';
+        if (token.toLowerCase() === 'Eth') {
+          data = WETH.encodeInputs('deposit');
+          value = toHex(tf.getDecimalsAmount(amount));
+        } else {
+          data = WETH.encodeInputs('withdraw', {wad: toHex(tf.getDecimalsAmount(amount))});
+          value = '0x0'
+        }
+        const to = config.getTokenBySymbol('WETh').address;
+        const tx = {
+          gasLimit: toHex(gasLimit),
+          data,
+          to,
+          gasPrice: toHex(toBig(gasPrice).times(1e9)),
+          chainId: config.getChainId(),
+          value,
+          nonce: toHex(await window.STORAGE.wallet.getNonce(address))
+      };
+        const signTx = account.signEthereumTx(tx);
+        //  const res = await window.ETH.sendRawTransaction(signTx);
+        console.log(signTx)
+      }
+    });
+
   };
 
   return (
@@ -59,13 +72,24 @@ function ConvertForm(props) {
           className="icon-WETH icon-token-md"/></span>
       </div>
       <div className="divider solid"/>
-      <Form.Item className="form-dark prefix">
-        <Input placeholder="0" suffix={token.toLowerCase() === 'eth' ? 'WETH' : 'ETH'} onChange={handleAmountChange}
-               value={amount.toString()}/>
-      </Form.Item>
+      <Form>
+        <Form.Item>
+          {form.getFieldDecorator('amount', {
+            initialValue: amount,
+            rules: [{
+              required: true,
+              message: 'invalid number',
+              validator: (rule, value, cb) => isValidNumber(value) && toBig(value).lt(assets.balance)  ? cb() : cb(true)
+            }]
+          })(
+            <Input  suffix={token.toLowerCase() === 'eth' ? 'WETH' : 'ETH'} onChange={handleAmountChange}/>
+          )}
+        </Form.Item>
+      </Form>
+      
       <div className="d-flex justify-content-between text-color-dark-2">
         <small>
-          {amount &&
+          {amount && marketcap && isValidNumber(amount) &&
             <span>
               <Currency/>
               {getWorthBySymbol({prices: marketcap.items, symbol: 'ETH', amount})}
