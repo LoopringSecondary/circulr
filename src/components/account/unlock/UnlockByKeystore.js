@@ -26,12 +26,8 @@ import routeActions from 'common/utils/routeActions'
     const keyStoreModel = this.props.keystore;
     const fileReader = new FileReader();
     fileReader.onload = () => {
-      try{
         const keystore = fileReader.result;
         keyStoreModel.setKeystore({keystore})
-      }catch (e){
-
-      }
     };
     fileReader.readAsText(file, "utf-8");
     this.setState({fileList: []});
