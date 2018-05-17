@@ -18,7 +18,6 @@ function TransferConfirm(props) {
   )
 
   const signResultHandler = (response) => {
-    console.log(1111111, response)
     let result = {...tx, extraData}
     if(response.error) {
       result = {...result, error:response.error.message}
@@ -28,7 +27,20 @@ function TransferConfirm(props) {
         type:'error'
       })
     } else {
-
+      // extraData.txHash = response.result
+      // window.STORAGE.wallet.setWallet({address:window.WALLET.getAddress(),nonce:tx.nonce})
+      // window.RELAY.account.notifyTransactionSubmitted({rawTx,txHash:response.result,from:window.WALLET.getAddress()});
+      // const worth = `${fm.getDisplaySymbol(window.STORAGE.settings.get().preference.currency)}${accMul(result.extraData.amount, result.extraData.price).toFixed(2)}`
+      // Notification.open({
+      //   message:intl.get('token.transfer_succ_notification_title'),
+      //   description:intl.get('token.result_transfer_success', {amount:result.extraData.amount, token:result.extraData.tokenSymbol}),
+      //   type:'success',
+      //   actions:(
+      //     <div>
+      //       <Button className="alert-btn mr5" onClick={viewInEtherscan.bind(this, extraData.txHash)}>{intl.get('token.transfer_result_etherscan')}</Button>
+      //     </div>
+      //   )
+      // })
     }
   }
 
@@ -72,21 +84,7 @@ function TransferConfirm(props) {
       if(response.error) {
 
       } else {
-        // extraData.txHash = response.result
-        // //  window.STORAGE.transactions.addTx({hash: response.result, owner: account.address})
-        // window.STORAGE.wallet.setWallet({address:window.WALLET.getAddress(),nonce:tx.nonce})
-        // notifyTransactionSubmitted({rawTx,txHash:response.result,from:window.WALLET.getAddress()});
-        // const worth = `${fm.getDisplaySymbol(window.STORAGE.settings.get().preference.currency)}${accMul(result.extraData.amount, result.extraData.price).toFixed(2)}`
-        // Notification.open({
-        //   message:intl.get('token.transfer_succ_notification_title'),
-        //   description:intl.get('token.result_transfer_success', {amount:result.extraData.amount, token:result.extraData.tokenSymbol}),
-        //   type:'success',
-        //   actions:(
-        //     <div>
-        //       <Button className="alert-btn mr5" onClick={viewInEtherscan.bind(this, extraData.txHash)}>{intl.get('token.transfer_result_etherscan')}</Button>
-        //     </div>
-        //   )
-        // })
+
       }
       // modal.hideLoading({id:'token/transfer/preview'})
       // modal.hideModal({id:'token/transfer/preview'})
