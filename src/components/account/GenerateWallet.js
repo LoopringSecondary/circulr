@@ -33,7 +33,7 @@ class  GenerateWallet extends React.Component {
   render(){
     const {visible,pass} = this.state;
     const visibleIcon = (
-      <div className="fs14 pl5 pr5">
+      <div>
         {visible &&
         <i className="icon-eye" onClick={this.togglePassword}/>
         }
@@ -45,7 +45,7 @@ class  GenerateWallet extends React.Component {
 
     return (
       <div>
-        <div>
+        <div className="form-dark">
           <h2 className="text-center text-primary">Generate Wallet</h2>
           <Input type={visible ? 'text':'password'} addonAfter={visibleIcon} onChange={this.passChange} value={pass}/>
           <div className="d-flex justify-content-start align-items-center password-strong">
