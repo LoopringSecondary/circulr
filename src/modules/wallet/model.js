@@ -11,7 +11,7 @@ import {
 } from "LoopringJS/ethereum/account";
 import {mnemonictoPrivatekey} from "LoopringJS/ethereum/mnemonic";
 import {formatKey} from "LoopringJS/common/formatter";
-import LocalWallet from '../storage/wallet'
+import storage from '../storage/'
 
 
 export default {
@@ -54,7 +54,7 @@ export default {
   effects: {
     * unlockWallet({payload}, {put, call}) {
       const {address, unlockType} = payload;
-      yield call(LocalWallet.storeUnlockedAddress,unlockType,address);
+      storage.wallet.storeUnlockedAddress(unlockType,address);
       window.WALLET = {address, unlockType};
       //yield call(register, {owner:payload.address});
       yield put({type: 'unlock', payload});

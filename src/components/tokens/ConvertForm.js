@@ -37,14 +37,12 @@ function ConvertForm(props) {
       to,
       gasPrice: toHex(toBig(gasPrice).times(1e9)),
       chainId: 1,
-      value
+      value,
+      nonce:"0x11"
     };
-
-    console.log(tx)
-
+    const {account} = wallet;
+    const signTx = account.signEthereumTx(tx);
   };
-
-
 
   return (
     <div>
