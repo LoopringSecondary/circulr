@@ -31,6 +31,7 @@ const ListHeader = ({fills})=>{
             placeholder={intl.get('orders.market')}
             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             dropdownMatchSelectWidth={false}
+            defaultValue=""
             size="small"
           >
           </SelectContainer>
@@ -38,10 +39,9 @@ const ListHeader = ({fills})=>{
         <span>
            <Select
              placeholder={intl.get('orders.side')}
-             optionFilterProp="children"
              onChange={sideChange}
-             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
              dropdownMatchSelectWidth={false}
+             defaultValue=""
              size="small"
            >
              <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.side')}</Select.Option>
@@ -69,7 +69,6 @@ export default function ListMyFills(props) {
                     <th>Amount</th>
                     <th>Price</th>
                     <th>Total</th>
-                    <th>LRC Fee</th>
                     <th>Trading Fee</th>
                     <th>Trading Reward</th>
                     <th>Time</th>
@@ -85,7 +84,7 @@ export default function ListMyFills(props) {
                       <td>{renders.side(item)}</td>
                       <td>{FillFm.amount(item)}</td>
                       <td>{FillFm.price(item)}</td>
-                      <td>{FillFm.total(item)}%</td>
+                      <td>{FillFm.total(item)}</td>
                       <td>{FillFm.lrcFee(item)}</td>
                       <td>{FillFm.lrcReward(item)}</td>
                       <td>{FillFm.time(item)}</td>

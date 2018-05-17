@@ -8,13 +8,13 @@ import TokenFm from "../tokens/TokenFm";
 const formatters = {
   amount: (item) => {
     const fmS = item.side.toLowerCase() === 'buy' ? new TokenFm({symbol: item.tokenB}) : new TokenFm({symbol: item.tokenS});
-    const amount = item.side.toLowerCase() === 'buy' ? fmS.getAmount(item.amountB) : fmS.getAmount(item.amountS);
+    const amount = item.side.toLowerCase() === 'buy' ? fmS.getUnitAmount(item.amountB) : fmS.getUnitAmount(item.amountS);
     const symbol = item.side === 'buy' ? item.tokenB : item.tokenS
     return commonFm.getFormatNum(amount) + '' + symbol
   },
   total: (item) => {
     const fmS = item.side.toLowerCase() === 'buy' ? new TokenFm({symbol: item.tokenS}) : new TokenFm({symbol: item.tokenB});
-    const amount = item.side.toLowerCase() === 'buy' ? fmS.getAmount(item.amountS) : fmS.getAmount(item.amountB);
+    const amount = item.side.toLowerCase() === 'buy' ? fmS.getUnitAmount(item.amountS) : fmS.getUnitAmount(item.amountB);
     const symbol = item.side === 'buy' ? item.tokenS : item.tokenB
     return commonFm.getFormatNum(amount) + '' + symbol
   },
@@ -28,11 +28,11 @@ const formatters = {
   },
   lrcFee: (item) => {
     const fmLrc = new TokenFm({symbol: 'LRC'});
-    return commonFm.getFormatNum(fmLrc.getAmount(item.lrcFee)) + ' LRC'
+    return commonFm.getFormatNum(fmLrc.getUnitAmount(item.lrcFee)) + ' LRC'
   },
   lrcReward: (item) => {
     const fmLrc = new TokenFm({symbol: 'LRC'});
-    return commonFm.getFormatNum(fmLrc.getAmount(item.lrcReward)) + ' LRC'
+    return commonFm.getFormatNum(fmLrc.getUnitAmount(item.lrcReward)) + ' LRC'
   },
   time: (item) => {
     return commonFm.getFormatTime(toNumber(item.createTime) * 1e3)

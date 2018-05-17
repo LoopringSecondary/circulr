@@ -88,9 +88,7 @@ let FiltersForm = ({
               })(
                 <Select
                   placeholder={intl.get('orders.side')}
-                  optionFilterProp="children"
                   onChange={handleChange}
-                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                   dropdownMatchSelectWidth={false}
                   size="small"
                 >
