@@ -12,6 +12,7 @@ let initState = {
   },
   sort:{},
   filters:{},
+  extra:{},
 }
 export default {
   namespace,
@@ -141,6 +142,7 @@ export default {
         },
       }
     },
+
     pageChangeStart(state,action){
       let {payload} = action
       let {id} = payload
@@ -181,7 +183,6 @@ export default {
         [id]:{
           ...state[id],
           sort:{
-            // ...state[id].sort,
             ...payload.sort
           }
         }
@@ -203,13 +204,26 @@ export default {
             current:1,
           },
           sort:{
-            // ...state[id].sort,
             ...payload.sort
           },
 
         }
       }
     },
+    extraChange(state,action){
+      let {payload} = action
+      let {id} = payload
+      return {
+        ...state,
+        [id]:{
+          ...state[id],
+          extra:{
+            ...payload.extra
+          }
+        }
+      }
+    },
+
   },
 
 }

@@ -12,6 +12,9 @@ export class TickersFm{
     return getRecentTickers()
   }
   getAllTickers(){
+    return getAllTickers(this.tickers)
+  }
+  getTickersBySymbol(symbol){
     return getAllTickers(this.tickers.items)
   }
 }
@@ -37,8 +40,13 @@ export const getFavoredTickers = (items)=>{
 export const getRecentTickers = (items)=>{
   return []
 }
-export const getAllTickers = (items)=>{
-  return sortTickers(items)
+export const getAllTickers = (tickers)=>{
+  const {extra,items} = tickers
+  let new_items = [...items]
+  if(extra.keywords){
+    new_items = new_items.filter(item=>item.market.toLowerCase().indexOf(extra.keywords.toLowerCase())> -1 )
+  }
+  return sortTickers(new_items)
 }
 
 export class TickerFm {
