@@ -1,6 +1,5 @@
-import {getFills} from 'LoopringJS/relay/rpc/order'
+import {getFills} from 'LoopringJS/relay/rpc/ring'
 import config from 'common/config'
-
 export async function fetchList(payload){
     let {page,filters,sort} = payload
     let filter = {}

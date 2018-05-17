@@ -66,8 +66,6 @@ let FiltersForm = ({
                 rules:[]
               })(
                 <Select
-                  showSearch
-                  allowClear
                   placeholder={intl.get('orders.status')}
                   optionFilterProp="children"
                   onChange={handleChange}
@@ -89,8 +87,6 @@ let FiltersForm = ({
                 rules:[]
               })(
                 <Select
-                  showSearch
-                  allowClear
                   placeholder={intl.get('orders.side')}
                   optionFilterProp="children"
                   onChange={handleChange}

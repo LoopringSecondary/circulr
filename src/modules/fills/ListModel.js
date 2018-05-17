@@ -1,4 +1,5 @@
 import * as apis from './apis'
+console.log('apis',apis)
 const namespace = 'fills'
 let initState = {
   items: [],
@@ -16,7 +17,7 @@ let initState = {
 export default {
   namespace,
   state: {
-    'MyOpenOrders':{...initState},
+    'MyFills':{...initState},
   },
   subscriptions: {
     // setup({ dispatch, history }) {
@@ -36,23 +37,23 @@ export default {
     },
     *pageChange({payload},{call, select,put}){
       yield put({type:'pageChangeStart',payload});
-      yield put({type:'fetch',payload});
+      yield put({type:'request',payload});
     },
     *filtersChange({payload},{call, select,put}){
       yield put({type:'filtersChangeStart',payload});
-      yield put({type:'fetch',payload});
+      yield put({type:'request',payload});
     },
     *columnsChange({payload},{call, select,put}){
       // yield put({type:'pageChangeStart',payload});
-      // yield put({type:'fetch'});
+      // yield put({type:'request'});
     },
     *sortChange({payload},{call, select,put}){
       yield put({type:'sortChangeStart',payload});
-      yield put({type:'fetch',payload});
+      yield put({type:'request',payload});
     },
     *queryChange({payload},{call, select,put}){
       yield put({type:'queryChangeStart',payload});
-      yield put({type:'fetch',payload});
+      yield put({type:'request',payload});
     },
     *request({ payload={} }, { call, select, put }) {
       let {id} = payload
@@ -61,6 +62,7 @@ export default {
       yield put({type:'loadingChange',payload: {id,loading: true}})
       const res = yield call(apis.fetchList, new_payload);
       if (res) {
+        console.log('getFills res',res)
         yield put({type:'loadingChange',payload: {id,loading: false}})
         yield put({
           type: 'requestSuccess',
