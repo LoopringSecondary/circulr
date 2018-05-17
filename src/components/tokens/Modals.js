@@ -31,7 +31,9 @@ function Modals(props) {
       <Containers.Modals id="transferConfirm">
         <UiContianers.Modals id="transferConfirm">
           <Containers.Sockets id="marketcap">
-            <TransferConfirm />
+            <Containers.Wallet>
+              <TransferConfirm />
+            </Containers.Wallet>
           </Containers.Sockets>
         </UiContianers.Modals>
       </Containers.Modals>

@@ -80,23 +80,27 @@ function TransferForm(props) {
   function handleSubmit() {
     form.validateFields((err, values) => {
       if (!err) {
-        //if(wallet.)
-        const tx = {};
-        tx.gasPrice = fm.toHex(fm.toBig(gasPrice).times(1e9))
-        tx.gasLimit = fm.toHex(gasLimit)
-        if(tokenSelected.symbol === "ETH") {
-          tx.to = values.to;
-          tx.value = fm.toHex(fm.toBig(values.amount).times(1e18))
-          tx.data = fm.toHex(values.data);
+        if(!wallet.address) {
+          const tx = {};
+          tx.gasPrice = fm.toHex(fm.toBig(gasPrice).times(1e9))
+          tx.gasLimit = fm.toHex(gasLimit)
+          if(tokenSelected.symbol === "ETH") {
+            tx.to = values.to;
+            tx.value = fm.toHex(fm.toBig(values.amount).times(1e18))
+            tx.data = fm.toHex(values.data);
+          } else {
+            const tokenConfig = config.getTokenBySymbol(tokenSelected.symbol)
+            tx.to = tokenConfig.address;
+            tx.value = "0x0";
+            let amount = fm.toHex(fm.toBig(values.amount).times("1e"+tokenConfig.digits))
+            tx.data = contracts.ERC20Token.encodeInputs('transfer', {_to:values.to, _value:amount});
+          }
+          const extraData = {from:wallet.address, to:values.to, tokenSymbol:tokenSelected.symbol, amount:values.amount, gas:gas.toString(10)}
+          modals.showModal({id:'transferConfirm', tx, extraData})
         } else {
-          const tokenConfig = config.getTokenBySymbol(tokenSelected.symbol)
-          tx.to = tokenConfig.address;
-          tx.value = "0x0";
-          let amount = fm.toHex(fm.toBig(values.amount).times("1e"+tokenConfig.digits))
-          tx.data = contracts.ERC20Token.encodeInputs('transfer', {_to:values.to, _value:amount});
+          //TODO show unlock modal
+          modals.hideModal({id:'transferConfirm'})
         }
-        const extraData = {from:'123', to:values.to, tokenSymbol:tokenSelected.symbol, amount:values.amount, gas:gas.toString(10)}
-        modals.showModal({id:'transferConfirm', tx, extraData})
       }
     });
   }
