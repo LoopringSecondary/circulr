@@ -63,148 +63,54 @@ const isArray = (obj)=>{
   return Object.prototype.toString.call(obj) === '[object Array]'
 }
 
+
+    console.log('getOrders req',filter)
+    return getOrders(host,filter).then(res=>{
+      console.log('getOrders res',res)
+      if(!res.error && res.result.data){
+        const orders = res.result.data.filter(order => config.getTokenBySymbol(order.originalOrder.tokenB) && config.getTokenBySymbol(order.originalOrder.tokenB).digits &&
+          config.getTokenBySymbol(order.originalOrder.tokenS)&&  config.getTokenBySymbol(order.originalOrder.tokenS).digits &&
+          config.getMarketBySymbol(order.originalOrder.tokenB,order.originalOrder.tokenS) && config.getMarketBySymbol(order.originalOrder.tokenB,order.originalOrder.tokenS).pricePrecision);
+        return {
+          items:orders,
+          page:{
+            current:res.result.pageIndex,
+            size:res.result.pageSize,
+            total:res.result.total,
+          }
+        }
+      }else{
+        // tmp code because server has no error-code
+        return {
+          items:[],
+          page:{
+          }
+        }
+      }
+    })
+
 const transfromers = {
-  transaction:{
-    queryTransformer:(payload)=>{
-      const {filters,page} = payload
-      return JSON.stringify({
-        owner:window.config.address,
-        symbol:filters.token,
-        status:filters.status,
-        txType:filters.txType,
-        pageIndex:page.current,
-        pageSize:page.size || 10,
-      })
+  loopring_getFills:{
+    res:(payload)=>{
+      let {page,filters,sort} = payload
+      let filter = {}
+      if(filters){
+        filter = {...filters}
+      }
+      if(page){
+        filter.pageIndex = page.current
+        filter.pageSize = page.size
+      }
+      filter.delegateAddress = config.getDelegateAddress();
+      filter.owner = window.config.address
+      const host = window.config.rpc_host
     },
-    resTransformer:(id,res)=>{
+    res:(id,res)=>{
       res = JSON.parse(res)
       console.log(id,'res',res)
       let items = []
       if (!res.error && res.data && isArray(res.data.data)) {
         items =[ ...res.data.data ]
-      }
-      updateItems(items,id)
-    },
-  },
-  balance:{
-    queryTransformer:(payload)=>{
-      return JSON.stringify({
-         delegateAddress: config.getDelegateAddress(),
-         owner:window.config.address,
-      })
-    },
-    resTransformer:(id,res)=>{
-      res = JSON.parse(res)
-      console.log(id,'res',res)
-      let items = []
-      if (!res.error && res.data && isArray(res.data.tokens)) {
-        items =[ ...res.data.tokens ]
-      }
-      updateItems(items,id)
-    },
-  },
-  marketcap:{
-    queryTransformer:(payload)=>{
-      const {filters} = payload
-      return JSON.stringify({
-         "currency": filters.currency,
-      })
-    },
-    resTransformer:(id,res)=>{
-      res = JSON.parse(res)
-      console.log(id,'res',res)
-      let items =[]
-      if (!res.error && res.data && isArray(res.data.tokens)) {
-        items =[ ...res.data.tokens ]
-      }
-      updateItems(items,id)
-    },
-  },
-  depth:{
-    queryTransformer:(payload)=>{
-      const {filters} = payload
-      return JSON.stringify({
-         "delegateAddress" :config.getDelegateAddress(),
-         "market":filters.market,// TODO
-      })
-    },
-    resTransformer:(id,res)=>{
-      res = JSON.parse(res)
-      console.log(id,'res',res)
-      let item ={}
-      if(!res.error && res.data && res.data.depth){
-        item ={ ...res.data.depth }
-      }
-      updateItem(item,id)
-    },
-  },
-  trades:{
-    queryTransformer:(payload)=>{
-      const {filters} = payload
-      return JSON.stringify({
-         "delegateAddress" :config.getDelegateAddress(),
-         "market":filters.market, //TODO
-      })
-    },
-    resTransformer:(id,res)=>{
-      res = JSON.parse(res)
-      console.log(id,'res',res)
-      let items =[]
-      if(!res.error && isArray(res.data)){
-        items =[ ...res.data ]
-      }
-      updateItems(items,id)
-    },
-  },
-  tickers:{
-    queryTransformer:(payload)=>{
-      const {filters} = payload
-      return JSON.stringify({
-         "delegateAddress" :config.getDelegateAddress(),
-         "market":filters.market, //TODO
-      })
-    },
-    resTransformer:(id,res)=>{
-      res = JSON.parse(res)
-      console.log(id,'res',res)
-      let items =[]
-      if(!res.error && isArray(res.data)){
-        items =[ ...res.data ]
-      }
-      updateItems(items,id)
-    },
-  },
-  loopringTickers:{
-    queryTransformer:(payload)=>{
-      const {filters} = payload
-      return JSON.stringify({
-         "delegateAddress" :config.getDelegateAddress(),
-         "market":filters.market, //TODO
-      })
-    },
-    resTransformer:(id,res)=>{
-      res = JSON.parse(res)
-      console.log(id,'res',res)
-      let items =[]
-      if(!res.error && isArray(res.data)){
-        const supportMarket = res.data.filter(item=>config.isSupportedMarket(item.market)) // filter support market
-        items =[ ...supportMarket ]
-      }
-      updateItems(items,id)
-    },
-  },
-  pendingTx:{
-    queryTransformer:(payload)=>{
-      return JSON.stringify({
-         owner:window.config.address // TODO
-      })
-    },
-    resTransformer:(id,res)=>{
-      res = JSON.parse(res)
-      console.log(id,'res',res)
-      let items =[]
-      if(!res.error && isArray(res.data)){
-        items =[ ...res.data ]
       }
       updateItems(items,id)
     },
