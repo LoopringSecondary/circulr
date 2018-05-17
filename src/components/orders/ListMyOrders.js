@@ -11,7 +11,6 @@ export default function ListMyOrders(props) {
   return (
     <div className="">
         <ListHeader orders={orders} />
-
         <div style={{height:"160px",overflow:"auto"}}>
           <table style={{overflow:'auto'}} className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2" >
             <thead>

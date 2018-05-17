@@ -18,7 +18,7 @@ function Modals(props) {
           <Containers.Sockets id="balance">
             <Containers.Sockets id="marketcap">
               <Containers.Wallet>
-                <Containers.Transfer>
+                <Containers.Transfer initState={{}}>
                   <Transfer />
                 </Containers.Transfer>
               </Containers.Wallet>

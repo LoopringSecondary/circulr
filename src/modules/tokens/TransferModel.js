@@ -1,5 +1,6 @@
 import {getAssetsByToken} from "../formatter/selectors";
 import {toBig} from "LoopringJS/common/formatter";
+import * as datas from 'common/config/data'
 
 export default {
   namespace: 'transfer',
@@ -11,8 +12,8 @@ export default {
     data:'0x',
     isMax: false,
     gasPopularSetting: true,
-    sliderGasPrice:0,
-    selectedGasPrice: 0,
+    sliderGasPrice:datas.configs.defaultGasPrice, //TODO read from relay
+    selectedGasPrice: datas.configs.defaultGasPrice,
     selectedGasLimit: 0,
   },
   reducers: {
@@ -100,6 +101,9 @@ export default {
     },
   },
   effects:{
+    *init({ payload={} }, { put }) {
+      yield put({type:"reset",payload});
+    },
     * amountChange({payload}, {select, put}) {
       const {amount} = payload;
       const {token} = yield select((state) =>state.transfer);
@@ -121,7 +125,7 @@ export default {
       yield put({type:'setGasPrice',payload:{gasPrice}})
     },
     * tokenChange({payload},{select,put}){
-      yield put({type:"reset",payload});
+      //yield put({type:"reset",payload});
       yield put({type:'setToken',payload});
     }
   }
