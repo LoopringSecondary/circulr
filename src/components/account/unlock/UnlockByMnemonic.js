@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, Button, Select} from 'antd';
+import {Form,Input, Button, Select} from 'antd';
 import {wallets} from "../../../common/config/data";
 import routeActions from 'common/utils/routeActions'
 const Option = Select.Option;
@@ -37,28 +37,34 @@ function Mnemonic(props) {
 
   return (
     <div>
-      <div className="tab-pane text-inverse active" id="mnemonic">
-        <h2 className="text-center text-primary">Select Your Wallet</h2>
-        <div className="form-group form-group-lg">
-          <Select defaultValue='0' dropdownMatchSelectWidth={false} onChange={handleWalletType}>
-            {wallets.map((wallet, index) => {
-              return <Option key={index}>{wallet.name}</Option>
-            })}
-          </Select>
-        </div>
+      <div id="mnemonic" className="form-dark">
         <h2 className="text-center text-primary">Paste Your Mnemonic Here</h2>
-        <div className="form-group form-group-lg">
-          <Input.TextArea placeholder="" autosize={{minRows: 3, maxRows: 6}} value={mnemonic}
-                          onChange={handleMnemonic}/>
-        </div>
-        {passRequired && <div className="form-group form-group-lg">
-          Password:<Input value={password} onChange={handlePass}/>
+        <div className="blk-md"></div>
+          <Form.Item>
+              <Select defaultValue='0' dropdownMatchSelectWidth={false} size="large" onChange={handleWalletType} className="d-block">
+                {wallets.map((wallet, index) => {
+                  return <Option key={index}>{wallet.name}</Option>
+                })}
+              </Select>
+          </Form.Item>
+          <Form.Item colon={false}>
+              <Input.TextArea placeholder="Paste Your Mnemonic Here" size="large" autosize={{minRows: 3, maxRows: 6}} value={mnemonic} onChange={handleMnemonic} className="mnemonic" />
+          </Form.Item>
+
+        <Form.Item colon={false}>
+            {passRequired && <div>
+              Password:<Input value={password} onChange={handlePass}/>
         </div>}
-        <div className="form-group form-group-lg">
-          Default Address:<Input value={address} disabled/>
+        </Form.Item>
+        <Form.Item label="Default Address:">
+            <Input value={address} disabled/>
+        </Form.Item>
+        <div className="blk"></div>
+        <Button className="btn btn-primary btn-block btn-xxlg" disabled={!address} onClick={unlock}>Unlock</Button>
+        <div className="blk"></div>
+        <div className="text-center">
+            <a className="text-link" disabled={!address} onClick={moreAddress}>Select Other Address</a>
         </div>
-        <Button type="primary" className="btn-block btn-xlg btn-token" disabled={!address} onClick={unlock}>Unlock</Button>
-        <Button type="primary" className="btn-block btn-xlg btn-token" disabled={!address} onClick={moreAddress}>Select Other Address</Button>
       </div>
     </div>
   )

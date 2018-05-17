@@ -27,9 +27,13 @@ function Ledgers(props) {
   };
   return (
     <div>
-      <div>Default Address: {address}</div>
-      <Button onClick={unlock}>解锁</Button>
-      <Button onClick={moreAddress}>More Addresses</Button>
+      <b>Default Address:{address}</b>
+      <div className="blk"></div>
+      <div>
+        <Button className="btn btn-primary btn-xlg btn-block" onClick={unlock}>解锁</Button>
+        <div className="blk"></div>
+        <Button className="btn btn-primary btn-xlg btn-block" onClick={moreAddress}>More Addresses</Button>
+      </div>
     </div>
   )
 }

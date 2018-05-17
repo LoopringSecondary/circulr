@@ -48,47 +48,42 @@ export  default class BackupWallet extends React.Component {
     return(
       <div>
         <h2 className="text-center text-primary" style={{marginBottom: "20px" }}>Backup Wallet</h2>
-        <Tabs defaultActiveKey="1">
-          <TabPane tab="Keystore" key="1">
-            <div className="card bg-white">
-              <div className="card-body notice">
+        <Tabs defaultActiveKey="1" className="tabs-dark">
+          <TabPane tab="Keystore" key="1" style={{textAlign:"tect-center"}}>
+              <div className="notice text-warning">
                 <div><i className="icon-warning"/></div>
                 <div>
                   <p>Loopring wallet never keeps your private key/keystore file/ mnemonic words, It is strongly recommended that you back up these information offline (with USB or physical paper). Once your private key/keystore file/mnemonic words get lost, it can never be recovered.</p>
                 </div>
-              </div>
             </div>
 
             <a href={url}
                download={fileName}
-               className="ant-btn ant-btn-primary ant-btn-lg d-flex justify-content-center w-100 mt15 align-items-center">
+               className="btn btn-block btn-primary btn-xxlg">
               I Understand,Download Keystore</a>
           </TabPane>
           <TabPane tab="MMnemonick" key="2">
-            <div className="card bg-white">
-              <div className="card-body notice">
+              <div className="notice text-warning">
                 <div><i className="icon-warning"/></div>
                 <div>
                   <p>Secure it like the millions of dollars it may one day be worth..</p>
                 </div>
               </div>
-            </div>
             <div className="mnemonic-content text-primary">{mnemonic}</div>
-            <Button type="primary" className="btn-block btn-xlg btn-token" onClick={() => this.handleCopy(mnemonic)}>I Understand, Copy Mnemonic</Button>
+            <Button className="btn btn-block btn-primary btn-xxlg" onClick={() => this.handleCopy(mnemonic)}>I Understand, Copy Mnemonic</Button>
           </TabPane>
           <TabPane tab="Private Key" key="3">
-            <div className="card bg-white">
-              <div className="card-body notice">
+              <div className="notice text-warning">
                 <div><i className="icon-warning"/></div>
                 <div>
                   <p>Secure it like the millions of dollars it may one day be worth..</p>
                 </div>
               </div>
-            </div>
-            <div className="form-group form-group-lg iconic-input iconic-input-lg right">
+            <div className="form-group form-group-lg iconic-input iconic-input-lg right eye-switch">
               <Input type={visible ? 'text':'password'} addonAfter={visibleIcon} disabled value={privateKey}/>
             </div>
-            <Button type="primary" className="btn-block btn-xlg btn-token" onClick={() => this.handleCopy(privateKey)}>I Understand, Copy Private Key</Button>
+            <div className="blk"></div>
+            <Button className="btn btn-block btn-primary btn-xxlg" onClick={() => this.handleCopy(privateKey)}>I Understand, Copy Private Key</Button>
           </TabPane>
         </Tabs>
       </div>
