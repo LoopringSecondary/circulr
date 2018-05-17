@@ -101,6 +101,13 @@ export function getPriceBySymbol({prices, symbol, ifFormat}) {
   }
 }
 
+export function getWorthBySymbol({prices, symbol, ifFormat, amount}) {
+  const price = getPriceBySymbol({prices, symbol, ifFormat})
+  if(price.price) {
+    return toBig(price.price).times(amount).toFixed(2)
+  }
+}
+
 export function validateEthAddress(value) {
   try {
     validator.validate({value: value, type: 'ETH_ADDRESS'})

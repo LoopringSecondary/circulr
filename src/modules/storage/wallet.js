@@ -16,7 +16,7 @@ const getWallet = (address) => {
 
 const getNonce = async (address) => {
   try {
-    validator.validate({value: address, type: "ADDRESS"});
+    validator.validate({value: address, type: "ETH_ADDRESS"});
     const nonce = toNumber((await getTransactionCount(address, 'pending')).result) || 0;
     const localNonce = getWallet(address) && getWallet(address).nonce ? getWallet(address).nonce : 0;
     return Math.max(nonce,localNonce)

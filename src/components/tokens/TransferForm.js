@@ -6,7 +6,8 @@ import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
 import {calculateGas} from 'LoopringJS/common/utils'
 import * as tokenFormatter from 'modules/tokens/TokenFm'
-import * as contracts from 'LoopringJS/ethereum/contracts/Contracts'
+import contracts from 'LoopringJS/ethereum/contracts/Contracts'
+import Currency from 'modules/settings/CurrencyContainer'
 
 var _ = require('lodash');
 
@@ -79,6 +80,7 @@ function TransferForm(props) {
   function handleSubmit() {
     form.validateFields((err, values) => {
       if (!err) {
+        if(wallet.)
         const tx = {};
         tx.gasPrice = fm.toHex(fm.toBig(gasPrice).times(1e9))
         tx.gasLimit = fm.toHex(gasLimit)
@@ -91,14 +93,10 @@ function TransferForm(props) {
           tx.to = tokenConfig.address;
           tx.value = "0x0";
           let amount = fm.toHex(fm.toBig(values.amount).times("1e"+tokenConfig.digits))
-          const data = contracts.ERC20Token.encodeInputs('transfer', {_to:values.to, _value:amount})
-          console.log(1111111, data)
-          tx.data = data;
+          tx.data = contracts.ERC20Token.encodeInputs('transfer', {_to:values.to, _value:amount});
         }
-        // const extraData = {from:account.address, to:values.to, tokenSymbol:tokenSymbol, amount:values.amount, price:prices.getTokenBySymbol(tokenSymbol).price}
-        const extraData = {}
-        // modal.hideModal({id: 'token/transfer'})
-        modals.showModal.bind(this,{id:'transferConfirm', tx, extraData})
+        const extraData = {from:'123', to:values.to, tokenSymbol:tokenSelected.symbol, amount:values.amount, gas:gas.toString(10)}
+        modals.showModal({id:'transferConfirm', tx, extraData})
       }
     });
   }
