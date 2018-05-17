@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'dva'
+import TickerFm from 'modules/tickers/formatter'
 
 function ListAllTickers(props) {
   const {loopringTickers} = props

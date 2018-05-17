@@ -1,7 +1,21 @@
 import intl from 'react-intl-universal'
 
-let fm = {}
-fm.getVolume = (value)=>{
+export default class TickerFm {
+  constructor(ticker){
+    this.ticker = ticker
+  }
+  getVolume(){
+    return getVolume(this.ticker.vol)
+  }
+  getLast(){
+    return getPrice(this.ticker.last)
+  }
+  getChangeDirection(){
+    return getChangeDirection(this.ticker.change)
+  }
+}
+
+export const getVolume = (value)=>{
   value = Number(value)
   if(value>1000){
     return value.toFixed(0)
@@ -25,7 +39,8 @@ fm.getVolume = (value)=>{
     return '0.00'
   }
 }
-fm.getPrice = (value)=>{
+export const getPrice = (value)=>{
+
   value = Number(value)
   switch (true) {
     case value>1000:
@@ -63,4 +78,4 @@ export const getChangeDirection = (change)=>{
 }
 
 
-export default fm
+
