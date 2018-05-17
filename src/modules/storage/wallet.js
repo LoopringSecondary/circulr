@@ -1,4 +1,3 @@
-import {getTransactionCount} from "LoopringJS/ethereum/utils";
 import {toNumber} from "LoopringJS/common/formatter";
 import validator from 'LoopringJS/ethereum/validator';
 
@@ -17,7 +16,7 @@ const getWallet = (address) => {
 const getNonce = async (address) => {
   try {
     validator.validate({value: address, type: "ADDRESS"});
-    const nonce = toNumber((await getTransactionCount(address, 'pending')).result) || 0;
+    const nonce =  0;
     const localNonce = getWallet(address) && getWallet(address).nonce ? getWallet(address).nonce : 0;
     return Math.max(nonce,localNonce)
   } catch (e) {
