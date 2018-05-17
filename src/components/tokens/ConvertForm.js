@@ -17,12 +17,6 @@ function ConvertForm(props) {
   const account = wallet.account || window.account;
   const assets = getBalanceBySymbol({balances: balance.items, symbol: token, toUnit: true});
 
-  const worth = (
-    <span>
-      <Currency/>
-      {getWorthBySymbol({prices: marketcap.items, symbol: 'ETH', amount: assets.balance})}
-    </span>
-  )
 
   const handleAmountChange = (e) => {
     convert.setAmount({amount: e.target.value})
@@ -71,10 +65,12 @@ function ConvertForm(props) {
       </Form.Item>
       <div className="d-flex justify-content-between text-color-dark-2">
         <small>
-          <span>
-      <Currency/>
-            {getWorthBySymbol({prices: marketcap.items, symbol: 'ETH', amount: assets.balance})}
-          </span>
+          {amount &&
+            <span>
+              <Currency/>
+              {getWorthBySymbol({prices: marketcap.items, symbol: 'ETH', amount})}
+            </span>
+          }
         </small>
         <a onClick={setMax}>
           <small>最大数量</small>
@@ -87,4 +83,4 @@ function ConvertForm(props) {
   )
 }
 
-export default ConvertForm
+export default Form.create()(ConvertForm)

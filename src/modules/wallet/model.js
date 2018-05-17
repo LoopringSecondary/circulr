@@ -117,48 +117,6 @@ export default {
       const unlockType = 'privateKey';
       yield put({type: "unlockWallet", payload: {address, unlockType, account,password}});
       cb({mnemonic, privateKey, keystore: account.toV3Keystore(password),address});
-    },
-    * signMessage({payload}, {select}) {
-      const {account, unlockType} = yield select((state) => state.wallet);
-      const {message, cb} = payload;
-      if (account) {
-        try {
-          const sig = yield account.signMessage(message);
-          cb({...sig})
-        } catch (e) {
-          cb({error: e})
-        }
-      } else {
-        cb({error: {message: `${unlockType} doesn't support sign message`}})
-      }
-    },
-    * signEthereumTx({payload}, {select}) {
-      const {account, unlockType} = yield select((state) => state.wallet);
-      const {tx, cb} = payload;
-      if (account) {
-        try {
-          const signedTx = yield account.signEthereumTx(tx);
-          cb({signedTx})
-        } catch (e) {
-          cb({error: e})
-        }
-      } else {
-        cb({error: {message: `${unlockType} doesn't support sign message`}})
-      }
-    },
-    * signOrder({payload}, {select}) {
-      const {account, unlockType} = yield select((state) => state.wallet);
-      const {order, cb} = payload;
-      if (account) {
-        try {
-          const order = yield account.signOrder(order);
-          cb(order)
-        } catch (e) {
-          cb({error: e})
-        }
-      } else {
-        cb({error: {message: `${unlockType} doesn't support sign message`}})
-      }
     }
   }
 }
