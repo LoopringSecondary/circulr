@@ -1,18 +1,28 @@
 import React from 'react';
 import {Form, Input, Button} from 'antd';
-import {getBalanceBySymbol} from "../../modules/tokens/TokenFm";
+import {getBalanceBySymbol, getWorthBySymbol} from "../../modules/tokens/TokenFm";
 import Contracts from 'LoopringJS/ethereum/contracts/Contracts'
 import {toBig, toHex} from "../../common/loopringjs/src/common/formatter";
 import config from '../../common/config'
-
+import Currency from 'modules/settings/CurrencyContainer'
 
 const WETH = Contracts.WETH;
 
 function ConvertForm(props) {
 
+  console.log('Props:', props);
   const {wallet, convert, dispatch, balance, marketcap} = props;
   const {amount, token, gasPrice, gasLimit} = convert;
+  const {address} = wallet;
+  const account = wallet.account || window.account;
   const assets = getBalanceBySymbol({balances: balance.items, symbol: token, toUnit: true});
+
+  const worth = (
+    <span>
+      <Currency/>
+      {getWorthBySymbol({prices: marketcap.items, symbol: 'ETH', amount: assets.balance})}
+    </span>
+  )
 
   const handleAmountChange = (e) => {
     convert.setAmount({amount: e.target.value})
@@ -20,7 +30,7 @@ function ConvertForm(props) {
   const setMax = () => {
     convert.setMax({balance: assets.balance})
   };
-  const toConvert = () => {
+  const toConvert = async () => {
     let data = '';
     let value = '';
     if (token.toLowerCase() === 'Eth') {
@@ -36,12 +46,13 @@ function ConvertForm(props) {
       data,
       to,
       gasPrice: toHex(toBig(gasPrice).times(1e9)),
-      chainId: 1,
+      chainId: config.getChainId(),
       value,
-      nonce:"0x11"
+      nonce: toHex(await window.STORAGE.wallet.getNonce(address))
     };
-    const {account} = wallet;
     const signTx = account.signEthereumTx(tx);
+    const res = await window.ETH.sendRawTransaction(signTx)
+    console.log(res)
   };
 
   return (
@@ -59,7 +70,12 @@ function ConvertForm(props) {
                value={amount.toString()}/>
       </Form.Item>
       <div className="d-flex justify-content-between text-color-dark-2">
-        <small>≈￥0.00</small>
+        <small>
+          <span>
+      <Currency/>
+            {getWorthBySymbol({prices: marketcap.items, symbol: 'ETH', amount: assets.balance})}
+          </span>
+        </small>
         <a onClick={setMax}>
           <small>最大数量</small>
         </a>

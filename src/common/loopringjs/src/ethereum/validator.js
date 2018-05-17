@@ -24,9 +24,6 @@ const validate = (payload) => {
     throw new Error('invalid type')
   }
   let validator = new Schema(schema);
-
-  console.log(schema);
-  console.log(source);
   validator.validate(source, (errors, fields) => {
     if (errors) {
       if (onError) {
