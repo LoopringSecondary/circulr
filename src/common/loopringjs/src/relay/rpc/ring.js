@@ -87,7 +87,7 @@ export default class Ring{
       if (filter.pageSize) {
         validator.validate({value: filter.pageSize, type: 'OPTION_NUMBER'})
       }
-    } catch(e) {
+    } catch (e){
       return Promise.resolve(new Response(code.PARAM_INVALID.code, code.PARAM_INVALID.msg))
     }
     const body = {};

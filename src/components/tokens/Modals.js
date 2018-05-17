@@ -31,9 +31,12 @@ function Modals(props) {
       </Containers.Modals>
       <Containers.Modals id="transferConfirm">
         <UiContianers.Modals id="transferConfirm">
-          <TransferConfirm/>
           <Containers.Sockets id="marketcap">
-            <TransferConfirm />
+            <Containers.Wallet>
+              <Containers.Modals>
+                <TransferConfirm />
+              </Containers.Modals>
+            </Containers.Wallet>
           </Containers.Sockets>
         </UiContianers.Modals>
       </Containers.Modals>
@@ -41,11 +44,11 @@ function Modals(props) {
         <UiContianers.Modals id="convert">
           <Containers.Sockets id="balance">
             <Containers.Sockets id="marketcap">
-          <Containers.Wallet>
-            <Containers.Convert >
-              <Convert/>
-            </Containers.Convert>
-          </Containers.Wallet>
+              <Containers.Wallet>
+                <Containers.Convert >
+                  <Convert/>
+                </Containers.Convert>
+              </Containers.Wallet>
             </Containers.Sockets>
           </Containers.Sockets>
         </UiContianers.Modals>
