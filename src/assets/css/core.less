@@ -165,6 +165,7 @@ section { }
 .table-hover>tbody>tr:hover>td:nth-child(1):before { position: absolute; top: 0; bottom: 0; margin: -1px 0; left: -1px; width: 4px; border-left: 4px solid @primary-color; content: ""; overflow: hidden }
 .table-hover>tbody>tr>td:nth-child(1) { position: relative }
 .table-nowrap th, .table-nowrap td { white-space: nowrap }
+.table [class*="icon-"] { font-size: 16px; vertical-align: middle; }
 .table-sm th, .table-sm td { padding: 5px; }
 .table.text-left-col1 tr>td:nth-child(1), .text-left-col1 tr>th:nth-child(1) { text-align: left !important }
 .table.text-left-col2 tr>td:nth-child(2), .text-left-col2 tr>th:nth-child(2) { text-align: left !important }
@@ -177,14 +178,14 @@ section { }
 .table.text-right-last tr>td:last-child, .table.text-right-last tr>th:last-child { text-align: right !important }
 
 /* btn */
-.btn { display: inline-block; font-weight: normal; text-align: center; white-space: nowrap; vertical-align: middle; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; border: 0; padding: 0 12px; line-height: 30px; transition: all 0.45s ease-in-out; cursor: pointer }
+.btn { display: inline-block; font-weight: normal; border:0 !important; text-align: center; white-space: nowrap; vertical-align: middle; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; border: 0; padding: 0 12px; line-height: 30px; transition: all 0.45s ease-in-out; cursor: pointer }
 .btn:focus, .btn:hover { text-decoration: none; }
 .btn:focus, .btn.focus { outline: 0;    /*box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);*/ }
 .btn.disabled, .btn:disabled, .disabled .btn { opacity: .65; box-shadow: none; cursor: not-allowed; }
 a.btn.disabled, fieldset[disabled] a.btn { pointer-events: none; }
-.btn-primary { color: @text-color-dark; background-color: @primary-color; }
-.btn-primary:hover { color: @text-color-dark; background-color: fade(@primary-color, 54%); }
-.btn-primary.disabled, .btn-primary:disabled { background-color: fade(@primary-color, 27%); }
+.btn-primary { color: @text-color-dark !important; background-color: @primary-color !important;  }
+.btn-primary:hover { color: @text-color-dark  !important; background-color: fade(@primary-color, 54%) !important; }
+.btn-primary.disabled, .btn-primary:disabled { background-color: fade(@primary-color, 27%)  !important; }
 .btn-secondary { background-color: @light-color-1; }
 .btn-secondary:hover { color: @text-color-dark-1; background-color: fade(@light-color-1, 54%) }
 .btn-secondary.disabled, .btn-secondary:disabled { background-color: fade(@light-color-1, 27%) }

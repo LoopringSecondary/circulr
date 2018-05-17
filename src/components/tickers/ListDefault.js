@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Button } from 'antd';
 function ListHeaderForm({className=''}){
   return (
     <div className={className}>
@@ -18,46 +18,42 @@ function ListHeader({className=''}){
 
 function ListBlock(props) {
   return (
-    <div>
-    	<div className="loopring-dex">
-          <div className="card-header bordered">
-              <h4>Loopring DEX Markets</h4>
-          </div>
-          <div>
-              <table className="table table-hover table-striped table-dark text-center text-left-col1 text-right-last" id="loopringMarket">
-                  <thead>
-                      <tr>
-                          <th>Pair</th>
-                          <th>Price</th>
-                          <th>Change</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr>
-                          <td><a href="#" className="text-link font-bold">LRC/ETH<i className="icon-chevron-right"></i></a></td>
-                          <td>0.56 USD</td>
-                          <td className="text-up">+9.8%</td>
-                      </tr>
-                      <tr>
-                          <td><a href="#" className="text-link font-bold">LRC/BTC<i className="icon-chevron-right"></i></a></td>
-                          <td>0.56 USD</td>
-                          <td className="text-down">-1.45%</td>
-                      </tr>
-                      <tr>
-                          <td><a href="#" className="text-link font-bold">LRC/LTC<i className="icon-chevron-right"></i></a></td>
-                          <td>0.56 USD</td>
-                          <td className="text-up">+9.8%</td>
-                      </tr>
-                  </tbody>
-              </table>
-          </div>
+    <div className="column" style={{height:"-webkit-calc(100% - 251px)",paddingBottom:"460px"}}>
+        <div className="loopring-dex">
+            <div className="card-header bordered">
+                <h4>Loopring DEX Markets</h4>
+            </div>
+            <div className="item">        
+                <ul>
+                    <li><h3>LRC/ETH</h3></li>
+                    <li><small>Price</small><span class="text-down">0.56 USD</span></li>
+                    <li><small>Change</small><span className="text-up">+9.8%</span></li>
+                </ul>
+                <Button className="btn btn-primary">Go To Trade</Button>
+            </div>
+            <div className="item">        
+                <ul>
+                    <li><h3>LRC/ETH</h3></li>
+                    <li><small>Price</small><span class="text-down">0.56 USD</span></li>
+                    <li><small>Change</small><span className="text-up">+9.8%</span></li>
+                </ul>
+                <Button className="btn btn-primary">Go To Trade</Button>
+            </div>
+            <div className="item">        
+                <ul>
+                    <li><h3>LRC/ETH</h3></li>
+                    <li><small>Price</small><span class="text-down">0.56 USD</span></li>
+                    <li><small>Change</small><span className="text-up">+9.8%</span></li>
+                </ul>
+                <Button className="btn btn-primary">Go To Trade</Button>
+            </div>
+            
         </div>
-
-        <div className="card-header bordered">
-            <h4>Reference Markets</h4>
-        </div>
-        <div style={{height: "100%",overflow: "hidden",padding:"0 0 485px",minHeight: "300px"}}>
-            <div className="content-scroll">
+        <div className="column">
+            <div className="card-header bordered">
+                <h4>Reference Markets</h4>
+            </div>
+            <div style={{overflow: "auto",maxHeight: "300px"}}>
                 <table className="table table-hover table-striped table-dark text-center text-left-col1 text-right-last">
                     <thead>
                         <tr>

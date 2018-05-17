@@ -16,7 +16,7 @@ export default function ListTransaction(props) {
   }
   const types = getTypes('LRC')
   return (
-    <div>
+    <div style={{height: "-webkit-calc(100vh - 40px)"}}>
         <div className="card-header bordered">
             <h4>Transactions</h4>
             <div className="form-inline form-dark">
@@ -57,49 +57,47 @@ export default function ListTransaction(props) {
                 </span>
             </div>
         </div>
-        <div style={{height: "100%", overflow: "hidden", padding:"0 0 60px"}}>
-            <div className="content-scroll">
-                <table className="table table-hover table-striped table-dark text-center">
-                    <thead>
-                        <tr>
-                            <th className="text-center">Status</th>
-                            <th className="text-left">TxHash</th>
-                            <th className="text-left">Created</th>
-                            <th className="text-left">Type</th>
-                            <th className="text-right">Value</th>
-                            <th className="text-right">Gas</th>
-                            <th hidden className="text-right">Note</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                          list.items.map((item,index)=>
-                              <tr key={index}>
-                                  <td className="text-center">{renders.status(item,index)}</td>
-                                  <td className="text-left">{renders.txHash(item,index)}</td>
-                                  <td className="text-left">{renders.createTime(item,index)}</td>
-                                  <td className="text-left">{renders.type(item,index)}</td>
-                                  <td className="text-right">{renders.value(item,index)}</td>
-                                  <td className="text-right">{renders.gas(item,index)}</td>
-                                  <td hidden className="text-right">{renders.miner(item,index)}</td>
-                              </tr>
-                            )
-                        }
-                        {
-                          list.loading &&
-                          <tr>
-                              <td colSpan="100" className="text-center"><Spin/></td>
+        <div style={{height: "100%", overflow: "auto", padding:"0 0 60px"}}>
+            <table className="table table-hover table-striped table-dark text-center">
+                <thead>
+                    <tr>
+                        <th className="text-center">Status</th>
+                        <th className="text-left">TxHash</th>
+                        <th className="text-left">Created</th>
+                        <th className="text-left">Type</th>
+                        <th className="text-right">Value</th>
+                        <th className="text-right">Gas</th>
+                        <th hidden className="text-right">Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                      list.items.map((item,index)=>
+                          <tr key={index}>
+                              <td className="text-center">{renders.status(item,index)}</td>
+                              <td className="text-left">{renders.txHash(item,index)}</td>
+                              <td className="text-left">{renders.createTime(item,index)}</td>
+                              <td className="text-left">{renders.type(item,index)}</td>
+                              <td className="text-right">{renders.value(item,index)}</td>
+                              <td className="text-right">{renders.gas(item,index)}</td>
+                              <td hidden className="text-right">{renders.miner(item,index)}</td>
                           </tr>
-                        }
-                        {
-                          !list.loading && list.items.length === 0 &&
-                          <tr>
-                              <td colSpan="100" className="text-center">{intl.get('txs.no_txs')}</td>
-                          </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                        )
+                    }
+                    {
+                      list.loading &&
+                      <tr>
+                          <td colSpan="100" className="text-center"><Spin/></td>
+                      </tr>
+                    }
+                    {
+                      !list.loading && list.items.length === 0 &&
+                      <tr>
+                          <td colSpan="100" className="text-center">{intl.get('txs.no_txs')}</td>
+                      </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
   )

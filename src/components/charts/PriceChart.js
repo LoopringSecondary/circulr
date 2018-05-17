@@ -2,7 +2,7 @@ import React from 'react';
 
 function PriceChart(props) {
   return (
-    <div>
+    <div className="column" style={{height:"251px"}}>
        <div className="card-header card-header-dark bordered">
             <h4>CMC Chart</h4>
         </div>
