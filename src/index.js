@@ -4,10 +4,15 @@ import { models } from './modules'
 import { message } from 'antd'
 import './assets/css/index.less'
 import {setLocale} from "./common/utils/localeSetting";
-import STORAGE from './modules/storage'
+import STORAGE from './modules/storage';
+import Eth from 'LoopringJS/ethereum/eth';
+import Relay from 'LoopringJS/relay/relay';
 
-setLocale('en-US');
-window.STORAGE = STORAGE
+window.STORAGE = STORAGE;
+const host = window.STORAGE.settings.get().relay.selected;
+
+window.ETH = new Eth(`${host}/eth`);
+window.RELAY = new Relay(`${host}/rpc/v2`);
 
 // 1. Initialize
 const app = dva({
