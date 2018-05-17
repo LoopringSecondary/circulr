@@ -4,8 +4,10 @@ import { models } from './modules'
 import { message } from 'antd'
 import './assets/css/index.less'
 import {setLocale} from "./common/utils/localeSetting";
+import STORAGE from './modules/storage'
 
 setLocale('en-US');
+window.STORAGE = STORAGE
 
 // 1. Initialize
 const app = dva({
