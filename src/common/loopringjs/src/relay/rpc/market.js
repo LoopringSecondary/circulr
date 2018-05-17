@@ -142,5 +142,15 @@ getPriceQuote(currency) {
 
 }
 
+ export function getSupportedMarket(host) {
+    const body = {};
+    body.method = 'loopring_getSupportedMarket';
+    body.params = [{}];
+    body.id = id();
+    return request(host, {
+      method: 'post',
+      body
+    })
+  }
 
 

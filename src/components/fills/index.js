@@ -1,10 +1,10 @@
-import ListDefault from './ListDefault'
+import ListMyFills from './ListMyFills'
 import ListTradesHistory from './ListTradesHistory'
 import Detail from './Detail'
 import Modals from './Modals'
 
 export default {
-  ListDefault,
+  ListMyFills,
   ListTradesHistory,
   Detail,
   Modals,

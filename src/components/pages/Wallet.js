@@ -32,7 +32,7 @@ function Wallet(props) {
             </div>
         </div>
         <div className="side-fixed" style={{top:"0",right: "0",width: "450px",paddingTop:"74px"}} id="sideMarkets">
-            <div className="card dark h-full">
+            <div className="card dark h-full" style={{display:"flex",flexDirection: "column",justifyContent:"space-between"}}>
                 <Charts.PriceChart />
                 <Tickers.ListDefault />
             </div>
