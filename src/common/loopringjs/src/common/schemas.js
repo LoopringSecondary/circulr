@@ -26,7 +26,7 @@ const basicSchemas = {
   HEX: {
     type: 'string',
     required: true,
-    pattern: /^0x[0-9a-fA-F]+$/g,
+    pattern: /^0x[0-9a-fA-F]*$/g,
   },
   ETH_VALUES: {
     type: 'string',

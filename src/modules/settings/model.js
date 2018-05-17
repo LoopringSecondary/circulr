@@ -1,4 +1,6 @@
 import storage from 'modules/storage'
+import Eth from 'LoopringJS/ethereum/eth';
+import Relay from 'LoopringJS/relay/relay';
 
 const namespace = 'settings'
 
@@ -33,13 +35,16 @@ export default {
       return newState
     },
     relayChange(state,{payload}){
+      const {selected} = payload;
+      window.ETH = new Eth(`${selected}/eth`);
+      window.RELAY = new Relay(`${selected}/rpc/v2`);
       let newState =  {
         ...state,
         relay: {
           ...state.relay,
-          selected: payload.selected
+          selected
         }
-      }
+      };
       storage.settings.set(newState)
       return newState
     },
