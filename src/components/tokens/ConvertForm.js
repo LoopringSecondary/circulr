@@ -12,7 +12,6 @@ const WETH = Contracts.WETH;
 
 function ConvertForm(props) {
 
-  console.log(props)
   const {wallet, convert, dispatch, balance, marketcap,form} = props;
   const {amount, token, gasPrice, gasLimit} = convert;
   const {address} = wallet;
@@ -33,9 +32,9 @@ function ConvertForm(props) {
     convert.setMax({amount: max});
     form.setFieldsValue({amount:max})
   };
-  const toConvert =  () => {
+  const toConvert =  async () => {
     form.validateFields(async  (err,values) => {
-      if(!err){
+      if(err){
         let data = '';
         let value = '';
         if (token.toLowerCase() === 'Eth') {
@@ -45,7 +44,7 @@ function ConvertForm(props) {
           data = WETH.encodeInputs('withdraw', {wad: toHex(tf.getDecimalsAmount(amount))});
           value = '0x0'
         }
-        const to = config.getTokenBySymbol('WETh').address;
+        const to = config.getTokenBySymbol('WETH').address;
         const tx = {
           gasLimit: toHex(gasLimit),
           data,
@@ -55,10 +54,11 @@ function ConvertForm(props) {
           value,
           nonce: toHex(await window.STORAGE.wallet.getNonce(address))
       };
-        const signTx = account.signEthereumTx(tx);
+
+        const signTx = await account.signEthereumTx(tx);
         //  const res = await window.ETH.sendRawTransaction(signTx);
         console.log(signTx)
-      }
+     }
     });
 
   };
