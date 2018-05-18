@@ -56,10 +56,10 @@ class PrivateKey extends React.Component {
     );
     return (
       <div>
-        <div className="tab-pane text-inverse active" id="privateKey">
+        <div id="privateKey">
           <h2 className="text-center text-primary">Paste Your PrivateKey Here</h2>
           <Form>
-            <Form.Item>
+            <Form.Item className="eye-switch form-dark">
               {form.getFieldDecorator('privateKey', {
                 initialValue: privateKey,
                 rules: [{
@@ -72,7 +72,8 @@ class PrivateKey extends React.Component {
               )}
             </Form.Item>
           </Form>
-          <Button type="primary" className="btn-block btn-xlg btn-token" onClick={this.unlock}>Unlock</Button>
+          <div className="blk-md"/>
+          <Button className="btn btn-primary btn-block btn-xxlg" onClick={this.unlock}>Unlock</Button>
         </div>
       </div>
     )

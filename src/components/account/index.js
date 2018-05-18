@@ -23,7 +23,7 @@ export default {
 	UnlockByLedger,
 	UnlockByKeystore,
 	UnlockByMnemonic,
-  DetermineWallet,
+	DetermineWallet,
 	UnlockByPrivateKey,
 	GenerateWallet,
 	BackupWallet,

@@ -19,7 +19,7 @@ class Keystore extends React.Component {
     fileReader.onload = () => {
       const keystore = fileReader.result;
       keyStoreModel.setKeystore({keystore});
-      form.setFieldsValue({keystore:keystore.toString()})
+      form.setFieldsValue({keystore: keystore.toString()})
     };
     fileReader.readAsText(file, "utf-8");
     this.setState({fileList: []});
@@ -69,7 +69,7 @@ class Keystore extends React.Component {
       isKeystorePassRequired(keystore);
       return true;
     } catch (e) {
-      console.log('ERROR:',e.message);
+      console.log('ERROR:', e.message);
       return false;
     }
   };
@@ -98,32 +98,31 @@ class Keystore extends React.Component {
 
     return (
       <div>
-        <div className="text-inverse">
-          <div className='row align-items-center'>
-            <div className='col'><h2 className="text-center text-primary">Select JSON File</h2></div>
-            <Upload className='col-auto' {...uploadProps}>
-              <Button><Icon type="folder"/>Select JSON File</Button>
-            </Upload>
-          </div>
-          <Form>
-            <Form.Item>
-              {form.getFieldDecorator('keystore', {
-                initialValue: '',
-                rules: [{
-                  required: true,
-                  message: 'invalid keystore',
-                  validator: (rule, value, cb) => this.isValidKeystore(value) ? cb() : cb(true)
-                }]
-              })(
-                  <Input.TextArea autosize={{minRows: 3, maxRows: 8}} size="large" className='d-block fs12' onChange={this.handleStoreChange}/>
-              )}
-            </Form.Item>
-          </Form>
-          {isPasswordRequired &&
-          <Input type={visible ? 'text' : 'password'} className='mb10' addonAfter={visibleIcon} value={password}
-                 onChange={this.handlePassChange}/>}
-          <Button type="primary" className="btn-block btn-xlg btn-token" onClick={this.unlock}>Unlock</Button>
-        </div>
+        <h2 className="text-center text-primary">Select JSON File</h2>
+        <Upload className='btn btn-block' {...uploadProps}>
+          <Button><Icon type="folder"/>Select JSON File</Button>
+        </Upload>
+        <div className="blk"/>
+        <Form>
+          <Form.Item>
+            {form.getFieldDecorator('keystore', {
+              initialValue: '',
+              rules: [{
+                required: true,
+                message: 'invalid keystore',
+                validator: (rule, value, cb) => this.isValidKeystore(value) ? cb() : cb(true)
+              }]
+            })(
+              <Input.TextArea autosize={{minRows: 3, maxRows: 8}} size="large" className='d-block fs12'
+                              onChange={this.handleStoreChange}/>
+            )}
+          </Form.Item>
+        </Form>
+        {isPasswordRequired &&
+        <Input type={visible ? 'text' : 'password'} className='mb10' addonAfter={visibleIcon} value={password}
+               onChange={this.handlePassChange}/>}
+        <div className="blk"/>
+        <Button type="primary" className="btn btn-primary btn-block btn-xxlg" onClick={this.unlock}>Unlock</Button>
       </div>
     )
   }

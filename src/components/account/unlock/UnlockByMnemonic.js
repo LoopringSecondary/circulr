@@ -51,44 +51,44 @@ function Mnemonic(props) {
 
   return (
     <div>
-      <div className="tab-pane text-inverse active" id="mnemonic">
-        <h2 className="text-center text-primary">Select Your Wallet</h2>
-        <div className="form-group form-group-lg">
-          <Select defaultValue='0' dropdownMatchSelectWidth={false} onChange={handleWalletType}>
+      <div id="mnemonic" className="form-dark">
+        <h2 className="text-center text-primary">Paste Your Mnemonic Here</h2>
+        <div className="blk-md"/>
+        <Form.Item>
+          <Select defaultValue='0' dropdownMatchSelectWidth={false} size="large" onChange={handleWalletType}
+                  className="d-block">
             {wallets.map((wallet, index) => {
               return <Option key={index}>{wallet.name}</Option>
             })}
           </Select>
+        </Form.Item>
+        <Form.Item colon={false}>
+          {props.form.getFieldDecorator('mnemonic', {
+            initialValue: '',
+            rules: [{
+              required: true,
+              message: 'invalid mnemonic',
+              validator: (rule, value, cb) => isValidateMnemonic(value) ? cb() : cb(true)
+            }]
+          })(
+            <Input.TextArea placeholder="Paste Your Mnemonic Here" size="large" autosize={{minRows: 3, maxRows: 6}}
+                            value={mnemonic} onChange={handleMnemonic} className="mnemonic"/>
+          )}
+        </Form.Item>
+        <Form.Item colon={false}>
+          {passRequired && <div>
+            Password:<Input value={password} onChange={handlePass}/>
+          </div>}
+        </Form.Item>
+        <Form.Item label="Default Address:">
+          <Input value={address} disabled/>
+        </Form.Item>
+        <div className="blk"/>
+        <Button className="btn btn-primary btn-block btn-xxlg" onClick={unlock}>Unlock</Button>
+        <div className="blk"/>
+        <div className="text-center">
+          <a className="text-link" onClick={moreAddress}>Select Other Address</a>
         </div>
-        <h2 className="text-center text-primary">Paste Your Mnemonic Here</h2>
-
-        <Form>
-          <Form.Item>
-            {props.form.getFieldDecorator('mnemonic', {
-              initialValue: '',
-              rules: [{
-                required: true,
-                message: 'invalid mnemonic',
-                validator: (rule, value, cb) => isValidateMnemonic(value) ? cb() : cb(true)
-              }]
-            })(
-              <Input.TextArea placeholder="" autosize={{minRows: 3, maxRows: 6}} onChange={handleMnemonic}/>
-            )}
-          </Form.Item>
-        </Form>
-        {passRequired &&
-        <div className="form-group form-group-lg">
-          Password:<Input value={password} onChange={handlePass}/>
-        </div>
-        }
-        {address &&
-        <div className="form-group form-group-lg">
-          Default Address:<Input value={address} disabled/>
-        </div>
-        }
-        <Button type="primary" className="btn-block btn-xlg btn-token" onClick={unlock}>Unlock</Button>
-        <Button type="primary" className="btn-block btn-xlg btn-token" onClick={moreAddress}>Select Other
-          Address</Button>
       </div>
     </div>
   )
