@@ -8,7 +8,30 @@ const GasFeeForm = ({
   }) => {
   const {trading} = settings
   const integerReg = new RegExp("^0*[1-9]{1}[0-9]*$")
+  function handleChange(type, e) {
+    if ('timeToLive' === type || 'lrcFee' === type || 'marginSplit' === type) {
+      handleChangeValue(type, e.target.value)
+    } else {
+      handleChangeValue(type, e)
+    }
+  }
+  function handleChangeValue(type, v) {
 
+  }
+  function validateLrcFee(value) {
+    let v = Number(value);
+    return value && v.toString() === value && v >=0 && v <=50
+  }
+  function validateMarginSplit(value) {
+    let v = Number(value);
+    return value && v.toString() === value && v >=0 && v <=100
+  }
+  function validateGasPrice(value) {
+    return value >=0 && value < 100;
+  }
+  function validateInteger(value) {
+    return integerReg.test(value)
+  }
   function handleSubmit() {
     form.validateFields((err,values) => {
       console.log('values',values);
@@ -23,6 +46,30 @@ const GasFeeForm = ({
   function resetForm(){
     form.resetFields()
   }
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 8 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 16 },
+    },
+  };
+
+  const Option = Select.Option;
+  const timeToLiveSelectAfter = form.getFieldDecorator('timeToLiveUnit', {
+    initialValue:trading.timeToLiveUnit,
+    rules:[]
+  })(
+    <Select style={{ width: 90 }} onChange={handleChange.bind(this, "timeToLiveUnit")}>
+      <Option value="minute">{intl.get('trade.minute')}</Option>
+      <Option value="hour">{intl.get('trade.hour')}</Option>
+      <Option value="day">{intl.get('trade.day')}</Option>
+      <Option value="week">{intl.get('trade.week')}</Option>
+      <Option value="month">{intl.get('trade.month')}</Option>
+    </Select>
+  )
   return (
     <div>
       <div className="pb10 fs16 color-black-1 zb-b-b">Gas Fee</div>
