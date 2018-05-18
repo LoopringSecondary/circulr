@@ -9,6 +9,7 @@ import * as tokenFormatter from 'modules/tokens/TokenFm'
 import moment from 'moment'
 import ReactDOM from 'react-dom'
 import Notification from 'LoopringUI/components/Notification'
+var _ = require('lodash');
 
 class PlaceOrderForm extends React.Component {
 
@@ -16,7 +17,59 @@ class PlaceOrderForm extends React.Component {
     const {form, placeOrder, settings, balance, wallet, marketcap} = this.props
     const milliLrcFee = placeOrder.sliderMilliLrcFee >0 ? placeOrder.sliderMilliLrcFee : settings.trading.lrcFee
     const ttlValue = placeOrder.timeToLive >0 ? placeOrder.timeToLive : settings.trading.timeToLive
-    const ttlUnit = placeOrder.timeToLiveUnit >0 ? placeOrder.timeToLiveUnit : settings.trading.timeToLiveUnit
+    const ttlUnit = placeOrder.timeToLiveUnit || settings.trading.timeToLiveUnit
+
+    const {pair, side, priceInput, amountInput} = placeOrder
+    const amount = orderFormatter.isValidAmount(amountInput) ? fm.toBig(amountInput) : fm.toBig(0)
+    const price = orderFormatter.isValidAmount(amountInput) ? fm.toBig(priceInput) : fm.toBig(0)
+    const total = amount.times(price)
+    let left = {}, right = {}, sell = {}, buy = {}, lrcFee = 0, amountSlider = 0
+    if(pair && side) {
+      if(side === 'buy' || side === 'sell'){
+        const l = config.getTokenBySymbol(pair.split('-')[0].toUpperCase())
+        const r = config.getTokenBySymbol(pair.split('-')[1].toUpperCase())
+        const marketConfig = config.getMarketBySymbol(l.symbol, r.symbol)
+        if(!marketConfig || !(l && r)) {
+          //TODO notification
+          throw new Error('Not supported market:'+pair)
+        }
+        const formAmount = form.getFieldValue('amount')
+        const formPrice = form.getFieldValue('price')
+        if(formAmount !== undefined && amountInput !== undefined && (formAmount !== '' && formAmount.toString() != amountInput.toString())) {
+          form.setFieldsValue({"amount": amountInput})
+        }
+        if(formPrice !== undefined && (formPrice !== '' && formPrice.toString() !== priceInput.toString())) {
+          form.setFieldsValue({"price": priceInput})
+        }
+        const balanceL = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:l.symbol, toUnit:true})
+        const balanceR = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:r.symbol, toUnit:true})
+        left = {...l, ...balanceL}
+        right = {...r, ...balanceR}
+        const amountPrecision = Math.max(0, right.precision - marketConfig.pricePrecision)
+        let availableAmount = 0
+        if(price.gt(0)) {
+          availableAmount = orderFormatter.calculateAvailableAmount(side, priceInput, left, right, amountPrecision)
+        }
+        if(side === 'buy') {
+          sell = {token : right, availableAmount : 0}
+          buy = {token : left, availableAmount : availableAmount}
+        } else {
+          sell = {token : left, availableAmount : availableAmount}
+          buy = {token : right, availableAmount : 0}
+        }
+        amountSlider = orderFormatter.amountChangeEffectSlider(availableAmount, amountInput)
+        const formAmountSlider = form.getFieldValue('amountSlider')
+        if(_.isNumber(formAmountSlider) && formAmountSlider !== amountSlider) {
+          form.setFieldsValue({"amountSlider": amountSlider})
+        }
+      } else {
+        throw new Error('Not supported side change:'+side)
+      }
+    }
+    if(amount.gt(0) && price.gt(0) && milliLrcFee) {
+      const total = price.times(amount)
+      lrcFee = orderFormatter.calculateLrcFee(marketcap.items, total, milliLrcFee, right.symbol)
+    }
 
     function sideChange(value) {
       placeOrder.sideChangeEffects({side:value})
@@ -29,20 +82,22 @@ class PlaceOrderForm extends React.Component {
 
     function inputChange(type, e) {
       let price = 0, amount = 0
-      const marketConfig = config.getMarketBySymbol(placeOrder.left.symbol, placeOrder.right.symbol)
+      const marketConfig = config.getMarketBySymbol(left.symbol, right.symbol)
       if (type === 'price') {
         price = e.target.value.toString()
-        if(!orderFormatter.isValidAmount(price)) return false
-        price = orderFormatter.formatPriceByMarket(price, marketConfig)
+        if(orderFormatter.isValidAmount(price)) {
+          price = orderFormatter.formatPriceByMarket(price, marketConfig)
+        }
         //e.target.value = price
-        placeOrder.priceChangeEffects({priceInput:price})
+        placeOrder.priceChange({priceInput:price})
       } else if (type === 'amount') {
         amount = e.target.value.toString()
-        if(!orderFormatter.isValidAmount(amount)) return false
-        const tokenRConfig = config.getTokenBySymbol(placeOrder.right.symbol)
-        amount = orderFormatter.formatAmountByMarket(amount, tokenRConfig, marketConfig)
+        if(orderFormatter.isValidAmount(amount)) {
+          const tokenRConfig = config.getTokenBySymbol(right.symbol)
+          amount = orderFormatter.formatAmountByMarket(amount, tokenRConfig, marketConfig)
+        }
         //e.target.value = amount
-        placeOrder.amountChangeEffects({amountInput:amount})
+        placeOrder.amountChange({amountInput:amount})
       }
     }
 
@@ -51,11 +106,18 @@ class PlaceOrderForm extends React.Component {
     }
 
     function amountSliderChange(e) {
-      placeOrder.amountSliderChangeEffects({amountSlider:e})
+      let availableAmount = 0
+      if(side === 'buy') {
+        availableAmount = buy.availableAmount
+      } else {
+        availableAmount = sell.availableAmount
+      }
+      const amount = orderFormatter.sliderEffectAmount(availableAmount, e, left, right)
+      placeOrder.amountChange({amountInput:amount})
     }
 
     function lrcFeeChange(v) {
-      placeOrder.milliLrcFeeChangeEffects({milliLrcFee:v})
+      placeOrder.milliLrcFeeChange({milliLrcFee:v})
     }
 
     function timeToLivePatternChanged(value) {
@@ -123,12 +185,12 @@ class PlaceOrderForm extends React.Component {
       100: '100％'
     };
 
-    const amountSlider = form.getFieldDecorator('amountSlider', {
+    const amountSliderField = form.getFieldDecorator('amountSlider', {
       initialValue: 0,
       rules: []
     })(
       <Slider className="place-order-amount-percentage" min={0} max={100} marks={marks} onChange={amountSliderChange.bind(this)}
-              tipFormatter={null} disabled={fm.toBig(placeOrder[placeOrder.side].availableAmount).lt(0)}/>
+              tipFormatter={null} disabled={placeOrder.side === 'sell' ? fm.toBig(sell.availableAmount).lt(0) : fm.toBig(buy.availableAmount).lt(0)}/>
     )
 
     const totalWorth = (
@@ -141,7 +203,7 @@ class PlaceOrderForm extends React.Component {
       <Popover overlayClassName="place-order-form-popover" title={<div className="pt5 pb5">{intl.get('trade.custom_lrc_fee_title')}</div>} content={
         <div>
           <div className="pb5 fs12">{intl.get('trade.current_lrc_fee_ratio')} : {milliLrcFee}‰</div>
-          <div className="pb15 fs12">{intl.get('trade.current_lrc_fee')} : {placeOrder.lrcFee} LRC</div>
+          <div className="pb15 fs12">{intl.get('trade.current_lrc_fee')} : {lrcFee} LRC</div>
           {form.getFieldDecorator('lrcFeeSlider', {
             initialValue: milliLrcFee,
             rules: []
@@ -269,8 +331,7 @@ class PlaceOrderForm extends React.Component {
           return
         }
       }
-      const address = wallet.address
-      if(!address) {
+      if(!wallet.address) {
         //TODO
         // Notification.open({
         //   type:'warning',
@@ -296,7 +357,7 @@ class PlaceOrderForm extends React.Component {
           if (values.marginSplit) {
             tradeInfo.marginSplit = Number(values.marginSplit)
           }
-          const totalWorth = orderFormatter.calculateWorthInLegalCurrency(marketcap, placeOrder.right.symbol, tradeInfo.total)
+          const totalWorth = orderFormatter.calculateWorthInLegalCurrency(marketcap, right.symbol, tradeInfo.total)
           if(!totalWorth.gt(0)) {
             Notification.open({
               message:intl.get('trade.send_failed'),
@@ -330,8 +391,8 @@ class PlaceOrderForm extends React.Component {
             return
           }
           tradeInfo.milliLrcFee = milliLrcFee
-          tradeInfo.lrcFee = placeOrder.lrcFee
-          orderFormatter.tradeVerification(wallet, tradeInfo, placeOrder.sell, placeOrder.buy, this.props.txs)
+          tradeInfo.lrcFee = lrcFee
+          orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, this.props.txs)
           if(tradeInfo.error) {
             tradeInfo.error.map(item=>{
               Notification.open({
@@ -367,25 +428,25 @@ class PlaceOrderForm extends React.Component {
         <div className="card-body form-inverse">
           <ul className="pair-price text-inverse">
             <li>
-              <h4>{placeOrder.left.symbol}</h4><span className="token-price">0.00009470 USD</span><span className="text-up">+0.98</span></li>
+              <h4>{left.symbol}</h4><span className="token-price">0.00009470 USD</span><span className="text-up">+0.98</span></li>
             <li>
-              <h4>{placeOrder.right.symbol}</h4><span className="token-price">0.56 USD</span><span className="text-up">+0.45</span></li>
+              <h4>{right.symbol}</h4><span className="token-price">0.56 USD</span><span className="text-up">+0.45</span></li>
           </ul>
           {placeOrder.side === 'buy' &&
           <ul className="token-tab">
-            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>Buy {placeOrder.left.symbol}</a></li>
-            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>Sell {placeOrder.left.symbol}</a></li>
+            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>Buy {left.symbol}</a></li>
+            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>Sell {left.symbol}</a></li>
           </ul>
           }
           {placeOrder.side === 'sell' &&
           <ul className="token-tab">
-            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>Buy {placeOrder.left.symbol}</a></li>
-            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>Sell {placeOrder.left.symbol}</a></li>
+            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>Buy {left.symbol}</a></li>
+            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>Sell {left.symbol}</a></li>
           </ul>
           }
           <div className="tab-content">
             <div className="tab-pane active" id="b1">
-              {placeOrder.sell && <small className="balance text-inverse">{placeOrder.sell.token.symbol} Balance: <span>{placeOrder.sell.token.balanceDisplay}</span></small>}
+              {sell && <small className="balance text-inverse">{sell.token.symbol} Balance: <span>{sell.token.balance.toString(10)}</span></small>}
               <div className="blk-sm"></div>
               <Form.Item label={null} colon={false}>
                 {form.getFieldDecorator('price', {
@@ -397,7 +458,7 @@ class PlaceOrderForm extends React.Component {
                 })(
                   <Input placeholder="" size="large"
                          prefix={`Price`}
-                         suffix={<span className="fs14 color-black-4">{placeOrder.right.symbol}</span>}
+                         suffix={<span className="fs14 color-black-4">{right.symbol}</span>}
                          onChange={inputChange.bind(this, 'price')}
                          onFocus={() => {
                            const amount = form.getFieldValue("price")
@@ -415,7 +476,7 @@ class PlaceOrderForm extends React.Component {
               </Form.Item>
               <Form.Item label={null} colon={false} extra={
                 <div>
-                  <div className="fs10" style={{marginBottom:"-10px"}}>{amountSlider}</div>
+                  <div className="fs10" style={{marginBottom:"-10px"}}>{amountSliderField}</div>
                 </div>
               }>
                 {form.getFieldDecorator('amount', {
@@ -427,7 +488,7 @@ class PlaceOrderForm extends React.Component {
                 })(
                   <Input placeholder="" size="large"
                          prefix={`Amount`}
-                         suffix={<span className="fs14 color-black-4">{placeOrder.left.symbol}</span>}
+                         suffix={<span className="fs14 color-black-4">{left.symbol}</span>}
                          onChange={inputChange.bind(this, 'amount')}
                          onFocus={() => {
                             const amount = Number(form.getFieldValue("amount"))
@@ -446,7 +507,7 @@ class PlaceOrderForm extends React.Component {
               <div className="text-inverse text-secondary">
                 <div className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
-                    <span className="font-bold">Total</span><span><span>{placeOrder.total}</span>{placeOrder.right.symbol}{totalWorth}</span>
+                    <span className="font-bold">Total</span><span><span>{total.toString(10)}</span>{right.symbol}{totalWorth}</span>
                   </div>
                 </div>
                 <div className="form-group mr-0">
@@ -455,7 +516,7 @@ class PlaceOrderForm extends React.Component {
                     <span>
                       <span>{editLRCFee}</span>
                       <span></span>
-                      <span className="offset-md">{placeOrder.lrcFee}LRC ({milliLrcFee}‰)</span>
+                      <span className="offset-md">{lrcFee}LRC ({milliLrcFee}‰)</span>
                     </span>
                   </div>
                 </div>
