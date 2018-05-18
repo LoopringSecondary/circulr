@@ -9,7 +9,6 @@ export default {
     mnemonic: '',
     password: null,
     passRequired: false,
-    isValidMnemonic: false,
     dpath: "m/44'/60'/0'/0",
     address: '',
   },
@@ -21,7 +20,6 @@ export default {
         mnemonic: '',
         password: null,
         passRequired: false,
-        isValidMnemonic: false,
         dpath: "m/44'/60'/0'/0",
         address: '',
       }
@@ -40,7 +38,6 @@ export default {
       return {
         ...state,
         mnemonic,
-        isValidMnemonic,
         address
       }
     },

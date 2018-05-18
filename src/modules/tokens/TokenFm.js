@@ -102,11 +102,9 @@ export function getPriceBySymbol({prices, symbol, ifFormat}) {
 }
 
 export function getWorthBySymbol({prices, symbol, ifFormat, amount}) {
-  const price = getPriceBySymbol({prices, symbol, ifFormat})
-  if(price.price && amount) {
-    return toFixed(toBig(price.price).times(amount),2)
-  }else{
-    return toFixed(0,2)
+  const price = getPriceBySymbol({prices, symbol, ifFormat});
+  if(price.price) {
+    return toFixed(toBig(price.price).times(toBig(amount)),2)
   }
 }
 

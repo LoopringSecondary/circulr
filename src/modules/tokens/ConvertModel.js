@@ -5,7 +5,7 @@ export default {
   namespace: 'convert',
   state: {
     token: 'ETH',
-    amount: 0,
+    amount: toBig(0),
     isMax: false,
     gasPrice: 10,
     gasLimit: 200000,
@@ -71,7 +71,7 @@ export default {
       if (isMax && token.toLowerCase() === 'eth') {
         const assets = yield select((state) => getAssetsByToken(state, token));
         const gas = toBig(gasPrice).times(gasLimit).times(1e9);
-        const amount = assets.balance.minus(gas).isPositive() ? assets.balance.minus(gas) : toBig(0);
+        const amount = assets.balance.minus(gas).minus(0.1).isPositive() ? assets.balance.minus(gas).minus(0.1) : toBig(0);
         yield put({type: 'amountChange', payload: {amount}})
       }
       yield put({type: 'setGasPrice', payload: {gasPrice}})
@@ -80,17 +80,10 @@ export default {
       yield put({type: 'reset', payload});
       yield put({type: 'setToken', payload});
     },
-    * setMax({payload}, {put,select}) {
-      const {balance} = payload;
-      const {token, gasLimit, gasPrice} = yield select((state) => state.convert);
-      const gas = toBig(gasPrice).times(gasLimit).div(1e9);
-      let max = balance;
-      if (token === 'ETH') {
-        max = toBig(balance).minus(gas).isPositive ? toBig(balance).minus(gas) : toBig(0)
-      }
-
+    * setMax({payload}, {put}) {
+      const {amount} = payload;
       yield put({type:"setIsMax",payload:{isMax:true}});
-      yield put({type:"setAmount",payload:{amount:max}})
+      yield put({type:"setAmount",payload:{amount}})
     }
   }
 
