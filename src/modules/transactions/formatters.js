@@ -71,11 +71,16 @@ export class TxFm{
       return 'outcome'
     }
   }
+
   getConfirmTime(){
     return this.tx.updateTime && commonFm.getFormatTime(toNumber(this.tx.updateTime) * 1e3)
   }
   getCreateTime(){
     return this.tx.createTime && commonFm.getFormattedTime(this.tx.createTime,'YY-MM-DD HH:SS')
+  }
+  fromNow(){
+    console.log('fromNow')
+    return this.tx.createTime && commonFm.fromNow(this.tx.createTime)
   }
   getGas(){
     if(this.tx.status.toLowerCase() === 'pending' && this.tx.gas_price && this.tx.gas_limit){

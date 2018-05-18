@@ -27,10 +27,6 @@ export default function ListTransaction(props) {
                       placeholder={intl.get('txs.status')}
                       dropdownMatchSelectWidth={false}
                       className="form-inline form-inverse"
-                      onFocus={()=>{}}
-                      onBlur={()=>{}}
-                      optionFilterProp="children"
-                      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     >
                     <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('txs.status')}</Select.Option>
                     <Select.Option value="pending">{intl.get('txs.status_pending')}</Select.Option>
@@ -62,12 +58,13 @@ export default function ListTransaction(props) {
                       <thead>
                           <tr>
                               <th className="text-left">Type</th>
-                              <th className="text-left">Created</th>
+                              <th className="text-left">Value</th>
+                              <th className="text-left">Gas</th>
                               <th className="text-left">Block</th>
-                              <th className="text-right">Value</th>
-                              <th className="text-right">Gas</th>
+                              <th className="text-left">TxHash</th>
+                              <th className="text-left">Created</th>
                               <th className="text-center">Status</th>
-                              <th className="text-right">TxHash</th>
+                              <th className="text-center">Options</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -77,12 +74,13 @@ export default function ListTransaction(props) {
                               return (
                                 <tr key={index}>
                                   <td className="text-left">{txFm.getType()}</td>
-                                  <td className="text-left">{renders.createTime(txFm)}</td>
+                                  <td className="text-left">{renders.value(txFm)}</td>
+                                  <td className="text-left">{txFm.getGas()} ETH</td>
+                                  <td className="text-left">{renders.txHash(txFm)}</td>
                                   <td className="text-left">{item.blockNumber}</td>
-                                  <td className="text-right">{renders.value(txFm)}</td>
-                                  <td className="text-right">{txFm.getGas()} ETH</td>
+                                  <td className="text-left">{renders.createTime(txFm)}</td>
                                   <td className="text-center">{renders.status(txFm)}</td>
-                                  <td className="text-right">{renders.txHash(txFm)}</td>
+                                  <td className="text-center">{renders.options(txFm)}</td>
                                 </tr>
                               )
                             })
@@ -100,14 +98,14 @@ export default function ListTransaction(props) {
 }
 export const renders = {
   createTime:(fm) => (
-    <span>{fm.getCreateTime()}</span>
+    <div>{fm.getCreateTime()}</div>
   ),
   txHash:(fm) => (
     <span
        onCopy={null}
        onClick={null}
     >
-      <span className="text-primary">{getShortAddress(fm.tx.txHash)}</span>
+      <span className="">{getShortAddress(fm.tx.txHash)}</span>
     </span>
   ),
   value:(fm)=>{
@@ -133,4 +131,30 @@ export const renders = {
       </div>
     )
   },
+  options:(fm)=>{
+    return (
+      <div>
+        {fm.tx.status === 'pending' &&
+          <div>
+            <span className="text-primary">Detail</span>
+            <span className="text-primary"> • </span>
+            <span className="text-primary">Resend</span>
+            <span className="text-primary"> • </span>
+            <span className="text-primary">Cancel</span>
+          </div>
+        }
+        {fm.tx.status === 'failed' &&
+          <div>{fm.getCreateTime()}
+            <span className="text-primary">Detail</span>
+            <span className="text-primary"> • </span>
+            <span className="text-primary">Resend</span>
+          </div>
+        }
+        {fm.tx.status === 'success' &&
+          <div><span className="text-primary">Detail</span></div>
+        }
+      </div>
+    )
+  },
+
 }
