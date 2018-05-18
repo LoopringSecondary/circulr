@@ -12,6 +12,7 @@ const WETH = Contracts.WETH;
 
 function ConvertForm(props) {
 
+  console.log(props)
   const {wallet, convert, dispatch, balance, marketcap,form} = props;
   const {amount, token, gasPrice, gasLimit} = convert;
   const {address} = wallet;
@@ -86,7 +87,7 @@ function ConvertForm(props) {
           )}
         </Form.Item>
       </Form>
-      
+
       <div className="d-flex justify-content-between text-color-dark-2">
         <small>
           {amount && marketcap && isValidNumber(amount) &&
