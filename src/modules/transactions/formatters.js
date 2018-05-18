@@ -1,4 +1,4 @@
-
+import {toBig, toNumber,toFixed} from "LoopringJS/common/formatter";
 import intl from 'react-intl-universal'
 
 export const getTypes = (token)=>{
@@ -25,4 +25,16 @@ export const getTypes = (token)=>{
     types = [...types,...lrcTypes]
   }
   return [...types,...othersTypes]
+}
+
+export function isApproving(pendingTxs, symbol) {
+  if (symbol && pendingTxs) {
+    const approveTxs = pendingTxs.filter(tx => tx.type === 'approve' && tx.symbol.toLowerCase() === symbol.toLowerCase());
+    console.log('Approve TXs:',approveTxs);
+    approveTxs.sort((a, b) => b.nonce - a.nonce);
+    if (approveTxs.length > 0) {
+      console.log('Approve Value:',approveTxs[0].value);
+      return toBig(approveTxs[0].value);
+    }
+  }
 }
