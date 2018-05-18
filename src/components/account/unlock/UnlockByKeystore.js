@@ -94,21 +94,19 @@ import routeActions from 'common/utils/routeActions'
 
     return (
       <div>
-        <div className="text-inverse">
-          <div className='row align-items-center'>
-            <div className='col'><h2 className="text-center text-primary">Select JSON File</h2></div>
-            <Upload className='col-auto' {...uploadProps}>
+            <h2 className="text-center text-primary">Select JSON File</h2>
+            <Upload className='btn btn-block' {...uploadProps}>
               <Button><Icon type="folder"/>Select JSON File</Button>
             </Upload>
-          </div>
-          <div className='mb20'>
+            <div className="blk"></div>
+          <div className="form-dark">
             <Input.TextArea autosize={{minRows: 3, maxRows: 8}} size="large" className='d-block fs12' value={keystore} onChange={this.handleStoreChange}/>
           </div>
           {keystore && !isValid && <div className="d-flex justify-content-between align-items-center up-file"><small className="truncation" style={{width: "440px"}}>Invalid JSON </small></div>}
           {isPasswordRequired &&
           <Input   type={visible ? 'text' : 'password'} className='mb10'  addonAfter={visibleIcon} value={password} onChange={this.handlePassChange}/>}
-          <Button type="primary" className="btn-block btn-xlg btn-token" onClick={this.unlock}>Unlock</Button>
-        </div>
+          <div className="blk"></div>
+          <Button type="primary" className="btn btn-primary btn-block btn-xxlg" onClick={this.unlock}>Unlock</Button>
       </div>
     )
   }

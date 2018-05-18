@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,Button } from 'antd';
+import {Form,Input,Button } from 'antd';
 import {connect} from 'dva';
 import routeActions from 'common/utils/routeActions';
 
@@ -46,12 +46,14 @@ class PrivateKey extends React.Component {
     );
     return (
       <div>
-        <div className="tab-pane text-inverse active" id="privateKey">
+        <div id="privateKey">
           <h2 className="text-center text-primary">Paste Your PrivateKey Here</h2>
-          <div className="form-group form-group-lg iconic-input iconic-input-lg right">
+          <div className="blk-md"></div>
+          <Form.Item className="eye-switch form-dark">
             <Input type={visible ? 'text' : 'password'} addonAfter={visibleIcon} onChange={this.keyChange} value={privateKey}/>
-          </div>
-          <Button type="primary" className="btn-block btn-xlg btn-token" onClick={this.unlock}>Unlock</Button>
+          </Form.Item>
+          <div className="blk-md"></div>
+          <Button className="btn btn-primary btn-block btn-xxlg" onClick={this.unlock}>Unlock</Button>
         </div>
       </div>
     )

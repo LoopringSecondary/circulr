@@ -1,11 +1,59 @@
 import intl from 'react-intl-universal'
+import {getTokensByMarket} from '../formatter/common'
 
-export default class TickerFm {
+export class TickersFm{
+  constructor(tickers){
+    this.tickers = tickers
+  }
+  getFavoredTickers(){
+    return getFavoredTickers()
+  }
+  getRecentTickers(){
+    return getRecentTickers()
+  }
+  getAllTickers(){
+    return getAllTickers(this.tickers)
+  }
+  getTickersBySymbol(symbol){
+    return this.tickers.items.filter(ticker=>ticker.market.indexOf(symbol) > -1)
+  }
+}
+export const sortTickers = (items)=>{
+  const new_items =[...items]
+  const sorter = (a,b)=>{
+    if(a.vol === b.vol ){
+      if(a.last === b.last){
+        return a.market - b.market
+      }else{
+        return Number(b.last) - Number(a.last)
+      }
+    }else{
+      return Number(b.vol) - Number(a.vol)
+    }
+  }
+  return new_items.sort(sorter)
+}
+export const getFavoredTickers = (items)=>{
+  return []
+}
+export const getRecentTickers = (items)=>{
+  return []
+}
+export const getAllTickers = (tickers)=>{
+  const {extra,items} = tickers
+  let new_items = [...items]
+  if(extra.keywords){
+    new_items = new_items.filter(item=>item.market.toLowerCase().indexOf(extra.keywords.toLowerCase())> -1 )
+  }
+  return sortTickers(new_items)
+}
+
+export class TickerFm {
   constructor(ticker){
     this.ticker = ticker
   }
-  getVolume(){
-    return getVolume(this.ticker.vol)
+  getVol(){
+    return getVol(this.ticker.vol)
   }
   getLast(){
     return getPrice(this.ticker.last)
@@ -13,9 +61,15 @@ export default class TickerFm {
   getChangeDirection(){
     return getChangeDirection(this.ticker.change)
   }
+  getChange(){
+    return getChange(this.ticker.change)
+  }
+  getTokens(){
+    return getTokensByMarket(this.ticker.market)
+  }
 }
 
-export const getVolume = (value)=>{
+export const getVol = (value)=>{
   value = Number(value)
   if(value>1000){
     return value.toFixed(0)
@@ -60,6 +114,13 @@ export const getPrice = (value)=>{
       break;
   }
   return value
+}
+export const getChange = (change)=>{
+  if(!change){
+    return '0.00%'
+  }else{
+    return change
+  }
 }
 export const getChangeDirection = (change)=>{
   if(!change){

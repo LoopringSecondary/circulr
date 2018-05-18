@@ -47,13 +47,16 @@ class  GenerateWallet extends React.Component {
       <div>
         <div className="form-dark">
           <h2 className="text-center text-primary">Generate Wallet</h2>
-          <Input type={visible ? 'text':'password'} addonAfter={visibleIcon} onChange={this.passChange} value={pass}/>
-          <div className="d-flex justify-content-start align-items-center password-strong">
-            <div>Password Strength</div>
-            <Progress percent={50} status="active" />
-            <div><span className="offset-md">average</span></div>
+          <div className="blk-lg"></div>
+          <div className="eye-switch">
+            <Input type={visible ? 'text':'password'} addonAfter={visibleIcon} onChange={this.passChange} value={pass} />
           </div>
-          <button className="btn btn-primary btn-block btn-xlg" onClick={this.generate}>Generate Now</button>
+          <div className="d-flex justify-content-start align-items-center password-strong" style={{width:"300px"}}>
+            <b className="password-label">Password Strength</b>
+            <Progress percent={50}  />
+            <div><span className="offset-md text-up">average</span></div>
+          </div>
+          <button className="btn btn-primary btn-block btn-xxlg" onClick={this.generate}>Generate Now</button>
         </div>
       </div>
     )
