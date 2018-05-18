@@ -104,7 +104,7 @@ class Keystore extends React.Component {
         </Upload>
         <div className="blk"/>
         <Form>
-          <Form.Item>
+          <Form.Item className="form-dark">
             {form.getFieldDecorator('keystore', {
               initialValue: '',
               rules: [{
