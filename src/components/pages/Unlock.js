@@ -118,9 +118,7 @@ class Unlock extends React.Component {
               />
               <Route path={`${url}/privateKey`} exact render={() =>
                 <div className="tab-content">
-                  <Containers.PrivateKey>
                   <Account.UnlockByPrivateKey/>
-                  </Containers.PrivateKey>
                 </div>}
               />
               <Route path={`${url}/trezor`} exact render={() =>

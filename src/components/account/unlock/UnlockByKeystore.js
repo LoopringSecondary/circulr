@@ -1,33 +1,25 @@
 import React from 'react';
-import {Upload, Button, Input, Icon} from 'antd';
-import {connect} from 'dva';
+import {Upload, Button, Input, Icon, Form} from 'antd';
 import routeActions from 'common/utils/routeActions'
+import Notification from '../../../common/loopringui/components/Notification'
+import {isKeystorePassRequired} from "LoopringJS/ethereum/keystore";
 
 
-
- class Keystore extends React.Component {
+class Keystore extends React.Component {
 
   state = {
     fileList: [],
-    visible:false
+    visible: false
   };
 
-  handleRemove = (file) => {
-    this.setState(({fileList}) => {
-      const index = fileList.indexOf(file);
-      const newFileList = fileList.slice();
-      newFileList.splice(index, 1);
-      return {
-        fileList: newFileList,
-      };
-    });
-  };
   beforeUpload = (file) => {
     const keyStoreModel = this.props.keystore;
+    const {form} = this.props;
     const fileReader = new FileReader();
     fileReader.onload = () => {
-        const keystore = fileReader.result;
-        keyStoreModel.setKeystore({keystore})
+      const keystore = fileReader.result;
+      keyStoreModel.setKeystore({keystore});
+      form.setFieldsValue({keystore:keystore.toString()})
     };
     fileReader.readAsText(file, "utf-8");
     this.setState({fileList: []});
@@ -37,42 +29,58 @@ import routeActions from 'common/utils/routeActions'
   handleStoreChange = (e) => {
     const keyStoreModel = this.props.keystore;
     const keystore = e.target.value;
-    keyStoreModel.setKeystore({keystore})
+    keyStoreModel.setKeystore({keystore});
   };
 
   unlock = () => {
     const keyStoreModel = this.props.keystore;
-    const {keystore, isPasswordRequired, password, isValid} = keyStoreModel;
-    if(isValid){
-      if((isPasswordRequired && password) || !isPasswordRequired){
-        this.props.dispatch({type:'wallet/unlockKeyStoreWallet',payload:{keystore,password,cb:(e) =>{
-          if(!e){
-            keyStoreModel.reset();
-            routeActions.gotoPath('/wallet');
-          }else{
-            console.log(e.message)
+    const {keystore, isPasswordRequired, password} = keyStoreModel;
+    if (this.isValidKeystore(keystore)) {
+      if ((isPasswordRequired && password) || !isPasswordRequired) {
+        this.props.dispatch({
+          type: 'wallet/unlockKeyStoreWallet', payload: {
+            keystore, password, cb: (e) => {
+              if (!e) {
+                Notification.open({type: 'success', message: '解锁成功', description: 'unlock'});
+                keyStoreModel.reset();
+                routeActions.gotoPath('/wallet');
+              } else {
+                Notification.open({type: 'error', message: '解锁失败', description: e.message});
+              }
+            }
           }
-        }}});
+        });
       }
     }
   };
 
-  handlePassChange = (e) =>{
+  handlePassChange = (e) => {
     const password = e.target.value;
     const keyStoreModel = this.props.keystore;
     keyStoreModel.setPassword({password})
   };
   togglePassword = () => {
     const {visible} = this.state;
-    this.setState({visible:!visible})
+    this.setState({visible: !visible})
   };
+
+  isValidKeystore = (keystore) => {
+    try {
+      isKeystorePassRequired(keystore);
+      return true;
+    } catch (e) {
+      console.log('ERROR:',e.message);
+      return false;
+    }
+  };
+
   render() {
     const keyStoreModel = this.props.keystore;
-    const {isPasswordRequired, password, keystore,isValid} = keyStoreModel;
-    const {fileList,visible} = this.state;
+    const {isPasswordRequired, password} = keyStoreModel;
+    const {fileList, visible} = this.state;
+    const {form} = this.props;
     const uploadProps = {
       action: '',
-      onRemove: this.handleRemove,
       beforeUpload: this.beforeUpload,
       fileList
     };
@@ -97,12 +105,23 @@ import routeActions from 'common/utils/routeActions'
               <Button><Icon type="folder"/>Select JSON File</Button>
             </Upload>
           </div>
-          <div className='mb20'>
-            <Input.TextArea autosize={{minRows: 3, maxRows: 8}} size="large" className='d-block fs12' value={keystore} onChange={this.handleStoreChange}/>
-          </div>
-          {keystore && !isValid && <div className="d-flex justify-content-between align-items-center up-file"><small className="truncation" style={{width: "440px"}}>Invalid JSON </small></div>}
+          <Form>
+            <Form.Item>
+              {form.getFieldDecorator('keystore', {
+                initialValue: '',
+                rules: [{
+                  required: true,
+                  message: 'invalid keystore',
+                  validator: (rule, value, cb) => this.isValidKeystore(value) ? cb() : cb(true)
+                }]
+              })(
+                  <Input.TextArea autosize={{minRows: 3, maxRows: 8}} size="large" className='d-block fs12' onChange={this.handleStoreChange}/>
+              )}
+            </Form.Item>
+          </Form>
           {isPasswordRequired &&
-          <Input   type={visible ? 'text' : 'password'} className='mb10'  addonAfter={visibleIcon} value={password} onChange={this.handlePassChange}/>}
+          <Input type={visible ? 'text' : 'password'} className='mb10' addonAfter={visibleIcon} value={password}
+                 onChange={this.handlePassChange}/>}
           <Button type="primary" className="btn-block btn-xlg btn-token" onClick={this.unlock}>Unlock</Button>
         </div>
       </div>
@@ -110,16 +129,7 @@ import routeActions from 'common/utils/routeActions'
   }
 }
 
-// function mapStateToProps(state) {
-//   return {
-//     keystore: state.keystore.keystore,
-//     isPasswordRequired: state.keystore.isPasswordRequired,
-//     password: state.keystore.password,
-//     isValid: state.keystore.isValid,
-//   }
-// }
-
-export default Keystore
+export default Form.create()(Keystore)
 
 
 

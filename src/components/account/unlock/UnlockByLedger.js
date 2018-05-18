@@ -2,6 +2,7 @@ import React from 'react';
 import {Input, Button, Select} from 'antd';
 import routeActions from 'common/utils/routeActions'
 import {connect} from "LoopringJS/ethereum/ledger";
+import Notification from '../../../common/loopringui/components/Notification';
 
 function Ledgers(props) {
 
@@ -13,6 +14,7 @@ function Ledgers(props) {
       if(!res.error){
         const ledger = res.result;
         dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger,dpath: `${dpath}/0`}});
+        Notification.open({type:'success',message:'解锁成功',description:'unlock'});
         hardwareWallet.reset();
         routeActions.gotoPath('/wallet')
       }

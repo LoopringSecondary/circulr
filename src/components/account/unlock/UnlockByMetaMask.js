@@ -3,6 +3,7 @@ import { Input,Button,Select } from 'antd';
 import {connect} from 'dva'
 import {MetaMaskAccount,} from "LoopringJS/ethereum/account";
 import routeActions from 'common/utils/routeActions'
+import Notification from '../../../common/loopringui/components/Notification'
 
 function MetaMask(props) {
 
@@ -10,6 +11,7 @@ function MetaMask(props) {
     if(window.web3 && window.web3.eth.accounts[0]){
       const address = window.web3.eth.accounts[0]
       props.dispatch({type:'wallet/unlockMetaMaskWallet',payload:{address}});
+      Notification.open({type:'success',message:'解锁成功',description:'unlock'});
       routeActions.gotoPath('/wallet')
     }
   };
