@@ -34,7 +34,7 @@ let FiltersForm = ({
 
   let formLayout = 'inline'
   return (
-      <div className="form-inline form-dark d-flex justify-content-between">
+      <div className="form-inline form-dark d-flex justify-content-between" style={{padding:"10px 20px"}}>
         <Form layout="inline">
             <Form.Item label={null} >
               {form.getFieldDecorator('market', {
@@ -106,6 +106,10 @@ let FiltersForm = ({
           }
 
         </Form>
+        <span>
+            <span class="offset-md"><button class="btn btn-primary">Cancel All</button></span>
+            <span class="offset-md"><button class="btn btn-primary">Cancel All markets</button></span>
+        </span>
       </div>
   );
 };
