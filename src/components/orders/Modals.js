@@ -13,7 +13,11 @@ function Modals(props) {
       </Containers.Modals>
       <Containers.Modals id="placeOrderConfirm">
         <UiContianers.Modals id="placeOrderConfirm">
-          <PlaceOrderConfirm />
+          <Containers.Settings>
+            <Containers.Wallet>
+              <PlaceOrderConfirm />
+            </Containers.Wallet>
+          </Containers.Settings>
         </UiContianers.Modals>
       </Containers.Modals>
     </div>

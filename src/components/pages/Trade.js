@@ -43,7 +43,9 @@ function Trade(props) {
                       <Containers.Sockets id="marketcap">
                         <Containers.Sockets id="pendingTx">
                           <Containers.Wallet>
-                            <Orders.PlaceOrderForm />
+                            <Containers.Modals>
+                              <Orders.PlaceOrderForm />
+                            </Containers.Modals>
                           </Containers.Wallet>
                         </Containers.Sockets>
                       </Containers.Sockets>

@@ -14,7 +14,7 @@ var _ = require('lodash');
 class PlaceOrderForm extends React.Component {
 
   render() {
-    const {form, placeOrder, settings, balance, wallet, marketcap, pendingTx} = this.props
+    const {form, placeOrder, settings, balance, wallet, marketcap, pendingTx, modals} = this.props
     const milliLrcFee = placeOrder.sliderMilliLrcFee >0 ? placeOrder.sliderMilliLrcFee : settings.trading.lrcFee
     const ttlValue = placeOrder.timeToLive >0 ? placeOrder.timeToLive : settings.trading.timeToLive
     const ttlUnit = placeOrder.timeToLiveUnit || settings.trading.timeToLiveUnit
@@ -318,39 +318,8 @@ class PlaceOrderForm extends React.Component {
     }
 
     async function handleSubmit() {
-      //TODO unlock check, moved before sign
-      if(!balance.items || !marketcap.items) {
-        Notification.open({
-          message:intl.get('trade.send_failed'),
-          description:intl.get('trade.failed_fetch_data'),
-          type:'error'
-        })
-        return
-      }
-      const lrcBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:'LRC', toUnit:true})
-      // if(!lrcBalance || lrcBalance.balance.lessThan(900)){
-      //   // TODO !await config.isinWhiteList(window.WALLET.getAddress())
-      //   if(config.getChainId() !== 7107171){
-      //     Notification.open({
-      //       type:'warning',
-      //       message:intl.get('trade.not_inWhiteList'),
-      //       description:intl.get('trade.not_allow')
-      //     });
-      //     return
-      //   }
-      // }
-      if(!wallet.address) {
-        //TODO to unlock wallet && notification
-        // Notification.open({
-        //   type:'warning',
-        //   message:intl.get('trade.not_inWhiteList'),
-        //   description:intl.get('trade.not_allow')
-        // });
-        // return
-      }
       form.validateFields((err, values) => {
         if (!err) {
-          placeOrder.submitButtonLoadingChange({submitButtonLoading:true})
           const tradeInfo = {}
           tradeInfo.amount = fm.toBig(values.amount)
           tradeInfo.price = fm.toBig(values.price)
@@ -365,70 +334,94 @@ class PlaceOrderForm extends React.Component {
           if (values.marginSplit) {
             tradeInfo.marginSplit = Number(values.marginSplit)
           }
-          const totalWorth = orderFormatter.calculateWorthInLegalCurrency(marketcap.items, right.symbol, tradeInfo.total)
-          if(!totalWorth.gt(0)) {
-            Notification.open({
-              message:intl.get('trade.send_failed'),
-              description:intl.get('trade.failed_fetch_data'),
-              type:'error'
-            })
-            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
-            return
-          }
-          let allowed = false
-          let currency = 'USD';// TODO settings.preference.currency
-          let priceSymbol = fm.getDisplaySymbol(currency)
-          if(currency === 'USD') {
-            priceSymbol = '100' + priceSymbol
-            if(totalWorth.gt(100)) {
-              allowed = true
-            }
-          } else {
-            priceSymbol = '500' + priceSymbol
-            if(totalWorth.gt(500)) {
-              allowed = true
-            }
-          }
-          if(!allowed) {
-            Notification.open({
-              message:intl.get('trade.not_allowed_place_order_worth_title'),
-              description:intl.get('trade.not_allowed_place_order_worth_content', {worth: priceSymbol}),
-              type:'error'
-            })
-            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
-            return
-          }
           tradeInfo.milliLrcFee = milliLrcFee
           tradeInfo.lrcFee = lrcFee
-          orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, pendingTx.items)
-          if(tradeInfo.error) {
-            tradeInfo.error.map(item=>{
+          let verifiedAddress = ''
+          if(!wallet.address) {
+            //TODO notification to user, order verification in confirm page(unlocked)
+            // Notification.open({
+            //   type:'warning',
+            //   message:intl.get('trade.not_inWhiteList'),
+            //   description:intl.get('trade.not_allow')
+            // });
+            // return
+          } else {
+            verifiedAddress = wallet.address
+            if(!balance.items || !marketcap.items) {
               Notification.open({
-                message: intl.get('trade.send_failed'),
-                description: intl.get('trade.eth_is_required', {required:item.value.required}),
-                type:'error',
+                message:intl.get('trade.send_failed'),
+                description:intl.get('trade.failed_fetch_data'),
+                type:'error'
               })
-            })
-            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
-            return
+              return
+            }
+            placeOrder.submitButtonLoadingChange({submitButtonLoading:true})
+            // const lrcBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:'LRC', toUnit:true})
+            // if(!lrcBalance || lrcBalance.balance.lessThan(900)){
+            //   // TODO !await config.isinWhiteList(window.WALLET.getAddress())
+            //   if(config.getChainId() !== 7107171){
+            //     Notification.open({
+            //       type:'warning',
+            //       message:intl.get('trade.not_inWhiteList'),
+            //       description:intl.get('trade.not_allow')
+            //     });
+            //     return
+            //   }
+            // }
+            const totalWorth = orderFormatter.calculateWorthInLegalCurrency(marketcap.items, right.symbol, tradeInfo.total)
+            if(!totalWorth.gt(0)) {
+              Notification.open({
+                message:intl.get('trade.send_failed'),
+                description:intl.get('trade.failed_fetch_data'),
+                type:'error'
+              })
+              placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+              return
+            }
+            let allowed = false
+            let currency = 'USD';// TODO settings.preference.currency
+            let priceSymbol = fm.getDisplaySymbol(currency)
+            if(currency === 'USD') {
+              priceSymbol = '100' + priceSymbol
+              if(totalWorth.gt(100)) {
+                allowed = true
+              }
+            } else {
+              priceSymbol = '500' + priceSymbol
+              if(totalWorth.gt(500)) {
+                allowed = true
+              }
+            }
+            if(!allowed) {
+              Notification.open({
+                message:intl.get('trade.not_allowed_place_order_worth_title'),
+                description:intl.get('trade.not_allowed_place_order_worth_content', {worth: priceSymbol}),
+                type:'error'
+              })
+              placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+              return
+            }
+            orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, pendingTx.items)
+            if(tradeInfo.error) {
+              tradeInfo.error.map(item=>{
+                Notification.open({
+                  message: intl.get('trade.send_failed'),
+                  description: intl.get('trade.eth_is_required', {required:item.value.required}),
+                  type:'error',
+                })
+              })
+              placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+              return
+            }
           }
-          showTradeModal(tradeInfo)
+          showTradeModal(tradeInfo, verifiedAddress)
           placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
         }
       });
     }
 
-    const showTradeModal = (tradeInfo) => {
-      this.props.dispatch({
-        type: 'modals/modalChange',
-        payload: {
-          id: 'trade/confirm',
-          visible: true,
-          side : placeOrder.side,
-          pair : placeOrder.pair,
-          ...tradeInfo
-        }
-      })
+    const showTradeModal = (tradeInfo, verifiedAddress) => {
+      modals.showModal({id:'placeOrderConfirm', side, pair, verifiedAddress, tradeInfo})
     }
 
     return (
