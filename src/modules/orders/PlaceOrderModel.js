@@ -24,11 +24,12 @@ export default {
        yield put({ type: 'pairChangeEffects',payload});
     },
     *pairChangeEffects({ payload={} }, { put }) {
-      let {pair} = payload
+      let {pair, price} = payload
       if(pair) {
         yield put({ type: 'pairChange',payload:{pair}});
-        const priceInput = '0.001'
-        yield put({ type: 'priceChange',payload:{priceInput}});
+        if(price) {
+          yield put({ type: 'priceChange',payload:{priceInput:price}});
+        }
       }
     },
     *sideChangeEffects({ payload={} }, { put }) {
