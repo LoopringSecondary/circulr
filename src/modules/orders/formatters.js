@@ -166,8 +166,8 @@ export async function tradeVerification(balances, walletState, tradeInfo, sell, 
   let approveCount = 0
   const warn = new Array(), error = new Array()
   if(buy.symbol === 'LRC') { //buy lrc, only verify eth balance could cover gas cost if approve is needed
-    if(sell.balance.lessThan(frozenAmountS)) {
-      warn.push({type:"BalanceNotEnough", value:{symbol:sell.symbol, balance:cutDecimal(sell.balance.toNumber(),6), required:ceilDecimal(frozenAmountS.sub(sell.balance).toNumber(),6)}})
+    if(fm.toBig(sell.balance).lessThan(frozenAmountS)) {
+      warn.push({type:"BalanceNotEnough", value:{symbol:sell.symbol, balance:cutDecimal(sell.balance,6), required:ceilDecimal(frozenAmountS.sub(sell.balance).toNumber(),6)}})
     }
     const txAllowance = isApproving(txs, sell.symbol);
     const pendingAllowance = fm.toBig(txAllowance ? txAllowance.div('1e'+sell.digits):sell.allowance);
@@ -205,18 +205,18 @@ export async function tradeVerification(balances, walletState, tradeInfo, sell, 
       frozenAmountS = frozenLrc
     }
     if(sell.balance.lessThan(frozenAmountS)) {
-      warn.push({type:"BalanceNotEnough", value:{symbol:sell.symbol, balance:cutDecimal(sell.balance.toNumber(),6), required:ceilDecimal(frozenAmountS.sub(sell.balance).toNumber(),6)}})
+      warn.push({type:"BalanceNotEnough", value:{symbol:sell.symbol, balance:cutDecimal(sell.balance,6), required:ceilDecimal(frozenAmountS.sub(sell.balance).toNumber(),6)}})
     }
     const pendingAllowance = fm.toBig(isApproving(txs, sell.symbol) ? isApproving(txs, sell.symbol).div('1e'+sell.digits) : sell.allowance);
     if(pendingAllowance.lessThan(frozenAmountS)) {
-      warn.push({type:"AllowanceNotEnough", value:{symbol:sell.symbol, allowance:cutDecimal(pendingAllowance.toNumber(),6), required:ceilDecimal(frozenAmountS.sub(sell.allowance).toNumber(),6)}})
+      warn.push({type:"AllowanceNotEnough", value:{symbol:sell.symbol, allowance:cutDecimal(pendingAllowance,6), required:ceilDecimal(frozenAmountS.sub(sell.allowance),6)}})
       approveCount += 1
       if(pendingAllowance.greaterThan(0)) approveCount += 1
     }
     // lrcFee allowance
     const pendingLRCAllowance = fm.toBig(isApproving(txs, 'LRC') ? isApproving(txs, 'LRC').div(1e18):lrcBalance.allowance);
     if(frozenLrc.greaterThan(pendingLRCAllowance) && sell.symbol !== 'LRC') {
-      warn.push({type:"AllowanceNotEnough", value:{symbol:"LRC", allowance:cutDecimal(pendingLRCAllowance.toNumber(),6), required:ceilDecimal(frozenLrc.sub(lrcBalance.allowance).toNumber(),6)}})
+      warn.push({type:"AllowanceNotEnough", value:{symbol:"LRC", allowance:cutDecimal(pendingLRCAllowance,6), required:ceilDecimal(frozenLrc.sub(lrcBalance.allowance),6)}})
       approveCount += 1
       if(pendingLRCAllowance.greaterThan(0)) approveCount += 1
     }
