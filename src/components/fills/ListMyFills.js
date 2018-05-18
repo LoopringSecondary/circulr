@@ -20,12 +20,16 @@ const ListHeader = ({fills})=>{
           <SelectContainer
             loadOptions={getSupportedMarket.bind(this,window.config.rpc_host)}
             transform={(res)=>{
-              let pairs = config.getMarkets().map(item=>`${item.tokenx}-${item.tokeny}`)
-              let options = res.result.filter(item=>pairs.includes(item)).map(item=>({label:item,value:item}))
-              return [
-                {label:`${intl.get('global.all')} ${intl.get('orders.market')}`,value:""},
-                ...options,
-              ]
+              if(res && !res.error){
+                let pairs = config.getMarkets().map(item=>`${item.tokenx}-${item.tokeny}`)
+                let options = res.result.filter(item=>pairs.includes(item)).map(item=>({label:item,value:item}))
+                return [
+                  {label:`${intl.get('global.all')} ${intl.get('orders.market')}`,value:""},
+                  ...options,
+                ]
+              }else{
+                return []
+              }
             }}
             onChange={marketChange}
             placeholder={intl.get('orders.market')}
