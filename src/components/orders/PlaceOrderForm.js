@@ -14,7 +14,7 @@ var _ = require('lodash');
 class PlaceOrderForm extends React.Component {
 
   render() {
-    const {form, placeOrder, settings, balance, wallet, marketcap} = this.props
+    const {form, placeOrder, settings, balance, wallet, marketcap, pendingTx} = this.props
     const milliLrcFee = placeOrder.sliderMilliLrcFee >0 ? placeOrder.sliderMilliLrcFee : settings.trading.lrcFee
     const ttlValue = placeOrder.timeToLive >0 ? placeOrder.timeToLive : settings.trading.timeToLive
     const ttlUnit = placeOrder.timeToLiveUnit || settings.trading.timeToLiveUnit
@@ -319,18 +319,26 @@ class PlaceOrderForm extends React.Component {
 
     async function handleSubmit() {
       //TODO unlock check, moved before sign
-      const lrcBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:'LRC', toUnit:true})
-      if(!lrcBalance || lrcBalance.balance.lessThan(900)){
-        // TODO !await config.isinWhiteList(window.WALLET.getAddress())
-        if(config.getChainId() !== 7107171){
-          Notification.open({
-            type:'warning',
-            message:intl.get('trade.not_inWhiteList'),
-            description:intl.get('trade.not_allow')
-          });
-          return
-        }
+      if(!balance.items || !marketcap.items) {
+        Notification.open({
+          message:intl.get('trade.send_failed'),
+          description:intl.get('trade.failed_fetch_data'),
+          type:'error'
+        })
+        return
       }
+      const lrcBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:'LRC', toUnit:true})
+      // if(!lrcBalance || lrcBalance.balance.lessThan(900)){
+      //   // TODO !await config.isinWhiteList(window.WALLET.getAddress())
+      //   if(config.getChainId() !== 7107171){
+      //     Notification.open({
+      //       type:'warning',
+      //       message:intl.get('trade.not_inWhiteList'),
+      //       description:intl.get('trade.not_allow')
+      //     });
+      //     return
+      //   }
+      // }
       if(!wallet.address) {
         //TODO to unlock wallet && notification
         // Notification.open({
@@ -357,7 +365,7 @@ class PlaceOrderForm extends React.Component {
           if (values.marginSplit) {
             tradeInfo.marginSplit = Number(values.marginSplit)
           }
-          const totalWorth = orderFormatter.calculateWorthInLegalCurrency(marketcap, right.symbol, tradeInfo.total)
+          const totalWorth = orderFormatter.calculateWorthInLegalCurrency(marketcap.items, right.symbol, tradeInfo.total)
           if(!totalWorth.gt(0)) {
             Notification.open({
               message:intl.get('trade.send_failed'),
@@ -392,7 +400,7 @@ class PlaceOrderForm extends React.Component {
           }
           tradeInfo.milliLrcFee = milliLrcFee
           tradeInfo.lrcFee = lrcFee
-          orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, this.props.txs)
+          orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, pendingTx.items)
           if(tradeInfo.error) {
             tradeInfo.error.map(item=>{
               Notification.open({
