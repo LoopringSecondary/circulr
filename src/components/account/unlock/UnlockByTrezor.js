@@ -1,7 +1,7 @@
 import React from 'react';
 import {Input, Button, Select} from 'antd';
 import routeActions from 'common/utils/routeActions'
-
+import Notification from '../../../common/loopringui/components/Notification'
 
 function UnlockByTrezor(props) {
   const {hardwareWallet, dispatch} = props;
@@ -9,6 +9,7 @@ function UnlockByTrezor(props) {
 
   const unlock = () => {
     dispatch({type: 'wallet/unlockTrezorWallet', payload: {dpath: `${dpath}/0`, address}});
+    Notification.open({type:'success',message:'解锁成功',description:'unlock'});
     hardwareWallet.reset();
     routeActions.gotoPath('/wallet')
   };
