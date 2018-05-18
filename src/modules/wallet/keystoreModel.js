@@ -6,7 +6,6 @@ export default {
   state: {
     keystore: '',
     isPasswordRequired: false,
-    isValid: false,
     password: ''
   },
   reducers: {
@@ -14,7 +13,6 @@ export default {
       return {
         keystore: '',
         isPasswordRequired: false,
-        isValid: false,
         password: ''
       }
     },
@@ -32,7 +30,6 @@ export default {
         ...state,
         keystore,
         isPasswordRequired,
-        isValid,
         password: ''
       }
     },
