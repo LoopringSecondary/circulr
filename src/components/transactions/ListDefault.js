@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form,Select,Spin } from 'antd';
 import intl from 'react-intl-universal';
-import {getTypes} from 'modules/transactions/formatters';
-import {getShortAddress,getFormattedTime} from 'modules/formatter/common';
+import {TxFm,getTypes} from 'modules/transactions/formatters';
+import {getShortAddress} from 'modules/formatter/common';
 const Option = Select.Option;
 
 export default function ListTransaction(props) {
@@ -22,7 +22,6 @@ export default function ListTransaction(props) {
             <div className="form-inline form-dark">
                 <span>
                   <Select
-                      allowClear
                       defaultValue=""
                       onChange={statusChange}
                       placeholder={intl.get('txs.status')}
@@ -41,7 +40,6 @@ export default function ListTransaction(props) {
                 </span>
                 <span>
                   <Select
-                    allowClear
                     defaultValue=""
                     onChange={typeChange}
                     placeholder={intl.get('txs.type')}
@@ -59,99 +57,79 @@ export default function ListTransaction(props) {
         </div>
         <div style={{height: "100%", overflow: "hidden", padding:"0 0 60px"}}>
             <div className="content-scroll">
-                <table className="table table-hover table-striped table-dark text-center">
-                    <thead>
-                        <tr>
-                            <th className="text-left">Type</th>
-                            <th className="text-left">Created</th>
-                            <th className="text-left">Block</th>
-                            <th className="text-right">Value</th>
-                            <th className="text-right">Gas</th>
-                            <th className="text-center">Status</th>
-                            <th className="text-right">TxHash</th>
-                            <th hidden className="text-right">Note</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                          list.items.map((item,index)=>
-                            <tr key={index}>
-                              <td className="text-left">{renders.type(item,index)}</td>
-                              <td className="text-left">{renders.createTime(item,index)}</td>
-                              <td className="text-left">{item.block || 5241856}</td>
-                              <td className="text-right">{renders.value(item,index)}</td>
-                              <td className="text-right">{renders.gas(item,index)}</td>
-                              <td className="text-center">{renders.status(item,index)}</td>
-                              <td className="text-right">{renders.txHash(item,index)}</td>
-                              <td hidden className="text-right">{renders.miner(item,index)}</td>
-                            </tr>
-                          )
-                        }
-                        {list.loading &&
-                          <tr><td colSpan="100" className="text-center"><Spin/></td></tr>
-                        }
-                        {!list.loading && list.items.length === 0 &&
-                          <tr><td colSpan="100" className="text-center">{intl.get('txs.no_txs')}</td></tr>
-                        }
-                    </tbody>
-                </table>
+                <Spin spinning={list.loading}>
+                  <table className="table table-hover table-striped table-dark text-center">
+                      <thead>
+                          <tr>
+                              <th className="text-left">Type</th>
+                              <th className="text-left">Created</th>
+                              <th className="text-left">Block</th>
+                              <th className="text-right">Value</th>
+                              <th className="text-right">Gas</th>
+                              <th className="text-center">Status</th>
+                              <th className="text-right">TxHash</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {
+                            list.items.map((item,index)=>{
+                              const txFm = new TxFm(item)
+                              return (
+                                <tr key={index}>
+                                  <td className="text-left">{txFm.getType()}</td>
+                                  <td className="text-left">{renders.createTime(txFm)}</td>
+                                  <td className="text-left">{item.blockNumber}</td>
+                                  <td className="text-right">{renders.value(txFm)}</td>
+                                  <td className="text-right">{txFm.getGas()} ETH</td>
+                                  <td className="text-center">{renders.status(txFm)}</td>
+                                  <td className="text-right">{renders.txHash(txFm)}</td>
+                                </tr>
+                              )
+                            })
+                          }
+                          {!list.loading && list.items.length === 0 &&
+                            <tr><td colSpan="100" className="text-center">{intl.get('txs.no_txs')}</td></tr>
+                          }
+                      </tbody>
+                  </table>
+                </Spin>
             </div>
         </div>
     </div>
   )
 }
 export const renders = {
-  createTime:(item) => (
-    <span>{getFormattedTime(item.createTime,'MM-DD HH:SS')}</span>
+  createTime:(fm) => (
+    <span>{fm.getCreateTime()}</span>
   ),
-  txHash:(item, index) => (
+  txHash:(fm) => (
     <span
        onCopy={null}
        onClick={null}
     >
-      <span className="text-primary">{getShortAddress(item.txHash)}</span>
+      <span className="text-primary">{getShortAddress(fm.tx.txHash)}</span>
     </span>
   ),
-  type:(item)=>{
-    return (
-      <div>{item.type.toUpperCase()} {item.symbol}</div>
-    )
-  },
-  value:(item)=>{
+  value:(fm)=>{
     return (
       <div>
         {
-          item.type==='receive' &&
-          <span className="text-success">+ {item.value} {item.symbol}</span>
+          fm.getSide()==='income' &&
+          <span className="text-success">+ {fm.getValue()} {fm.tx.symbol}</span>
         }
         {
-          item.type==='send' &&
-          <span className="text-error">- {item.value} {item.symbol}</span>
+          fm.getSide()==='outcome' &&
+          <span className="text-error">- {fm.getValue()} {fm.tx.symbol}</span>
         }
       </div>
     )
   },
-  gas:(item)=>{
+  status:(fm)=>{
     return (
       <div>
-        - {item.gas_used} ETH
-      </div>
-    )
-  },
-  miner:(item,index)=>{
-    return (
-      <span>
-       {index < 3 && <span className="">Miner</span>}
-      </span>
-
-    )
-  },
-  status:(item)=>{
-    return (
-      <div>
-        { item.status === 'success' && <i className="icon-success"></i> }
-        { item.status === 'failed' && <i className="icon-warning"></i> }
-        { item.status === 'pending' && <i className="icon-clock"></i> }
+        { fm.tx.status === 'success' && <i className="icon-success"></i> }
+        { fm.tx.status === 'failed' && <i className="icon-warning"></i> }
+        { fm.tx.status === 'pending' && <i className="icon-clock"></i> }
       </div>
     )
   },
