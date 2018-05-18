@@ -20,9 +20,13 @@ function UnlockByTrezor(props) {
   };
 
   const moreAddress = () => {
-    props.dispatch({type: 'determineWallet/setHardwareWallet', payload: {publicKey, chainCode, dpath, walletType}});
-    hardwareWallet.reset();
-    routeActions.gotoPath('/unlock/determineWallet');
+    if(address){
+      props.dispatch({type: 'determineWallet/setHardwareWallet', payload: {publicKey, chainCode, dpath, walletType}});
+      hardwareWallet.reset();
+      routeActions.gotoPath('/unlock/determineWallet');
+    }else {
+      Notification.open({type: 'error', message: 'unlock failed', description: 'Connect to your TREZOR'})
+    }
   };
   return (
     <div>
