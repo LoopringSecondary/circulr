@@ -1,7 +1,7 @@
 import config from 'common/config'
 import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
-import {getPriceBySymbol, getAssetByToken} from '../formatter/selectors'
+import {getBalanceBySymbol, getPriceBySymbol, getWorthBySymbol} from '../tokens/TokenFm'
 import {getEstimatedAllocatedAllowance, getFrozenLrcFee} from 'LoopringJS/relay/rpc/account'
 
 const integerReg = new RegExp("^[0-9]*$")
@@ -19,16 +19,16 @@ export function calculateAvailableAmount(side, price, tokenL, tokenR, amountPrec
   if(price && tokenL && tokenR) {
     if(side === 'buy') {
       if(price) {
-        return fm.toFixed(fm.toBig(tokenR.balanceDisplay).div(price), amountPrecision, false)
+        return fm.toFixed(fm.toBig(tokenR.balance).div(price), amountPrecision, false)
       }
     } else {
-      return fm.toFixed(fm.toBig(tokenL.balanceDisplay), amountPrecision, false)
+      return fm.toFixed(fm.toBig(tokenL.balance), amountPrecision, false)
     }
   }
   return 0
 }
 
-function sliderEffectAmount(availableAmount, percentage, tokenL, tokenR) {
+export function sliderEffectAmount(availableAmount, percentage, tokenL, tokenR) {
   if(fm.toBig(availableAmount).gt(0)) {
     const marketConfig = config.getMarketBySymbol(tokenL.symbol, tokenR.symbol)
     const amountPrecision = Math.max(0, tokenR.precision - marketConfig.pricePrecision)
@@ -37,12 +37,12 @@ function sliderEffectAmount(availableAmount, percentage, tokenL, tokenR) {
   return 0
 }
 
-function amountEffectSlider(availableAmount, amountInput, tokenL, tokenR) {
-  if(fm.toBig(availableAmount).gt(0)) {
+export function amountEffectSlider(availableAmount, amountInput) {
+  if(fm.toBig(availableAmount).gt(0) && fm.toBig(amountInput).gt(0)) {
     if(fm.toBig(amountInput).gt(availableAmount)) {
-      return  100
+      return 100
     }
-    return fm.toFixed(fm.toBig(availableAmount).div(amountInput).times(100), 0, true)
+    return fm.toNumber(fm.toFixed(fm.toBig(amountInput).div(availableAmount).times(100), 0, true))
   }
   return 0
 }
@@ -51,8 +51,8 @@ export function sliderChangeEffectAmount(state) {
   return sliderEffectAmount(state[state.side].availableAmount, state.amountSlider, state.left, state.right)
 }
 
-export function amountChangeEffectSlider(state) {
-  return amountEffectSlider(state[state.side].availableAmount, state.amountInput, state.left, state.right)
+export function amountChangeEffectSlider(availableAmount, amountInput) {
+  return amountEffectSlider(availableAmount, amountInput)
 }
 
 export function isValidAmount(amount) {
@@ -81,18 +81,18 @@ export function formatAmountByMarket(amount, tokenConfig, marketConfig) {
 }
 
 export function calculateWorthInLegalCurrency(marketcapItems, symbol, amount) {
-  const price = getPriceBySymbol(marketcapItems, symbol)
+  const price = getPriceBySymbol({prices:marketcapItems, symbol})
   return amount.times(price.price)
 }
 
 export function calculateLrcFeeInEth(marketcapItems, totalWorth, milliLrcFee) {
-  const price = getPriceBySymbol(marketcapItems, "ETH")
+  const price = getPriceBySymbol({prices:marketcapItems, symbol:"ETH"})
   return totalWorth.times(milliLrcFee).div(1000).div(fm.toBig(price.price))
 }
 
 export function calculateLrcFeeByEth(marketcapItems, ethAmount) {
-  const ethPrice = getPriceBySymbol(marketcapItems, "ETH")
-  const lrcPrice = getPriceBySymbol(marketcapItems, "LRC")
+  const ethPrice = getPriceBySymbol({prices:marketcapItems, symbol:"ETH"})
+  const lrcPrice = getPriceBySymbol({prices:marketcapItems, symbol:"LRC"})
   const price = fm.toBig(lrcPrice.price).div(fm.toBig(ethPrice.price))
   return fm.toFixed(fm.toBig(ethAmount).div(price), 2, true)
 }
@@ -151,10 +151,10 @@ function ceilDecimal(bn, precision) {
   }
 }
 
-export async function tradeVerification(walletState, tradeInfo, sell, buy, tokenL, tokenR, side, txs) {
+export async function tradeVerification(balances, walletState, tradeInfo, sell, buy, tokenL, tokenR, side, txs) {
   const configSell = config.getTokenBySymbol(sell.symbol)
-  const ethBalance = getAssetByToken('ETH', true)
-  const lrcBalance = getAssetByToken('LRC', true)
+  const ethBalance = getBalanceBySymbol({balances, symbol:'ETH', toUnit:true}).balance
+  const lrcBalance = getBalanceBySymbol({balances, symbol:'LRC', toUnit:true}).balance
   const approveGasLimit = config.getGasLimitByType('approve').gasLimit
   const address = walletState.address
   if(!address) {

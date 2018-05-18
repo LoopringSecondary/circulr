@@ -2,28 +2,37 @@ import React from 'react';
 import {Input, Button, Select} from 'antd';
 import routeActions from 'common/utils/routeActions'
 import {connect} from "LoopringJS/ethereum/ledger";
+import Notification from '../../../common/loopringui/components/Notification';
 
 function Ledgers(props) {
 
   const {hardwareWallet, dispatch} = props;
-  const {address, dpath, publicKey, chainCode,walletType} = hardwareWallet;
+  const {address, dpath, publicKey, chainCode, walletType} = hardwareWallet;
 
   const unlock = () => {
-    connect().then(res => {
-      if(!res.error){
-        const ledger = res.result;
-        dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger,dpath: `${dpath}/0`}});
-        hardwareWallet.reset();
-        routeActions.gotoPath('/wallet')
-      }
-    });
-
+    if (address) {
+      connect().then(res => {
+        if (!res.error) {
+          const ledger = res.result;
+          dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger, dpath: `${dpath}/0`}});
+          Notification.open({type: 'success', message: '解锁成功', description: 'unlock'});
+          hardwareWallet.reset();
+          routeActions.gotoPath('/wallet')
+        }
+      });
+    } else {
+      Notification.open({type: 'error', message: 'unlock failed', description: 'Connect to your ledger wallet '})
+    }
   };
 
   const moreAddress = () => {
-    props.dispatch({type: 'determineWallet/setHardwareWallet', payload: {publicKey,chainCode, dpath,walletType}});
-    hardwareWallet.reset();
-    routeActions.gotoPath('/unlock/determineWallet');
+    if (address) {
+      props.dispatch({type: 'determineWallet/setHardwareWallet', payload: {publicKey, chainCode, dpath, walletType}});
+      hardwareWallet.reset();
+      routeActions.gotoPath('/unlock/determineWallet');
+    } else {
+      Notification.open({type: 'error', message: 'unlock failed', description: 'Connect to your ledger wallet '})
+    }
   };
   return (
     <div>

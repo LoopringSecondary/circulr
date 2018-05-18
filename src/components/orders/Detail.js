@@ -2,15 +2,11 @@ import React from 'react';
 import { Tabs } from 'antd';
 
 function Detail(props) {
-  const TabPane = Tabs.TabPane;
-  function callback(key) {
-    console.log(key);
-  }
    return (
     <div>
         <div className="modal-header text-dark"><h3>订单详情</h3></div>
-        <Tabs defaultActiveKey="1" onChange={callback} className="tabs-dark">
-	        <TabPane tab="基础详情" key="1" className="text-color-dark">
+        <Tabs defaultActiveKey="1" className="tabs-dark">
+	        <Tabs.TabPane tab="基础详情" key="1" className="text-color-dark">
 	            <div className="pd-md text-center">
 	    	        <span><i className="icon-ETH icon-token-md"></i><b>WEH</b></span>
 	    	        <span className="offset-lg"><i className="text-color-3 icon-long-arrow-right"></i></span>
@@ -31,8 +27,8 @@ function Detail(props) {
 	                <li><span>Valid Since</span><span>March 27, 2018 5:51 PM</span></li>
 	                <li><span>Valid Until</span><span>April 26, 2018 5:51 PM</span></li>
 	            </ul>
-	        </TabPane>
-	        <TabPane tab="撮合详情" key="2">
+	        </Tabs.TabPane>
+	        <Tabs.TabPane tab="撮合详情" key="2">
 	        		<table style={{overflow:'auto'}} className="table table-dark table-striped text-left">
 	        		  <thead>
 	        		      <tr>
@@ -57,7 +53,7 @@ function Detail(props) {
 	        		      </tr>
 	        		  </tbody>
 	        		</table>
-	        </TabPane>
+	        </Tabs.TabPane>
         </Tabs>
     </div>
   )
