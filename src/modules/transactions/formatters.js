@@ -28,7 +28,6 @@ export const getTypes = (token)=>{
   return [...types,...othersTypes]
 }
 
-<<<<<<< HEAD
 export class TxFm{
   constructor(tx){
     this.tx = tx

@@ -76,8 +76,8 @@ export default function ListTransaction(props) {
                                   <td className="text-left">{txFm.getType()}</td>
                                   <td className="text-left">{renders.value(txFm)}</td>
                                   <td className="text-left">{txFm.getGas()} ETH</td>
-                                  <td className="text-left">{renders.txHash(txFm)}</td>
                                   <td className="text-left">{item.blockNumber}</td>
+                                  <td className="text-left">{renders.txHash(txFm)}</td>
                                   <td className="text-left">{renders.createTime(txFm)}</td>
                                   <td className="text-center">{renders.status(txFm)}</td>
                                   <td className="text-center">{renders.options(txFm)}</td>
