@@ -10,16 +10,19 @@ function Ledgers(props) {
   const {address, dpath, publicKey, chainCode,walletType} = hardwareWallet;
 
   const unlock = () => {
-    connect().then(res => {
-      if(!res.error){
-        const ledger = res.result;
-        dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger,dpath: `${dpath}/0`}});
-        Notification.open({type:'success',message:'解锁成功',description:'unlock'});
-        hardwareWallet.reset();
-        routeActions.gotoPath('/wallet')
-      }
-    });
-
+    if(address){
+      connect().then(res => {
+        if(!res.error){
+          const ledger = res.result;
+          dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger,dpath: `${dpath}/0`}});
+          Notification.open({type:'success',message:'解锁成功',description:'unlock'});
+          hardwareWallet.reset();
+          routeActions.gotoPath('/wallet')
+        }
+      });
+    }else{
+      Notification.open({type:'error',message:'unlock failed',description:'Connect to your ledger wallet '})
+    }
   };
 
   const moreAddress = () => {
