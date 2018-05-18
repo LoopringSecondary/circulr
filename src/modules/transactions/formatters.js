@@ -1,6 +1,7 @@
 import intl from 'react-intl-universal'
-import {commonFm} from 'modules/fomatter/common'
+import {commonFm} from 'modules/formatter/common'
 import {toNumber,toBig,toHex} from "LoopringJS/common/formatter";
+import TokenFm from "modules/tokens/TokenFm";
 export const getTypes = (token)=>{
   let types = [
     {label:intl.get(`global.all`)+ ' ' +intl.get('txs.type'),value:''},
@@ -30,48 +31,48 @@ export const getTypes = (token)=>{
 export class TxFm{
   constructor(tx){
     this.tx = tx
-    this.fill = tx.content
+    this.fill = tx.fill
   }
   getType(){
 
   }
   getConfirmTime(){
-    return commonFm.getFormatTime(toNumber(this.tx.updateTime) * 1e3)
+    return this.tx.updateTime && commonFm.getFormatTime(toNumber(this.tx.updateTime) * 1e3)
   }
   getGas(){
     return this.tx.gas_used
   }
   getGasPrice(){
-    return toNumber(this.tx.gasPrice)/(1e9).toString(10)
+    return this.tx.gasPrice && toNumber(this.tx.gasPrice)/(1e9).toString(10)
   }
   getLimit(){
-    return toNumber(this.tx.gas).toString(10)
+    return this.tx.gas && toNumber(this.tx.gas).toString(10)
   }
   getNonce(){
-   return toNumber(this.tx.nonce)
+   return this.tx.nonce && toNumber(this.tx.nonce)
   }
   getValue(){
    return this.tx.value && toBig(this.tx.value).div(1e18).toNumber()
   }
   getFilledAmountOfSell(){
-   return getValues(this.fill.symbol_b,this.fill.amount_b) + '' + this.fill.symbol_b
+   return this.fill && this.fill.symbol_b && getValues(this.fill.symbol_b,this.fill.amount_b) + '' + this.fill.symbol_b
   }
   getFilledAmountOfBuy(){
-   return getValues(this.fill.symbol_s,this.fill.amount_s) + '' + this.fill.symbol_s
+   return this.fill && this.fill.symbol_s && getValues(this.fill.symbol_s,this.fill.amount_s) + '' + this.fill.symbol_s
   }
   getLrcFee(){
-   return getValues('LRC',this.fill.lrc_fee) + '' + 'LRC'
+   return this.fill && this.fill.lrc_fee && getValues('LRC',this.fill.lrc_fee) + '' + 'LRC'
   }
   getLrcReward(){
-   return getValues('LRC',this.fill.lrc_reward) + '' + 'LRC'
+   return this.fill && this.fill.lrc_fee && getValues('LRC',this.fill.lrc_reward) + '' + 'LRC'
   }
   getMarginSplit(){
-   return getValues(this.fill.symbol_s,this.fill.amount_s) + '' + this.fill.symbol_s
+   return this.fill && this.fill.symbol_s && getValues(this.fill.symbol_s,this.fill.amount_s) + '' + this.fill.symbol_s
   }
 }
 export const getValues = (symbol, value)=>{
- const tokenFormatter = new window.uiFormatter.TokenFormatter({symbol});
-return  window.uiFormatter.getFormatNum(tokenFormatter.getAmount(value));
+  const tokenFm = new TokenFm({symbol});
+  return  commonFm.getFormatNum(tokenFm.getAmount(value));
 }
 
 export const getType = (item) => {

@@ -4,8 +4,7 @@ import intl from 'react-intl-universal'
 import Notification from 'LoopringUI/components/Notification';
 import Alert from 'LoopringUI/components/Alert'
 import {copyToPasteboard} from 'modules/formatter/common'
-import {getType} from 'modules/transactions/formatters'
-import moment from 'moment'
+import {TxFm} from 'modules/transactions/formatters'
 
 const MetaItem = (props) => {
   const {label, value, render} = props
@@ -85,17 +84,12 @@ class DetailBlock extends React.Component {
   }
   render() {
     const {modals} = this.props;
-    const modal = modals['transaction/detail'];
-    const item = modal.item;
-    let {fill} = item.content;
-    fill = fill ? JSON.parse(fill) : null;
+    const item = {} // TODO
+    const fill = {} // TODO
     const {ethTx, loading} = this.state;
-
     const reSendTx = (txHash) => {
-
-    };
-
-    const txFm = new TxFm(ethTx)
+    }
+    const txFm = new TxFm({...ethTx,fill})
     return (
       <Card >
         <Tabs defaultActiveKey="basic" tabPosition="" animated={true} style={{marginTop:'-10px'}}>
