@@ -7,7 +7,6 @@ const GasFeeForm = ({
     settings,form
   }) => {
   const {trading} = settings
-  const integerReg = new RegExp("^0*[1-9]{1}[0-9]*$")
 
   function handleSubmit() {
     form.validateFields((err,values) => {
@@ -71,7 +70,7 @@ const GasFeeForm = ({
                             initialValue:Number([trading.gasPrice]),
                             rules:[]
                           })(
-                            <Slider min={1} max={99} step={1} onChange={handleChange.bind(this, "gasPrice")}
+                            <Slider min={1} max={99} step={1}
                               marks={{
                                 1: intl.get('settings.slow') ,
                                 99: intl.get('settings.fast') ,
@@ -102,10 +101,8 @@ const GasFeeForm = ({
           </Tabs.TabPane>
         </Tabs>
       </div>
-
-
       <div className="mt20 text-right d-block w-100">
-        <Button onClick={handleReset} type="primary" size="large" className="d-block w-100">确认</Button>
+        <Button onClick={()=>{}} type="primary" size="large" className="d-block w-100">确认</Button>
       </div>
     </div>
   );

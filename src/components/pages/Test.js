@@ -49,6 +49,12 @@ const TestModal = (props)=>{
       <span>
         <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'gasFee'})}>Gas Fee</Button>
       </span>
+      <span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'placeOrderSteps'})}>Steps</Button>
+      </span>
+      <span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'placeOrderLRCFee'})}>LRC Fee</Button>
+      </span>
 
     </div>
   )

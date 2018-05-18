@@ -14,11 +14,13 @@ const GasFeeForm = ({
   }
   return (
     <div>
-      <div className="pb10 fs16 color-black-1 zb-b-b">Gas Fee</div>
+      <div className="pb10 fs16 color-black-1 zb-b-b">LRC Fee</div>
       <div className="zb-b">
         <Tabs defaultActiveKey="1" >
           <Tabs.TabPane tab={<div className="pb5">Recommended</div>} key="1">
              当前 深度的LRC Fee 列表
+             1、撮合速度更快
+             2、撮合成本更低
           </Tabs.TabPane>
           <Tabs.TabPane tab={<div className="pb5">Advanced</div>} key="3">
              自定义 LRCFee
