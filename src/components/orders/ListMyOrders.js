@@ -21,58 +21,66 @@ const ListHeader = ({orders})=>{
 
   return (
     <div className="form-inline form-dark">
-        <span>
-          <SelectContainer
-            loadOptions={getSupportedMarket.bind(this,window.config.rpc_host)}
-            transform={(res)=>{
-              if(res && !res.error){
-                let pairs = config.getMarkets().map(item=>`${item.tokenx}-${item.tokeny}`)
-                let options = res.result.filter(item=>pairs.includes(item)).map(item=>({label:item,value:item}))
-                return [
-                  {label:`${intl.get('global.all')} ${intl.get('orders.market')}`,value:""},
-                  ...options,
-                ]
-              }else{
-                return []
-              }
-            }}
-            onChange={marketChange}
-            placeholder={intl.get('orders.market')}
-            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-            dropdownMatchSelectWidth={false}
-            defaultValue=""
-            size="small"
-          >
-          </SelectContainer>
-        </span>
-        <span>
-          <Select
-            placeholder={intl.get('orders.status')}
-            onChange={statusChange}
-            dropdownMatchSelectWidth={false}
-            defaultValue=""
-            size="small"
-          >
-            <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.status')} </Select.Option>
-            <Select.Option value="ORDER_OPENED">{intl.get('orders.status_opened')}</Select.Option>
-            <Select.Option value="ORDER_FINISHED">{intl.get('orders.status_completed')}</Select.Option>
-            <Select.Option value="ORDER_CANCELLED">{intl.get('orders.status_canceled')}</Select.Option>
-            <Select.Option value="ORDER_EXPIRE">{intl.get('orders.status_expired')}</Select.Option>
-          </Select>
-        </span>
-        <span>
-           <Select
-             placeholder={intl.get('orders.side')}
-             onChange={sideChange}
-             dropdownMatchSelectWidth={false}
-             defaultValue=""
-             size="small"
-           >
-             <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.side')}</Select.Option>
-             <Select.Option value="sell">{intl.get('orders.side_sell')}</Select.Option>
-             <Select.Option value="buy">{intl.get('orders.side_buy')}</Select.Option>
-           </Select>
-        </span>
+        <div className="block-dark-filter">
+            <div>
+                <span>
+                  <SelectContainer
+                    loadOptions={getSupportedMarket.bind(this,window.config.rpc_host)}
+                    transform={(res)=>{
+                      if(res && !res.error){
+                        let pairs = config.getMarkets().map(item=>`${item.tokenx}-${item.tokeny}`)
+                        let options = res.result.filter(item=>pairs.includes(item)).map(item=>({label:item,value:item}))
+                        return [
+                          {label:`${intl.get('global.all')} ${intl.get('orders.market')}`,value:""},
+                          ...options,
+                        ]
+                      }else{
+                        return []
+                      }
+                    }}
+                    onChange={marketChange}
+                    placeholder={intl.get('orders.market')}
+                    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    dropdownMatchSelectWidth={false}
+                    defaultValue=""
+                    size="small"
+                  >
+                  </SelectContainer>
+                </span>
+                <span>
+                  <Select
+                    placeholder={intl.get('orders.status')}
+                    onChange={statusChange}
+                    dropdownMatchSelectWidth={false}
+                    defaultValue=""
+                    size="small"
+                  >
+                    <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.status')} </Select.Option>
+                    <Select.Option value="ORDER_OPENED">{intl.get('orders.status_opened')}</Select.Option>
+                    <Select.Option value="ORDER_FINISHED">{intl.get('orders.status_completed')}</Select.Option>
+                    <Select.Option value="ORDER_CANCELLED">{intl.get('orders.status_canceled')}</Select.Option>
+                    <Select.Option value="ORDER_EXPIRE">{intl.get('orders.status_expired')}</Select.Option>
+                  </Select>
+                </span>
+                <span>
+                   <Select
+                     placeholder={intl.get('orders.side')}
+                     onChange={sideChange}
+                     dropdownMatchSelectWidth={false}
+                     defaultValue=""
+                     size="small"
+                   >
+                     <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.side')}</Select.Option>
+                     <Select.Option value="sell">{intl.get('orders.side_sell')}</Select.Option>
+                     <Select.Option value="buy">{intl.get('orders.side_buy')}</Select.Option>
+                   </Select>
+                </span>
+            </div>
+            <div>
+                <span><button class="btn btn-primary">Cancel All</button></span>
+                <span class="offset-md"><button class="btn btn-primary">Cancel All markets</button></span>
+            </div>
+        </div>
     </div>
   )
 }

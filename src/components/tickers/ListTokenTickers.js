@@ -8,11 +8,12 @@ function ListTokenTickers(props) {
   const tickersFm = new TickersFm(list)
   const listedTickers = tickersFm.getTickersBySymbol('LRC') // TODO
   return (
-    <div className="column" style={{height:"-webkit-calc(100% - 251px)",paddingBottom:"460px"}}>
+    <div>
         <div className="loopring-dex">
             <div className="card-header bordered">
                 <h4>Loopring DEX Markets</h4>
             </div>
+            <div className="body">
             {
               listedTickers.map((item,index)=>{
                 const tickerFm = new TickerFm(item)
@@ -20,8 +21,7 @@ function ListTokenTickers(props) {
                   <div className="item">
                       <ul>
                           <li><h3>{item.market}</h3></li>
-                          <li hidden><small>Price</small><span class="text-down">0.56 USD</span></li>
-                          <li hidden><small>Price</small><span class="text-down">{tickerFm.getChange()}</span></li>
+                          <li><small>Price</small><span class="text-down">{tickerFm.getChange()}</span></li>
                           <li><small>Change</small><span className="text-up">{tickerFm.getChange()}</span></li>
                       </ul>
                       <Button className="btn btn-primary">Go To Trade</Button>
@@ -29,9 +29,9 @@ function ListTokenTickers(props) {
                 )
               })
             }
-
+            </div>
         </div>
-        <div className="column">
+        <div>
             <div className="card-header bordered">
                 <h4>Reference Markets</h4>
             </div>
