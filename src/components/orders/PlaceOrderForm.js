@@ -332,7 +332,7 @@ class PlaceOrderForm extends React.Component {
         }
       }
       if(!wallet.address) {
-        //TODO
+        //TODO to unlock wallet && notification
         // Notification.open({
         //   type:'warning',
         //   message:intl.get('trade.not_inWhiteList'),
