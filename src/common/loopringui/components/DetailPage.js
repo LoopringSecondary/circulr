@@ -1,5 +1,9 @@
 import React, { PropTypes } from 'react';
 
+
+
+
+
 export const MetaItem = (props) => {
   const {label, value, render} = props
   return (
@@ -18,8 +22,17 @@ export const MetaList = (props)=>(
     {props.children}
   </ul>
 )
+export const DetailHeader = (props)=>{
+  if(props.title){
+    return <div className="modal-header text-dark"><h3>{props.title}</h3></div>
+  }else{
+    return <div className="modal-header text-dark">{props.children}</div>
+  }
+}
+
 
 export default {
+  DetailHeader,
   MetaItem,
   MetaList,
 }

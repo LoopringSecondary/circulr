@@ -1,9 +1,7 @@
 import React from 'react'
 import {Tabs,Spin} from 'antd'
 import {Link} from 'dva/router'
-import CoinIcon from 'LoopringUI/components/CoinIcon'
-import {MetaList,MetaItem} from 'LoopringUI/components/DetailMeta'
-import {toNumber,toBig} from "LoopringJS/common/formatter";
+import {DetailHeader,MetaList,MetaItem} from 'LoopringUI/components/DetailPage'
 import intl from 'react-intl-universal';
 import {renders} from './ListMyOrders';
 import {OrderFm} from 'modules/orders/OrderFm';
@@ -13,7 +11,7 @@ function OrderDetail(props) {
   const orderFm = new OrderFm(order)
    return (
     <div>
-        <div className="modal-header text-dark"><h3>订单详情</h3></div>
+        <DetailHeader title="订单详情"/>
         <Tabs defaultActiveKey="1" className="tabs-dark">
 	        <Tabs.TabPane tab="基础详情" key="1" className="text-color-dark">
               <Spin spinning={false}>
@@ -31,7 +29,7 @@ function OrderDetail(props) {
   	            </MetaList>
               </Spin>
 	        </Tabs.TabPane>
-	        <Tabs.TabPane tab="撮合详情" key="2">
+	        <Tabs.TabPane tab="撮合详情" key="2" className="text-color-dark">
 	        		<table style={{overflow:'auto'}} className="table table-dark table-striped text-left">
 	        		  <thead>
 	        		      <tr>

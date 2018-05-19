@@ -1,9 +1,7 @@
 import React from 'react'
 import {Tabs,Spin} from 'antd'
 import {Link} from 'dva/router'
-import CoinIcon from 'LoopringUI/components/CoinIcon'
-import {MetaList,MetaItem} from 'LoopringUI/components/DetailMeta'
-import {toNumber,toBig} from "LoopringJS/common/formatter";
+import {DetailHeader,MetaList,MetaItem} from 'LoopringUI/components/DetailPage'
 import intl from 'react-intl-universal';
 import {RingFm} from 'modules/rings/formatters'
 
@@ -15,7 +13,7 @@ export default function RingDetail(props) {
   const ringFm = new RingFm(ring)
    return (
     <div>
-        <div className="modal-header text-dark"><h3>环路详情</h3></div>
+        <DetailHeader title="环路详情"/>
         <Spin spinning={false}>
           <MetaList>
             <MetaItem label="环路" value={ringFm.getRingIndex()} />

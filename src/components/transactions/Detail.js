@@ -3,23 +3,23 @@ import {Card, Spin, Button,Tabs} from 'antd'
 import intl from 'react-intl-universal'
 import Notification from 'LoopringUI/components/Notification';
 import Alert from 'LoopringUI/components/Alert'
-import {MetaList,MetaItem} from 'LoopringUI/components/DetailMeta'
+import {DetailHeader,MetaList,MetaItem} from 'LoopringUI/components/DetailPage'
 import {copyToPasteboard} from 'modules/formatter/common'
 import {TxFm} from 'modules/transactions/formatters'
 import {getTransactionByhash} from 'LoopringJS/ethereum/eth'
+
 export default class Detail extends React.Component {
   constructor(props) {
     super(props);
     this.state= {
-      tx:{
-      },
+      tx:{},
       loading:false,
     }
   }
   componentDidMount() {
     // TODO
 
-    const host = window.config.host + '/rpc/v2'
+    const host = window.config.host + '/eth'
     const txHash = "0x46b9ab33d6904718fc2d16ad1a133a35ae23045bb65893eb2c41b0984b78eca7"
     const _this = this
     getTransactionByhash(host,txHash).then(res => {
@@ -42,9 +42,9 @@ export default class Detail extends React.Component {
     }
     return (
       <div>
-          <div className="modal-header text-dark"><h3>订单详情</h3></div>
-          <Tabs defaultActiveKey="basic" tabPosition="" animated={true} style={{marginTop:'-10px'}}>
-            <Tabs.TabPane  tab={<div style={{marginLeft:'0px'}} className="fs16 text-center mb5">{intl.get('txs.tx_detail')}</div>} key="basic">
+          <DetailHeader title="交易详情" />
+          <Tabs defaultActiveKey="basic" tabPosition="" animated={true}  className="tabs-dark">
+            <Tabs.TabPane className="text-color-dark"  tab={intl.get('txs.tx_detail')} key="basic">
               <Spin spinning={loading}>
                 <MetaList>
                     <MetaItem label={intl.get('txs.tx_hash')} value={tx.txHash} render={renders.txHash}/>
@@ -53,12 +53,7 @@ export default class Detail extends React.Component {
                     <MetaItem label={intl.get('txs.status')} value={intl.get('txs.' + tx.status)}/>
                     <MetaItem label={intl.get('txs.confirm_time')} value={txFm.getConfirmTime()}/>
                     <MetaItem label={intl.get('txs.type')} value={txFm.getType()}/>
-                    <MetaItem label={intl.get('token.gas')} value={
-                      <div className="mr15">
-                        <div className="row justify-content-end">{`${txFm.getGas()}  ETH`}</div>
-                        <div className="row justify-content-end fs14 color-black-3">{`Gas(${txFm.getGasLimit()}) * Gas Price(${txFm.getGasPrice()} Gwei)`}</div>
-                      </div>
-                    }/>
+                    <MetaItem label={"Gas"} value={renders.gas(txFm)}/>
                     <MetaItem label={intl.get('wallet.nonce')} value={txFm.getNonce()}/>
                     <MetaItem label={intl.get('txs.value')} value={txFm.getValue() + ' ETH'}/>
                 </MetaList>
@@ -66,7 +61,7 @@ export default class Detail extends React.Component {
             </Tabs.TabPane>
             {
               fill &&
-              <Tabs.TabPane  tab={<div style={{marginLeft:'0px'}} className="fs16 text-center mb5">{intl.get('orders.fill_detail')}</div>} key="fill">
+              <Tabs.TabPane  tab={intl.get('orders.fill_detail')} key="fill">
                 <MetaList>
                   <MetaItem label={intl.get('txs.fill_buy')} value={txFm.getFilledAmountOfBuy()}/>
                   <MetaItem label={intl.get('txs.fill_sell')} value={txFm.getFilledAmountOfSell()}/>
@@ -89,5 +84,13 @@ export const renders = {
                                href={`https://etherscan.io/block/${value}`}>{value}</a>,
   address: (value) => <a className="text-truncate d-block" target="_blank" onCopy={copyToPasteboard.bind(this, value)}
                            href={`https://etherscan.io/address/${value}`}>{value}</a>,
+  gas:(fm)=>{
+    return (
+      <div className="mr15">
+        <div className="row justify-content-end">{`${fm.getGas()}  ETH`}</div>
+        <div className="row justify-content-end fs14 color-black-3">{`Gas(${fm.getGasLimit()}) * Gas Price(${fm.getGasPrice()} Gwei)`}</div>
+      </div>
+    )
+  }
 }
 
