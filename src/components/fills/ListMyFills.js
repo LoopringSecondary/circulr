@@ -3,7 +3,7 @@ import { Form,Select,Badge } from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import SelectContainer from 'LoopringUI/components/SelectContainer'
 import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'
-import FillFm from 'modules/fills/formatters'
+import {FillFm} from 'modules/fills/formatters'
 import config from 'common/config'
 import intl from 'react-intl-universal'
 
@@ -81,17 +81,18 @@ export default function ListMyFills(props) {
             <tbody>
               {
                 fills.items.map((item,index)=>{
+                  const fillFm = new FillFm(item)
                   return (
                     <tr key={index}>
-                      <td>{renders.ringIndex(item)}</td>
+                      <td>{renders.ringIndex(fillFm)}</td>
                       <td>{item.market}</td>
-                      <td>{renders.side(item)}</td>
-                      <td>{FillFm.amount(item)}</td>
-                      <td>{FillFm.price(item)}</td>
-                      <td>{FillFm.total(item)}</td>
-                      <td>{FillFm.lrcFee(item)}</td>
-                      <td>{FillFm.lrcReward(item)}</td>
-                      <td>{FillFm.time(item)}</td>
+                      <td>{renders.side(fillFm)}</td>
+                      <td>{fillFm.getAmount()}</td>
+                      <td>{fillFm.getPrice()}</td>
+                      <td>{fillFm.getTotal()}</td>
+                      <td>{fillFm.getLRCFee()}</td>
+                      <td>{fillFm.getLRCReward()}</td>
+                      <td>{fillFm.getTime()}</td>
                    </tr>
                   )
                 })
@@ -104,19 +105,19 @@ export default function ListMyFills(props) {
   )
 }
   const renders = {
-    ringIndex: (item) => {
+    ringIndex: (fm) => {
       return (
           <a className="text-truncate text-left color-blue-500">
-            {item.fillIndex}
+            {fm.fill.fillIndex}
           </a>
       )
     },
-    side: (item) => {
-      if (item.side === 'sell') {
-        return <div className="text-error">Sell {intl.get('orders.side_sell')}</div>
+    side: (fm) => {
+      if (fm.fill.side === 'sell') {
+        return <div className="text-error">{intl.get('orders.side_sell')}</div>
       }
-      if (item.side === 'buy') {
-        return <div className="text-success">Buy {intl.get('orders.side_buy')}</div>
+      if (fm.fill.side === 'buy') {
+        return <div className="text-success">{intl.get('orders.side_buy')}</div>
       }
     },
   }
