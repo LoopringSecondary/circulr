@@ -7,7 +7,8 @@ import TokenFm from "../tokens/TokenFm";
 
 export class RingFm{
   constructor(ring={}){
-    this.ring = ring
+    this.ring = ring.ringInfo || {}
+    this.fills = ring.fills || []
   }
   getRingIndex(){
     return this.ring.ringIndex

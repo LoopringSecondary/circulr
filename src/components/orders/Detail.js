@@ -1,25 +1,13 @@
 import React from 'react'
-import {Tabs} from 'antd'
+import {Tabs,Spin} from 'antd'
 import {Link} from 'dva/router'
 import CoinIcon from 'LoopringUI/components/CoinIcon'
+import {MetaList,MetaItem} from 'LoopringUI/components/DetailMeta'
 import {toNumber,toBig} from "LoopringJS/common/formatter";
 import intl from 'react-intl-universal';
 import {renders} from './ListMyOrders';
 import {OrderFm} from 'modules/orders/OrderFm';
 
-const MetaItem = (props) => {
-  const {label, value, render} = props
-  return (
-    <li>
-      <span>
-        {label}
-      </span>
-      <div className="text-lg-control break-word text-right">
-        {render ? render(value) : value}
-      </div>
-    </li>
-  )
-}
 function OrderDetail(props) {
   const order = {}
   const orderFm = new OrderFm(order)
@@ -28,27 +16,20 @@ function OrderDetail(props) {
         <div className="modal-header text-dark"><h3>订单详情</h3></div>
         <Tabs defaultActiveKey="1" className="tabs-dark">
 	        <Tabs.TabPane tab="基础详情" key="1" className="text-color-dark">
-              {
-                false &&
-                <div className="pd-md text-center">
-                  <span><i className="icon-ETH icon-token-md"></i><b>WEH</b></span>
-                  <span className="offset-lg"><i className="text-color-3 icon-long-arrow-right"></i></span>
-                  <span className="offset-lg"><b>WETH </b><i className="icon-WETH icon-token-md"></i></span>
-                </div>
-              }
-	            <div className="divider-dark solid"></div>
-	            <ul className="list list-label list-dark list-justify-space-between divided">
-                  <MetaItem label={intl.get('orders.hash')} value={orderFm.getOrderHash()}/>
-                  <MetaItem label={intl.get('orders.status')} value={renders.status(orderFm)}/>
-                  <MetaItem label={intl.get('orders.price')} value={orderFm.getPrice()}/>
-                  <MetaItem label={intl.get('orders.amount')} value={orderFm.getAmount()}/>
-                  <MetaItem label={intl.get('orders.total')} value={orderFm.getTotal()}/>
-                  <MetaItem label={intl.get('orders.LRCFee')} value={orderFm.getLRCFee()}/>
-                  <MetaItem label={intl.get('orders.marginSplit')} value={orderFm.getMarginSplit()}/>
-                  <MetaItem label={intl.get('orders.filled')} value={orderFm.getFilledPercent()}/>
-                  <MetaItem label={intl.get('orders.validSince')} value={orderFm.getCreateTime()}/>
-                  <MetaItem label={intl.get('orders.validUntil')} value={orderFm.getExpiredTime()}/>
-	            </ul>
+              <Spin spinning={false}>
+  	            <MetaList>
+                    <MetaItem label={intl.get('orders.hash')} value={orderFm.getOrderHash()}/>
+                    <MetaItem label={intl.get('orders.status')} value={renders.status(orderFm)}/>
+                    <MetaItem label={intl.get('orders.price')} value={orderFm.getPrice()}/>
+                    <MetaItem label={intl.get('orders.amount')} value={orderFm.getAmount()}/>
+                    <MetaItem label={intl.get('orders.total')} value={orderFm.getTotal()}/>
+                    <MetaItem label={intl.get('orders.LRCFee')} value={orderFm.getLRCFee()}/>
+                    <MetaItem label={intl.get('orders.marginSplit')} value={orderFm.getMarginSplit()}/>
+                    <MetaItem label={intl.get('orders.filled')} value={orderFm.getFilledPercent()}/>
+                    <MetaItem label={intl.get('orders.validSince')} value={orderFm.getCreateTime()}/>
+                    <MetaItem label={intl.get('orders.validUntil')} value={orderFm.getExpiredTime()}/>
+  	            </MetaList>
+              </Spin>
 	        </Tabs.TabPane>
 	        <Tabs.TabPane tab="撮合详情" key="2">
 	        		<table style={{overflow:'auto'}} className="table table-dark table-striped text-left">
