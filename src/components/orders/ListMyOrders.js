@@ -78,7 +78,6 @@ const ListHeader = ({orders})=>{
             </div>
             <div>
                 <span><button class="btn btn-primary">Cancel All</button></span>
-                <span class="offset-md"><button class="btn btn-primary">Cancel All markets</button></span>
             </div>
         </div>
     </div>
@@ -111,9 +110,12 @@ export default function ListMyOrders(props) {
                 {
                   orders.items.map((item,index)=>{
                     const orderFm = new OrderFm(item)
+                    const actions = {
+                      gotoDetail:()=>props.dispatch({type:'modals/showModal',payload:{id:'orderDetail',order:item}})
+                    }
                     return (
                       <tr key={index}>
-                        <td>{renders.hash(orderFm)}</td>
+                        <td>{renders.hash(orderFm,actions)}</td>
                         <td>{orderFm.getMarket()}</td>
                         <td>{renders.side(orderFm)}</td>
                         <td>{orderFm.getAmount()}</td>
@@ -137,10 +139,10 @@ export default function ListMyOrders(props) {
 }
 
 export const renders = {
-  hash: (fm) => (
+  hash: (fm,actions) => (
     <a className="text-primary"
        onCopy={null}
-       onClick={null}
+       onClick={actions && actions.gotoDetail}
     >
       {getShortAddress(fm.getOrderHash())}
     </a>

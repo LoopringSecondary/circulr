@@ -82,9 +82,12 @@ export default function ListMyFills(props) {
               {
                 fills.items.map((item,index)=>{
                   const fillFm = new FillFm(item)
+                  const actions = {
+                    gotoDetail:()=>props.dispatch({type:'modals/showModal',payload:{id:'ringDetail',ring:item}})
+                  }
                   return (
                     <tr key={index}>
-                      <td>{renders.ringIndex(fillFm)}</td>
+                      <td>{renders.ringIndex(fillFm,actions)}</td>
                       <td>{item.market}</td>
                       <td>{renders.side(fillFm)}</td>
                       <td>{fillFm.getAmount()}</td>
@@ -105,9 +108,9 @@ export default function ListMyFills(props) {
   )
 }
   const renders = {
-    ringIndex: (fm) => {
+    ringIndex: (fm,actions) => {
       return (
-          <a className="text-truncate text-left color-blue-500">
+          <a className="text-truncate text-left color-blue-500" onClick={actions && actions.gotoDetail}>
             {fm.fill.ringIndex}
             <span hidden>{fm.fill.ringHash}</span>
           </a>
