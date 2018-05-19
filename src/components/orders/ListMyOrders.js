@@ -113,9 +113,9 @@ export default function ListMyOrders(props) {
                     const orderFm = new OrderFm(item)
                     return (
                       <tr key={index}>
-                        <td>{renders.hash(orderFm.getOrderHash(),item,index)}</td>
+                        <td>{renders.hash(orderFm)}</td>
                         <td>{orderFm.getMarket()}</td>
-                        <td>{renders.side(orderFm.getSide(),item,index)}</td>
+                        <td>{renders.side(orderFm)}</td>
                         <td>{orderFm.getAmount()}</td>
                         <td>{orderFm.getPrice()}</td>
                         <td>{orderFm.getTotal()}</td>
@@ -123,7 +123,7 @@ export default function ListMyOrders(props) {
                         <td>{orderFm.getFilledPercent()}%</td>
                         <td>{orderFm.getCreateTime()}</td>
                         <td>{orderFm.getExpiredTime()}</td>
-                        <td>{renders.status(orderFm.getStatus(),item,index)}</td>
+                        <td>{renders.status(orderFm)}</td>
                      </tr>
                     )
                   })
@@ -137,57 +137,53 @@ export default function ListMyOrders(props) {
 }
 
 export const renders = {
-  hash: (value, item, index) => (
+  hash: (fm) => (
     <a className="text-primary"
        onCopy={null}
        onClick={null}
     >
-      {getShortAddress(value)}
+      {getShortAddress(fm.getOrderHash())}
     </a>
   ),
-  side: (value, item, index) => (
+  side: (fm) => (
     <div>
-      { value ==='buy' &&
-        <span className="text-success">{value}</span>
+      { fm.getSide() ==='buy' &&
+        <span className="text-success">{fm.getSide()}</span>
       }
-      { value ==='sell' &&
-        <span className="text-error">{value}</span>
+      { fm.getSide() ==='sell' &&
+        <span className="text-error">{fm.getSide()}</span>
       }
     </div>
   ),
-  status: (value, item, index) => {
+  status: (fm) => {
+    const status = fm.getStatus()
     const cancleBtn = (
       <a className="ml5 fs12 color-black-2"
          onClick={null}>
         {intl.get('order.no')}
       </a>
     )
-    let status
-    if (item.status === 'ORDER_OPENED') {
-      status = <Badge className="text-color-dark-1" status="processing" text={intl.get('orders.status_opened')}/>
+    let statusNode
+    if (status === 'ORDER_OPENED') {
+      statusNode = <Badge className="text-color-dark-1" status="processing" text={intl.get('orders.status_opened')}/>
     }
-    if (item.status === 'ORDER_FINISHED') {
-      status = <Badge className="text-color-dark-1" status="success" text={intl.get('orders.status_completed')}/>
+    if (status === 'ORDER_FINISHED') {
+      statusNode = <Badge className="text-color-dark-1" status="success" text={intl.get('orders.status_completed')}/>
     }
-    if (item.status === 'ORDER_CANCELLED') {
-      status = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
+    if (status === 'ORDER_CANCELLED') {
+      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
     }
-    if (item.status === 'ORDER_CUTOFF') {
-      status = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
+    if (status === 'ORDER_CUTOFF') {
+      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
     }
-    if (item.status === 'ORDER_EXPIRE') {
-      status = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_expired')}/>
+    if (status === 'ORDER_EXPIRE') {
+      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_expired')}/>
     }
     return (
-      <div className="text-left">
-        {item.status !== 'ORDER_OPENED' && status}
-        {item.status === 'ORDER_OPENED' &&
-          <span>
-            {status}
-            {cancleBtn}
-          </span>
-        }
-      </div>
+      <span>
+        {statusNode}
+        {status === 'ORDER_OPENED' && cancleBtn }
+      </span>
     )
   },
 }
