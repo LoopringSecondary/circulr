@@ -3,7 +3,7 @@ import { Form,Select,Badge } from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import SelectContainer from 'LoopringUI/components/SelectContainer'
 import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'
-import {OrderFm} from 'modules/orders/ListFm'
+import {OrderFm} from 'modules/orders/OrderFm'
 import {getShortAddress} from 'modules/formatter/common'
 import config from 'common/config'
 import intl from 'react-intl-universal'
@@ -113,7 +113,7 @@ export default function ListMyOrders(props) {
                     const orderFm = new OrderFm(item)
                     return (
                       <tr key={index}>
-                        <td>{renders.hash(orderFm.getHash(),item,index)}</td>
+                        <td>{renders.hash(orderFm.getOrderHash(),item,index)}</td>
                         <td>{orderFm.getMarket()}</td>
                         <td>{renders.side(orderFm.getSide(),item,index)}</td>
                         <td>{orderFm.getAmount()}</td>

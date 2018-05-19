@@ -15,7 +15,7 @@ export class OrderFm {
   constructor(order){
     this.order = order
   }
-  getHash(){return this.order.originalOrder.hash}
+  getOrderHash(){return this.order.originalOrder.hash}
   getMarket(){return `${this.order.originalOrder.tokenB}/${this.order.originalOrder.tokenS}`}
   getSide(){return this.order.originalOrder.side }
   getAmount(){
@@ -66,9 +66,6 @@ export class OrderFm {
     return percent
   }
   getStatus(){return this.order.status}
-  selector1(){
-  }
-  selector2(){
-  }
+  getMarginSplit(){return "TODO"}
 }
 
