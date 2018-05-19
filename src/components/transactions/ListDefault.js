@@ -61,6 +61,7 @@ export default function ListTransaction(props) {
                               <th className="text-left">Value</th>
                               <th className="text-left">Gas</th>
                               <th className="text-left">Block</th>
+                              <th className="text-left">Nonce</th>
                               <th className="text-left">TxHash</th>
                               <th className="text-left">Created</th>
                               <th className="text-center">Status</th>
@@ -77,6 +78,7 @@ export default function ListTransaction(props) {
                                   <td className="text-left">{renders.value(txFm)}</td>
                                   <td className="text-left">{txFm.getGas()} ETH</td>
                                   <td className="text-left">{item.blockNumber}</td>
+                                  <td className="text-left">{item.nonce}</td>
                                   <td className="text-left">{renders.txHash(txFm)}</td>
                                   <td className="text-left">{renders.createTime(txFm)}</td>
                                   <td className="text-center">{renders.status(txFm)}</td>
