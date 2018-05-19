@@ -67,7 +67,7 @@ export class FillFm{
     const fmLrc = new TokenFm({symbol: 'LRC'});
     return commonFm.getFormatNum(fmLrc.getUnitAmount(this.fill.lrcReward)) + ' LRC'
   }
-  getTime(){
+  getCreateTime(){
     return commonFm.getFormatTime(toNumber(this.fill.createTime) * 1e3)
   }
 }

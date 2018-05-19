@@ -92,7 +92,7 @@ export default function ListMyFills(props) {
                       <td>{fillFm.getTotal()}</td>
                       <td>{fillFm.getLRCFee()}</td>
                       <td>{fillFm.getLRCReward()}</td>
-                      <td>{fillFm.getTime()}</td>
+                      <td>{fillFm.getCreateTime()}</td>
                    </tr>
                   )
                 })
@@ -108,7 +108,8 @@ export default function ListMyFills(props) {
     ringIndex: (fm) => {
       return (
           <a className="text-truncate text-left color-blue-500">
-            {fm.fill.fillIndex}
+            {fm.fill.ringIndex}
+            <span hidden>{fm.fill.ringHash}</span>
           </a>
       )
     },

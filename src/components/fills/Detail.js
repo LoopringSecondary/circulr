@@ -4,8 +4,8 @@ import {Link} from 'dva/router'
 import CoinIcon from 'LoopringUI/components/CoinIcon'
 import {toNumber,toBig} from "LoopringJS/common/formatter";
 import intl from 'react-intl-universal';
-import {renders} from './ListMyFills';
-import {FillFm} from 'modules/orders/formatters';
+import {FillFm} from 'modules/fills/formatters'
+import {RingFm} from 'modules/rings/formatters'
 
 const MetaItem = (props) => {
   const {label, value, render} = props
@@ -20,19 +20,22 @@ const MetaItem = (props) => {
     </li>
   )
 }
-function OrderDetail(props) {
-  const fill = {}
-  const fillFm = new FillFm(fill)
+export default function RingDetail(props) {
+  const ring = {
+    fills:[],
+    ringinfo:[],
+  }
+  const ringFm = new RingFm(ring)
    return (
     <div>
         <div className="modal-header text-dark"><h3>环路详情</h3></div>
           <ul className="list list-label list-dark list-justify-space-between divided">
-              <MetaItem label="环路" value={fillFm.getRingIndex()} />
-              <MetaItem label="环路哈希" value={fillFm.getRingHash()} />
-              <MetaItem label="矿工" value={fillFm.getMiner()} />
-              <MetaItem label="交易Hash" value={fillFm.getTxHash()} />
-              <MetaItem label="块高度" value={fillFm.getBlockNumber()} />
-              <MetaItem label="费用接收地址" value={fillFm.getFeeRecipient()} />
+              <MetaItem label="环路" value={ringFm.getRingIndex()} />
+              <MetaItem label="环路哈希" value={ringFm.getRingHash()} />
+              <MetaItem label="矿工" value={ringFm.getMiner()} />
+              <MetaItem label="交易Hash" value={ringFm.getTxHash()} />
+              <MetaItem label="块高度" value={ringFm.getBlockNumber()} />
+              <MetaItem label="费用接收地址" value={ringFm.getFeeRecipient()} />
               <li><span>交易Hash</span><div className="text-lg-control break-word text-right">0x46b9ab33d6904718fc2d16ad1a133a35ae23045</div></li>
               <li>
                   <span>环路哈希</span>
@@ -51,4 +54,7 @@ function OrderDetail(props) {
     </div>
   )
 }
-export default OrderDetail
+
+export const renders = {
+
+}
