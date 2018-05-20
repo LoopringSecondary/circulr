@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'dva'
-import {TickersFm,TickerFm} from 'modules/tickers/formatter'
+import {TickersFm,TickerFm} from 'modules/tickers/formatters'
 
 
 const TickItem = ({item,actions})=>{
@@ -30,6 +30,7 @@ const TickItem = ({item,actions})=>{
 }
 
 function ListAllTickers(props) {
+  console.log('ListAllTickers render',props)
   const {loopringTickers:list,dispatch} = props
   const tickersFm = new TickersFm(list)
   const {extra:{favored={},keywords}} = list
@@ -51,35 +52,34 @@ function ListAllTickers(props) {
     dispatch({
       type:'sockets/filtersChange',
       payload:{
+        id:'loopringTickers',
+        extra:{
+          favored:{[item.symbol]:true}
+        }
+      }
+    })
+  }
+  const selectTicker= (item)=>{
+    console.log('selectTicker',item.market)
+    dispatch({
+      type:'sockets/filtersChange',
+      payload:{
         id:'tickers',
-        market:item.market
+        filters:{market:item.market}
       }
     })
     dispatch({
       type:'sockets/filtersChange',
       payload:{
         id:'depth',
-        market:item.market
+        filters:{market:item.market}
       }
     })
     dispatch({
       type:'sockets/filtersChange',
       payload:{
         id:'trades',
-        market:item.market
-      }
-    })
-
-
-  }
-  const selectTicker= (item)=>{
-    dispatch({
-      type:'sockets/filtersChange',
-      payload:{
-        id:'loopringTickers',
-        extra:{
-          favored:{[item.symbol]:true}
-        }
+        filters:{market:item.market}
       }
     })
   }
@@ -88,7 +88,7 @@ function ListAllTickers(props) {
     toggleTickerFavored
   }
   // TODO
-  const currentMarket = "LRC-WETH"
+  const currentMarket = list.filters.market || "LRC-WETH"
 
   return (
     <div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'dva'
-import {TickersFm,TickerFm} from 'modules/tickers/formatter'
+import {TickersFm,TickerFm} from 'modules/tickers/formatters'
 import { Button } from 'antd'
 
 function ListTokenTickers(props) {
