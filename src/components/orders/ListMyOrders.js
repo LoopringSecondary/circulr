@@ -77,7 +77,7 @@ const ListHeader = ({orders})=>{
                 </span>
             </div>
             <div>
-                <span><button class="btn btn-primary">Cancel All</button></span>
+                <span><button className="btn btn-primary">Cancel All</button></span>
             </div>
         </div>
     </div>

@@ -7,6 +7,9 @@ function ListTokenTickers(props) {
   const {loopringTickers:list,dispatch} = props
   const tickersFm = new TickersFm(list)
   const listedTickers = tickersFm.getTickersBySymbol('LRC') // TODO
+  const gotoTrade = ()=>{
+
+  }
   return (
     <div>
         <div className="loopring-dex">
