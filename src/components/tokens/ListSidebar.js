@@ -1,7 +1,9 @@
 import React from 'react'
-import {Input,Icon,Tooltip,Spin} from 'antd'
+import {Input,Icon,Tooltip,Spin,Popover,Button} from 'antd'
+import Notification from 'LoopringUI/components/Notification'
 import intl from 'react-intl-universal'
 import TokensFm from 'modules/tokens/TokensFm'
+import config from 'common/config'
 import {Currency} from 'modules/containers'
 
 function ListTokensSidebar(props) {
@@ -57,6 +59,52 @@ function ListTokensSidebar(props) {
         filters: {token}
       }
     })
+  }
+  const gotoTransfer = (item, e) => {
+    dispatch({
+      type: 'modals/showModal',
+      payload: {
+        id:'transferToken',
+        item,
+      }
+    })
+  }
+  const gotoReceive = (item, e) => {
+    dispatch({
+      type: 'modals/showModal',
+      payload: {
+        id:'receiveToken',
+        item,
+      }
+    })
+  };
+  const gotoConvert = (item) => {
+    dispatch({
+      type: 'modals/showModal',
+      payload: {
+        id:'convertToken',
+        item,
+        showFrozenAmount: false,
+      }
+    })
+  }
+  const gotoTrade = (item) => {
+    const foundMarket = config.getTokenSupportedMarket(item.symbol)
+    if (foundMarket) {
+      window.routeActions.gotoPath('/trade/' + foundMarket)
+      return
+    }
+    Notification.open({
+      type: 'warning',
+      message: intl.get('trade.not_supported_token_to_trade_title', {token: item.symbol}),
+      description: intl.get('trade.not_supported_token_to_trade_content')
+    });
+  }
+  const actions = {
+    gotoTransfer,
+    gotoReceive,
+    gotoConvert,
+    gotoTrade,
   }
 
   return (
@@ -125,7 +173,7 @@ function ListTokensSidebar(props) {
                               }
                             </div>
                           </Spin>
-                          <div className="more token-action"><i className="icon-more"></i></div>
+                          <TokenActions item={item} actions={actions}/>
                       </div>
                   </div>
                 )
@@ -134,6 +182,42 @@ function ListTokensSidebar(props) {
       </div>
     </div>
   )
+}
+
+class TokenActions extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    const {item,actions} = this.props
+    const btns = (
+      <div style={{width:'180px'}}>
+        <Button onClick={actions.gotoTransfer.bind(this,item)} className="d-block w-100 text-left mb5">Send {item.symbol}</Button>
+        <Button onClick={actions.gotoReceive.bind(this,item)} className="d-block w-100 text-left mb5">Receive {item.symbol}</Button>
+        {
+          item.symbol === 'WETH' &&
+          <Button onClick={actions.gotoConvert.bind(this,item)} className="d-block w-100 text-left mb5">Convert WETH To ETH</Button>
+        }
+        {
+          item.symbol === 'ETH' &&
+          <Button onClick={actions.gotoConvert.bind(this,item)} className="d-block w-100 text-left mb5">Convert ETH To WETH</Button>
+        }
+        <Button onClick={actions.gotoTrade.bind(this,item)} className="d-block w-100 text-left">Trade {item.symbol}</Button>
+      </div>
+    )
+    return (
+      <div className="more token-action" onClick={e=>{ e.stopPropagation();e.preventDefault()}}>
+        <Popover
+          title={<div className="pt5 pb5 fs18">{item.symbol} {intl.get('tokens.options')}</div>}
+          placement="right"
+          arrowPointAtCenter
+          content={btns}
+        >
+          <i className="icon-more"></i>
+        </Popover>
+      </div>
+    );
+  }
 }
 
 export default ListTokensSidebar

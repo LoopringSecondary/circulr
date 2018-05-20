@@ -19,7 +19,6 @@ const TestComp = (props)=>{
   )
 }
 const TestModal = (props)=>{
-  console.log('TestModal',props)
   return (
     <div className="group-span" style={{padding:'10px'}}>
       <span>
@@ -37,7 +36,7 @@ const TestModal = (props)=>{
       <span>
         <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'receive'})}>Receive</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'transfer'})}>Transfer</Button></span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'transferToken'})}>Transfer</Button></span>
       <span>
         <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'transferConfirm'})}>transferConfirm</Button></span>
       <span>
