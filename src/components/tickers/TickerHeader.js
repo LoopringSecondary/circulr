@@ -17,7 +17,7 @@ function TickerHeader(props) {
   return (
     <div className="tradeHeaderEle justify-content-between align-items-center" style={{display: "flex"}}>
         <div id="back"><i className="icon-chevron-left"></i></div>
-        <div className="pair-select d-flex justify-content-between tokenselect" onMouseOver={showAllTickers}>
+        <div className="pair-select d-flex justify-content-between tokenselect" onClick={showAllTickers}>
         {props.tickers.filters.market} <b className="caret"></b>
         </div>
         <div className="token-last-quotes">

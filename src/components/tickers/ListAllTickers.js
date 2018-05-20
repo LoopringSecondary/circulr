@@ -82,13 +82,34 @@ function ListAllTickers(props) {
         filters:{market:item.market}
       }
     })
+    dispatch({
+      type:'sockets/extraChange',
+      payload:{
+        id:'loopringTickers',
+        extra:{current:item.market}
+      }
+    })
+    dispatch({
+      type:'orders/filtersChange',
+      payload:{
+        id:'MyOpenOrders',
+        filters:{market:item.market}
+      }
+    })
+    dispatch({
+      type:'fills/filtersChange',
+      payload:{
+        id:'MyFills',
+        filters:{market:item.market}
+      }
+    })
   }
   const actions = {
     selectTicker,
     toggleTickerFavored
   }
   // TODO
-  const currentMarket = list.filters.market || "LRC-WETH"
+  const currentMarket = list.extra.current || "LRC-WETH"
 
   return (
     <div>
