@@ -42,8 +42,7 @@ const ListHeader = ({orders})=>{
                     placeholder={intl.get('orders.market')}
                     filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     dropdownMatchSelectWidth={false}
-                    defaultValue=""
-                    value={orders.filters.market}
+                    value={orders.filters.market || ""}
                     size="small"
                   >
                   </SelectContainer>
@@ -53,8 +52,7 @@ const ListHeader = ({orders})=>{
                     placeholder={intl.get('orders.status')}
                     onChange={statusChange}
                     dropdownMatchSelectWidth={false}
-                    defaultValue=""
-                    value={orders.filters.status}
+                    value={orders.filters.status || ""}
                     size="small"
                   >
                     <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.status')} </Select.Option>
@@ -69,8 +67,7 @@ const ListHeader = ({orders})=>{
                      placeholder={intl.get('orders.side')}
                      onChange={sideChange}
                      dropdownMatchSelectWidth={false}
-                     defaultValue=""
-                     value={orders.filters.side}
+                     value={orders.filters.side || ""}
                      size="small"
                    >
                      <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.side')}</Select.Option>
