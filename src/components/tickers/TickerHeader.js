@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'dva'
 import {TickerFm} from 'modules/tickers/formatters'
+import routeActions from 'common/utils/routeActions'
 
 function TickerHeader(props) {
   console.log('TickerHeader render',props)
@@ -12,11 +13,14 @@ function TickerHeader(props) {
       }
     })
   }
+  const gotoWallet = ()=>{
+    routeActions.gotoPath('/wallet')
+  }
   const looprTickerFm = new TickerFm(props.tickers.item.loopr || {})
   const tokens = looprTickerFm.getTokens()
   return (
     <div className="tradeHeaderEle justify-content-between align-items-center" style={{display: "flex"}}>
-        <div id="back"><i className="icon-chevron-left"></i></div>
+        <div id="back" onClick={gotoWallet}><i className="icon-chevron-left"></i></div>
         <div className="pair-select d-flex justify-content-between tokenselect" onClick={showAllTickers}>
         {props.tickers.filters.market} <b className="caret"></b>
         </div>
