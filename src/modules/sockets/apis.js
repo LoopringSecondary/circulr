@@ -125,11 +125,11 @@ const transfromers = {
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
       console.log(id,'res',res)
-      let items =[]
-      if(!res.error && isArray(res.data)){
-        items =[ ...res.data ]
+      let item = {}
+      if(!res.error && res.data){
+        item ={...res.data}
       }
-      updateItems(items,id)
+      updateItem(item,id)
     },
   },
   loopringTickers:{

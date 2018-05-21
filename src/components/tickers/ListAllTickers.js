@@ -1,17 +1,14 @@
 import React from 'react'
 import {connect} from 'dva'
-import {TickersFm,TickerFm} from 'modules/tickers/formatter'
+import {TickersFm,TickerFm} from 'modules/tickers/formatters'
 
 
-const TickItem = ({item})=>{
+const TickItem = ({item,actions})=>{
     const tickerFm = new TickerFm(item)
-    const toggleFavored = (item)=>{
-      // TODO
-    }
     return (
-      <li>
+      <li onClick={actions.selectTicker.bind(this,item)}>
         <span>
-          <i className="icon-star icon-favorites" onClick={toggleFavored.bind(this,item)} />
+          <i className="icon-star icon-favorites" onClick={actions.toggleTickerFavored.bind(this,item)} />
         </span>
         <span className="">{item.market}</span>
         <span>{tickerFm.getLast()} {tickerFm.getTokens().right}</span>
@@ -33,13 +30,14 @@ const TickItem = ({item})=>{
 }
 
 function ListAllTickers(props) {
+  console.log('ListAllTickers render',props)
   const {loopringTickers:list,dispatch} = props
   const tickersFm = new TickersFm(list)
   const {extra:{favored={},keywords}} = list
   const allTickers = tickersFm.getAllTickers()
   const favoredTickers = tickersFm.getFavoredTickers()
   const recentTickers = tickersFm.getRecentTickers()
-  const search = (e)=>{
+  const searchTicker = (e)=>{
     dispatch({
       type:'sockets/extraChange',
       payload:{
@@ -50,7 +48,7 @@ function ListAllTickers(props) {
       }
     })
   }
-  const toggleFavored = (item)=>{
+  const toggleTickerFavored = (item)=>{
     dispatch({
       type:'sockets/filtersChange',
       payload:{
@@ -61,24 +59,64 @@ function ListAllTickers(props) {
       }
     })
   }
-
+  const selectTicker= (item)=>{
+    console.log('selectTicker',item.market)
+    dispatch({
+      type:'sockets/filtersChange',
+      payload:{
+        id:'tickers',
+        filters:{market:item.market}
+      }
+    })
+    dispatch({
+      type:'sockets/filtersChange',
+      payload:{
+        id:'depth',
+        filters:{market:item.market}
+      }
+    })
+    dispatch({
+      type:'sockets/filtersChange',
+      payload:{
+        id:'trades',
+        filters:{market:item.market}
+      }
+    })
+    dispatch({
+      type:'sockets/extraChange',
+      payload:{
+        id:'loopringTickers',
+        extra:{current:item.market}
+      }
+    })
+    dispatch({
+      type:'orders/filtersChange',
+      payload:{
+        id:'MyOpenOrders',
+        filters:{market:item.market}
+      }
+    })
+    dispatch({
+      type:'fills/filtersChange',
+      payload:{
+        id:'MyFills',
+        filters:{market:item.market}
+      }
+    })
+  }
+  const actions = {
+    selectTicker,
+    toggleTickerFavored
+  }
   // TODO
-  const currentMarket = "LRC-WETH"
-  // TODO
-  // favored
+  const currentMarket = list.extra.current || "LRC-WETH"
 
   return (
     <div>
 	    <div className="token-select">
 	        <div className="token-select-header">
-              {
-                keywords &&
-                <input value={keywords.toUpperCase()} onChange={search} />
-              }
-              {
-                !(keywords && keywords.length > 0) &&
-                <input value={currentMarket} onChange={search} />
-              }
+              { keywords && <input value={keywords.toUpperCase()} onChange={searchTicker} /> }
+              {!(keywords && keywords.length > 0) && <input value={currentMarket} onChange={searchTicker} /> }
               <i className="icon-search" />
               <i hidden className="icon-star icon-favorites active" />
 	        </div>
@@ -88,25 +126,19 @@ function ListAllTickers(props) {
                     recentTickers.lenth >0 &&
                     <div className="item">
                         <div className="title">Recent</div>
-                        <ul>
-                            {recentTickers.map((item,index)=><TickItem item={item} />)}
-                        </ul>
+                        <ul>{recentTickers.map((item,index)=><TickItem item={item} actions={actions} />)}</ul>
                     </div>
                   }
                   {
                     favoredTickers.lenth >0 &&
                     <div className="item">
                         <div className="title">Favorites</div>
-                        <ul>
-                            {favoredTickers.map((item,index)=><TickItem item={item} />)}
-                        </ul>
+                        <ul>{favoredTickers.map((item,index)=><TickItem item={item} actions={actions} />)}</ul>
                     </div>
                   }
 	                <div className="item">
 	                    <div className="title">All Markets</div>
-	                    <ul>
-                          {allTickers.map((item,index)=><TickItem key={index} item={item} />)}
-	                    </ul>
+	                    <ul>{allTickers.map((item,index)=><TickItem key={index} item={item} actions={actions} />)}</ul>
 	                </div>
 	            </div>
 	        </div>

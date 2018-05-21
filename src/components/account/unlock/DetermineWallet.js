@@ -96,51 +96,57 @@ export default class DetermineWallet extends React.Component {
     const wallet = determineWallet || hardwareWallet;
     const {dpath, addresses, pageNum,customPath} = wallet;
     return (
-      <Card title={<div className="fs1 color-black-1">选择账户</div>}>
-        <div className='bg-grey-50'>
-          <div className="bg-white zb-b">
-            <div className="zb-b-b fs16 color-primary-1 p10 zb-b-b bg-grey-50">
-              1. Select Dpath
-            </div>
+      <div>
+       <div className="d-flex justify-content-between align-items-center">
+           <span><Button className="btn">返回</Button></span>
+           <h3 className="text-color-dark-1">选择账户</h3>
+           <span style={{display:"block",width:"62px"}}>&nbsp;</span>
+       </div>
+       <div className="blk"></div>
+       <div className="">
+        <div className="dpath">
+          <div className="">
+            <h4 className="dpath-header">1. Select Dpath</h4>
+            <div className="dpath-body">
             <Radio.Group className="" onChange={this.handlePathChange} value={dpath}>
               {paths.filter(path => this.isSupported(path.path)).map((item, index) =>
-                <Radio className="d-block zb-b-b p10" value={item.path} key={index}>
-                  <span className="color-black-2 fs14 lh20">{item.path}</span>
-                  <span className="color-black-3 fs12 ml10">{item.wallet.join(", ")}</span>
+                <Radio className="d-block" value={item.path} key={index}>
+                  <span className="">{item.path}</span>
+                  <span className="">{item.wallet.join(", ")}</span>
                 </Radio>
               )}
-              <Radio className="d-block p10" value={customPath}>
-                Custom Path:
-                <Input
-                  className="d-inline ml10"
-                  style={{width: '200px'}}
-                  value={customPath} onChange={this.onCustomPathChange}
-                />
+              <Radio className="d-block" value={customPath}>
+              <div className="d-flex justify-content-between align-items-center">
+                <div className="text-color-2">Custom Path: </div>
+                <Input value={customPath} onChange={this.onCustomPathChange}  />
+                </div>
               </Radio>
             </Radio.Group>
           </div>
         </div>
-        <div className='mb10 zb-b'>
-          <div className="fs2 color-primary-1 p10 zb-b-b bg-grey-50">2. 选择地址</div>
-          <div className="pl10 pr10">
+        </div>
+        <div className="account-addresses">
+          <h4 className="account-addresses-header">2. 选择地址</h4>
+          <ul className="account-addresses-body">
             {addresses.length > 0 && addresses.map((address, index) => {
               return (
-                <div key={index} className="pt10 pb10 zb-b-b fs14 color-black-2 d-flex justify-content-between row">
-                  <span className='col-6'>{address}</span>
-                  <Button className='col-auto mr15' size="small" onClick={this.confirm.bind(this, index)}>
+                <li key={index}>
+                  <span>{address}</span>
+                  <Button size="small" onClick={this.confirm.bind(this, index)}>
                     Import</Button>
-                </div>)
+                </li>)
             })}
             {
-              addresses.length <= 0 && <span className='col-6'>没有合法的地址</span>
+              addresses.length <= 0 && <li className="account-addresses-tip">没有合法的地址</li>
             }
-          </div>
-          <div className="d-flex justify-content-between zb-b-t p10">
+          </ul>
+          <div className="d-flex justify-content-between account-addresses-pagenav">
             <Button onClick={this.previousPage} disabled={pageNum <= 0}>Previous Page</Button>
             <Button onClick={this.nextPage}> Next Page</Button>
           </div>
         </div>
-      </Card>
+      </div>
+      </div>
     )
   }
 }

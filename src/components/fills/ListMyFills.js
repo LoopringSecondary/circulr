@@ -3,7 +3,7 @@ import { Form,Select,Badge } from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import SelectContainer from 'LoopringUI/components/SelectContainer'
 import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'
-import FillFm from 'modules/fills/formatters'
+import {FillFm} from 'modules/fills/formatters'
 import config from 'common/config'
 import intl from 'react-intl-universal'
 
@@ -20,18 +20,22 @@ const ListHeader = ({fills})=>{
           <SelectContainer
             loadOptions={getSupportedMarket.bind(this,window.config.rpc_host)}
             transform={(res)=>{
-              let pairs = config.getMarkets().map(item=>`${item.tokenx}-${item.tokeny}`)
-              let options = res.result.filter(item=>pairs.includes(item)).map(item=>({label:item,value:item}))
-              return [
-                {label:`${intl.get('global.all')} ${intl.get('orders.market')}`,value:""},
-                ...options,
-              ]
+              if(res && !res.error){
+                let pairs = config.getMarkets().map(item=>`${item.tokenx}-${item.tokeny}`)
+                let options = res.result.filter(item=>pairs.includes(item)).map(item=>({label:item,value:item}))
+                return [
+                  {label:`${intl.get('global.all')} ${intl.get('orders.market')}`,value:""},
+                  ...options,
+                ]
+              }else{
+                return []
+              }
             }}
             onChange={marketChange}
             placeholder={intl.get('orders.market')}
             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             dropdownMatchSelectWidth={false}
-            defaultValue=""
+            value={fills.filters.market  || ""}
             size="small"
           >
           </SelectContainer>
@@ -41,7 +45,7 @@ const ListHeader = ({fills})=>{
              placeholder={intl.get('orders.side')}
              onChange={sideChange}
              dropdownMatchSelectWidth={false}
-             defaultValue=""
+             value={fills.filters.side || ""}
              size="small"
            >
              <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.side')}</Select.Option>
@@ -77,17 +81,21 @@ export default function ListMyFills(props) {
             <tbody>
               {
                 fills.items.map((item,index)=>{
+                  const fillFm = new FillFm(item)
+                  const actions = {
+                    gotoDetail:()=>props.dispatch({type:'modals/showModal',payload:{id:'ringDetail',ring:item}})
+                  }
                   return (
                     <tr key={index}>
-                      <td>{renders.ringIndex(item)}</td>
+                      <td>{renders.ringIndex(fillFm,actions)}</td>
                       <td>{item.market}</td>
-                      <td>{renders.side(item)}</td>
-                      <td>{FillFm.amount(item)}</td>
-                      <td>{FillFm.price(item)}</td>
-                      <td>{FillFm.total(item)}</td>
-                      <td>{FillFm.lrcFee(item)}</td>
-                      <td>{FillFm.lrcReward(item)}</td>
-                      <td>{FillFm.time(item)}</td>
+                      <td>{renders.side(fillFm)}</td>
+                      <td>{fillFm.getAmount()}</td>
+                      <td>{fillFm.getPrice()}</td>
+                      <td>{fillFm.getTotal()}</td>
+                      <td>{fillFm.getLRCFee()}</td>
+                      <td>{fillFm.getLRCReward()}</td>
+                      <td>{fillFm.getCreateTime()}</td>
                    </tr>
                   )
                 })
@@ -100,19 +108,20 @@ export default function ListMyFills(props) {
   )
 }
   const renders = {
-    ringIndex: (item) => {
+    ringIndex: (fm,actions) => {
       return (
-          <a className="text-truncate text-left color-blue-500">
-            {item.fillIndex}
+          <a className="text-truncate text-left color-blue-500" onClick={actions && actions.gotoDetail}>
+            {fm.fill.ringIndex}
+            <span hidden>{fm.fill.ringHash}</span>
           </a>
       )
     },
-    side: (item) => {
-      if (item.side === 'sell') {
-        return <div className="text-error">Sell {intl.get('orders.side_sell')}</div>
+    side: (fm) => {
+      if (fm.fill.side === 'sell') {
+        return <div className="text-error">{intl.get('orders.side_sell')}</div>
       }
-      if (item.side === 'buy') {
-        return <div className="text-success">Buy {intl.get('orders.side_buy')}</div>
+      if (fm.fill.side === 'buy') {
+        return <div className="text-success">{intl.get('orders.side_buy')}</div>
       }
     },
   }

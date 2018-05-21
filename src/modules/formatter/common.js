@@ -35,6 +35,11 @@ export function getSeconds(value, unit) {
   }
 }
 
+export const copyToPasteboard = (value, e) => {
+    e.preventDefault();
+    e.clipboardData.setData("text", value)
+}
+
 // locales for number format
 export function getFormatNum(number) {
   number = toBig(number).toString(10).split('.');

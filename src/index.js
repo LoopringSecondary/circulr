@@ -20,8 +20,7 @@ setLocale('en-US');
 const app = dva({
   onError:(err, dispatch) => {message.error(err.message,3)}
 })
-window.onError= (msg,url,line)=>{message.error(`${msg} ${url} ${line}`,null)}
-window.onerror= (msg,url,line)=>{message.error(`${msg} ${url} ${line}`,null)}
+window.onError= (msg,url,line)=>{message.error(`window.onError ${msg} ${url} ${line}`,null)}
 window.config = {}
 window.config.address = "0xeba7136a36da0f5e16c6bdbc739c716bb5b65a00";
 window.config.host = "//relay1.loopring.io"

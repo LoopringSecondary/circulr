@@ -5,8 +5,8 @@ import Detail from './Detail'
 function Modals(props) {
   return (
     <div>
-      <Containers.Modals id="fillDetail">
-        <UiContianers.Modals id="fillDetail">
+      <Containers.Modals id="ringDetail">
+        <UiContianers.Modals id="ringDetail">
           <Detail />
         </UiContianers.Modals>
       </Containers.Modals>

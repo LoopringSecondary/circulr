@@ -153,11 +153,13 @@ export function getAccountBalance(host,{address, tag}) {
  * @returns {Promise}
  */
 export function getTransactionByhash(host,hash) {
-  try {
-    validator.validate({value: hash, type: "ETH_DATA"});
-  } catch (e) {
-    return Promise.resolve(new Response(code.PARAM_INVALID.code, code.PARAM_INVALID.msg))
-  }
+  console.log('tx host',host)
+  console.log('tx hash',hash)
+  // try {
+  //   validator.validate({value: hash, type: "ETH_DATA"});
+  // } catch (e) {
+  //   return Promise.resolve(new Response(code.PARAM_INVALID.code, code.PARAM_INVALID.msg))
+  // }
   const params = [hash];
   const body = {};
   body.method = 'eth_getTransactionByHash';

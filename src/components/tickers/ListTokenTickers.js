@@ -1,18 +1,65 @@
 import React from 'react'
 import {connect} from 'dva'
-import {TickersFm,TickerFm} from 'modules/tickers/formatter'
+import {TickersFm,TickerFm} from 'modules/tickers/formatters'
+import routeActions from 'common/utils/routeActions'
 import { Button } from 'antd'
 
 function ListTokenTickers(props) {
   const {loopringTickers:list,dispatch} = props
   const tickersFm = new TickersFm(list)
   const listedTickers = tickersFm.getTickersBySymbol('LRC') // TODO
+  const gotoTrade = (item)=>{
+    routeActions.gotoPath('/trade')
+    dispatch({
+      type:'sockets/filtersChange',
+      payload:{
+        id:'tickers',
+        filters:{market:item.market}
+      }
+    })
+    dispatch({
+      type:'sockets/filtersChange',
+      payload:{
+        id:'depth',
+        filters:{market:item.market}
+      }
+    })
+    dispatch({
+      type:'sockets/filtersChange',
+      payload:{
+        id:'trades',
+        filters:{market:item.market}
+      }
+    })
+    dispatch({
+      type:'sockets/extraChange',
+      payload:{
+        id:'loopringTickers',
+        extra:{current:item.market}
+      }
+    })
+    dispatch({
+      type:'orders/filtersChange',
+      payload:{
+        id:'MyOpenOrders',
+        filters:{market:item.market}
+      }
+    })
+    dispatch({
+      type:'fills/filtersChange',
+      payload:{
+        id:'MyFills',
+        filters:{market:item.market}
+      }
+    })
+  }
   return (
-    <div className="column" style={{height:"-webkit-calc(100% - 251px)",paddingBottom:"460px"}}>
+    <div>
         <div className="loopring-dex">
             <div className="card-header bordered">
                 <h4>Loopring DEX Markets</h4>
             </div>
+            <div className="body">
             {
               listedTickers.map((item,index)=>{
                 const tickerFm = new TickerFm(item)
@@ -20,18 +67,17 @@ function ListTokenTickers(props) {
                   <div className="item">
                       <ul>
                           <li><h3>{item.market}</h3></li>
-                          <li hidden><small>Price</small><span class="text-down">0.56 USD</span></li>
-                          <li hidden><small>Price</small><span class="text-down">{tickerFm.getChange()}</span></li>
+                          <li><small>Price</small><span class="text-down">{tickerFm.getChange()}</span></li>
                           <li><small>Change</small><span className="text-up">{tickerFm.getChange()}</span></li>
                       </ul>
-                      <Button className="btn btn-primary">Go To Trade</Button>
+                      <Button className="btn btn-primary" onClick={gotoTrade.bind(this,item)}>Go To Trade</Button>
                   </div>
                 )
               })
             }
-
+            </div>
         </div>
-        <div className="column">
+        <div>
             <div className="card-header bordered">
                 <h4>Reference Markets</h4>
             </div>
