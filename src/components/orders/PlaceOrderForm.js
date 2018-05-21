@@ -218,7 +218,7 @@ class PlaceOrderForm extends React.Component {
           )}
         </div>
       } trigger="click">
-        <a className="fs12 pointer color-black-3"><i className="icon-pencil tradingFee"></i></a>
+        <a className="fs12 pointer text-dark"><i className="icon-pencil tradingFee"></i></a>
       </Popover>
     )
 
@@ -296,7 +296,7 @@ class PlaceOrderForm extends React.Component {
                    </Collapse>
                  </div>
                } trigger="click">
-        <a className="fs12 pointer color-black-3"><i className="icon-pencil tradingFee"></i></a>
+        <a className="fs12 pointer  text-dark"><i className="icon-pencil tradingFee"></i></a>
       </Popover>
     )
 
@@ -445,8 +445,9 @@ class PlaceOrderForm extends React.Component {
           </ul>
           }
           <div className="tab-content">
-            <div className="tab-pane active" id="b1">
-              {sell && <small className="balance text-inverse">{sell.token.symbol} Balance: <span>{sell.token.balance.toString(10)}</span></small>}
+            <div className="blk-sm"></div>
+            <div className="" id="b1">
+              {sell && <small className="balance">{sell.token.symbol} Balance: <span>{sell.token.balance.toString(10)}</span></small>}
               <div className="blk-sm"></div>
               <Form.Item label={null} colon={false}>
                 {form.getFieldDecorator('price', {
@@ -476,7 +477,7 @@ class PlaceOrderForm extends React.Component {
               </Form.Item>
               <Form.Item label={null} colon={false} extra={
                 <div>
-                  <div className="fs10" style={{marginBottom:"-10px"}}>{amountSliderField}</div>
+                  <div>{amountSliderField}</div>
                 </div>
               }>
                 {form.getFieldDecorator('amount', {
@@ -504,7 +505,7 @@ class PlaceOrderForm extends React.Component {
                          }}/>
                 )}
               </Form.Item>
-              <div className="text-inverse text-secondary">
+              <div>
                 <div className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
                     <span className="font-bold">Total</span><span><span>{total.toString(10)}</span>{right.symbol}{totalWorth}</span>

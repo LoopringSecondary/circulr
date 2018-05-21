@@ -113,43 +113,45 @@ function ListTokensSidebar(props) {
           <h3 className="text-success">$39,484,950</h3><small>Total Value</small>
       </div>
       <div className="tool-bar d-flex justify-content-between">
-          <Input
-            placeholder=""
-            suffix={<Icon type="search" className="color-grey-600"/>}
-            prefix={
-              <div className="row gutter-0 align-items-center">
-                <div className="col"></div>
-                <div className="col-auto pr5">
-                  <Tooltip title={intl.get('tokens.only_show_favorites')}>
-                    {
-                      filters.ifOnlyShowMyFavorite &&
-                      <i className="icon-star" onClick={toggleMyFavorite.bind(this)}></i>
-                    }
-                    {
-                      !filters.ifOnlyShowMyFavorite &&
-                      <i className="icon-star-o" onClick={toggleMyFavorite.bind(this)}></i>
-                    }
-                  </Tooltip>
+        <div className="search">
+            <Input
+              placeholder=""
+              suffix={<Icon type="search" className="text-mute"/>}
+              prefix={
+                <div className="row gutter-0 align-items-center">
+                  <div className="col"></div>
+                  <div className="col-auto">
+                    <Tooltip title={intl.get('tokens.only_show_favorites')}>
+                      {
+                        filters.ifOnlyShowMyFavorite &&
+                        <i className="icon-star" onClick={toggleMyFavorite.bind(this)}></i>
+                      }
+                      {
+                        !filters.ifOnlyShowMyFavorite &&
+                        <i className="icon-star-o" onClick={toggleMyFavorite.bind(this)}></i>
+                      }
+                    </Tooltip>
+                  </div>
+                  <div className="col-auto">
+                    <Tooltip title={intl.get('tokens.hide_small_balances')}>
+                      {
+                        filters.ifHideSmallBalance &&
+                        <i className="icon-eye" onClick={toggleSmallBalance.bind(this)} />
+                      }
+                      {
+                        !filters.ifHideSmallBalance &&
+                        <i className="icon-eye-o" onClick={toggleSmallBalance.bind(this)} />
+                      }
+                    </Tooltip>
+                  </div>
                 </div>
-                <div className="col-auto zb-b-l pl5">
-                  <Tooltip title={intl.get('tokens.hide_small_balances')}>
-                    {
-                      filters.ifHideSmallBalance &&
-                      <i className="icon-eye" onClick={toggleSmallBalance.bind(this)} />
-                    }
-                    {
-                      !filters.ifHideSmallBalance &&
-                      <i className="icon-eye-o" onClick={toggleSmallBalance.bind(this)} />
-                    }
-                  </Tooltip>
-                </div>
-              </div>
-            }
-            className="d-block w-100"
-            onChange={searchToken.bind(this)}
-            value={filters.keywords}
-            addonAfter={null}
-          />
+              }
+              className="d-block w-100"
+              onChange={searchToken.bind(this)}
+              value={filters.keywords}
+              addonAfter={null}
+            />
+          </div>
       </div>
       <div className="token-list text-color-dark-1" style={{height: "100vh",paddingBottom: "211px"}}>
           <div style={{height: "100%",overflow: "auto",paddingBottom: "0"}}>
