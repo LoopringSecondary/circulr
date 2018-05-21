@@ -55,6 +55,7 @@ export default {
       yield put({type:'emitEvent',payload})
     },
     *filtersChange({payload},{call,select,put}){
+      console.log('filtersChange payload',payload)
       yield put({type:'filtersChangeStart',payload})
       yield put({type:'emitEvent',payload})
     },
@@ -70,6 +71,7 @@ export default {
       let {id} = payload
       // todo idValidator
       const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
+      console.log('filtersChange emitEvent',id,filters)
       if(socket){
         let new_payload = {page,filters,sort,socket,id}
         yield put({type:'loadingChange',payload: {id,loading: true,loaded:false}})

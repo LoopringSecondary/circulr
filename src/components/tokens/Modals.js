@@ -9,13 +9,13 @@ import TransferConfirm from './TransferConfirm'
 function Modals(props) {
   return (
     <div>
-      <Containers.Modals id="receive">
-        <UiContianers.Modals id="receive">
+      <Containers.Modals id="receiveToken">
+        <UiContianers.Modals id="receiveToken">
           <Receive/>
         </UiContianers.Modals>
       </Containers.Modals>
-      <Containers.Modals id="transfer">
-        <UiContianers.Modals id="transfer">
+      <Containers.Modals id="transferToken">
+        <UiContianers.Modals id="transferToken">
           <Containers.Sockets id="balance">
             <Containers.Sockets id="marketcap">
               <Containers.Wallet>
@@ -42,8 +42,8 @@ function Modals(props) {
           </Containers.Sockets>
         </UiContianers.Modals>
       </Containers.Modals>
-      <Containers.Modals id="convert" >
-        <UiContianers.Modals id="convert">
+      <Containers.Modals id="convertToken" >
+        <UiContianers.Modals id="convertToken">
           <Containers.Sockets id="balance">
             <Containers.Sockets id="marketcap">
               <Containers.Wallet>

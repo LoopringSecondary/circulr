@@ -1,12 +1,58 @@
 import React from 'react'
 import {connect} from 'dva'
-import {TickersFm,TickerFm} from 'modules/tickers/formatter'
+import {TickersFm,TickerFm} from 'modules/tickers/formatters'
+import routeActions from 'common/utils/routeActions'
 import { Button } from 'antd'
 
 function ListTokenTickers(props) {
   const {loopringTickers:list,dispatch} = props
   const tickersFm = new TickersFm(list)
   const listedTickers = tickersFm.getTickersBySymbol('LRC') // TODO
+  const gotoTrade = (item)=>{
+    routeActions.gotoPath('/trade')
+    dispatch({
+      type:'sockets/filtersChange',
+      payload:{
+        id:'tickers',
+        filters:{market:item.market}
+      }
+    })
+    dispatch({
+      type:'sockets/filtersChange',
+      payload:{
+        id:'depth',
+        filters:{market:item.market}
+      }
+    })
+    dispatch({
+      type:'sockets/filtersChange',
+      payload:{
+        id:'trades',
+        filters:{market:item.market}
+      }
+    })
+    dispatch({
+      type:'sockets/extraChange',
+      payload:{
+        id:'loopringTickers',
+        extra:{current:item.market}
+      }
+    })
+    dispatch({
+      type:'orders/filtersChange',
+      payload:{
+        id:'MyOpenOrders',
+        filters:{market:item.market}
+      }
+    })
+    dispatch({
+      type:'fills/filtersChange',
+      payload:{
+        id:'MyFills',
+        filters:{market:item.market}
+      }
+    })
+  }
   return (
     <div>
         <div className="loopring-dex">
@@ -24,7 +70,7 @@ function ListTokenTickers(props) {
                           <li><small>Price</small><span class="text-down">{tickerFm.getChange()}</span></li>
                           <li><small>Change</small><span className="text-up">{tickerFm.getChange()}</span></li>
                       </ul>
-                      <Button className="btn btn-primary">Go To Trade</Button>
+                      <Button className="btn btn-primary" onClick={gotoTrade.bind(this,item)}>Go To Trade</Button>
                   </div>
                 )
               })

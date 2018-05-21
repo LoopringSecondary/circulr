@@ -1,6 +1,7 @@
 import React from 'react';
 import Orders from '../orders'
 import Fills from '../fills'
+import Tickers from '../tickers'
 import Charts from '../charts'
 import { Tabs } from 'antd';
 import { Containers } from 'modules';
@@ -19,19 +20,7 @@ function Trade(props) {
     <div>
         <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000",borderBottom: "4px solid rgb(8, 34, 63)" }}>
             <div className="bg d-flex justify-content-between align-items-center">
-                <div className="tradeHeaderEle justify-content-between align-items-center" style={{display: "flex"}}>
-                    <div id="back"><i className="icon-chevron-left"></i></div>
-                    <div className="pair-select d-flex justify-content-between tokenselect">LRC/ETH <b className="caret"></b></div>
-                    <div className="token-last-quotes">
-                        <ul className="d-flex justify-content-between align-items-center">
-                            <li><small>Last Price</small><em><span className="text-up">0.00086663</span> $0.34</em></li>
-                            <li><small>24H Change</small><em><span className="text-down">0.00086663</span> -0.70%</em></li>
-                            <li><small>24H High</small><em>0.00008219</em></li>
-                            <li><small>24H Low</small><em>0.00007859</em></li>
-                            <li><small>24H Volume</small><em>207.98BTC</em></li>
-                        </ul>
-                    </div>
-                </div>
+                <Tickers.TickerHeader />
                 <div className="account"><img  src={require('../../assets/images/user.png')} className="photo" /><span className="msg"><i className="icon-bell"></i></span></div>
             </div>
         </header>

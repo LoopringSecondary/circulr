@@ -1,34 +1,35 @@
-import React from 'react';
-import { Tabs } from 'antd';
+import React from 'react'
+import {Tabs,Spin} from 'antd'
+import {Link} from 'dva/router'
+import {DetailHeader,MetaList,MetaItem} from 'LoopringUI/components/DetailPage'
+import intl from 'react-intl-universal';
+import {renders} from './ListMyOrders';
+import {OrderFm} from 'modules/orders/OrderFm';
 
-function Detail(props) {
+function OrderDetail(props) {
+  const order = {}
+  const orderFm = new OrderFm(order)
    return (
     <div>
-        <div className="modal-header text-dark"><h3>订单详情</h3></div>
+        <DetailHeader title="订单详情"/>
         <Tabs defaultActiveKey="1" className="tabs-dark">
 	        <Tabs.TabPane tab="基础详情" key="1" className="text-color-dark">
-	            <div className="pd-md text-center">
-	    	        <span><i className="icon-ETH icon-token-md"></i><b>WEH</b></span>
-	    	        <span className="offset-lg"><i className="text-color-3 icon-long-arrow-right"></i></span>
-	    	        <span className="offset-lg"><b>WETH </b><i className="icon-WETH icon-token-md"></i></span>
-	            </div>
-	            <div className="divider-dark solid"></div>
-	            <ul className="list list-label list-dark list-justify-space-between divided">
-	                <li><span>Order Hash</span>
-	                    <div className="text-lg-control break-word text-right">0x58a2f1a15d97c25917e672000d80cf68b74ca192bf5542623de832918b1bba9b</div>
-	                </li>
-	                <li><span>Status</span><span className="text-success"><i className="text-color-dark icon-success"></i></span></li>
-	                <li><span>Sell Amount</span><span>300LRC</span></li>
-	                <li><span>Buy Amount</span><span>0.25999WETH</span></li>
-	                <li><span>Price</span><span>0.00086663 WETH/LRC</span></li>
-	                <li><span>LRC Fee</span><span>0.58LRC</span></li>
-	                <li><span>Margin Split</span><span>50%</span></li>
-	                <li><span>Filled</span><span>100.0%</span></li>
-	                <li><span>Valid Since</span><span>March 27, 2018 5:51 PM</span></li>
-	                <li><span>Valid Until</span><span>April 26, 2018 5:51 PM</span></li>
-	            </ul>
+              <Spin spinning={false}>
+  	            <MetaList>
+                    <MetaItem label={intl.get('orders.hash')} value={orderFm.getOrderHash()}/>
+                    <MetaItem label={intl.get('orders.status')} value={renders.status(orderFm)}/>
+                    <MetaItem label={intl.get('orders.price')} value={orderFm.getPrice()}/>
+                    <MetaItem label={intl.get('orders.amount')} value={orderFm.getAmount()}/>
+                    <MetaItem label={intl.get('orders.total')} value={orderFm.getTotal()}/>
+                    <MetaItem label={intl.get('orders.LRCFee')} value={orderFm.getLRCFee()}/>
+                    <MetaItem label={intl.get('orders.marginSplit')} value={orderFm.getMarginSplit()}/>
+                    <MetaItem label={intl.get('orders.filled')} value={orderFm.getFilledPercent()}/>
+                    <MetaItem label={intl.get('orders.validSince')} value={orderFm.getCreateTime()}/>
+                    <MetaItem label={intl.get('orders.validUntil')} value={orderFm.getExpiredTime()}/>
+  	            </MetaList>
+              </Spin>
 	        </Tabs.TabPane>
-	        <Tabs.TabPane tab="撮合详情" key="2">
+	        <Tabs.TabPane tab="撮合详情" key="2" className="text-color-dark">
 	        		<table style={{overflow:'auto'}} className="table table-dark table-striped text-left">
 	        		  <thead>
 	        		      <tr>
@@ -58,4 +59,4 @@ function Detail(props) {
     </div>
   )
 }
-export default Detail
+export default OrderDetail

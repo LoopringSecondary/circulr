@@ -24,12 +24,12 @@ function ListTradesHistory(props) {
                 trades.items.map((item,index)=>
                   <li key={index}>
                     {
-                      item.side === 'sell' && <span className="text-down">{item.price}</span>
+                      item.side === 'sell' && <span className="text-down">{item.price && item.price.toFixed(8)}</span>
                     }
                     {
-                      item.side === 'buy' && <span className="text-up">{item.price}</span>
+                      item.side === 'buy' && <span className="text-up">{item.price && item.price.toFixed(8)}</span>
                     }
-                    <span>{item.amount}</span>
+                    <span>{item.amount && item.amount.toFixed(8)}</span>
                     <span>{getFormattedTime(item.createTime,'MM-DD HH:SS')}</span>
                   </li>
                 )

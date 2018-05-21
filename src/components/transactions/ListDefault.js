@@ -61,6 +61,7 @@ export default function ListTransaction(props) {
                               <th className="text-left">Value</th>
                               <th className="text-left">Gas</th>
                               <th className="text-left">Block</th>
+                              <th className="text-left">Nonce</th>
                               <th className="text-left">TxHash</th>
                               <th className="text-left">Created</th>
                               <th className="text-center">Status</th>
@@ -71,16 +72,20 @@ export default function ListTransaction(props) {
                           {
                             list.items.map((item,index)=>{
                               const txFm = new TxFm(item)
+                              const actions = {
+                                gotoDetail:()=>props.dispatch({type:'modals/showModal',payload:{id:'txDetail',tx:item}})
+                              }
                               return (
                                 <tr key={index}>
                                   <td className="text-left">{txFm.getType()}</td>
                                   <td className="text-left">{renders.value(txFm)}</td>
                                   <td className="text-left">{txFm.getGas()} ETH</td>
                                   <td className="text-left">{item.blockNumber}</td>
-                                  <td className="text-left">{renders.txHash(txFm)}</td>
+                                  <td className="text-left">{item.nonce}</td>
+                                  <td className="text-left">{renders.txHash(txFm,actions)}</td>
                                   <td className="text-left">{renders.createTime(txFm)}</td>
                                   <td className="text-center">{renders.status(txFm)}</td>
-                                  <td className="text-center">{renders.options(txFm)}</td>
+                                  <td className="text-center">{renders.options(txFm,actions)}</td>
                                 </tr>
                               )
                             })
@@ -100,12 +105,12 @@ export const renders = {
   createTime:(fm) => (
     <div>{fm.getCreateTime()}</div>
   ),
-  txHash:(fm) => (
+  txHash:(fm,actions) => (
     <span
        onCopy={null}
        onClick={null}
     >
-      <span className="">{getShortAddress(fm.tx.txHash)}</span>
+      <span className="" onClick={actions && actions.gotoDetail}>{getShortAddress(fm.tx.txHash)}</span>
     </span>
   ),
   value:(fm)=>{
@@ -131,27 +136,17 @@ export const renders = {
       </div>
     )
   },
-  options:(fm)=>{
+  options:(fm,actions)=>{
     return (
       <div>
-        {fm.tx.status === 'pending' &&
-          <div>
-            <span className="text-primary">Detail</span>
-            <span className="text-primary"> • </span>
-            <span className="text-primary">Resend</span>
-            <span className="text-primary"> • </span>
-            <span className="text-primary">Cancel</span>
-          </div>
+        <span className="text-primary cursor-pointer" onClick={actions && actions.gotoDetail}>Detail</span>
+        {
+          (fm.tx.status === 'pending' ||  fm.tx.status === 'failed') &&
+          <span className="text-primary">Resend</span>
         }
-        {fm.tx.status === 'failed' &&
-          <div>{fm.getCreateTime()}
-            <span className="text-primary">Detail</span>
-            <span className="text-primary"> • </span>
-            <span className="text-primary">Resend</span>
-          </div>
-        }
-        {fm.tx.status === 'success' &&
-          <div><span className="text-primary">Detail</span></div>
+        {
+          fm.tx.status === 'pending' &&
+          <span className="text-primary">Cancel</span>
         }
       </div>
     )

@@ -33,7 +33,7 @@ function ListOrderBook(props) {
 	    	        <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0px" }}>
                       {
                         depth.item.sell.map((item,index)=>
-                          <li key={index}><span className="text-down">{item[0]}</span><span>{item[1]}</span><span>{item[2]}</span></li>
+                          <li key={index}><span className="text-down">{Number(item[0]).toFixed(8)}</span><span>{Number(item[1]).toFixed(8)}</span><span>{Number(item[2]).toFixed(8)}</span></li>
                         )
                       }
     	            </ul>
@@ -42,7 +42,7 @@ function ListOrderBook(props) {
     	            <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0" }}>
     	                {
                         depth.item.buy.map((item,index)=>
-                          <li key={index}><span className="text-up">{item[0]}</span><span>{item[1]}</span><span>{item[2]}</span></li>
+                          <li key={index}><span className="text-up">{Number(item[0]).toFixed(8)}</span><span>{Number(item[1]).toFixed(8)}</span><span>{Number(item[2]).toFixed(8)}</span></li>
                         )
                       }
     	            </ul>

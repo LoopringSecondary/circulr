@@ -58,6 +58,12 @@ export class TickerFm {
   getLast(){
     return getPrice(this.ticker.last)
   }
+  getHigh(){
+    return getPrice(this.ticker.high)
+  }
+  getLow(){
+    return getPrice(this.ticker.low)
+  }
   getChangeDirection(){
     return getChangeDirection(this.ticker.change)
   }
@@ -65,7 +71,7 @@ export class TickerFm {
     return getChange(this.ticker.change)
   }
   getTokens(){
-    return getTokensByMarket(this.ticker.market)
+    return getTokensByMarket(this.ticker.market || 'LRC-WETH') //TODO
   }
 }
 
@@ -93,6 +99,7 @@ export const getVol = (value)=>{
     return '0.00'
   }
 }
+
 export const getPrice = (value)=>{
 
   value = Number(value)

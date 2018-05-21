@@ -3,7 +3,7 @@ import { Form,Select,Badge } from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import SelectContainer from 'LoopringUI/components/SelectContainer'
 import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'
-import {OrderFm} from 'modules/orders/ListFm'
+import {OrderFm} from 'modules/orders/OrderFm'
 import {getShortAddress} from 'modules/formatter/common'
 import config from 'common/config'
 import intl from 'react-intl-universal'
@@ -42,7 +42,7 @@ const ListHeader = ({orders})=>{
                     placeholder={intl.get('orders.market')}
                     filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     dropdownMatchSelectWidth={false}
-                    defaultValue=""
+                    value={orders.filters.market || ""}
                     size="small"
                   >
                   </SelectContainer>
@@ -52,7 +52,7 @@ const ListHeader = ({orders})=>{
                     placeholder={intl.get('orders.status')}
                     onChange={statusChange}
                     dropdownMatchSelectWidth={false}
-                    defaultValue=""
+                    value={orders.filters.status || ""}
                     size="small"
                   >
                     <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.status')} </Select.Option>
@@ -67,7 +67,7 @@ const ListHeader = ({orders})=>{
                      placeholder={intl.get('orders.side')}
                      onChange={sideChange}
                      dropdownMatchSelectWidth={false}
-                     defaultValue=""
+                     value={orders.filters.side || ""}
                      size="small"
                    >
                      <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.side')}</Select.Option>
@@ -77,8 +77,7 @@ const ListHeader = ({orders})=>{
                 </span>
             </div>
             <div>
-                <span><button class="btn btn-primary">Cancel All</button></span>
-                <span class="offset-md"><button class="btn btn-primary">Cancel All markets</button></span>
+                <span><button className="btn btn-primary">Cancel All</button></span>
             </div>
         </div>
     </div>
@@ -111,11 +110,14 @@ export default function ListMyOrders(props) {
                 {
                   orders.items.map((item,index)=>{
                     const orderFm = new OrderFm(item)
+                    const actions = {
+                      gotoDetail:()=>props.dispatch({type:'modals/showModal',payload:{id:'orderDetail',order:item}})
+                    }
                     return (
                       <tr key={index}>
-                        <td>{renders.hash(orderFm.getHash(),item,index)}</td>
+                        <td>{renders.hash(orderFm,actions)}</td>
                         <td>{orderFm.getMarket()}</td>
-                        <td>{renders.side(orderFm.getSide(),item,index)}</td>
+                        <td>{renders.side(orderFm)}</td>
                         <td>{orderFm.getAmount()}</td>
                         <td>{orderFm.getPrice()}</td>
                         <td>{orderFm.getTotal()}</td>
@@ -123,7 +125,7 @@ export default function ListMyOrders(props) {
                         <td>{orderFm.getFilledPercent()}%</td>
                         <td>{orderFm.getCreateTime()}</td>
                         <td>{orderFm.getExpiredTime()}</td>
-                        <td>{renders.status(orderFm.getStatus(),item,index)}</td>
+                        <td>{renders.status(orderFm)}</td>
                      </tr>
                     )
                   })
@@ -137,57 +139,53 @@ export default function ListMyOrders(props) {
 }
 
 export const renders = {
-  hash: (value, item, index) => (
+  hash: (fm,actions) => (
     <a className="text-primary"
        onCopy={null}
-       onClick={null}
+       onClick={actions && actions.gotoDetail}
     >
-      {getShortAddress(value)}
+      {getShortAddress(fm.getOrderHash())}
     </a>
   ),
-  side: (value, item, index) => (
+  side: (fm) => (
     <div>
-      { value ==='buy' &&
-        <span className="text-success">{value}</span>
+      { fm.getSide() ==='buy' &&
+        <span className="text-success">{fm.getSide()}</span>
       }
-      { value ==='sell' &&
-        <span className="text-error">{value}</span>
+      { fm.getSide() ==='sell' &&
+        <span className="text-error">{fm.getSide()}</span>
       }
     </div>
   ),
-  status: (value, item, index) => {
+  status: (fm) => {
+    const status = fm.getStatus()
     const cancleBtn = (
       <a className="ml5 fs12 color-black-2"
          onClick={null}>
         {intl.get('order.no')}
       </a>
     )
-    let status
-    if (item.status === 'ORDER_OPENED') {
-      status = <Badge className="text-color-dark-1" status="processing" text={intl.get('orders.status_opened')}/>
+    let statusNode
+    if (status === 'ORDER_OPENED') {
+      statusNode = <Badge className="text-color-dark-1" status="processing" text={intl.get('orders.status_opened')}/>
     }
-    if (item.status === 'ORDER_FINISHED') {
-      status = <Badge className="text-color-dark-1" status="success" text={intl.get('orders.status_completed')}/>
+    if (status === 'ORDER_FINISHED') {
+      statusNode = <Badge className="text-color-dark-1" status="success" text={intl.get('orders.status_completed')}/>
     }
-    if (item.status === 'ORDER_CANCELLED') {
-      status = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
+    if (status === 'ORDER_CANCELLED') {
+      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
     }
-    if (item.status === 'ORDER_CUTOFF') {
-      status = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
+    if (status === 'ORDER_CUTOFF') {
+      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
     }
-    if (item.status === 'ORDER_EXPIRE') {
-      status = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_expired')}/>
+    if (status === 'ORDER_EXPIRE') {
+      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_expired')}/>
     }
     return (
-      <div className="text-left">
-        {item.status !== 'ORDER_OPENED' && status}
-        {item.status === 'ORDER_OPENED' &&
-          <span>
-            {status}
-            {cancleBtn}
-          </span>
-        }
-      </div>
+      <span>
+        {statusNode}
+        {status === 'ORDER_OPENED' && cancleBtn }
+      </span>
     )
   },
 }
