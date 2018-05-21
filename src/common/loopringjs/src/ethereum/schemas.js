@@ -75,7 +75,7 @@ const ethereumSchemas = {
       data: {
         type: 'string',
         required: true,
-        pattern: /^0x[0-9a-fA-F]]*$/g,
+        pattern: /^0x[0-9a-fA-F]*$/g,
       },
       signed: {
         type: 'string',
