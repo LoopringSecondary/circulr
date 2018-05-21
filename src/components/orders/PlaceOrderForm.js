@@ -317,8 +317,8 @@ class PlaceOrderForm extends React.Component {
       }
     }
 
-    async function handleSubmit() {
-      form.validateFields((err, values) => {
+    function handleSubmit() {
+      form.validateFields(async (err, values) => {
         if (!err) {
           const tradeInfo = {}
           tradeInfo.amount = fm.toBig(values.amount)
@@ -337,7 +337,7 @@ class PlaceOrderForm extends React.Component {
           tradeInfo.milliLrcFee = milliLrcFee
           tradeInfo.lrcFee = lrcFee
           let verifiedAddress = ''
-          if(!wallet.address) {
+          // if(!wallet.address) {
             //TODO notification to user, order verification in confirm page(unlocked)
             // Notification.open({
             //   type:'warning',
@@ -345,7 +345,7 @@ class PlaceOrderForm extends React.Component {
             //   description:intl.get('trade.not_allow')
             // });
             // return
-          } else {
+          // } else {
             verifiedAddress = wallet.address
             if(!balance.items || !marketcap.items) {
               Notification.open({
@@ -401,7 +401,7 @@ class PlaceOrderForm extends React.Component {
               placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
               return
             }
-            orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, pendingTx.items)
+            await orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, pendingTx.items)
             if(tradeInfo.error) {
               tradeInfo.error.map(item=>{
                 Notification.open({
@@ -413,7 +413,12 @@ class PlaceOrderForm extends React.Component {
               placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
               return
             }
-          }
+          // }
+          //TODO MOCK
+          const test = new Array()
+          test.push({type:"AllowanceNotEnough", value:{symbol:'LRC', allowance:12, required:123456}})
+          test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
+          tradeInfo.warn = test
           showTradeModal(tradeInfo, verifiedAddress)
           placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
         }

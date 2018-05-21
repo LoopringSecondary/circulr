@@ -1,13 +1,13 @@
 import React from 'react';
 import { Input,Button } from 'antd';
-import {toBig, toHex} from 'LoopringJS/common/formatter'
+import {toBig, toHex, clearHexPrefix} from 'LoopringJS/common/formatter'
 import config from 'common/config'
 import intl from 'react-intl-universal';
 import * as datas from 'common/config/data'
 import eachLimit from 'async/eachLimit';
 import * as orderFormatter from 'modules/orders/formatters'
 import Notification from 'LoopringUI/components/Notification'
-//import {create} from 'LoopringJS/ethereum/account';
+import {createWallet} from 'LoopringJS/ethereum/account';
 
 function PlaceOrderConfirm(props) {
   const {placeOrderConfirm, settings, wallet, modals} = props
@@ -31,71 +31,133 @@ function PlaceOrderConfirm(props) {
   order.marginSplitPercentage = Number(marginSplit);
   order.buyNoMoreThanAmountB = side.toLowerCase() === "buy";
   order.walletAddress = config.getWalletAddress();
-  const authAccount = {}
-  //TODO create('');
-  order.authAddr = authAccount.address;
-  order.authPrivateKey = authAccount.privateKey;
+  const authAccount = createWallet()
+  order.authAddr = authAccount.getAddressString();
+  order.authPrivateKey = clearHexPrefix(authAccount.getPrivateKeyString());
   if(wallet && verifiedAddress && wallet.address === verifiedAddress) {
     order.owner = verifiedAddress
-
-  } else { // unlock and verify order
+  } else {
+    //TODO unlock and verify order
+    Notification.open({
+      message: intl.get('trade.place_order_failed'),
+      type: "error",
+      description: ''
+    });
     //TODO
-    return
+    //return
   }
-
   // sign orders and txs
-  const txs = [];
+  const unsigned = new Array()
+  const signed = new Array()
+  unsigned.push({type: 'order', data:order})
   const approveWarn = warn.filter(item => item.type === "AllowanceNotEnough");
   if (approveWarn) {
-    const gasLimit = config.getGasLimitByType('approve');
+    const gasLimit = config.getGasLimitByType('approve').gasLimit;
     const gasPrice = toHex(Number(settings.trading.gasPrice) * 1e9);
     window.STORAGE.wallet.getNonce(wallet.address).then(nonce => {
       approveWarn.forEach(item => {
         const tokenConfig = config.getTokenBySymbol(item.value.symbol);
         if (item.value.allowance > 0) {
-          txs.push(orderFormatter.generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:'0x0', nonce:toHex(nonce)}));
+          const cancel = orderFormatter.generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:'0x0', nonce:toHex(nonce)})
+          unsigned.push({type: 'tx', data:cancel})
           nonce = nonce + 1;
         }
-        txs.push(orderFormatter.generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:toHex(toBig('9223372036854775806').times('1e' + tokenConfig.digits || 18)), nonce:toHex(nonce)}));
+        const approve = orderFormatter.generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:toHex(toBig('9223372036854775806').times('1e' + tokenConfig.digits || 18)), nonce:toHex(nonce)})
+        unsigned.push({type: 'tx', data:approve})
         nonce = nonce + 1;
       });
 
-      eachLimit(txs, 1, async function (tx, callback) {
-        const {response, rawTx} = await window.WALLET.sendTransaction(tx);
-        if (response.error) {
-          callback(response.error.message)
-        } else {
-          window.STORAGE.wallet.setWallet({address: window.WALLET.getAddress(), nonce: tx.nonce});
-          window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.getAddress()});
-          callback()
-        }
-      }, function (error) {
-        //_this.reEmitPendingTransaction();
-        if(error){
-          Notification.open({
-            message: intl.get('trade.place_order_failed'),
-            type: "error",
-            description: error.message
-          });
-        }else {
-          const balanceWarn = warn ? warn.filter(item => item.type === "BalanceNotEnough") : [];
-          openNotification(balanceWarn);
-          updateOrders();
-        }
-        // _this.setState({loading:false});
-        modals.hideModal({id: 'placeOrderConfirm'});
-      });
+      console.log('    unsigned:', unsigned, unsigned.length)
+      const account = wallet.account || window.account
+      if(wallet.unlockType === 'keystore' || wallet.unlockType === 'mnemonic' || wallet.unlockType === 'privateKey'){
+        unsigned.forEach(tx=> {
+          if(tx.type === 'order') {
+            const signedOrder = account.signOrder(tx.data)
+            signedOrder.powNonce = 100;
+            signed.push({type: 'order', data:signedOrder});
+          } else {
+            signed.push({type: 'tx', data:account.signEthereumTx(tx.data)});
+          }
+        })
+      } else {
+        // TODO notify user to sign each tx/order
+      }
+
+      console.log('    signed:', signed)
     }).catch(e=>{
-
+      Notification.open({
+        message: intl.get('trade.place_order_failed'),
+        type: "error",
+        description: e.message
+      });
     })
-
-
   } else {
     const balanceWarn = warn ? warn.filter(item => item.type === "BalanceNotEnough") : [];
-    this.openNotification(balanceWarn);
+    openNotification(balanceWarn);
     this.setState({loading:false});
     modals.hideModal({id: 'placeOrderConfirm'});
     updateOrders();
+  }
+
+
+
+  function handelSubmit() {
+    if(unsigned.length !== signed.length) {
+      Notification.open({
+        message: intl.get('trade.place_order_failed'),
+        type: "error",
+        description: 'Not Signed'
+      });
+      return
+    }
+    console.log(111, signed)
+    eachLimit(signed, 1, async function (tx, callback) {
+      console.log(111, tx)
+      let txHash = '', rawTx = ''
+      if(tx.type === 'tx') {
+        const response = await window.ETH.sendRawTransaction(tx.data)
+        console.log('tx:', response)
+        if (response.error) {
+          callback(response.error.message)
+        } else {
+          txHash = response.response.result
+          rawTx = response.rawTx
+        }
+      } else {
+        const response = await window.RELAY.order.placeOrder(tx.data)
+        console.log('submit order :', response)
+        if (response.error) {
+          Notification.open({
+            message: intl.get('trade.place_order_failed'),
+            type: "error",
+            description: response.error.message
+          })
+          callback(response.error.message)
+        }
+      }
+      if(txHash && rawTx) {
+        console.log(222, txHash, rawTx)
+        window.STORAGE.wallet.setWallet({address: window.WALLET.getAddress(), nonce: tx.nonce});
+        window.RELAY.account.notifyTransactionSubmitted({txHash: txHash, rawTx, from: window.WALLET.getAddress()});
+        callback()
+      }
+    }, function (error) {
+      //TODO
+      //_this.reEmitPendingTransaction();
+      if(error){
+        Notification.open({
+          message: intl.get('trade.place_order_failed'),
+          type: "error",
+          description: error.message
+        });
+      }else {
+        const balanceWarn = warn ? warn.filter(item => item.type === "BalanceNotEnough") : [];
+        openNotification(balanceWarn);
+        updateOrders();
+      }
+      // _this.setState({loading:false});
+      modals.hideModal({id: 'placeOrderConfirm'});
+    });
   }
 
   function updateOrders() {
@@ -153,19 +215,6 @@ function PlaceOrderConfirm(props) {
     })
   };
 
-  const unsigned = {order, txs}
-  window.WALLET.signOrder(order).then(function (signedOrder) {
-    signedOrder.powNonce = 100;
-
-  }.bind(this)).catch(err => {
-    Notification.open({
-      message: intl.get('trade.sign_order_failed'),
-      type: "error",
-      description: err.message
-    })
-  });
-
-
   return (
     <div>
         <div className="modal-header text-dark"><h3>{intl.get(`order.${side}`)} {token}</h3></div>
@@ -199,7 +248,7 @@ function PlaceOrderConfirm(props) {
                 </div>
             </li>
         </ul>
-        <Button className="btn-block btn-o-dark btn-xlg">提交订单</Button>
+        <Button className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>提交订单</Button>
     </div>
   )
 }

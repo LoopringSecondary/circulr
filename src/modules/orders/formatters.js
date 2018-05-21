@@ -234,7 +234,7 @@ export function generateApproveTx({symbol, amount, gasPrice, gasLimit, nonce}) {
   const tx = {};
   const tokenConfig = config.getTokenBySymbol(symbol)
   tx.to = tokenConfig.address;
-  tx.value = amount;
+  tx.value = "0x0";
   tx.data = contracts.ERC20Token.encodeInputs('approve', {_spender:datas.configs.delegateAddress, _value:amount});
   tx.gasPrice = gasPrice
   tx.gasLimit = gasLimit
