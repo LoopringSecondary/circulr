@@ -1,8 +1,9 @@
 import config from 'common/config'
 import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
-import {getBalanceBySymbol, getPriceBySymbol, getWorthBySymbol} from '../tokens/TokenFm'
+import {getBalanceBySymbol, getPriceBySymbol} from '../tokens/TokenFm'
 import {isApproving} from '../transactions/formatters'
+import contracts from 'LoopringJS/ethereum/contracts/Contracts'
 
 const integerReg = new RegExp("^[0-9]*$")
 const amountReg = new RegExp("^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$")
@@ -156,12 +157,7 @@ export async function tradeVerification(balances, walletState, tradeInfo, sell, 
   const ethBalance = getBalanceBySymbol({balances, symbol:'ETH', toUnit:true})
   const lrcBalance = getBalanceBySymbol({balances, symbol:'LRC', toUnit:true})
   const approveGasLimit = config.getGasLimitByType('approve').gasLimit
-  let address = walletState.address
-  if(!address) {
-    //TODO
-    address = '0x23bD9CAfe75610C3185b85BC59f760f400bd89b5'
-  }
-  let frozenSell = await window.RELAY.account.getEstimatedAllocatedAllowance({owner:address, token:sell.symbol})
+  let frozenSell = await window.RELAY.account.getEstimatedAllocatedAllowance({owner:walletState.address, token:sell.symbol})
   let frozenAmountS = fm.toBig(frozenSell.result).div('1e'+configSell.digits).add(fm.toBig(tradeInfo.total))
   let approveCount = 0
   const warn = new Array(), error = new Array()
@@ -185,14 +181,14 @@ export async function tradeVerification(balances, walletState, tradeInfo, sell, 
     }
   } else {
     //lrc balance not enough, lrcNeed = frozenLrc + lrcFee
-    const frozenLrcFee = await window.RELAY.account.getFrozenLrcFee(address)
+    const frozenLrcFee = await window.RELAY.account.getFrozenLrcFee(walletState.address)
     let frozenLrc = fm.toBig(frozenLrcFee.result).div(1e18).add(fm.toBig(tradeInfo.lrcFee))
     let failed = false
     if(lrcBalance.balance.lessThan(frozenLrc)){
       error.push({type:"BalanceNotEnough", value:{symbol:'LRC', balance:cutDecimal(lrcBalance.balance,6), required:ceilDecimal(frozenLrc,6)}})
       failed = true
     }
-    const frozenLrcInOrderResult = await window.RELAY.account.getEstimatedAllocatedAllowance({owner:address, token:'LRC'})
+    const frozenLrcInOrderResult = await window.RELAY.account.getEstimatedAllocatedAllowance({owner:walletState.address, token:'LRC'})
     frozenLrc = frozenLrc.add(fm.toBig(frozenLrcInOrderResult.result).div(1e18))
     if(tokenL === 'LRC' && side === 'sell') {// sell lrc-weth
       frozenLrc = frozenLrc.add(fm.toBig(tradeInfo.amount))
@@ -232,4 +228,17 @@ export async function tradeVerification(balances, walletState, tradeInfo, sell, 
     }
   }
   tradeInfo.warn = warn
+}
+
+export function generateApproveTx({symbol, amount, gasPrice, gasLimit, nonce}) {
+  const tx = {};
+  const tokenConfig = config.getTokenBySymbol(symbol)
+  tx.to = tokenConfig.address;
+  tx.value = amount;
+  tx.data = contracts.ERC20Token.encodeInputs('approve', {_spender:datas.configs.delegateAddress, _value:amount});
+  tx.gasPrice = gasPrice
+  tx.gasLimit = gasLimit
+  tx.nonce = nonce
+  tx.chainId = datas.configs.chainId
+  return tx
 }

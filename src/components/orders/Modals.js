@@ -15,7 +15,9 @@ function Modals(props) {
         <UiContianers.Modals id="placeOrderConfirm">
           <Containers.Settings>
             <Containers.Wallet>
-              <PlaceOrderConfirm />
+              <Containers.Modals>
+                <PlaceOrderConfirm />
+              </Containers.Modals>
             </Containers.Wallet>
           </Containers.Settings>
         </UiContianers.Modals>
