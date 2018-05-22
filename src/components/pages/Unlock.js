@@ -137,7 +137,9 @@ class Unlock extends React.Component {
               />
               <Route path={`${url}/metamask`} exact render={() =>
                 <div className="tab-content">
+                  <Containers.MetaMask>
                     <Account.UnlockByMetaMask/>
+                  </Containers.MetaMask>
                 </div>}
               />
               <Route path={`${url}/backup`} exact render={() =>

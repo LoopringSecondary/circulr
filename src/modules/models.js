@@ -19,6 +19,7 @@ export default [
   require('./wallet/model').default,
   require('./wallet/backupModel').default,
   require('./wallet/determineWalletModel').default,
+  require('./wallet/metaMaskModel').default,
 ]
 
 

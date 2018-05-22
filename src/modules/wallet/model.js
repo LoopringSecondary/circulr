@@ -12,13 +12,70 @@ import {
 import {mnemonictoPrivatekey} from "LoopringJS/ethereum/mnemonic";
 import {formatKey} from "LoopringJS/common/formatter";
 import storage from '../storage/'
+import intl from 'react-intl-universal';
 
+//TODO read from STORAGE
+let unlockedType = '', unlockedAddress = ''
+if(window.STORAGE && window.STORAGE.wallet) {
+  unlockedType = window.STORAGE.wallet.getUnlockedType()
+  unlockedAddress = window.STORAGE.wallet.getUnlockedAddress()
+  if(unlockedType && unlockedType === 'metaMask' && window.web3) {
+    if(window.web3.eth.accounts[0]) {
+      unlockedAddress = window.web3.eth.accounts[0]
+      unlockWithMetaMask()
+    } else {
+      Notification.open({
+        type:'warning',
+        message:intl.get('wallet.metamask_installed_locked_title'),
+        description:intl.get('wallet.metamask_installed_locked_content')
+      });
+    }
+  } else {
+    if(unlockedAddress) {
+      unlockedType = 'address'
+      window.WALLET = {address:unlockedAddress, unlockType:unlockedType};
+      Notification.open({
+        type:'warning',
+        message:intl.get('wallet.in_watch_only_mode_title'),
+        description:intl.get('wallet.unlock_by_cookie_address_notification')
+      });
+    } else {
+      unlockedType = ''
+    }
+  }
+}
+
+const unlockWithMetaMask = () => {
+  if (window.web3 && window.web3.eth.accounts[0]) {
+    window.web3.version.getNetwork((err, netId) => {
+      if (netId !== '1') {
+        Notification.open({
+          message:intl.get('wallet.failed_connect_metamask_title'),
+          description:intl.get('wallet.content_metamask_mainnet'),
+          type:'error'
+        })
+        return
+      }
+      Notification.open({type:'success',message:'解锁成功',description:'unlock'});
+    })
+  } else {
+    let content = intl.get('wallet.content_metamask_install')
+    if(window.web3 && !window.web3.eth.accounts[0]) { // locked
+      content = intl.get('wallet.content_metamask_locked')
+    }
+    Notification.open({
+      message:intl.get('wallet.failed_connect_metamask_title'),
+      description:content,
+      type:'error'
+    })
+  }
+}
 
 export default {
   namespace: 'wallet',
   state: {
-    address: "",
-    unlockType: "locked",
+    address: unlockedAddress || "",
+    unlockType: unlockedType || "locked",
     password: "",
     account: null
   },
