@@ -242,11 +242,8 @@ export class KeyAccount extends Account {
   }
 
   signOrder(order) {
-    console.log(31, order)
     const hash = getOrderHash(order);
-    console.log(32, hash, hashPersonalMessage(hash))
     const signature = ecsign(hashPersonalMessage(hash), this.privateKey);
-    console.log(33, signature)
     const v = toNumber(signature.v);
     const r = toHex(signature.r);
     const s = toHex(signature.s);
