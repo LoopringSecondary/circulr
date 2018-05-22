@@ -47,10 +47,7 @@ class PlaceOrderForm extends React.Component {
         left = {...l, ...balanceL}
         right = {...r, ...balanceR}
         const amountPrecision = Math.max(0, right.precision - marketConfig.pricePrecision)
-        let availableAmount = 0
-        if(price.gt(0)) {
-          availableAmount = orderFormatter.calculateAvailableAmount(side, priceInput, left, right, amountPrecision)
-        }
+        let availableAmount = orderFormatter.calculateAvailableAmount(side, priceInput, left, right, amountPrecision)
         if(side === 'buy') {
           sell = {token : right, availableAmount : 0}
           buy = {token : left, availableAmount : availableAmount}
