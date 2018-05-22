@@ -12,7 +12,6 @@ const WETH = Contracts.WETH;
 
 function ConvertForm(props) {
 
-  console.log(props)
   const {wallet, convert, dispatch, balance, marketcap,form} = props;
   const {amount, token, gasPrice, gasLimit} = convert;
   const {address} = wallet;
@@ -33,9 +32,9 @@ function ConvertForm(props) {
     convert.setMax({amount: max});
     form.setFieldsValue({amount:max})
   };
-  const toConvert =  () => {
+  const toConvert =  async () => {
     form.validateFields(async  (err,values) => {
-      if(!err){
+      if(err){
         let data = '';
         let value = '';
         if (token.toLowerCase() === 'Eth') {
@@ -45,7 +44,7 @@ function ConvertForm(props) {
           data = WETH.encodeInputs('withdraw', {wad: toHex(tf.getDecimalsAmount(amount))});
           value = '0x0'
         }
-        const to = config.getTokenBySymbol('WETh').address;
+        const to = config.getTokenBySymbol('WETH').address;
         const tx = {
           gasLimit: toHex(gasLimit),
           data,
@@ -55,10 +54,11 @@ function ConvertForm(props) {
           value,
           nonce: toHex(await window.STORAGE.wallet.getNonce(address))
       };
-        const signTx = account.signEthereumTx(tx);
+
+        const signTx = await account.signEthereumTx(tx);
         //  const res = await window.ETH.sendRawTransaction(signTx);
         console.log(signTx)
-      }
+     }
     });
 
   };
@@ -103,6 +103,16 @@ function ConvertForm(props) {
       </div>
       <div className="blk"/>
       <p className="text-color-dark-1">我们为您保留0.1 ETH作为油费以保证后续可以发送交易</p>
+      <div className="text-color-dark-1">
+        <div className="form-control-static d-flex justify-content-between mr-0">
+          <span>Gas Fee</span>
+          <span className="font-bold">
+
+            <span>0</span>
+                    <span className="offset-md"> ETH ≈ $1.15</span>
+                  </span>
+        </div>
+      </div>
       <Button className="btn-block btn-xlg btn-o-dark" onClick={toConvert}>是的，马上转换</Button>
     </div>
   )

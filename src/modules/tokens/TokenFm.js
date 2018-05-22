@@ -42,7 +42,7 @@ export default class TokenFm {
     }
   }
   getDecimalsAmount(amount){
-    toDecimalsAmount(amount,this.digits)
+   return toDecimalsAmount(amount,this.digits)
   }
   getUnitAmountValue(amount,price){
     const unitAmount = this.getUnitAmount(amount);
@@ -50,10 +50,10 @@ export default class TokenFm {
   }
 
   toPricisionFixed(amount,ceil){
-    toFixed(amount,this.precision,ceil)
+   return toFixed(amount,this.precision,ceil)
   }
   toFormatLength(amount,ceil){
-    formatLength(amount,ceil)
+   return formatLength(amount,ceil)
   }
 }
 

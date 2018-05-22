@@ -62,7 +62,7 @@ export default {
       const {token} = yield select((state) => state.convert);
       const assets = yield select((state) => getAssetsByToken(state, token, true));
       const outBalance = assets.balance.lt(toBig(amount));
-      yield put({type: "setAmount", payload: {amount}});
+      yield put({type: "setAmount", payload: {amount:toBig(amount)}});
       yield put({type: "setOutBalance", payload: {outBalance}})
     },
     * gasPriceChange({payload}, {select, put}) {
@@ -83,7 +83,7 @@ export default {
     * setMax({payload}, {put}) {
       const {amount} = payload;
       yield put({type:"setIsMax",payload:{isMax:true}});
-      yield put({type:"setAmount",payload:{amount}})
+      yield put({type:"setAmount",payload:{amount:toBig(amount)}})
     }
   }
 
