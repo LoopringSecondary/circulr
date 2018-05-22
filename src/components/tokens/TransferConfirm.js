@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,Button } from 'antd';
+import { Form,Input,Button } from 'antd';
 import * as fm from 'LoopringJS/common/formatter'
 import Currency from 'modules/settings/CurrencyContainer'
 import * as tokenFormatter from 'modules/tokens/TokenFm'
@@ -127,4 +127,4 @@ function TransferConfirm(props) {
     </div>
   )
 }
-export default TransferConfirm
+export default Form.create() (TransferConfirm)
