@@ -10,9 +10,11 @@ function Modals(props) {
   return (
     <div>
       <Containers.Modals id="receiveToken">
+        <Containers.Sockets id="balance">
         <UiContianers.Modals id="receiveToken">
           <Receive/>
         </UiContianers.Modals>
+        </Containers.Sockets>
       </Containers.Modals>
       <Containers.Modals id="transferToken">
         <UiContianers.Modals id="transferToken">

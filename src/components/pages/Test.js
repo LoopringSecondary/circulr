@@ -34,7 +34,7 @@ const TestModal = (props)=>{
       <span>
         <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'setting'})}>Setting</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'receiveToken'})}>Receive</Button></span>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'receiveToken',symbol:'LRC'})}>Receive</Button></span>
       <span>
         <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'transferToken'})}>Transfer</Button></span>
       <span>

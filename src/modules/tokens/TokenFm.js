@@ -36,7 +36,7 @@ export default class TokenFm {
   getUnitAmount(amount){
     amount = amount || 0;
     if(this.isSupportedToken()) {
-      return toFixed(toUnitAmount(amount,this.digits),8)
+      return toUnitAmount(amount,this.digits)
     } else {
       return toBig(0)
     }
