@@ -18,9 +18,9 @@ export function tokenDisplayBalance(tokenSymbol, rawBalance) {
 }
 
 export function calculateAvailableAmount(side, price, tokenL, tokenR, amountPrecision) {
-  if(price && tokenL && tokenR) {
+  if(tokenL && tokenR) {
     if(side === 'buy') {
-      if(price) {
+      if(price && fm.toBig(price).gt(0)) {
         return fm.toFixed(fm.toBig(tokenR.balance).div(price), amountPrecision, false)
       }
     } else {
