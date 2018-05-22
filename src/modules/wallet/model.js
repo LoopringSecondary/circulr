@@ -12,13 +12,59 @@ import {
 import {mnemonictoPrivatekey} from "LoopringJS/ethereum/mnemonic";
 import {formatKey} from "LoopringJS/common/formatter";
 import storage from '../storage/'
+import intl from 'react-intl-universal';
+import Notification from 'LoopringUI/components/Notification'
 
+const unlockWithMetaMask = () => {
+  if (window.web3 && window.web3.eth.accounts[0]) {
+    window.web3.version.getNetwork((err, netId) => {
+      if (netId !== '1') {
+        Notification.open({
+          message:intl.get('wallet.failed_connect_metamask_title'),
+          description:intl.get('wallet.content_metamask_mainnet'),
+          type:'error'
+        })
+        return
+      }
+      window.account = new MetaMaskAccount(window.web3);
+      Notification.open({type:'success',message:'解锁成功',description:'unlock'});
+    })
+  } else {
+    let content = intl.get('wallet.content_metamask_install')
+    if(window.web3 && !window.web3.eth.accounts[0]) { // locked
+      content = intl.get('wallet.content_metamask_locked')
+    }
+    Notification.open({
+      message:intl.get('wallet.failed_connect_metamask_title'),
+      description:content,
+      type:'error'
+    })
+  }
+}
+
+let unlockedType = storage.wallet.getUnlockedType()
+let unlockedAddress = storage.wallet.getUnlockedAddress()
+if(unlockedType && unlockedType === 'metaMask' && window.web3 && window.web3.eth.accounts[0] && window.web3.eth.accounts[0] === unlockedAddress) {
+  unlockWithMetaMask()
+} else {
+  if(unlockedAddress) {
+    unlockedType = 'address'
+    window.WALLET = {address:unlockedAddress, unlockType:unlockedType};
+    Notification.open({
+      type:'warning',
+      message:intl.get('wallet.in_watch_only_mode_title'),
+      description:intl.get('wallet.unlock_by_cookie_address_notification')
+    });
+  } else {
+    unlockedType = ''
+  }
+}
 
 export default {
   namespace: 'wallet',
   state: {
-    address: "",
-    unlockType: "locked",
+    address: unlockedAddress || "",
+    unlockType: unlockedType || "locked",
     password: "",
     account: null
   },

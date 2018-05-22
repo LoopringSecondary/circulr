@@ -31,15 +31,15 @@ function PlaceOrderConfirm(props) {
     actualSigned = signed.filter(item => item !== undefined)
   }
 
-  function sign(item, index, e) {
+  async function sign(item, index, e) {
     e.preventDefault()
     const account = wallet.account || window.account
     if(item.type === 'order') {
-      const signedOrder = account.signOrder(item.data)
+      const signedOrder = await account.signOrder(item.data)
       signedOrder.powNonce = 100;
       signed[index] = {type: 'order', data:signedOrder};
     } else {
-      signed[index] = {type: 'tx', data:account.signEthereumTx(item.data)};
+      signed[index] = {type: 'tx', data: await account.signEthereumTx(item.data)};
     }
     placeOrder.signedChange({signed})
   }
