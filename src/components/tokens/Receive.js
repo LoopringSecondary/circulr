@@ -6,15 +6,13 @@ import Notification from '../../common/loopringui/components/Notification'
 import intl from 'react-intl-universal';
 
 function Receive(props) {
-
-  const address =  window.WALLET.address
-
+  const address =  window.WALLET.address;
   const copyAddress = () => {
     copy(address) ? Notification.open({
       message: intl.get('navbar.subs.copy_success'),
       type: 'success', size: 'small'
     }) : Notification.open({message: intl.get('navbar.subs.copy_failed'), type: "error", size: 'small'})
-  }
+  };
   return (
     <div>
         <div className="modal-header text-dark"><h3>我的以太坊地址</h3></div>
