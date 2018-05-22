@@ -82,7 +82,7 @@ class PlaceOrderForm extends React.Component {
     }
 
     function inputChange(type, e) {
-      let price = 0, amount = 0
+      let price = '0', amount = '0'
       const marketConfig = config.getMarketBySymbol(left.symbol, right.symbol)
       if (type === 'price') {
         price = e.target.value.toString()
@@ -481,15 +481,15 @@ class PlaceOrderForm extends React.Component {
                          suffix={<span className="fs14 color-black-4">{right.symbol}</span>}
                          onChange={inputChange.bind(this, 'price')}
                          onFocus={() => {
-                           const amount = form.getFieldValue("price")
-                           if (amount === 0) {
+                           const price = form.getFieldValue("price")
+                           if (price === '0') {
                              form.setFieldsValue({"price": ''})
                            }
                          }}
                          onBlur={() => {
-                           const amount = form.getFieldValue("price")
-                           if (amount === '') {
-                             form.setFieldsValue({"price": 0})
+                           const price = form.getFieldValue("price")
+                           if (price === '') {
+                             form.setFieldsValue({"price": '0'})
                            }
                          }}/>
                 )}
@@ -500,7 +500,7 @@ class PlaceOrderForm extends React.Component {
                 </div>
               }>
                 {form.getFieldDecorator('amount', {
-                  initialValue: 0,
+                  initialValue: '0',
                   rules: [{
                     message: intl.get('trade.amount_verification_message'),
                     validator: (rule, value, cb) => validateAmount(value) ? cb() : cb(true)
@@ -511,15 +511,15 @@ class PlaceOrderForm extends React.Component {
                          suffix={<span className="fs14 color-black-4">{left.symbol}</span>}
                          onChange={inputChange.bind(this, 'amount')}
                          onFocus={() => {
-                            const amount = Number(form.getFieldValue("amount"))
-                            if (amount === 0) {
+                            const amount = form.getFieldValue("amount")
+                            if (amount === '0') {
                               form.setFieldsValue({"amount": ''})
                             }
                          }}
                          onBlur={() => {
                             const amount = form.getFieldValue("amount")
                             if (amount === '') {
-                              form.setFieldsValue({"amount": 0})
+                              form.setFieldsValue({"amount": '0'})
                             }
                          }}/>
                 )}
