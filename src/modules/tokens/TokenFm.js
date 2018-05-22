@@ -59,8 +59,8 @@ export default class TokenFm {
 
 export function getBalanceBySymbol({balances, symbol, toUnit}) {
   let tokenAssets = balances.find(item => item.symbol.toLowerCase() === symbol.toLowerCase()) || {
-    balance: 0,
-    allowance: 0
+    balance: toBig(0),
+    allowance: toBig(0)
   };
   const tokenFormatter = new TokenFm({symbol: symbol});
   if(tokenFormatter.isSupportedToken()) {

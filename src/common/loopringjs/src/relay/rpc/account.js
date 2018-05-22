@@ -161,6 +161,7 @@ export function getTransactions(host,{owner, status, txHash, pageIndex, pageSize
 
 /**
  * @description Get the total frozen amount of all unfinished orders
+ * @param delegateAddress
  * @param host
  * @param owner
  * @param token
