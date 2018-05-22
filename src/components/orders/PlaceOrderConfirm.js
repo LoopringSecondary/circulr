@@ -8,101 +8,17 @@ import eachLimit from 'async/eachLimit';
 import * as orderFormatter from 'modules/orders/formatters'
 import Notification from 'LoopringUI/components/Notification'
 import {createWallet} from 'LoopringJS/ethereum/account';
+import * as uiFormatter from 'modules/formatter/common'
 
 function PlaceOrderConfirm(props) {
   const {placeOrderConfirm, settings, wallet, modals} = props
-  const {side, pair, verifiedAddress} = placeOrderConfirm
-  let {amount, total, validSince, validUntil, marginSplit, lrcFee, warn} = placeOrderConfirm.tradeInfo;
+  const {side, pair, tradeInfo, order, unsigned, signed} = placeOrderConfirm
+  let {price, amount, total, validSince,validUntil, marginSplit, lrcFee, warn} = tradeInfo;
   const token = pair.split('-')[0];
   const token2 = pair.split('-')[1];
-  marginSplit = marginSplit === undefined ? settings.trading.marginSplit : marginSplit;
-  let order = {};
-  order.delegateAddress = config.getDelegateAddress();
-  order.protocol = settings.trading.contract.address;
-  const tokenB = side.toLowerCase() === "buy" ? config.getTokenBySymbol(token) : config.getTokenBySymbol(token2);
-  const tokenS = side.toLowerCase() === "sell" ? config.getTokenBySymbol(token) : config.getTokenBySymbol(token2);
-  order.tokenB = tokenB.address;
-  order.tokenS = tokenS.address;
-  order.amountB = toHex(toBig(side.toLowerCase() === "buy" ? amount : total).times('1e' + tokenB.digits));
-  order.amountS = toHex(toBig(side.toLowerCase() === "sell" ? amount : total).times('1e' + tokenS.digits));
-  order.lrcFee = toHex(toBig(lrcFee).times(1e18));
-  order.validSince = toHex(validSince);
-  order.validUntil = toHex(validUntil);
-  order.marginSplitPercentage = Number(marginSplit);
-  order.buyNoMoreThanAmountB = side.toLowerCase() === "buy";
-  order.walletAddress = config.getWalletAddress();
-  const authAccount = createWallet()
-  order.authAddr = authAccount.getAddressString();
-  order.authPrivateKey = clearHexPrefix(authAccount.getPrivateKeyString());
-  if(wallet && verifiedAddress && wallet.address === verifiedAddress) {
-    order.owner = verifiedAddress
-  } else {
-    //TODO unlock and verify order
-    Notification.open({
-      message: intl.get('trade.place_order_failed'),
-      type: "error",
-      description: ''
-    });
-    //TODO
-    //return
-  }
-  // sign orders and txs
-  const unsigned = new Array()
-  const signed = new Array()
-  unsigned.push({type: 'order', data:order})
-  const approveWarn = warn.filter(item => item.type === "AllowanceNotEnough");
-  if (approveWarn) {
-    const gasLimit = config.getGasLimitByType('approve').gasLimit;
-    const gasPrice = toHex(Number(settings.trading.gasPrice) * 1e9);
-    window.STORAGE.wallet.getNonce(wallet.address).then(nonce => {
-      approveWarn.forEach(item => {
-        const tokenConfig = config.getTokenBySymbol(item.value.symbol);
-        if (item.value.allowance > 0) {
-          const cancel = orderFormatter.generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:'0x0', nonce:toHex(nonce)})
-          unsigned.push({type: 'tx', data:cancel})
-          nonce = nonce + 1;
-        }
-        const approve = orderFormatter.generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:toHex(toBig('9223372036854775806').times('1e' + tokenConfig.digits || 18)), nonce:toHex(nonce)})
-        unsigned.push({type: 'tx', data:approve})
-        nonce = nonce + 1;
-      });
-
-      console.log('    unsigned:', unsigned, unsigned.length)
-      const account = wallet.account || window.account
-      if(wallet.unlockType === 'keystore' || wallet.unlockType === 'mnemonic' || wallet.unlockType === 'privateKey'){
-        unsigned.forEach(tx=> {
-          if(tx.type === 'order') {
-            const signedOrder = account.signOrder(tx.data)
-            signedOrder.powNonce = 100;
-            signed.push({type: 'order', data:signedOrder});
-          } else {
-            signed.push({type: 'tx', data:account.signEthereumTx(tx.data)});
-          }
-        })
-      } else {
-        // TODO notify user to sign each tx/order
-      }
-
-      console.log('    signed:', signed)
-    }).catch(e=>{
-      Notification.open({
-        message: intl.get('trade.place_order_failed'),
-        type: "error",
-        description: e.message
-      });
-    })
-  } else {
-    const balanceWarn = warn ? warn.filter(item => item.type === "BalanceNotEnough") : [];
-    openNotification(balanceWarn);
-    this.setState({loading:false});
-    modals.hideModal({id: 'placeOrderConfirm'});
-    updateOrders();
-  }
-
-
 
   function handelSubmit() {
-    if(unsigned.length !== signed.length) {
+    if(order && unsigned.length !== signed.length) {
       Notification.open({
         message: intl.get('trade.place_order_failed'),
         type: "error",
@@ -110,9 +26,7 @@ function PlaceOrderConfirm(props) {
       });
       return
     }
-    console.log(111, signed)
     eachLimit(signed, 1, async function (tx, callback) {
-      console.log(111, tx)
       let txHash = '', rawTx = ''
       if(tx.type === 'tx') {
         const response = await window.ETH.sendRawTransaction(tx.data)
@@ -136,7 +50,6 @@ function PlaceOrderConfirm(props) {
         }
       }
       if(txHash && rawTx) {
-        console.log(222, txHash, rawTx)
         window.STORAGE.wallet.setWallet({address: window.WALLET.getAddress(), nonce: tx.nonce});
         window.RELAY.account.notifyTransactionSubmitted({txHash: txHash, rawTx, from: window.WALLET.getAddress()});
         callback()
@@ -221,32 +134,41 @@ function PlaceOrderConfirm(props) {
         <div className="pd-lg text-center text-color-dark">
 	        <h5>您正在{intl.get(`order.${side === 'sell' ? 'selling' : 'buying'}`)}</h5>
 	        <h2>{intl.get('global.amount', {amount})} {token}</h2>
-	        <small className="text-color-dark-1">0.0015 × 100 =0.15WETH</small>
+	        <small className="text-color-dark-1">
+            {uiFormatter.getFormatNum(price)}
+            x {intl.get('global.amount', {amount})} = {total} {token2}
+          </small>
         </div>
-        <div className="divider solid"></div>
+        <div className="divider solid"unsigned></div>
         <ul className="list list-label list-dark list-justify-space-between divided">
-            <li><span>撮合费</span><span>0.5LRC</span></li>
+            <li><span>撮合费</span><span>{`${uiFormatter.getFormatNum(lrcFee)} LRC`}</span></li>
             <li><span>分润比例</span><span>{`${marginSplit} %`}</span></li>
-            <li><span>订单生效时间</span><span>2018年5月14日 16:28</span></li>
-            <li><span>订单失效时间</span><span>2018年5月15日 16:28</span></li>
-            <li className="d-block">
+            <li><span>订单生效时间</span><span>{uiFormatter.getFormatTime(validSince * 1e3)}</span></li>
+            <li><span>订单失效时间</span><span>{uiFormatter.getFormatTime(validUntil * 1e3)}</span></li>
+          {//(wallet.unlockType !== 'keystore' && wallet.unlockType !== 'mnemonic' && wallet.unlockType !== 'privateKey')
+            unsigned.length !== signed.length && unsigned.map((item, index)=>{
+              console.log(111, unsigned.length, index, item)
+              return (
+              <li key={index} className="d-block">
                 <b><i className="icon-chevron-up"></i>签名信息</b>
                 <div className="blk"></div>
                 <div className="col-row form-dark">
-                    <div className="col2-2 d-flex justify-space-between">
-                    	<div className="item">
-                    	    <p className="text-color-dark-2">未签名的订单</p>
-                    		<Input.TextArea placeholder="" autosize={{ minRows: 4, maxRows: 6 }} value={JSON.stringify(order)}/>
-                    	</div>
-                    	<div className="item">
-                    	    <p className="text-color-dark-2">签名的订单</p>
-                    		<Input.TextArea placeholder="" autosize={{ minRows: 4, maxRows: 6 }} />
-                    	</div>
+                  <div className="col2-2 d-flex justify-space-between">
+                    <div className="item">
+                      <p className="text-color-dark-2">未签名的订单</p>
+                      <Input.TextArea placeholder="" autosize={{ minRows: 4, maxRows: 6 }} value={JSON.stringify(order)}/>
                     </div>
-                    <div className="blk"></div>
-                    <div className="text-center text-color-dark-3">提交订单是免费的，不需要消耗Gas</div>
+                    <div className="item">
+                      <p className="text-color-dark-2">签名的订单</p>
+                      <Input.TextArea placeholder="" autosize={{ minRows: 4, maxRows: 6 }} />
+                    </div>
+                  </div>
+                  <div className="blk"></div>
+                  <div className="text-center text-color-dark-3">提交订单是免费的，不需要消耗Gas</div>
                 </div>
-            </li>
+              </li>)
+            })
+          }
         </ul>
         <Button className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>提交订单</Button>
     </div>

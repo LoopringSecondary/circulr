@@ -11,11 +11,18 @@ import {getOrderHash} from '../relay/rpc/order';
 import * as Trezor from './trezor';
 import * as Ledger from './ledger';
 import * as MetaMask from './metaMask';
-
+import Wallet from 'ethereumjs-wallet';
 
 const wallets = require('../config/wallets.json');
 const LoopringWallet = wallets.find(wallet => trimAll(wallet.name).toLowerCase() === 'loopringwallet');
 export const path = LoopringWallet.dpath;
+
+export function createWallet() {
+  const myWallet = Wallet.generate()
+  // console.log(`Address: ${myWallet.getAddressString()}`);
+  // console.log(`Private Key: ${myWallet.getPrivateKeyString()}`)
+  return myWallet
+}
 
 /**
  * @description Returns the ethereum address  of a given private key
@@ -235,8 +242,11 @@ export class KeyAccount extends Account {
   }
 
   signOrder(order) {
+    console.log(31, order)
     const hash = getOrderHash(order);
+    console.log(32, hash, hashPersonalMessage(hash))
     const signature = ecsign(hashPersonalMessage(hash), this.privateKey);
+    console.log(33, signature)
     const v = toNumber(signature.v);
     const r = toHex(signature.r);
     const s = toHex(signature.s);
