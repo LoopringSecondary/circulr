@@ -26,7 +26,6 @@ function request(host, options) {
   try{
     if (options.body) {
       options.headers = options.headers || headers;
-      options.body.jsonrpc = '2.0';
       options.body = JSON.stringify(options.body);
     }
     return fetch(host, options).then(checkStatus).then(res => res.json()).catch((e)=>{
