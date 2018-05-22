@@ -11,7 +11,17 @@ function Wallet(props) {
         <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000"}}>
             <div className="bg text-color-dark-1 w-control d-flex justify-content-between align-items-center">
                 <h2>LRC<span>Ethereum</span></h2>
-                <div className="account"><img src={require('../../assets/images/user.png')} className="photo" /><span className="msg"><i className="icon-bell"></i></span></div>
+                {/*<div className="account"><img src={require('../../assets/images/user.png')} className="photo" /><span className="msg"><i className="icon-bell"></i></span></div>*/}
+                <div className="account-bar">
+                  <ul>
+                  <li><div className="logo"><img src={require('../../assets/images/logo-icon-inverse.png')} /></div><div className="account-address">0xeba7136a36da0f5e16c6bdbc739c716bb5b65a00</div></li>
+                  <li><i className="icon-analysis"></i></li>
+                  <li><i className="icon-pie"></i></li>
+                  <li><i className="icon-bell relative"><sup class="badge"></sup></i></li>
+                  <li><span className="language"><a href="#"><i className="icon en"></i></a></span></li>
+                  <li><i className="icon-menu"></i></li>
+                  </ul>
+                </div>
             </div>
         </header>
         <div className="side-fixed" style={{top:"0",left: "0",width: "280px",padding: "20px 0"}} id="tokenSide">
