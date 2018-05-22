@@ -18,7 +18,15 @@ function Modals(props) {
           <Containers.Settings>
             <Containers.Wallet>
               <Containers.Modals>
-                <PlaceOrderConfirm />
+                <Containers.PlaceOrder>
+                  <Containers.Sockets id="balance">
+                    <Containers.Sockets id="marketcap">
+                      <Containers.Sockets id="pendingTx">
+                        <PlaceOrderConfirm />
+                      </Containers.Sockets>
+                    </Containers.Sockets>
+                  </Containers.Sockets>
+                </Containers.PlaceOrder>
               </Containers.Modals>
             </Containers.Wallet>
           </Containers.Settings>

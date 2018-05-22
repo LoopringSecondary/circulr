@@ -4,6 +4,7 @@ import * as fm from 'LoopringJS/common/formatter'
 import {getBalanceBySymbol, getPriceBySymbol} from '../tokens/TokenFm'
 import {isApproving} from '../transactions/formatters'
 import contracts from 'LoopringJS/ethereum/contracts/Contracts'
+import {createWallet} from 'LoopringJS/ethereum/account';
 
 const integerReg = new RegExp("^[0-9]*$")
 const amountReg = new RegExp("^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$")
@@ -241,4 +242,67 @@ export function generateApproveTx({symbol, amount, gasPrice, gasLimit, nonce}) {
   tx.nonce = nonce
   tx.chainId = datas.configs.chainId
   return tx
+}
+
+export async function signOrder(tradeInfo, wallet) {
+  const token = tradeInfo.pair.split('-')[0];
+  const token2 = tradeInfo.pair.split('-')[1];
+  let order = {};
+  const unsigned = new Array()
+  const signed = new Array()
+  order.delegateAddress = tradeInfo.delegateAddress;
+  order.protocol = tradeInfo.protocol;
+  const tokenB = tradeInfo.side.toLowerCase() === "buy" ? config.getTokenBySymbol(token) : config.getTokenBySymbol(token2);
+  const tokenS = tradeInfo.side.toLowerCase() === "sell" ? config.getTokenBySymbol(token) : config.getTokenBySymbol(token2);
+  order.tokenB = tokenB.address;
+  order.tokenS = tokenS.address;
+  order.amountB = fm.toHex(fm.toBig(tradeInfo.side.toLowerCase() === "buy" ? tradeInfo.amount : tradeInfo.total).times('1e' + tokenB.digits));
+  order.amountS = fm.toHex(fm.toBig(tradeInfo.side.toLowerCase() === "sell" ? tradeInfo.amount : tradeInfo.total).times('1e' + tokenS.digits));
+  order.lrcFee = fm.toHex(fm.toBig(tradeInfo.lrcFee).times(1e18));
+  order.validSince = fm.toHex(tradeInfo.validSince);
+  order.validUntil = fm.toHex(tradeInfo.validUntil);
+  order.marginSplitPercentage = Number(tradeInfo.marginSplit);
+  order.buyNoMoreThanAmountB = tradeInfo.side.toLowerCase() === "buy";
+  order.walletAddress = config.getWalletAddress();
+  const authAccount = createWallet()
+  order.authAddr = authAccount.getAddressString();
+  order.authPrivateKey = fm.clearHexPrefix(authAccount.getPrivateKeyString());
+  if(wallet && wallet.address) {
+    order.owner = wallet.address
+    // sign orders and txs
+    unsigned.push({type: 'order', data:order})
+    const approveWarn = tradeInfo.warn.filter(item => item.type === "AllowanceNotEnough");
+    if (approveWarn) {
+      const gasLimit = tradeInfo.gasLimit;
+      const gasPrice = tradeInfo.gasPrice;
+      let nonce = await window.STORAGE.wallet.getNonce(wallet.address)
+      approveWarn.forEach(item => {
+        const tokenConfig = config.getTokenBySymbol(item.value.symbol);
+        if (item.value.allowance > 0) {
+          const cancel = generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:'0x0', nonce:fm.toHex(nonce)})
+          unsigned.push({type: 'tx', data:cancel})
+          nonce = nonce + 1;
+        }
+        const approve = generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:fm.toHex(fm.toBig('9223372036854775806').times('1e' + tokenConfig.digits || 18)), nonce:fm.toHex(nonce)})
+        unsigned.push({type: 'tx', data:approve})
+        nonce = nonce + 1;
+      });
+
+      console.log('    unsigned:', unsigned)
+      const account = wallet.account || window.account
+      if(wallet.unlockType === 'keystore' || wallet.unlockType === 'mnemonic' || wallet.unlockType === 'privateKey'){
+        unsigned.forEach(tx=> {
+          if(tx.type === 'order') {
+            const signedOrder = account.signOrder(tx.data)
+            signedOrder.powNonce = 100;
+            signed.push({type: 'order', data:signedOrder});
+          } else {
+            signed.push({type: 'tx', data:account.signEthereumTx(tx.data)});
+          }
+        })
+      }
+      console.log('    signed:', signed)
+    }
+  }
+  return {order, signed, unsigned}
 }

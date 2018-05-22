@@ -18,6 +18,8 @@ export default {
    timeToLiveStart: null,
    timeToLiveEnd: null,
    submitButtonLoading: false,
+   unsigned:null,
+   signed:null
   },
   effects:{
     *init({ payload={} }, { put }) {
@@ -59,6 +61,11 @@ export default {
       } else {
         yield put({ type: 'timeToLiveEasyPopularValueChange',payload:{timeToLive, timeToLiveUnit}});
       }
+    },
+    *toConfirm({ payload={} }, { select, put }) {
+      const {unsigned, signed} = payload
+      yield put({ type: 'unsignedChange',payload:{unsigned}});
+      yield put({ type: 'signedChange',payload:{signed}});
     }
   },
   reducers: {
@@ -144,6 +151,22 @@ export default {
       return {
         ...state,
         submitButtonLoading
+      }
+    },
+    unsignedChange(state, action) {
+      const {payload} = action
+      let {unsigned} = payload
+      return {
+        ...state,
+        unsigned
+      }
+    },
+    signedChange(state, action) {
+      const {payload} = action
+      let {signed} = payload
+      return {
+        ...state,
+        signed
       }
     }
   },

@@ -332,20 +332,20 @@ class PlaceOrderForm extends React.Component {
             tradeInfo.validSince = placeOrder.timeToLiveStart.unix()
             tradeInfo.validUntil = placeOrder.timeToLiveEnd.unix()
           }
+          tradeInfo.marginSplit = settings.trading.marginSplit
           if (values.marginSplit) {
             tradeInfo.marginSplit = Number(values.marginSplit)
           }
           tradeInfo.milliLrcFee = milliLrcFee
           tradeInfo.lrcFee = lrcFee
-          // if(!wallet.address) {
-            //TODO notification to user, order verification in confirm page(unlocked)
-            // Notification.open({
-            //   type:'warning',
-            //   message:intl.get('trade.not_inWhiteList'),
-            //   description:intl.get('trade.not_allow')
-            // });
-            // return
-          // } else {
+          tradeInfo.delegateAddress = config.getDelegateAddress();
+          tradeInfo.protocol = settings.trading.contract.address;
+          tradeInfo.gasLimit = config.getGasLimitByType('approve').gasLimit;
+          tradeInfo.gasPrice = fm.toHex(Number(settings.trading.gasPrice) * 1e9);
+          tradeInfo.pair = pair
+          tradeInfo.side = side
+
+          if(wallet.address) { // unlocked, verify
             if(!balance.items || !marketcap.items) {
               Notification.open({
                 message:intl.get('trade.send_failed'),
@@ -355,6 +355,8 @@ class PlaceOrderForm extends React.Component {
               return
             }
             placeOrder.submitButtonLoadingChange({submitButtonLoading:true})
+
+            //TODO mock
             // const lrcBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:'LRC', toUnit:true})
             // if(!lrcBalance || lrcBalance.balance.lessThan(900)){
             //   // TODO !await config.isinWhiteList(window.WALLET.getAddress())
@@ -367,6 +369,7 @@ class PlaceOrderForm extends React.Component {
             //     return
             //   }
             // }
+
             const totalWorth = orderFormatter.calculateWorthInLegalCurrency(marketcap.items, right.symbol, tradeInfo.total)
             if(!totalWorth.gt(0)) {
               Notification.open({
@@ -412,103 +415,31 @@ class PlaceOrderForm extends React.Component {
               placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
               return
             }
-          // }
-          //TODO MOCK
-          const test = new Array()
-          test.push({type:"AllowanceNotEnough", value:{symbol:'LRC', allowance:12, required:123456}})
-          test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
-          tradeInfo.warn = test
 
-          console.log(1)
-          const {order, signed, unsigned} = await signOrder(tradeInfo)
-          console.log(2, order, signed, unsigned)
-          showTradeModal(tradeInfo, order, signed, unsigned)
+            //TODO MOCK
+            const test = new Array()
+            test.push({type:"AllowanceNotEnough", value:{symbol:'LRC', allowance:12, required:123456}})
+            test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
+            tradeInfo.warn = test
+
+            const {order, signed, unsigned} = await orderFormatter.signOrder(tradeInfo, wallet)
+            showTradeModal(tradeInfo, order, signed, unsigned)
+          } else { // locked, do not verify
+            //TODO notification to user, order verification in confirm page(unlocked)
+            Notification.open({
+              message: intl.get('trade.place_order_failed'),
+              type: "error",
+              description: ''
+            });
+          }
           placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
         }
       });
     }
 
-    async function signOrder(tradeInfo) {
-      const token = pair.split('-')[0];
-      const token2 = pair.split('-')[1];
-      let order = {};
-      const unsigned = new Array()
-      const signed = new Array()
-      order.delegateAddress = config.getDelegateAddress();
-      order.protocol = settings.trading.contract.address;
-      const tokenB = side.toLowerCase() === "buy" ? config.getTokenBySymbol(token) : config.getTokenBySymbol(token2);
-      const tokenS = side.toLowerCase() === "sell" ? config.getTokenBySymbol(token) : config.getTokenBySymbol(token2);
-      order.tokenB = tokenB.address;
-      order.tokenS = tokenS.address;
-      order.amountB = fm.toHex(fm.toBig(side.toLowerCase() === "buy" ? amount : total).times('1e' + tokenB.digits));
-      order.amountS = fm.toHex(fm.toBig(side.toLowerCase() === "sell" ? amount : total).times('1e' + tokenS.digits));
-      order.lrcFee = fm.toHex(fm.toBig(lrcFee).times(1e18));
-      order.validSince = fm.toHex(tradeInfo.validSince);
-      order.validUntil = fm.toHex(tradeInfo.validUntil);
-      order.marginSplitPercentage = Number(tradeInfo.marginSplit);
-      order.buyNoMoreThanAmountB = side.toLowerCase() === "buy";
-      order.walletAddress = config.getWalletAddress();
-      const authAccount = createWallet()
-      order.authAddr = authAccount.getAddressString();
-      order.authPrivateKey = fm.clearHexPrefix(authAccount.getPrivateKeyString());
-      if(wallet && wallet.address) {
-        order.owner = wallet.address
-
-        // sign orders and txs
-        unsigned.push({type: 'order', data:order})
-        const approveWarn = tradeInfo.warn.filter(item => item.type === "AllowanceNotEnough");
-        if (approveWarn) {
-          const gasLimit = config.getGasLimitByType('approve').gasLimit;
-          const gasPrice = fm.toHex(Number(settings.trading.gasPrice) * 1e9);
-          let nonce = await window.STORAGE.wallet.getNonce(wallet.address)
-          console.log(11, nonce, unsigned)
-          approveWarn.forEach(item => {
-            const tokenConfig = config.getTokenBySymbol(item.value.symbol);
-            if (item.value.allowance > 0) {
-              const cancel = orderFormatter.generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:'0x0', nonce:fm.toHex(nonce)})
-              unsigned.push({type: 'tx', data:cancel})
-              nonce = nonce + 1;
-            }
-            const approve = orderFormatter.generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:fm.toHex(fm.toBig('9223372036854775806').times('1e' + tokenConfig.digits || 18)), nonce:fm.toHex(nonce)})
-            unsigned.push({type: 'tx', data:approve})
-            nonce = nonce + 1;
-          });
-
-          console.log('    unsigned:', unsigned, unsigned.length)
-          const account = wallet.account || window.account
-          if(wallet.unlockType === 'keystore' || wallet.unlockType === 'mnemonic' || wallet.unlockType === 'privateKey'){
-            unsigned.forEach(tx=> {
-              if(tx.type === 'order') {
-                const signedOrder = account.signOrder(tx.data)
-                signedOrder.powNonce = 100;
-                //TODO test
-                signed.push({type: 'order', data:signedOrder});
-              } else {
-                signed.push({type: 'tx', data:account.signEthereumTx(tx.data)});
-              }
-            })
-            //TODO loaded
-          } else {
-            // TODO notify user to sign each tx/order
-          }
-
-          console.log('    signed:', signed)
-        }
-      } else {
-        //TODO unlock and verify order
-        Notification.open({
-          message: intl.get('trade.place_order_failed'),
-          type: "error",
-          description: ''
-        });
-      }
-      console.log(3, order, signed, unsigned)
-      return {order, signed, unsigned}
-    }
-
     const showTradeModal = (tradeInfo, order, signed, unsigned) => {
-      console.log(3, side, pair, tradeInfo, order, signed, unsigned)
-      modals.showModal({id:'placeOrderConfirm', side, pair, tradeInfo, order, signed, unsigned})
+      placeOrder.toConfirm({signed, unsigned})
+      modals.showModal({id:'placeOrderConfirm', side, pair, tradeInfo, order})
     }
 
     return (
