@@ -4,7 +4,6 @@ import Wallet from './Wallet'
 import Unlock from './Unlock'
 import Test from './Test'
 import WalletTest from './WalletTest'
-import TestTrade from './TestTrade'
 
 
 export default {
@@ -13,6 +12,5 @@ export default {
   Wallet,
   Test,
   WalletTest,
-  TestTrade,
   Unlock,
 }
