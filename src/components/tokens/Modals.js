@@ -21,7 +21,7 @@ function Modals(props) {
           <Containers.Sockets id="balance">
             <Containers.Sockets id="marketcap">
               <Containers.Wallet>
-                <Containers.Transfer initState={{assignedToken: 'ETH'}}>
+                <Containers.Transfer initState={{}}>
                   <Containers.Modals>
                     <Transfer />
                   </Containers.Modals>
