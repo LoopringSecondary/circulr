@@ -54,7 +54,10 @@ export function sliderChangeEffectAmount(state) {
 }
 
 export function amountChangeEffectSlider(availableAmount, amountInput) {
-  return amountEffectSlider(availableAmount, amountInput)
+  if(isValidAmount(amountInput)) {
+    return amountEffectSlider(availableAmount, amountInput)
+  }
+  return 0
 }
 
 export function isValidAmount(amount) {
