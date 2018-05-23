@@ -342,93 +342,111 @@ class PlaceOrderForm extends React.Component {
           tradeInfo.pair = pair
           tradeInfo.side = side
 
-          if(wallet.address) { // unlocked, verify
-            if(!balance.items || !marketcap.items) {
-              Notification.open({
-                message:intl.get('trade.send_failed'),
-                description:intl.get('trade.failed_fetch_data'),
-                type:'error'
-              })
-              return
-            }
-            placeOrder.submitButtonLoadingChange({submitButtonLoading:true})
-
-            //TODO mock
-            // const lrcBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:'LRC', toUnit:true})
-            // if(!lrcBalance || lrcBalance.balance.lessThan(900)){
-            //   // TODO !await config.isinWhiteList(window.WALLET.getAddress())
-            //   if(config.getChainId() !== 7107171){
-            //     Notification.open({
-            //       type:'warning',
-            //       message:intl.get('trade.not_inWhiteList'),
-            //       description:intl.get('trade.not_allow')
-            //     });
-            //     return
-            //   }
-            // }
-
-            const totalWorth = orderFormatter.calculateWorthInLegalCurrency(marketcap.items, right.symbol, tradeInfo.total)
-            if(!totalWorth.gt(0)) {
-              Notification.open({
-                message:intl.get('trade.send_failed'),
-                description:intl.get('trade.failed_fetch_data'),
-                type:'error'
-              })
-              placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
-              return
-            }
-            let allowed = false
-            let currency = 'USD';// TODO settings.preference.currency
-            let priceSymbol = fm.getDisplaySymbol(currency)
-            if(currency === 'USD') {
-              priceSymbol = '100' + priceSymbol
-              if(totalWorth.gt(100)) {
-                allowed = true
-              }
-            } else {
-              priceSymbol = '500' + priceSymbol
-              if(totalWorth.gt(500)) {
-                allowed = true
-              }
-            }
-            if(!allowed) {
-              Notification.open({
-                message:intl.get('trade.not_allowed_place_order_worth_title'),
-                description:intl.get('trade.not_allowed_place_order_worth_content', {worth: priceSymbol}),
-                type:'error'
-              })
-              placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
-              return
-            }
-            await orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, pendingTx.items)
-            if(tradeInfo.error) {
-              tradeInfo.error.map(item=>{
-                Notification.open({
-                  message: intl.get('trade.send_failed'),
-                  description: intl.get('trade.eth_is_required', {required:item.value.required}),
-                  type:'error',
-                })
-              })
-              placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
-              return
-            }
-
-            //TODO MOCK
-            const test = new Array()
-            test.push({type:"AllowanceNotEnough", value:{symbol:'LRC', allowance:12, required:123456}})
-            test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
-            tradeInfo.warn = test
-
-            const {order, signed, unsigned} = await orderFormatter.signOrder(tradeInfo, wallet)
-            showTradeModal(tradeInfo, order, signed, unsigned)
-          } else { // locked, do not verify
+          if(!wallet.address) { // locked, do not verify
             //TODO notification to user, order verification in confirm page(unlocked)
             Notification.open({
               message: intl.get('trade.place_order_failed'),
               type: "error",
               description: ''
             });
+            return
           }
+          if(!balance.items || !marketcap.items) {
+            Notification.open({
+              message:intl.get('trade.send_failed'),
+              description:intl.get('trade.failed_fetch_data'),
+              type:'error'
+            })
+            return
+          }
+          placeOrder.submitButtonLoadingChange({submitButtonLoading:true})
+
+          //TODO mock
+          // const lrcBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:'LRC', toUnit:true})
+          // if(!lrcBalance || lrcBalance.balance.lessThan(900)){
+          //   // TODO !await config.isinWhiteList(window.WALLET.getAddress())
+          //   if(config.getChainId() !== 7107171){
+          //     Notification.open({
+          //       type:'warning',
+          //       message:intl.get('trade.not_inWhiteList'),
+          //       description:intl.get('trade.not_allow')
+          //     });
+          //     return
+          //   }
+          // }
+
+          const totalWorth = orderFormatter.calculateWorthInLegalCurrency(marketcap.items, right.symbol, tradeInfo.total)
+          if(!totalWorth.gt(0)) {
+            Notification.open({
+              message:intl.get('trade.send_failed'),
+              description:intl.get('trade.failed_fetch_data'),
+              type:'error'
+            })
+            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+            return
+          }
+          let allowed = false
+          let currency = 'USD';// TODO settings.preference.currency
+          let priceSymbol = fm.getDisplaySymbol(currency)
+          if(currency === 'USD') {
+            priceSymbol = '100' + priceSymbol
+            if(totalWorth.gt(100)) {
+              allowed = true
+            }
+          } else {
+            priceSymbol = '500' + priceSymbol
+            if(totalWorth.gt(500)) {
+              allowed = true
+            }
+          }
+          if(!allowed) {
+            Notification.open({
+              message:intl.get('trade.not_allowed_place_order_worth_title'),
+              description:intl.get('trade.not_allowed_place_order_worth_content', {worth: priceSymbol}),
+              type:'error'
+            })
+            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+            return
+          }
+          await orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, pendingTx.items)
+          if(tradeInfo.error) {
+            tradeInfo.error.map(item=>{
+              if(item.value.symbol === 'ETH') {
+                Notification.open({
+                  message: intl.get('trade.send_failed'),
+                  description: intl.get('trade.eth_is_required', {required:item.value.required}),
+                  type:'error',
+                  actions:(
+                    <div>
+                      <Button className="alert-btn mr5" onClick={modals.showModal.bind(this,{id:'receiveToken',symbol:'ETH'})}>{`${intl.get('tokens.options_receive')} ETH`}</Button>
+                    </div>
+                  )
+                })
+              } else if (item.value.symbol === 'LRC') {
+                Notification.open({
+                  message: intl.get('trade.send_failed'),
+                  description: intl.get('trade.lrcfee_is_required', {required:item.value.required}),
+                  type:'error',
+                  actions:(
+                    <div>
+                      <Button className="alert-btn mr5" onClick={modals.showModal.bind(this,{id:'receiveToken',symbol:'LRC'})}>{`${intl.get('tokens.options_receive')} LRC`}</Button>
+                    </div>
+                  )
+                })
+              }
+            })
+            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+            return
+          }
+
+          //TODO MOCK
+          // const test = new Array()
+          // test.push({type:"AllowanceNotEnough", value:{symbol:'LRC', allowance:12, required:123456}})
+          // test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
+          // tradeInfo.warn = test
+
+          const {order, signed, unsigned} = await orderFormatter.signOrder(tradeInfo, wallet)
+          showTradeModal(tradeInfo, order, signed, unsigned)
           placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
         }
       });

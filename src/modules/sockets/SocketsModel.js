@@ -1,4 +1,6 @@
 import apis from './apis'
+import STORAGE from 'modules/storage';
+
 const namespace = 'sockets'
 let initState = {
   items: [],
@@ -17,7 +19,7 @@ let initState = {
 export default {
   namespace,
   state: {
-    'url':'//relay1.loopring.io',
+    'url':STORAGE.settings.get().relay.selected,
     'socket':null,
     'transaction':{...initState,filters:{token:'LRC'}},
     'balance':{...initState,filters:{currency:'usd'}},
