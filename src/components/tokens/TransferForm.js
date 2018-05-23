@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,Button,Form,Select,Popover,Slider,Icon} from 'antd';
+import { Button, Card, Form, Icon, Input, Popover, Select, Slider, Switch } from 'antd';
 import intl from 'react-intl-universal';
 import config from 'common/config'
 import * as datas from 'common/config/data'
@@ -11,6 +11,7 @@ import Currency from 'modules/settings/CurrencyContainer'
 
 function TransferForm(props) {
   const {transfer, balance, wallet, marketcap, form, modals} = props
+  const { TextArea } = Input;
 
   let tokenSelected = {}
   if(transfer.assignedToken) {
@@ -55,6 +56,18 @@ function TransferForm(props) {
     }
   }
 
+  function validateHex(value) {
+    if(value === undefined || value === ''){
+      return true
+    }
+    try {
+      fm.toHex(value)
+      return true
+    } catch (e) {
+      return false
+    }
+  }
+
   function handleChange(v) {
     if(v) {
       transfer.tokenChange({token:v})
@@ -86,7 +99,7 @@ function TransferForm(props) {
           if(tokenSelected.symbol === "ETH") {
             tx.to = values.to;
             tx.value = fm.toHex(fm.toBig(values.amount).times(1e18))
-            tx.data = fm.toHex(values.data);
+            tx.data = fm.toHex(values.data || '0x');
           } else {
             const tokenConfig = config.getTokenBySymbol(tokenSelected.symbol)
             tx.to = tokenConfig.address;
@@ -106,6 +119,7 @@ function TransferForm(props) {
 
   function selectMax(e) {
     e.preventDefault();
+    console.log(1, true)
     transfer.setIsMax({isMax:true})
   }
 
@@ -128,6 +142,10 @@ function TransferForm(props) {
 
   function gasPriceChange(e) {
     transfer.setSelectedGasPrice({selectedGasPrice:fm.toNumber(e)})
+  }
+
+  function setAdvance() {
+    transfer.setAdvance({advance:!transfer.advance})
   }
 
   if(transfer.token && form.getFieldValue('amount') !== undefined && form.getFieldValue('amount') !== '') {
@@ -241,7 +259,7 @@ function TransferForm(props) {
         <div className="card-body form-inverse">
             <Form>
               {
-                !transfer.to &&
+                !transfer.assignedToken &&
                 <Form.Item colon={false} label="Token">
                   {form.getFieldDecorator('token', {
                     initialValue: '',
@@ -313,13 +331,46 @@ function TransferForm(props) {
                          }}/>
                 )}
               </Form.Item>
+              {transfer.token === "ETH" && !transfer.advance &&
+              <div className="row mt5">
+                <div className="col"></div>
+                <div className="col-auto">
+                  <Form.Item className="mb0 text-right d-flex align-items-center" label={intl.get('token.advanced')} colon={false}>
+                    <Switch onChange={setAdvance.bind(this)}/>
+                  </Form.Item>
+                </div>
+              </div>
+              }
+              {transfer.token === "ETH" && transfer.advance &&
+              <div>
+                <Form.Item className="mb0 pb10" label={intl.get('token.data')} colon={false}>
+                  {form.getFieldDecorator('data', {
+                    initialValue: '',
+                    rules: [
+                      {message: intl.get("token.token_select_verification_message"),
+                        validator: (rule, value, cb) => validateHex(value) ? cb() : cb(true)
+                      }
+                    ]
+                  })(
+                    <TextArea rows={4} />
+                  )}
+                </Form.Item>
+                <div className="row mt5">
+                  <div className="col"></div>
+                  <div className="col-auto">
+                    <Form.Item className="mb0 text-right d-flex align-items-center" label={intl.get('token.advanced')} colon={false}>
+                      <Switch defaultChecked onChange={setAdvance.bind(this)}/>
+                    </Form.Item>
+                  </div>
+                </div>
+              </div>
+              }
             </Form>
             <div className="text-color-dark-1">
                 <div className="form-control-static d-flex justify-content-between mr-0">
                   <span>Gas Fee</span>
                   <span className="font-bold">
                     {editGas}
-                    <span>0</span>
                     <span className="offset-md">{gas.toString(10)} ETH ≈ $1.15</span>
                   </span>
                 </div>

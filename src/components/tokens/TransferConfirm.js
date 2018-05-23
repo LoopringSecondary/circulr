@@ -27,6 +27,15 @@ function TransferConfirm(props) {
 
   const handelSubmit = () => {
     //modal.showLoading({id:'token/transfer/preview'})
+    const account = wallet.account || window.account
+    if(!account || wallet.unlockType === 'address') {
+      Notification.open({
+        message: intl.get('trade.place_order_failed'),
+        type: "error",
+        description: 'to unlock'
+      });
+      return
+    }
     extraData.pageFrom = "Transfer"
     let result = {...tx, extraData}
     //To test Ledger
@@ -45,13 +54,11 @@ function TransferConfirm(props) {
       }
       if (toConfirmWarn) {
         Notification.open({
-          duration:0,
           message: intl.get('trade.to_confirm_title'),
           description: toConfirmWarn,
           type: 'info'
         })
       }
-      const account = wallet.account || window.account
       const signTx = account.signEthereumTx(tx);
       return window.ETH.sendRawTransaction(signTx)
     }).then(response=>{

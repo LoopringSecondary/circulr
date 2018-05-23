@@ -221,7 +221,6 @@ function PlaceOrderConfirm(props) {
     const args = {
       message: intl.get('order.place_success'),
       description: intl.get('order.place_success_tip'),
-      duration: 3,
       type: 'success',
     };
     Notification.open(args);
