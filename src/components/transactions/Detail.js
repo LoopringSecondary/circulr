@@ -45,7 +45,7 @@ export default class Detail extends React.Component {
             <Tabs.TabPane className="text-color-dark"  tab={intl.get('txs.tx_detail')} key="basic">
               <Spin spinning={loading}>
                 <MetaList>
-                    <MetaItem label={intl.get('txs.tx_hash')} value={tx.txHash} render={renders.txHash}/>
+                    <MetaItem label={intl.get('txs.tx_hash')} value={item.txHash} render={renders.txHash}/>
                     <MetaItem label={intl.get('txs.to')} value={tx.to} render={renders.address}/>
                     <MetaItem label={intl.get('txs.block_num')} value={tx.blockNumber} render={renders.blockNumber}/>
                     <MetaItem label={intl.get('txs.status')} value={intl.get('txs.' + item.status)}/>
