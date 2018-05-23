@@ -13,9 +13,9 @@ import * as fm from 'LoopringJS/common/formatter'
 
 function PlaceOrderConfirm(props) {
   const {placeOrderConfirm, placeOrder, settings, balance, wallet, marketcap, pendingTx, modals} = props
-  let {side, pair, tradeInfo, order} = placeOrderConfirm
-  let {unsigned, signed} = placeOrder
-  let {price, amount, total, validSince,validUntil, marginSplit, lrcFee, warn} = tradeInfo;
+  let {side, pair, tradeInfo, order} = placeOrderConfirm || {}
+  let {unsigned, signed} = placeOrder || {}
+  let {price, amount, total, validSince,validUntil, marginSplit, lrcFee, warn} = tradeInfo || {};
   const token = pair.split('-')[0];
   const token2 = pair.split('-')[1];
   let sell = '', buy = ''
@@ -27,7 +27,7 @@ function PlaceOrderConfirm(props) {
     buy = token2
   }
   let actualSigned = []
-  if(order.owner) { // verified
+  if(order && order.owner) { // verified
     actualSigned = signed.filter(item => item !== undefined)
   }
 
