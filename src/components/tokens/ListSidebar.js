@@ -74,7 +74,7 @@ function ListTokensSidebar(props) {
       type: 'modals/showModal',
       payload: {
         id:'receiveToken',
-        item,
+        ...item,
       }
     })
   };
@@ -195,7 +195,7 @@ class TokenActions extends React.Component {
     const btns = (
       <div style={{width:'180px'}}>
         <Button onClick={actions.gotoTransfer.bind(this,item)} className="d-block w-100 text-left mb5">Send {item.symbol}</Button>
-        <Button onClick={actions.gotoReceive.bind(this,item)} className="d-block w-100 text-left mb5">Receive {item.symbol}</Button>
+        <Button onClick={actions.gotoReceive.bind(this,{symbol:item.symbol})} className="d-block w-100 text-left mb5">Receive {item.symbol}</Button>
         {
           item.symbol === 'WETH' &&
           <Button onClick={actions.gotoConvert.bind(this,item)} className="d-block w-100 text-left mb5">Convert WETH To ETH</Button>
