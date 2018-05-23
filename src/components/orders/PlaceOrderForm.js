@@ -414,12 +414,14 @@ class PlaceOrderForm extends React.Component {
             }
 
             //TODO MOCK
-            const test = new Array()
-            test.push({type:"AllowanceNotEnough", value:{symbol:'LRC', allowance:12, required:123456}})
-            test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
-            tradeInfo.warn = test
+            // const test = new Array()
+            // test.push({type:"AllowanceNotEnough", value:{symbol:'LRC', allowance:12, required:123456}})
+            // test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
+            // tradeInfo.warn = test
 
+            console.log(11111, tradeInfo)
             const {order, signed, unsigned} = await orderFormatter.signOrder(tradeInfo, wallet)
+            console.log(22222, order, signed, unsigned)
             showTradeModal(tradeInfo, order, signed, unsigned)
           } else { // locked, do not verify
             //TODO notification to user, order verification in confirm page(unlocked)

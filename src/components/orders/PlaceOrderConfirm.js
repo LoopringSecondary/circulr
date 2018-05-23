@@ -34,14 +34,23 @@ function PlaceOrderConfirm(props) {
   async function sign(item, index, e) {
     e.preventDefault()
     const account = wallet.account || window.account
-    if(item.type === 'order') {
-      const signedOrder = await account.signOrder(item.data)
-      signedOrder.powNonce = 100;
-      signed[index] = {type: 'order', data:signedOrder};
-    } else {
-      signed[index] = {type: 'tx', data: await account.signEthereumTx(item.data)};
+    try {
+      if(item.type === 'order') {
+        const signedOrder = await account.signOrder(item.data)
+        signedOrder.powNonce = 100;
+        signed[index] = {type: 'order', data:signedOrder};
+      } else {
+        signed[index] = {type: 'tx', data: await account.signEthereumTx(item.data)};
+      }
+      placeOrder.signedChange({signed})
+    } catch(e) {
+      console.error(e)
+      Notification.open({
+        message: intl.get('trade.place_order_failed'),
+        type: "error",
+        description: e.message
+      });
     }
-    placeOrder.signedChange({signed})
   }
 
   function handelSubmit() {
@@ -58,6 +67,11 @@ function PlaceOrderConfirm(props) {
         const response = await window.ETH.sendRawTransaction(tx.data)
         // console.log('...tx:', response)
         if (response.error) {
+          Notification.open({
+            message: intl.get('trade.place_order_failed'),
+            type: "error",
+            description: response.error.message
+          });
           callback(response.error.message)
         } else {
           const txHash = response.response.result
