@@ -145,16 +145,16 @@ function MetaMask(props) {
       <ul className="list list-md text-center">
         <li>
           {!browserType || browserType === 'Others' &&
-            <Button className="d-block w-100" size="large" style={{width:"260px"}} disabled>{intl.get('wallet.connect_to_metamask_not_supported_browser')}</Button>
+            <Button size="large" style={{width:"260px"}} disabled>{intl.get('wallet.connect_to_metamask_not_supported_browser')}</Button>
           }
           {browserType && browserType !== 'Others' && metamaskState === 'locked' &&
-            <Button className="d-block w-100" size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet.metamask_to_unlock')}</Button>
+            <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet.metamask_to_unlock')}</Button>
           }
           {browserType && browserType !== 'Others' && metamaskState === 'uninstall' &&
-            <Button className="d-block w-100" size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet.metamask_to_install')}</Button>
+            <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet.metamask_to_install')}</Button>
           }
           {browserType && browserType !== 'Others' && !metamaskState &&
-            <Button onClick={connectToMetamask} className="d-block w-100" size="large" style={{width:"260px"}}> {intl.get('wallet.connect_to_metamask')}</Button>
+            <Button onClick={connectToMetamask} size="large" style={{width:"260px"}}> {intl.get('wallet.connect_to_metamask')}</Button>
           }
         </li>
         <div className="blk-md"></div>

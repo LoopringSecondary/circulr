@@ -71,13 +71,13 @@ function Mnemonic(props) {
               validator: (rule, value, cb) => isValidateMnemonic(value) ? cb() : cb(true)
             }]
           })(
-            <Input.TextArea placeholder="Paste Your Mnemonic Here" size="large" autosize={{minRows: 3, maxRows: 6}}
+            <Input.TextArea placeholder="Paste Your Mnemonic Here" size="large" autosize={{minRows: 4, maxRows: 6}}
                             value={mnemonic} onChange={handleMnemonic} className="mnemonic"/>
           )}
         </Form.Item>
-        <Form.Item colon={false}>
-          {passRequired && <div>
-            Password:<Input value={password} onChange={handlePass}/>
+        <Form.Item colon={false} label="Password:">
+          {passRequired && <div className="text-muted">
+            <Input value={password} onChange={handlePass}/>
           </div>}
         </Form.Item>
         <Form.Item label="Default Address:">

@@ -58,6 +58,7 @@ class PrivateKey extends React.Component {
       <div>
         <div id="privateKey">
           <h2 className="text-center text-primary">Paste Your PrivateKey Here</h2>
+          <div className="blk-md"></div>
           <Form>
             <Form.Item className="eye-switch form-dark">
               {form.getFieldDecorator('privateKey', {

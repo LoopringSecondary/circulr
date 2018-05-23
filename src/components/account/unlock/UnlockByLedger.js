@@ -35,8 +35,8 @@ function Ledgers(props) {
     }
   };
   return (
-    <div>
-      <b>Default Address:{address}</b>
+    <div className="form-dark">
+      <span className="label">Default Address:{address}</span>
       <div className="blk"></div>
       <div>
         <Button className="btn btn-primary btn-xlg btn-block" onClick={unlock}>解锁</Button>
