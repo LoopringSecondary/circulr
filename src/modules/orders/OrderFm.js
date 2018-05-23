@@ -105,6 +105,9 @@ export class OrderFm {
 
   }
   getStatus(){return this.order.status}
-  getMarginSplit(){return "TODO"}
+
+  getMarginSplit(){
+    return  toNumber(this.order.originalOrder.marginSplitPercentage)
+  }
 }
 
