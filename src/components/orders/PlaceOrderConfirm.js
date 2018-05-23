@@ -34,6 +34,14 @@ function PlaceOrderConfirm(props) {
   async function sign(item, index, e) {
     e.preventDefault()
     const account = wallet.account || window.account
+    if(!account || wallet.unlockType === 'address') {
+      Notification.open({
+        message: intl.get('trade.place_order_failed'),
+        type: "error",
+        description: 'to unlock'
+      });
+      return
+    }
     try {
       if(item.type === 'order') {
         const signedOrder = await account.signOrder(item.data)
@@ -64,7 +72,7 @@ function PlaceOrderConfirm(props) {
     }
     eachLimit(signed, 1, async function (tx, callback) {
       if(tx.type === 'tx') {
-        const response = await window.ETH.sendRawTransaction(tx.data)
+        const {response, rawTx} = await window.ETH.sendRawTransaction(tx.data)
         // console.log('...tx:', response)
         if (response.error) {
           Notification.open({
@@ -74,10 +82,8 @@ function PlaceOrderConfirm(props) {
           });
           callback(response.error.message)
         } else {
-          const txHash = response.response.result
-          const rawTx = response.rawTx
           window.STORAGE.wallet.setWallet({address: wallet.address, nonce: tx.nonce});
-          window.RELAY.account.notifyTransactionSubmitted({txHash: txHash, rawTx, from: wallet.address});
+          window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: wallet.address});
           callback()
         }
       } else {
@@ -94,7 +100,6 @@ function PlaceOrderConfirm(props) {
           callback()
         }
       }
-
     }, function (error) {
       //TODO
       //_this.reEmitPendingTransaction();
@@ -255,7 +260,7 @@ function PlaceOrderConfirm(props) {
               const signedItem = signed[index]
               return (
                 <li key={index} className="d-block">
-                  {!signedItem && <Button className="btn-block btn-o-dark btn-xlg" onClick={sign.bind(this, item, index)}>Sign {item.type === 'order' ? 'Order' : 'Tx'}</Button>}
+                  {!signedItem && <Button className="btn-block btn-o-dark btn-xlg" onClick={sign.bind(this, item, index)}>{item.description}</Button>}
                   {signedItem && 'Signed'}
                 </li>
               )

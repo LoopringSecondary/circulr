@@ -9,7 +9,7 @@ import Eth from 'LoopringJS/ethereum/eth';
 import Relay from 'LoopringJS/relay/relay';
 
 window.STORAGE = STORAGE;
-const host = window.STORAGE.settings.get().relay.selected;
+const host = STORAGE.settings.get().relay.selected;
 
 window.ETH = new Eth(`${host}/eth`);
 window.RELAY = new Relay(`${host}/rpc/v2`);
@@ -23,8 +23,8 @@ const app = dva({
 window.onError= (msg,url,line)=>{message.error(`window.onError ${msg} ${url} ${line}`,null)}
 window.config = {}
 window.config.address = "0xeba7136a36da0f5e16c6bdbc739c716bb5b65a00";
-window.config.host = "//relay1.loopring.io"
-window.config.rpc_host = "//relay1.loopring.io/rpc/v2"
+window.config.host = host
+window.config.rpc_host = `${host}/rpc/v2`
 // 2. Plugins
 // app.use({})
 

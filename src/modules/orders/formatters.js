@@ -273,7 +273,7 @@ export async function signOrder(tradeInfo, wallet) {
   if(wallet && wallet.address) {
     order.owner = wallet.address
     // sign orders and txs
-    unsigned.push({type: 'order', data:order})
+    unsigned.push({type: 'order', data:order, description: `Sign Order`})
     const approveWarn = tradeInfo.warn.filter(item => item.type === "AllowanceNotEnough");
     if (approveWarn) {
       const gasLimit = tradeInfo.gasLimit;
@@ -283,11 +283,11 @@ export async function signOrder(tradeInfo, wallet) {
         const tokenConfig = config.getTokenBySymbol(item.value.symbol);
         if (item.value.allowance > 0) {
           const cancel = generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:'0x0', nonce:fm.toHex(nonce)})
-          unsigned.push({type: 'tx', data:cancel})
+          unsigned.push({type: 'tx', data:cancel, description: `Cancel ${item.value.symbol} allowance`})
           nonce = nonce + 1;
         }
         const approve = generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:fm.toHex(fm.toBig('9223372036854775806').times('1e' + tokenConfig.digits || 18)), nonce:fm.toHex(nonce)})
-        unsigned.push({type: 'tx', data:approve})
+        unsigned.push({type: 'tx', data:approve, description: `Approve ${item.value.symbol} allowance`})
         nonce = nonce + 1;
       });
 
