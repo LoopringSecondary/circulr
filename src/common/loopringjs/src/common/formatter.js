@@ -65,7 +65,7 @@ export function toNumber(mixed) {
 
 /**
  *
- * @param mixed number | BigNumber |  BN  | Buffer | string
+ * @param mixed number | BigNumber | string
  * @returns {BigNumber}
  */
 export function toBig(mixed) {
