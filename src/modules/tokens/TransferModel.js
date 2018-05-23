@@ -15,16 +15,20 @@ export default {
     sliderGasPrice:datas.configs.defaultGasPrice, //TODO read from relay
     selectedGasPrice: datas.configs.defaultGasPrice,
     selectedGasLimit: 0,
+    advance: false
   },
   reducers: {
     reset(state, {payload}) {
+      const {assignedToken} = payload
       return {
         ...state,
+        assignedToken: assignedToken || '',
+        token: assignedToken || '',
+        to:"",
         amount: toBig(0),
-        isMax: false,
-        outBalance:false,
         data:'0x',
-        to:""
+        isMax: false,
+        advance:false,
       }
     },
     setAssignedToken(state,{payload}){
@@ -97,6 +101,13 @@ export default {
       return {
         ...state,
         selectedGasLimit
+      }
+    },
+    setAdvance(state,{payload}){
+      const {advance} = payload;
+      return {
+        ...state,
+        advance
       }
     },
   },
