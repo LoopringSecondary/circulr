@@ -86,7 +86,7 @@ class Keystore extends React.Component {
     };
 
     const visibleIcon = (
-      <div className="fs14 pl5 pr5">
+      <div>
         {visible &&
         <i className="icon-eye" onClick={this.togglePassword}/>
         }
@@ -99,28 +99,28 @@ class Keystore extends React.Component {
     return (
       <div>
         <h2 className="text-center text-primary">Select JSON File</h2>
-        <Upload className='btn btn-block' {...uploadProps}>
-          <Button><Icon type="folder"/>Select JSON File</Button>
-        </Upload>
-        <div className="blk"/>
-        <Form>
-          <Form.Item className="form-dark">
-            {form.getFieldDecorator('keystore', {
-              initialValue: '',
-              rules: [{
-                required: true,
-                message: 'invalid keystore',
-                validator: (rule, value, cb) => this.isValidKeystore(value) ? cb() : cb(true)
-              }]
-            })(
-              <Input.TextArea autosize={{minRows: 3, maxRows: 8}} size="large" className='d-block fs12'
-                              onChange={this.handleStoreChange}/>
-            )}
-          </Form.Item>
+        <div className="blk-md"></div>
+         <Form className="form-dark eye-switch">
+           <Form.Item>
+              <Upload className='btn btn-block btn-upload' {...uploadProps}>
+              <Button className="d-block"><Icon type="folder" />Select JSON File</Button>
+              </Upload>
+            </Form.Item>
+            <Form.Item>
+              {form.getFieldDecorator('keystore', {
+                initialValue: '',
+                rules: [{
+                  required: true,
+                  message: 'invalid keystore',
+                  validator: (rule, value, cb) => this.isValidKeystore(value) ? cb() : cb(true)
+                }]
+              })(
+                <Input.TextArea autosize={{minRows: 5, maxRows: 8}} size="large" className='d-block' onChange={this.handleStoreChange}/>
+              )}
+            </Form.Item>
+          {isPasswordRequired &&
+          <Input type={visible ? 'text' : 'password'} addonAfter={visibleIcon} value={password} onChange={this.handlePassChange}/>}
         </Form>
-        {isPasswordRequired &&
-        <Input type={visible ? 'text' : 'password'} className='mb10' addonAfter={visibleIcon} value={password}
-               onChange={this.handlePassChange}/>}
         <div className="blk"/>
         <Button type="primary" className="btn btn-primary btn-block btn-xxlg" onClick={this.unlock}>Unlock</Button>
       </div>
