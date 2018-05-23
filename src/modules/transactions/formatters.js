@@ -83,14 +83,13 @@ export class TxFm{
     return this.tx.createTime && commonFm.fromNow(this.tx.createTime)
   }
   getGas(){
-    if(this.tx.status && this.tx.gas_price && this.tx.gas_limit ){
-      if( this.tx.status.toLowerCase() === 'pending'){
-        return toBig(this.tx.gas_price).times(this.tx.gas_limit).div('1e18').toFixed(8)
+   if(this.tx.status && this.tx.gas_price && this.tx.gas_limit ){
+      if(this.tx.status.toLowerCase() === 'pending'){
+        return toFixed(toBig(this.tx.gas_price).times(this.tx.gas_limit).div('1e18'),8,true)
       }else{
-        return toBig(this.tx.gas_price).times(this.tx.gas_used).div('1e18').toFixed(8)
+        return toFixed(toBig(this.tx.gas_price).times(this.tx.gas_used).div('1e18'),8,true)
       }
-    }
-
+   }
   }
   getGasPrice(){
     return this.tx.gasPrice && toNumber(this.tx.gasPrice)/(1e9).toString(10)

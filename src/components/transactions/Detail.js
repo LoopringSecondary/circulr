@@ -33,9 +33,9 @@ export default class Detail extends React.Component {
     const {txDetail} = this.props;
     const {loading,tx} = this.state;
     const item = txDetail.tx;
-    const fill = item.content.fill;
-    console.log('Fills:',fill);
-    const txFm = new TxFm({...tx,updateTime:item.updateTime,type:item.type,fill:JSON.parse(fill)});
+    const fill = item.content.fill ? JSON.parse(item.content.fill): null;
+    const txFm = new TxFm({...tx,...item,fill});
+
     const reSendTx = (txHash) => {
     }
     return (
