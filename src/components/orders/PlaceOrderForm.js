@@ -191,9 +191,9 @@ class PlaceOrderForm extends React.Component {
               tipFormatter={null} disabled={placeOrder.side === 'sell' ? fm.toBig(sell.availableAmount).lt(0) : fm.toBig(buy.availableAmount).lt(0)}/>
     )
 
-    const totalWorth = (
+    const totalWorthDisplay = (
       <span className="">
-        {placeOrder.total && fm.toBig(placeOrder.total).gt(0) ? ` ≈ $${fm.toBig(placeOrder.total).toFixed(2)}` : ''}
+        {total && fm.toBig(total).gt(0) ? ` ≈ $${orderFormatter.calculateWorthInLegalCurrency(marketcap.items, right.symbol, total).toFixed(2)}` : ''}
       </span>
     )
 
@@ -542,7 +542,7 @@ class PlaceOrderForm extends React.Component {
               <div>
                 <div className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
-                    <span className="font-bold">Total</span><span><span>{total.toString(10)}</span>{right.symbol}{totalWorth}</span>
+                    <span className="font-bold">Total</span><span><span>{total.toString(10)}</span>{right.symbol}{totalWorthDisplay}</span>
                   </div>
                 </div>
                 <div className="form-group mr-0">

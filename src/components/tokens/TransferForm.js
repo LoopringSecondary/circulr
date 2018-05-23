@@ -8,6 +8,7 @@ import {calculateGas} from 'LoopringJS/common/utils'
 import * as tokenFormatter from 'modules/tokens/TokenFm'
 import contracts from 'LoopringJS/ethereum/contracts/Contracts'
 import Currency from 'modules/settings/CurrencyContainer'
+import * as orderFormatter from 'modules/orders/formatters'
 
 function TransferForm(props) {
   const {transfer, balance, wallet, marketcap, form, modals} = props
@@ -36,6 +37,12 @@ function TransferForm(props) {
   }
 
   const gas = calculateGas(gasPrice, gasLimit);
+
+  const gasWorth = (
+    <span className="">
+        {gas && gas.gt(0) ? ` ≈ $${orderFormatter.calculateWorthInLegalCurrency(marketcap.items, 'ETH', gas).toFixed(2)}` : ''}
+      </span>
+  )
 
   function validateTokenSelect(value) {
     const result = form.validateFields(["amount"], {force:true});
@@ -119,7 +126,6 @@ function TransferForm(props) {
 
   function selectMax(e) {
     e.preventDefault();
-    console.log(1, true)
     transfer.setIsMax({isMax:true})
   }
 
@@ -371,7 +377,7 @@ function TransferForm(props) {
                   <span>Gas Fee</span>
                   <span className="font-bold">
                     {editGas}
-                    <span className="offset-md">{gas.toString(10)} ETH ≈ $1.15</span>
+                    <span className="offset-md">{gas.toString(10)} ETH {gasWorth}</span>
                   </span>
                 </div>
             </div>
