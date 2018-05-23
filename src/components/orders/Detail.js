@@ -7,8 +7,10 @@ import {renders} from './ListMyOrders';
 import {OrderFm} from 'modules/orders/OrderFm';
 
 function OrderDetail(props) {
-  const order = {}
-  const orderFm = new OrderFm(order)
+   const {orderDetail} =  props;
+  const {order} = orderDetail;
+  console.log('props',order)
+  const orderFm = new OrderFm(order);
    return (
     <div>
         <DetailHeader title="订单详情"/>
