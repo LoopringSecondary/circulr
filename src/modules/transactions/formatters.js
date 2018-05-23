@@ -122,7 +122,7 @@ export class TxFm{
 }
 export const getValues = (symbol, value)=>{
   const tokenFm = new TokenFm({symbol});
-  return  commonFm.getFormatNum(tokenFm.getAmount(value));
+  return  commonFm.getFormatNum(tokenFm.getUnitAmount(value));
 }
 export function isApproving(pendingTxs, symbol) {
   if (symbol && pendingTxs) {
