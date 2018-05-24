@@ -17,6 +17,7 @@ function Ledgers(props) {
           dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger, dpath: `${dpath}/0`}});
           Notification.open({type: 'success', message: '解锁成功', description: 'unlock'});
           hardwareWallet.reset();
+          dispatch({type: 'sockets/unlocked'})
           routeActions.gotoPath('/wallet')
         }
       });

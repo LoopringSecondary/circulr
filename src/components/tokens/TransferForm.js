@@ -9,9 +9,12 @@ import * as tokenFormatter from 'modules/tokens/TokenFm'
 import contracts from 'LoopringJS/ethereum/contracts/Contracts'
 import Currency from 'modules/settings/CurrencyContainer'
 import * as orderFormatter from 'modules/orders/formatters'
+import GasFee from '../setting/GasFee1'
+import {Containers} from 'modules'
+import {getLastGas, getEstimateGas} from 'modules/settings/formatters'
 
 function TransferForm(props) {
-  const {transfer, balance, wallet, marketcap, form, modals} = props
+  const {transfer, balance, wallet, marketcap, form, modals, gas} = props
   const { TextArea } = Input;
 
   let tokenSelected = {}
@@ -20,28 +23,19 @@ function TransferForm(props) {
   } else if(transfer.token) {
     tokenSelected = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.token, toUnit:true})
   }
-  let gasPrice = datas.configs.defaultGasPrice
+
   let gasLimit = config.getGasLimitByType('eth_transfer').gasLimit
   if(transfer.token && transfer.token !== "ETH") {
     gasLimit = config.getGasLimitByType('token_transfer').gasLimit
   }
-  if(transfer.gasPopularSetting) {
-    gasPrice = transfer.sliderGasPrice
-  } else {
-    if(transfer.selectedGasPrice) {
-      gasPrice = transfer.selectedGasPrice
-    }
-    if(transfer.selectedGasLimit) {
-      gasLimit = transfer.selectedGasLimit
-    }
-  }
-
-  const gas = calculateGas(gasPrice, gasLimit);
+  const gasResult = getLastGas(gas, gasLimit) //TODO modify gasLimit or not ?
+  const totalGas = gasResult.gas
+  const gasPrice = gasResult.gasPrice
 
   const gasWorth = (
     <span className="">
-        {gas && gas.gt(0) ? ` ≈ $${orderFormatter.calculateWorthInLegalCurrency(marketcap.items, 'ETH', gas).toFixed(2)}` : ''}
-      </span>
+      {totalGas && totalGas.gt(0) ? ` ≈ $${orderFormatter.calculateWorthInLegalCurrency(marketcap.items, 'ETH', totalGas).toFixed(2)}` : ''}
+    </span>
   )
 
   function validateTokenSelect(value) {
@@ -114,7 +108,7 @@ function TransferForm(props) {
             let amount = fm.toHex(fm.toBig(values.amount).times("1e"+tokenConfig.digits))
             tx.data = contracts.ERC20Token.encodeInputs('transfer', {_to:values.to, _value:amount});
           }
-          const extraData = {from:wallet.address, to:values.to, tokenSymbol:tokenSelected.symbol, amount:values.amount, gas:gas.toString(10)}
+          const extraData = {from:wallet.address, to:values.to, tokenSymbol:tokenSelected.symbol, amount:values.amount, gas:totalGas.toString(10)}
           modals.showModal({id:'transferConfirm', tx, extraData})
         } else {
           //TODO show unlock modal
@@ -154,14 +148,18 @@ function TransferForm(props) {
     transfer.setAdvance({advance:!transfer.advance})
   }
 
+  function selectedGas(value) {
+    console.log(value)
+  }
+
   if(transfer.token && form.getFieldValue('amount') !== undefined && form.getFieldValue('amount') !== '') {
     let tokenBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.token, toUnit:true}).balance
     const formBalance = fm.toBig(form.getFieldValue('amount'))
     if(transfer.token === 'ETH') {
       if(transfer.isMax) {
-        tokenBalance = tokenBalance.gt(gas) ?  tokenBalance.minus(gas) : fm.toBig(0);
+        tokenBalance = tokenBalance.gt(totalGas) ?  tokenBalance.minus(totalGas) : fm.toBig(0);
       } else {
-        tokenBalance = formBalance.add(gas).gt(tokenBalance) ? tokenBalance.minus(gas) : formBalance
+        tokenBalance = formBalance.add(totalGas).gt(tokenBalance) ? tokenBalance.minus(totalGas) : formBalance
       }
       if(!formBalance.equals(tokenBalance)) {
         form.setFieldsValue({"amount": tokenBalance.toString(10)})
@@ -376,8 +374,11 @@ function TransferForm(props) {
                 <div className="form-control-static d-flex justify-content-between mr-0">
                   <span>Gas Fee</span>
                   <span className="font-bold">
-                    {editGas}
-                    <span className="offset-md">{gas.toString(10)} ETH {gasWorth}</span>
+                    {false && editGas}
+                    <Containers.Gas initState={{}}>
+                      <GasFee gasLimit={gasLimit}/>
+                    </Containers.Gas>
+                    <span className="offset-md">{totalGas.toString(10)} ETH {gasWorth}</span>
                   </span>
                 </div>
             </div>

@@ -26,6 +26,7 @@ class PrivateKey extends React.Component {
     if(this.isValidPrivateKey(privateKey)){
       this.props.dispatch({type:"wallet/unlockPrivateKeyWallet",payload:{privateKey}});
       Notification.open({type:'success',message:'解锁成功',description:'unlock'});
+      this.props.dispatch({type: 'sockets/unlocked'})
       routeActions.gotoPath('/wallet');
     }else{
       Notification.open({type:'error',message:'unlock failed ',description:'Invalid privateKey'})

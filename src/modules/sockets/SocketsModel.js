@@ -40,12 +40,17 @@ export default {
       const socket = yield call(apis.connect, {url})
       yield put({type:'socketChange',payload:{socket}})
       yield put({type:'fetch',payload:{id:'marketcap'}})
-      yield put({type:'fetch',payload:{id:'transaction'}})
-      yield put({type:'fetch',payload:{id:'balance'}})
       yield put({type:'fetch',payload:{id:'depth'}})
       yield put({type:'fetch',payload:{id:'trades'}})
       yield put({type:'fetch',payload:{id:'tickers'}})
       yield put({type:'fetch',payload:{id:'loopringTickers'}})
+      if(window.WALLET && window.WALLET.address){
+        yield put({type:'unlocked'})
+      }
+    },
+    *unlocked({payload},{call,select,put}){
+      yield put({type:'fetch',payload:{id:'transaction'}})
+      yield put({type:'fetch',payload:{id:'balance'}})
       yield put({type:'fetch',payload:{id:'pendingTx'}})
     },
     *fetch({payload},{call,select,put}){
