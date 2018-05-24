@@ -70,6 +70,7 @@ function MetaMask(props) {
         let address = window.web3.eth.accounts[0]
         props.dispatch({type:'wallet/unlockMetaMaskWallet',payload:{address}});
         Notification.open({type:'success',message:'解锁成功',description:'unlock'});
+        props.dispatch({type: 'sockets/unlocked'})
         routeActions.gotoPath('/wallet')
         metaMask.setLoading({loading:false})
 

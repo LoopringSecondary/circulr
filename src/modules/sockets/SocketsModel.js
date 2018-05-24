@@ -44,6 +44,9 @@ export default {
       yield put({type:'fetch',payload:{id:'trades'}})
       yield put({type:'fetch',payload:{id:'tickers'}})
       yield put({type:'fetch',payload:{id:'loopringTickers'}})
+      if(window.WALLET && window.WALLET.address){
+        yield put({type:'unlocked'})
+      }
     },
     *unlocked({payload},{call,select,put}){
       yield put({type:'fetch',payload:{id:'transaction'}})

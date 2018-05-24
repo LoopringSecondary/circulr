@@ -23,7 +23,9 @@ function Modals(props) {
               <Containers.Wallet>
                 <Containers.Transfer initState={{}}>
                   <Containers.Modals>
-                    <Transfer />
+                    <Containers.Gas>
+                      <Transfer />
+                    </Containers.Gas>
                   </Containers.Modals>
                 </Containers.Transfer>
               </Containers.Wallet>

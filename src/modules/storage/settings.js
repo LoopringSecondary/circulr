@@ -58,10 +58,30 @@ const getContractVersion = ()=>{
   }
 }
 
+const setGas = (gas)=>{
+  localStorage.gas = JSON.stringify(gas)
+}
+
+const getGas = ()=>{
+  if(localStorage.gas){
+    return JSON.parse(localStorage.gas)
+  }else{
+    return {
+      gasPrice:{
+        last:0,
+        estimate:configs.defaultGasPrice,
+        selected:configs.defaultGasPrice,
+      },
+      gasLimit:configs.defaultGasLimit
+    }
+  }
+}
 
 export default {
   set,
   get,
+  setGas,
+  getGas,
   getRelay,
   getContractVersion,
 }
