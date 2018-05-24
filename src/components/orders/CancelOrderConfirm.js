@@ -102,6 +102,7 @@ class CancelOrderConfirm extends React.Component {
     const {cancelOrderConfirm} = this.props;
     const {loading,now} = this.state;
     const { type,market,order} = cancelOrderConfirm;
+    if(!order){return null}
     const title = type === 'cancelOrder' ? intl.get('order.confirm_cancel_order') : intl.get('order.confirm_cancel_all', {pair: market || ''})
     return (
       <Card title={title}>

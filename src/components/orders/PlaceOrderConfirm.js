@@ -16,6 +16,7 @@ function PlaceOrderConfirm(props) {
   let {side, pair, tradeInfo, order} = placeOrderConfirm || {}
   let {unsigned, signed} = placeOrder || {}
   let {price, amount, total, validSince,validUntil, marginSplit, lrcFee, warn} = tradeInfo || {};
+  if(!pair){return null}
   const token = pair.split('-')[0];
   const token2 = pair.split('-')[1];
   let sell = '', buy = ''

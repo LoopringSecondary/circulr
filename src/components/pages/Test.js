@@ -22,30 +22,6 @@ const TestModal = (props)=>{
   return (
     <div className="group-span" style={{padding:'10px'}}>
       <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'orderDetail'})}>order detail</Button></span>
-      <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderConfirm'})}>order placeOrderConfirm</Button></span>
-      <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'txDetail'})}>Transation detail</Button></span>
-      <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'ringDetail'})}>Fill detail</Button></span>
-      <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'userCenter'})}>UserCenter</Button></span>
-      <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'setting'})}>Setting</Button></span>
-      <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'receiveToken',symbol:'LRC'})}>Receive</Button></span>
-      <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'transferToken'})}>Transfer</Button></span>
-      <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'transferConfirm'})}>transferConfirm</Button></span>
-      <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'convertToken'})}>Convert</Button>
-      </span>
-      <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'ListAllTickers'})}>All Tickers</Button>
-      </span>
-      <span>
         <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'gasFee'})}>Gas Fee</Button>
       </span>
       <span>

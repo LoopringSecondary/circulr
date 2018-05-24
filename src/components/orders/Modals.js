@@ -10,16 +10,16 @@ import CancelOrderConfirm  from './CancelOrderConfirm'
 function Modals(props) {
   return (
     <div>
-      <Containers.Modals id="orderDetail">
-        <UiContianers.Modals id="orderDetail">
+      <Containers.Layers id="orderDetail">
+        <UiContianers.Panels id="orderDetail" position="right" width="450px">
           <Detail />
-        </UiContianers.Modals>
-      </Containers.Modals>
-      <Containers.Modals id="placeOrderConfirm">
-        <UiContianers.Modals id="placeOrderConfirm">
+        </UiContianers.Panels>
+      </Containers.Layers>
+      <Containers.Layers id="placeOrderConfirm">
+        <UiContianers.Panels id="placeOrderConfirm">
           <Containers.Settings>
             <Containers.Wallet>
-              <Containers.Modals>
+              <Containers.Layers>
                 <Containers.PlaceOrder>
                   <Containers.Sockets id="balance">
                     <Containers.Sockets id="marketcap">
@@ -29,23 +29,23 @@ function Modals(props) {
                     </Containers.Sockets>
                   </Containers.Sockets>
                 </Containers.PlaceOrder>
-              </Containers.Modals>
+              </Containers.Layers>
             </Containers.Wallet>
           </Containers.Settings>
-        </UiContianers.Modals>
-      </Containers.Modals>
-      <Containers.Modals id="placeOrderSteps">
-        <UiContianers.Modals id="placeOrderSteps" wrapClassName="">
+        </UiContianers.Panels>
+      </Containers.Layers>
+      <Containers.Layers id="placeOrderSteps">
+        <UiContianers.Panels id="placeOrderSteps">
           <PlaceOrderSteps />
-        </UiContianers.Modals>
-      </Containers.Modals>
-      <Containers.Modals id="placeOrderLRCFee">
-        <UiContianers.Modals id="placeOrderLRCFee" wrapClassName="">
+        </UiContianers.Panels>
+      </Containers.Layers>
+      <Containers.Layers id="placeOrderLRCFee">
+        <UiContianers.Panels id="placeOrderLRCFee">
           <PlaceOrderLRCFee />
-        </UiContianers.Modals>
-      </Containers.Modals>
-      <Containers.Modals id="cancelOrderConfirm">
-        <UiContianers.Modals id="cancelOrderConfirm" wrapClassName="">
+        </UiContianers.Panels>
+      </Containers.Layers>
+      <Containers.Layers id="cancelOrderConfirm">
+        <UiContianers.Panels id="cancelOrderConfirm" position="right" width="450px">
           <Containers.Settings>
             <Containers.Wallet>
             <Containers.Gas>
@@ -53,8 +53,8 @@ function Modals(props) {
             </Containers.Gas>
             </Containers.Wallet>
           </Containers.Settings>
-        </UiContianers.Modals>
-      </Containers.Modals>
+        </UiContianers.Panels>
+      </Containers.Layers>
     </div>
   )
 }

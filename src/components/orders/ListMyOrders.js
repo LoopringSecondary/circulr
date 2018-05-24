@@ -24,7 +24,7 @@ const ListHeader = (props) => {
   const cancelAll = () => {
     const {market} = orders.filters;
     const type = market ? "cancelOrderByTokenPair" : "cancelAllOrder";
-    dispatch({type:'modals/showModal',payload:{id:'cancelOrderConfirm',type,market}})
+    dispatch({type:'layers/showLayer',payload:{id:'cancelOrderConfirm',type,market}})
   };
   return (
     <div className="form-inline form-dark">
@@ -97,7 +97,7 @@ const ListHeader = (props) => {
 export default function ListMyOrders(props) {
   const {orders = {},dispatch} = props;
   const cancelOrder = (order) => {
-    dispatch({type:'modals/showModal',payload:{id:'cancelOrderConfirm',type:'cancelOrder',order}})
+    dispatch({type:'layers/showLayer',payload:{id:'cancelOrderConfirm',type:'cancelOrder',order}})
   };
   return (
     <div className="">
@@ -125,7 +125,7 @@ export default function ListMyOrders(props) {
             orders.items.map((item, index) => {
               const orderFm = new OrderFm(item)
               const actions = {
-                gotoDetail: () => props.dispatch({type: 'modals/showModal', payload: {id: 'orderDetail', order: item}})
+                gotoDetail: () => props.dispatch({type: 'layers/showLayer', payload: {id: 'orderDetail', order: item}})
               };
               return (
                 <tr key={index}>

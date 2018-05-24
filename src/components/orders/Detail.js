@@ -10,6 +10,9 @@ import Fills from './Fills';
 function OrderDetail(props) {
   const {orderDetail} = props;
   const {order} = orderDetail;
+  if(!order){
+    return null
+  }
   const orderFm = new OrderFm(order);
   return (
     <div>
