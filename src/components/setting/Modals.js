@@ -7,12 +7,12 @@ function Modals(props) {
   return (
     <div>
       <Containers.Layers id="setting">
-        <UiContianers.Panels id="setting" position="right">
+        <UiContianers.Panels id="setting" position="right" sidebarClassName="colored-panel">
           <Setting />
         </UiContianers.Panels>
       </Containers.Layers>
       <Containers.Layers id="gasFee">
-        <UiContianers.Panels id="gasFee" position="right" wrapClassName="">
+        <UiContianers.Panels id="gasFee" position="right">
           <GasFee />
         </UiContianers.Panels>
       </Containers.Layers>

@@ -85,6 +85,7 @@
 
 
   &&-right {
+    transform: translateX(100%);
     .@{drawerPrefixCls}-sidebar {
       right: 0;
       transform: translateX(100%);
@@ -95,6 +96,9 @@
     .@{drawerPrefixCls}-draghandle {
       right: 0;
     }
+  }
+  &&-right.@{drawerPrefixCls}-open{
+    transform: translateX(0%);
   }
 
   &&-top {

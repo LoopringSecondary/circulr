@@ -3,7 +3,9 @@ import Drawer from 'rmc-drawer'
 import './Panels.less'
 const PanelsWrapper = (props)=>{
   const {
-    children,id,docked,...rest
+    children,id,
+    docked,position,sidebarClassName,className,
+    ...rest
   } = props
   const {[id]:layer={}} = props
   const layerProps = {
@@ -12,20 +14,29 @@ const PanelsWrapper = (props)=>{
     docked: false,
     touch:  false,
     enableDragHandle: layer.enableDragHandle || true,
-    position: layer.position || 'left',
+    position: position || 'left',
     transitions: true,
     dragToggleDistance:layer.dragToggleDistance || 30,
+    className:className,
   }
   const childProps = {...rest}
   const sidebar = ()=>{
     if(!props.render){
       return (
-        React.Children.map(props.children, child => {
-            return React.cloneElement(child, {...childProps})
-        })
+        <div className={sidebarClassName}>
+          {
+            React.Children.map(props.children, child => {
+              return React.cloneElement(child, {...childProps})
+            })
+          }
+        </div>
       )
     }else{
-      props.render && props.render.call(this,childProps)
+      return (
+        <div className={sidebarClassName}>
+          {props.render && props.render.call(this,childProps)}
+        </div>
+      )
     }
   }
   return <Drawer sidebar={sidebar()} {...layerProps} children={<div></div>}/>
