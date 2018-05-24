@@ -24,10 +24,10 @@ const GasFeeForm = (props) => {
 
   function handleSubmit() {
     form.validateFields((err,values) => {
-      if(!err){
-        let p = 0, l = 0
-        switch(gas.tabSelected){
-          case 'easy':
+      let p = 0, l = 0
+      switch(gas.tabSelected){
+        case 'easy':
+          if(!err || (!err.gasSelector && !err.gasPriceSlider)){
             l = gasLimit
             switch(form.getFieldValue('gasSelector')) {
               case 'last':
@@ -40,14 +40,18 @@ const GasFeeForm = (props) => {
                 p = form.getFieldValue('gasPriceSlider')
                 break;
             }
-            break;
-          case 'advance':
+            gas.gasChange({gasPrice:p, gasLimit:l})
+          }
+          break;
+        case 'advance':
+          if(!err || (!err.gasPrice && !err.gasLimit)){
             p = form.getFieldValue('gasPrice')
             l = form.getFieldValue('gasLimit')
-            break;
-        }
-        gas.gasChange({gasPrice:p, gasLimit:l})
+            gas.gasChange({gasPrice:p, gasLimit:l})
+          }
+          break;
       }
+
     });
   }
 
@@ -81,7 +85,7 @@ const GasFeeForm = (props) => {
                              <Radio value='last' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15" disabled={gasPriceStore.last === 0}>
                                <div className="ml5 pt10 pb10">
                                  <div className="fs14 color-black-1">
-                                   {gasShow(gasPriceStore.last, gasLimitStore, '上一次')}
+                                   {gasShow(gasPriceStore.last, gasLimit, '上一次')}
                                  </div>
                                </div>
                              </Radio>
