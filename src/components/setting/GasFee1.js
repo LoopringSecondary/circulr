@@ -8,7 +8,7 @@ import {isValidInteger} from 'modules/orders/formatters'
 import * as fm from 'LoopringJS/common/formatter'
 
 const GasFeeForm = (props) => {
-  const {gas, form} = props
+  const {gas, form, onGasChange} = props
   const gasPriceStore = gas.gasPrice
   const gasLimitStore = fm.toNumber(gas.gasLimit)
   const fixedGasLimit = gas.fixedGasLimit ? fm.toNumber(gas.fixedGasLimit) : 0
@@ -41,6 +41,9 @@ const GasFeeForm = (props) => {
                 p = form.getFieldValue('gasPriceSlider')
                 break;
             }
+            if(onGasChange) {
+              onGasChange({gasPrice:p})
+            }
             gas.gasChange({gasPrice:p, gasLimit:l})
           }
           break;
@@ -49,10 +52,12 @@ const GasFeeForm = (props) => {
             p = form.getFieldValue('gasPrice')
             l = form.getFieldValue('gasLimit')
             gas.gasChange({gasPrice:p, gasLimit:l})
+            if(onGasChange) {
+              onGasChange({gasPrice:p, gasLimit:l})
+            }
           }
           break;
       }
-
     });
   }
 

@@ -28,7 +28,6 @@ export default {
         gasPrice: {
           last : gasPrice ? gasPrice : state.gasPrice.last,
           estimate : estimate || state.gasPrice.estimate,
-          selected : gasPrice || state.gasPrice.selected,
         },
         gasLimit: gasLimit || state.gasLimit,
       };
