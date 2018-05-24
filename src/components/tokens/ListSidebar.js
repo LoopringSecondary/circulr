@@ -63,7 +63,7 @@ function ListTokensSidebar(props) {
   }
   const gotoTransfer = (item, e) => {
     dispatch({
-      type: 'modals/showModal',
+      type: 'layers/showLayer',
       payload: {
         id:'transferToken',
         item,
@@ -78,7 +78,7 @@ function ListTokensSidebar(props) {
   }
   const gotoReceive = (item, e) => {
     dispatch({
-      type: 'modals/showModal',
+      type: 'layers/showLayer',
       payload: {
         id:'receiveToken',
         ...item,
@@ -87,7 +87,7 @@ function ListTokensSidebar(props) {
   };
   const gotoConvert = (item) => {
     dispatch({
-      type: 'modals/showModal',
+      type: 'layers/showLayer',
       payload: {
         id:'convertToken',
         item,
@@ -176,8 +176,7 @@ function ListTokensSidebar(props) {
                       <div className="sub">
                           <Spin size="small" spinning={balance.loading} >
                             <div className="value" hidden={balance.loading}>
-                              <FormatAmount value={item.balance.toString()} precision={4} />
-                              {false && <h3>{item.balance.toString()}</h3>}
+                              <h3><FormatAmount value={item.balance.toString()} precision={4} /></h3>
                               {item.balanceValue &&
                                 <p><Currency/>{item.balanceValue.toString()}</p>
                               }

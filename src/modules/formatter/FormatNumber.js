@@ -35,7 +35,7 @@ export const FormatAmount = ({value, precision})=>{
   return (
     <span>
       <Tooltip placement="top" title={formatted.o}>
-        <a>{formatted.d}</a>
+        {formatted.d}
       </Tooltip>
     </span>
   )

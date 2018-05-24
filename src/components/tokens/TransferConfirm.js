@@ -8,7 +8,8 @@ import Notification from 'LoopringUI/components/Notification'
 
 function TransferConfirm(props) {
   const {transferConfirm, marketcap, wallet, dispatch} = props
-  const {tx, extraData} = transferConfirm
+  const {tx, extraData={}} = transferConfirm
+  if(!tx){return null}
 
   const worth = (
     <span>
@@ -86,14 +87,14 @@ function TransferConfirm(props) {
         })
       }
       // modal.hideLoading({id:'token/transfer/preview'})
-      dispatch({type: 'modals/hideModal', payload: {id:'transferConfirm'}})
-      dispatch({type: 'modals/hideModal', payload: {id:'transfer'}})
+      dispatch({type: 'layers/hideLayer', payload: {id:'transferConfirm'}})
+      dispatch({type: 'layers/hideLayer', payload: {id:'transfer'}})
       dispatch({type: 'transfer/reset'})
     }).catch(e=>{
       console.error("Error:", e)
       result = {...result, error:e.message}
-      dispatch({type: 'modals/hideModal', payload: {id:'transferConfirm'}})
-      dispatch({type: 'modals/hideModal', payload: {id:'transfer'}})
+      dispatch({type: 'layers/hideLayer', payload: {id:'transferConfirm'}})
+      dispatch({type: 'layers/hideLayer', payload: {id:'transfer'}})
       dispatch({type: 'transfer/reset'})
       Notification.open({
         message:intl.get('token.send_failed'),
@@ -104,7 +105,7 @@ function TransferConfirm(props) {
   }
 
   const cancel = () => {
-    dispatch({type: 'modals/hideModal', payload: {id:'transferConfirm'}})
+    dispatch({type: 'layers/hideLayer', payload: {id:'transferConfirm'}})
   }
 
   return (

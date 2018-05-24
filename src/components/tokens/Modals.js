@@ -9,32 +9,30 @@ import TransferConfirm from './TransferConfirm'
 function Modals(props) {
   return (
     <div>
-      <Containers.Modals id="receiveToken">
+      <Containers.Layers id="receiveToken">
         <Containers.Sockets id="balance">
-        <UiContianers.Modals id="receiveToken">
-          <Receive/>
-        </UiContianers.Modals>
+          <UiContianers.Panels id="receiveToken" position="right" width="450px">
+            <Receive/>
+          </UiContianers.Panels>
         </Containers.Sockets>
-      </Containers.Modals>
-      <Containers.Modals id="transferToken">
-        <UiContianers.Modals id="transferToken">
+      </Containers.Layers>
+      <Containers.Layers id="transferToken">
+        <UiContianers.Panels id="transferToken" position="right" width="450px">
           <Containers.Sockets id="balance">
             <Containers.Sockets id="marketcap">
               <Containers.Wallet>
                 <Containers.Transfer>
-                  <Containers.Modals>
                     <Containers.Gas>
                       <Transfer />
                     </Containers.Gas>
-                  </Containers.Modals>
                 </Containers.Transfer>
               </Containers.Wallet>
             </Containers.Sockets>
           </Containers.Sockets>
-        </UiContianers.Modals>
-      </Containers.Modals>
-      <Containers.Modals id="transferConfirm">
-        <UiContianers.Modals id="transferConfirm">
+        </UiContianers.Panels>
+      </Containers.Layers>
+      <Containers.Layers id="transferConfirm">
+        <UiContianers.Panels id="transferConfirm" position="right" width="450px">
           <Containers.Sockets id="marketcap">
             <Containers.Wallet>
               <Containers.Settings>
@@ -42,17 +40,17 @@ function Modals(props) {
               </Containers.Settings>
             </Containers.Wallet>
           </Containers.Sockets>
-        </UiContianers.Modals>
-      </Containers.Modals>
-      <Containers.Modals id="convertToken" >
-        <UiContianers.Modals id="convertToken">
+        </UiContianers.Panels>
+      </Containers.Layers>
+      <Containers.Layers id="convertToken" >
+        <UiContianers.Panels id="convertToken" position="right" width="450px">
               <Containers.Wallet>
                 <Containers.Convert >
                   <Convert/>
                 </Containers.Convert>
               </Containers.Wallet>
-        </UiContianers.Modals>
-      </Containers.Modals>
+        </UiContianers.Panels>
+      </Containers.Layers>
     </div>
   )
 }

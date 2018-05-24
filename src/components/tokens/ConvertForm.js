@@ -19,6 +19,7 @@ function ConvertForm(props) {
   const {wallet, convert,convertToken, balances, prices,form,gasPrice} = props;
   const {amount,isMax} = convert;
   const {token} = convertToken;
+  if(!token){return null}
   const type = token.toLowerCase() === 'eth' ? 'deposit': 'withdraw';
   const gasLimit = config.getGasLimitByType(type).gasLimit;
   const {address} = wallet;

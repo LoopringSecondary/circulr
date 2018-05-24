@@ -8,9 +8,9 @@ import {toBig,toFixed} from "LoopringJS/common/formatter";
 import {getBalanceBySymbol} from "../../modules/tokens/TokenFm";
 import TokenFormatter from '../../modules/tokens/TokenFm';
 import config from '../../common/config'
+import {connect} from 'dva'
 
 export default class Receive extends React.Component {
-
   state = {
     symbol: null,
     amount: toBig(0)
@@ -50,7 +50,8 @@ export default class Receive extends React.Component {
     if(symbol){
       const {balance} = this.props;
       const asset = getBalanceBySymbol({balances: balance.items, symbol, toUnit: true});
-     return  toFixed(toBig(amount).minus(asset.balance).isPositive() ? toBig(amount).minus(asset.balance) : toBig(0),8,true);
+      if(!asset){ return toFixed(toBig(0),8) }
+      return  toFixed(toBig(amount).minus(asset.balance).isPositive() ? toBig(amount).minus(asset.balance) : toBig(0),8,true);
     }
     return toFixed(toBig(0),8);
   };

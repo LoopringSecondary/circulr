@@ -5,11 +5,11 @@ import Detail from './Detail'
 function Modals(props) {
   return (
     <div>
-      <Containers.Modals id="txDetail">
-        <UiContianers.Modals id="txDetail">
+      <Containers.Layers id="txDetail">
+        <UiContianers.Panels id="txDetail" position="right" width="450px">
           <Detail />
-        </UiContianers.Modals>
-      </Containers.Modals>
+        </UiContianers.Panels>
+      </Containers.Layers>
     </div>
   )
 }

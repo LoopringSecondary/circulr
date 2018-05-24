@@ -74,7 +74,7 @@ export default function ListTransaction(props) {
                             list.items.map((item,index)=>{
                               const txFm = new TxFm(item)
                               const actions = {
-                                gotoDetail:()=>props.dispatch({type:'modals/showModal',payload:{id:'txDetail',tx:item}})
+                                gotoDetail:()=>props.dispatch({type:'layers/showLayer',payload:{id:'txDetail',tx:item}})
                               }
                               return (
                                 <tr key={index}>
