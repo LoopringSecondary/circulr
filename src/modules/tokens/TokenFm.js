@@ -135,5 +135,5 @@ export function isValidNumber(number) {
 }
 
 export function isValidInteger(int) {
-  return integerReg.test(int)
+  return int && integerReg.test(int)
 }

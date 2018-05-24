@@ -20,6 +20,7 @@ export default [
   require('./wallet/backupModel').default,
   require('./wallet/determineWalletModel').default,
   require('./wallet/metaMaskModel').default,
+  require('./settings/gasModel').default,
 ]
 
 

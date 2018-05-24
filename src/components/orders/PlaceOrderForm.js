@@ -440,10 +440,10 @@ class PlaceOrderForm extends React.Component {
           }
 
           //TODO MOCK
-          // const test = new Array()
-          // test.push({type:"AllowanceNotEnough", value:{symbol:'LRC', allowance:12, required:123456}})
-          // test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
-          // tradeInfo.warn = test
+          const test = new Array()
+          test.push({type:"AllowanceNotEnough", value:{symbol:'LRC', allowance:12, required:123456}})
+          test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
+          tradeInfo.warn = test
 
           const {order, signed, unsigned} = await orderFormatter.signOrder(tradeInfo, wallet)
           showTradeModal(tradeInfo, order, signed, unsigned)
