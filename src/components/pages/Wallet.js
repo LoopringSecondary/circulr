@@ -4,8 +4,16 @@ import Transactions from '../transactions'
 import Charts from '../charts'
 import Tickers from '../tickers'
 import {Containers} from 'modules'
+import {Tooltip} from 'antd'
+import {connect} from 'dva'
 
 function Wallet(props) {
+  const showUserCenter = ()=>{
+    props.dispatch({
+      type:'layers/showLayer',
+      payload:{id:'userCenter'}
+    })
+  }
   return (
     <div>
         <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000"}}>
@@ -13,7 +21,18 @@ function Wallet(props) {
                 <h2>LRC<span>Ethereum</span></h2>
                 <div className="account-bar">
                   <ul>
-                  <li><div className="logo"><i className="icon-metamaskwallet" /></div><div className="account-address">0xeba7136a36da0f5e16c6bdbc739c716bb5b65a00</div></li>
+                  <li onMouseOver={showUserCenter}>
+                    <div className="logo">
+                      {window.WALLET && window.WALLET.unlockType === 'address' && <Tooltip title={'Watch Only Wallet'}><i className="icon-eye" /> </Tooltip>}
+                      {window.WALLET && window.WALLET.unlockType === 'metamask' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-metamaskwallet" /> </Tooltip>}
+                      {window.WALLET && window.WALLET.unlockType === 'ledger' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-ledgerwallet" /> </Tooltip>}
+                      {window.WALLET && window.WALLET.unlockType === 'trezor' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-trezorwallet" /> </Tooltip>}
+                      {window.WALLET && window.WALLET.unlockType === 'keystore' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-json" /> </Tooltip>}
+                      {window.WALLET && window.WALLET.unlockType === 'mnemonic' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-mnemonic" /> </Tooltip>}
+                      {window.WALLET && window.WALLET.unlockType === 'privateKey' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-key" /> </Tooltip>}
+                    </div>
+                    <div className="account-address">0xeba7136a36da0f5e16c6bdbc739c716bb5b65a00</div>
+                  </li>
                   {false && <li><i className="icon-bell relative"><sup class="badge"></sup></i></li>}
                   {false && <li><span className="language"><a href="#"><i className="icon en"></i></a></span></li>}
                   {false && <li><i className="icon-menu"></i></li>}
@@ -47,4 +66,4 @@ function Wallet(props) {
     </div>
   )
 }
-export default Wallet
+export default connect()(Wallet)

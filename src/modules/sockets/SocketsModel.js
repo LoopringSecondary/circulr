@@ -5,7 +5,7 @@ const namespace = 'sockets'
 let initState = {
   items: [],
   item: {},
-  loading: false,
+  loading: true,
   loaded: false,
   page:{
     total:0,
