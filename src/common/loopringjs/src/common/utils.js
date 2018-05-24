@@ -16,5 +16,5 @@ export function trimAll(str) {
 }
 
 export function calculateGas(gasPrice, gasLimit) {
-  return fm.toBig(gasPrice).times(fm.toNumber(gasLimit)).div(1e9);
+  return fm.toBig(gasPrice).times(gasLimit).div(1e9);
 }

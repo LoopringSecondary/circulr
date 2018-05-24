@@ -65,7 +65,7 @@ export function isValidAmount(amount) {
 }
 
 export function isValidInteger(int) {
-  return integerReg.test(int)
+  return int && integerReg.test(int)
 }
 
 export function formatPriceByMarket(price, marketConfig) {

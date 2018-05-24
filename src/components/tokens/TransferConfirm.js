@@ -7,7 +7,7 @@ import intl from 'react-intl-universal';
 import Notification from 'LoopringUI/components/Notification'
 
 function TransferConfirm(props) {
-  const {transferConfirm, marketcap, wallet, modals} = props
+  const {transferConfirm, marketcap, wallet, dispatch} = props
   const {tx, extraData} = transferConfirm
 
   const worth = (
@@ -86,13 +86,15 @@ function TransferConfirm(props) {
         })
       }
       // modal.hideLoading({id:'token/transfer/preview'})
-      modals.hideModal({id:'transferConfirm'})
-      modals.hideModal({id: 'transfer'})
+      dispatch({type: 'modals/hideModal', payload: {id:'transferConfirm'}})
+      dispatch({type: 'modals/hideModal', payload: {id:'transfer'}})
+      dispatch({type: 'transfer/reset'})
     }).catch(e=>{
       console.error("Error:", e)
       result = {...result, error:e.message}
-      modals.hideModal({id:'transferConfirm'})
-      modals.hideModal({id: 'transfer'})
+      dispatch({type: 'modals/hideModal', payload: {id:'transferConfirm'}})
+      dispatch({type: 'modals/hideModal', payload: {id:'transfer'}})
+      dispatch({type: 'transfer/reset'})
       Notification.open({
         message:intl.get('token.send_failed'),
         description:intl.get('token.result_failed', {do:intl.get('token.send_title'), amount:result.extraData.amount, token:result.extraData.tokenSymbol, reason:result.error}),
@@ -102,7 +104,7 @@ function TransferConfirm(props) {
   }
 
   const cancel = () => {
-    modals.hideModal({id:'transferConfirm'})
+    dispatch({type: 'modals/hideModal', payload: {id:'transferConfirm'}})
   }
 
   return (

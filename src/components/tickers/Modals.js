@@ -5,11 +5,11 @@ import ListAllTickers from './ListAllTickers'
 function Modals(props) {
   return (
     <div>
-      <Containers.Modals id="ListAllTickers">
-        <UiContianers.Modals id="ListAllTickers">
+      <Containers.Layers id="ListAllTickers">
+        <UiContianers.Panels id="ListAllTickers" width="25vw">
           <ListAllTickers />
-        </UiContianers.Modals>
-      </Containers.Modals>
+        </UiContianers.Panels>
+      </Containers.Layers>
     </div>
   )
 }

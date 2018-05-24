@@ -5,11 +5,11 @@ import UserCenter from './UserCenter'
 function Modals(props) {
   return (
     <div>
-      <Containers.Modals id="userCenter">
-        <UiContianers.Modals id="userCenter" width="20%">
+      <Containers.Layers id="userCenter">
+        <UiContianers.Panels id="userCenter" position="right" width="300px">
           <UserCenter />
-        </UiContianers.Modals>
-      </Containers.Modals>
+        </UiContianers.Panels>
+      </Containers.Layers>
     </div>
   )
 }

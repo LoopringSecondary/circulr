@@ -14,13 +14,15 @@ export default class RingDetail extends React.Component{
     const {ringDetail} = this.props;
     const fill = ringDetail.ring;
     const  _this = this;
-    window.RELAY.ring.getRingMinedDetail({ringIndex:fill.ringIndex,protocolAddress:fill.protocol}).then(res => {
-      if(!res.error){
-        _this.setState({ring:res.result,loading:false})
-      }else {
-        _this.setState({loading:false})
-      }
-    })
+    if(fill && fill.ringIndex){
+      window.RELAY.ring.getRingMinedDetail({ringIndex:fill.ringIndex,protocolAddress:fill.protocol}).then(res => {
+        if(!res.error){
+          _this.setState({ring:res.result,loading:false})
+        }else {
+          _this.setState({loading:false})
+        }
+      })
+    }
   }
 
   render() {

@@ -12,6 +12,7 @@ function UnlockByTrezor(props) {
       dispatch({type: 'wallet/unlockTrezorWallet', payload: {dpath: `${dpath}/0`, address}});
       Notification.open({type: 'success', message: '解锁成功', description: 'unlock'});
       hardwareWallet.reset();
+      dispatch({type: 'sockets/unlocked'})
       routeActions.gotoPath('/wallet')
     } else {
       Notification.open({type: 'error', message: 'unlock failed', description: 'Connect to your TREZOR'})

@@ -10,6 +10,7 @@ export default [
   require('./transactions/ListModel').default,
   require('./account/model').default,
   require('./settings/model').default,
+  require('LoopringUI/modules/LayersModel').default,
   require('LoopringUI/modules/ModalsModel').default,
   require('LoopringUI/modules/TabsModel').default,
   require('./wallet/airdropModel').default,
@@ -20,6 +21,7 @@ export default [
   require('./wallet/backupModel').default,
   require('./wallet/determineWalletModel').default,
   require('./wallet/metaMaskModel').default,
+  require('./settings/gasModel').default,
 ]
 
 

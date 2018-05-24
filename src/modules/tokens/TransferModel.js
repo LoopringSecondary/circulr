@@ -113,7 +113,7 @@ export default {
   },
   effects:{
     *init({ payload={} }, { put }) {
-      yield put({type:"reset",payload});
+      //yield put({type:"reset",payload});
     },
     * amountChange({payload}, {select, put}) {
       const {amount} = payload;
@@ -136,9 +136,12 @@ export default {
       yield put({type:'setGasPrice',payload:{gasPrice}})
     },
     * tokenChange({payload},{select,put}){
-      //yield put({type:"reset",payload});
       yield put({type:'setToken',payload});
-    }
+    },
+    * assignedtokenChange({payload},{select,put}){
+      yield put({type:'setAssignedToken',payload});
+      yield put({type:'setIsMax',payload:{isMax:false}});
+    },
   }
 };
 

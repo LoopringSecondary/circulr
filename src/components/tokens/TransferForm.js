@@ -9,9 +9,12 @@ import * as tokenFormatter from 'modules/tokens/TokenFm'
 import contracts from 'LoopringJS/ethereum/contracts/Contracts'
 import Currency from 'modules/settings/CurrencyContainer'
 import * as orderFormatter from 'modules/orders/formatters'
+import GasFee from '../setting/GasFee1'
+import {Containers} from 'modules'
+import {getLastGas, getEstimateGas} from 'modules/settings/formatters'
 
 function TransferForm(props) {
-  const {transfer, balance, wallet, marketcap, form, modals} = props
+  const {transfer, balance, wallet, marketcap, form, gas, dispatch} = props
   const { TextArea } = Input;
 
   let tokenSelected = {}
@@ -20,28 +23,19 @@ function TransferForm(props) {
   } else if(transfer.token) {
     tokenSelected = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.token, toUnit:true})
   }
-  let gasPrice = datas.configs.defaultGasPrice
+
   let gasLimit = config.getGasLimitByType('eth_transfer').gasLimit
   if(transfer.token && transfer.token !== "ETH") {
     gasLimit = config.getGasLimitByType('token_transfer').gasLimit
   }
-  if(transfer.gasPopularSetting) {
-    gasPrice = transfer.sliderGasPrice
-  } else {
-    if(transfer.selectedGasPrice) {
-      gasPrice = transfer.selectedGasPrice
-    }
-    if(transfer.selectedGasLimit) {
-      gasLimit = transfer.selectedGasLimit
-    }
-  }
-
-  const gas = calculateGas(gasPrice, gasLimit);
+  const gasResult = getLastGas(gas)
+  const totalGas = gasResult.gas
+  const gasPrice = gasResult.gasPrice
 
   const gasWorth = (
     <span className="">
-        {gas && gas.gt(0) ? ` ≈ $${orderFormatter.calculateWorthInLegalCurrency(marketcap.items, 'ETH', gas).toFixed(2)}` : ''}
-      </span>
+      {totalGas && totalGas.gt(0) ? ` ≈ $${orderFormatter.calculateWorthInLegalCurrency(marketcap.items, 'ETH', totalGas).toFixed(2)}` : ''}
+    </span>
   )
 
   function validateTokenSelect(value) {
@@ -114,11 +108,23 @@ function TransferForm(props) {
             let amount = fm.toHex(fm.toBig(values.amount).times("1e"+tokenConfig.digits))
             tx.data = contracts.ERC20Token.encodeInputs('transfer', {_to:values.to, _value:amount});
           }
-          const extraData = {from:wallet.address, to:values.to, tokenSymbol:tokenSelected.symbol, amount:values.amount, gas:gas.toString(10)}
-          modals.showModal({id:'transferConfirm', tx, extraData})
+          const extraData = {from:wallet.address, to:values.to, tokenSymbol:tokenSelected.symbol, amount:values.amount, gas:totalGas.toString(10)}
+          dispatch({
+            type: 'modals/showModal',
+            payload: {
+              id:'transferConfirm',
+              tx,
+              extraData
+            }
+          })
         } else {
           //TODO show unlock modal
-          modals.hideModal({id:'transfer'})
+          dispatch({
+            type: 'modals/hideModal',
+            payload: {
+              id:'transfer',
+            }
+          })
         }
       }
     });
@@ -154,14 +160,18 @@ function TransferForm(props) {
     transfer.setAdvance({advance:!transfer.advance})
   }
 
+  function selectedGas(value) {
+    console.log(value)
+  }
+
   if(transfer.token && form.getFieldValue('amount') !== undefined && form.getFieldValue('amount') !== '') {
     let tokenBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.token, toUnit:true}).balance
     const formBalance = fm.toBig(form.getFieldValue('amount'))
     if(transfer.token === 'ETH') {
       if(transfer.isMax) {
-        tokenBalance = tokenBalance.gt(gas) ?  tokenBalance.minus(gas) : fm.toBig(0);
+        tokenBalance = tokenBalance.gt(totalGas) ?  tokenBalance.minus(totalGas) : fm.toBig(0);
       } else {
-        tokenBalance = formBalance.add(gas).gt(tokenBalance) ? tokenBalance.minus(gas) : formBalance
+        tokenBalance = formBalance.add(totalGas).gt(tokenBalance) ? tokenBalance.minus(totalGas) : formBalance
       }
       if(!formBalance.equals(tokenBalance)) {
         form.setFieldsValue({"amount": tokenBalance.toString(10)})
@@ -184,77 +194,6 @@ function TransferForm(props) {
     const gas = fm.toBig(value).times(fm.toNumber(gasLimit)).div(1e9).toString()
     return gas + " ETH";
   }
-
-  const editGas = (
-    <Popover overlayClassName="place-order-form-popover"
-             title={
-               <div className="row pt5 pb5">
-                 <div className="col-auto">
-                   {intl.get('token.custum_gas_title')}
-                 </div>
-                 <div className="col"></div>
-                 <div className="col-auto"><a href="" onClick={gasSettingChange.bind(this)}>{transfer.gasPopularSetting ? 'gas_custom_setting' : 'token.gas_fast_setting' }</a></div>
-               </div>
-             }
-             content={
-               <div style={{maxWidth:'300px',padding:'5px'}}>
-                 {transfer.gasPopularSetting &&
-                 <div>
-                   <div className="pb10">custum_gas_content</div>
-                   <Form.Item className="mb0 pb10" colon={false} label={null}>
-                     {form.getFieldDecorator('transactionFee', {
-                       initialValue: datas.configs.defaultGasPrice, //TODO mock
-                       rules: []
-                     })(
-                       <Slider min={1} max={99} step={0.01}
-                               marks={
-                                 {
-                                  1: intl.get('token.slow'),
-                                  99: intl.get('token.fast')
-                                 }
-                               }
-                               tipFormatter={formatGas}
-                               onChange={setGas.bind(this)}
-                       />
-                     )}
-                   </Form.Item>
-                 </div>
-                 }
-                 {!transfer.gasPopularSetting &&
-                 <div>
-                   <div className="pb10">custum_gas_advance_content</div>
-                   <Form.Item label={<div className="fs3 color-black-2">{intl.get('token.gas_limit')}</div>} colon={false}>
-                     {form.getFieldDecorator('gasLimit', {
-                       initialValue: transfer.selectedGasLimit,
-                       rules: [{
-                         message:intl.get('trade.integer_verification_message'),
-                         validator: (rule, value, cb) => tokenFormatter.isValidNumber(value) ? cb() : cb(true)
-                       }],
-                     })(
-                       <Input className="d-block w-100" placeholder="" size="large" onChange={gasLimitChange.bind(this)}/>
-                     )}
-                   </Form.Item>
-                   <Form.Item label={<div className="fs3 color-black-2">{intl.get('token.gas_price')}</div>} colon={false}>
-                     {form.getFieldDecorator('gasPrice', {
-                       initialValue: transfer.selectedGasPrice,
-                       rules: []
-                     })(
-                       <Slider min={1} max={99} step={1}
-                               marks={{
-                                 1: intl.get('token.slow'),
-                                 99: intl.get('token.fast')
-                               }}
-                               onChange={gasPriceChange.bind(this)}
-                       />
-                     )}
-                   </Form.Item>
-                 </div>
-                 }
-               </div>
-             } trigger="click">
-      <a className="fs12 pointer color-black-3 mr5"><Icon type="edit" /></a>
-    </Popover>
-  )
 
   return (
     <div className="form-dark">
@@ -376,8 +315,10 @@ function TransferForm(props) {
                 <div className="form-control-static d-flex justify-content-between mr-0">
                   <span>Gas Fee</span>
                   <span className="font-bold">
-                    {editGas}
-                    <span className="offset-md">{gas.toString(10)} ETH {gasWorth}</span>
+                    <Containers.Gas initState={{gasLimit}}>
+                      <GasFee />
+                    </Containers.Gas>
+                    <span className="offset-md">{totalGas.toString(10)} ETH {gasWorth}</span>
                   </span>
                 </div>
             </div>

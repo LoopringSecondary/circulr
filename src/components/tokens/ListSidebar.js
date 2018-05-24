@@ -5,6 +5,7 @@ import intl from 'react-intl-universal'
 import TokensFm from 'modules/tokens/TokensFm'
 import config from 'common/config'
 import {Currency} from 'modules/containers'
+import {FormatAmount} from 'modules/formatter/FormatNumber'
 
 function ListTokensSidebar(props) {
   console.log('ListTokensSidebar component render',props)
@@ -66,6 +67,12 @@ function ListTokensSidebar(props) {
       payload: {
         id:'transferToken',
         item,
+      }
+    })
+    dispatch({
+      type: 'transfer/assignedtokenChange',
+      payload: {
+        assignedToken:item.symbol
       }
     })
   }
@@ -169,7 +176,8 @@ function ListTokensSidebar(props) {
                       <div className="sub">
                           <Spin size="small" spinning={balance.loading} >
                             <div className="value" hidden={balance.loading}>
-                              <h3>{item.balance.toString()}</h3>
+                              <FormatAmount value={item.balance.toString()} precision={4} />
+                              {false && <h3>{item.balance.toString()}</h3>}
                               {item.balanceValue &&
                                 <p><Currency/>{item.balanceValue.toString()}</p>
                               }
