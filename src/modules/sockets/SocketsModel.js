@@ -81,7 +81,6 @@ export default {
       console.log('filtersChange emitEvent',id,filters)
       if(socket){
         let new_payload = {page,filters,sort,socket,id}
-        yield put({type:'loadingChange',payload: {id,loading: true,loaded:false}})
         yield call(apis.emitEvent, new_payload)
       }else{
         console.log('socket is not connected!')
@@ -93,7 +92,6 @@ export default {
       const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
       if(socket){
         let new_payload = {page,filters,sort,socket,id}
-        put({type:'loadingChange',payload: {id,loading: true,loaded:false}})
         yield call(apis.onEvent, new_payload)
       }else{
         console.log('socket is not connected!')
@@ -144,6 +142,7 @@ export default {
         ...state,
         [id]:{
           ...state[id],
+          ...payload,
           item:{
             ...state[id].item,
             ...payload.item

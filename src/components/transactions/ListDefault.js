@@ -14,7 +14,8 @@ export default function ListTransaction(props) {
   const typeChange = (value)=>{
     list.filtersChange({type:value})
   }
-  const types = getTypes('LRC')
+  const token = list.filters.token || 'LRC'
+  const types = getTypes(token)
   return (
     <div>
         <div className="card-header bordered">

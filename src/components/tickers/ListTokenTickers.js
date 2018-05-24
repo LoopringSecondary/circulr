@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'dva'
 import {TickersFm,TickerFm} from 'modules/tickers/formatters'
 import routeActions from 'common/utils/routeActions'
-import { Button } from 'antd'
+import { Button,Spin } from 'antd'
 
 function ListTokenTickers(props) {
   const {loopringTickers:list,dispatch} = props
@@ -59,23 +59,25 @@ function ListTokenTickers(props) {
             <div className="card-header bordered">
                 <h4>Loopring DEX Markets</h4>
             </div>
-            <div className="body">
-            {
-              listedTickers.map((item,index)=>{
-                const tickerFm = new TickerFm(item)
-                return (
-                  <div className="item">
-                      <ul>
-                          <li><h3>{item.market}</h3></li>
-                          <li><small>Price</small><span class="text-down">{tickerFm.getChange()}</span></li>
-                          <li><small>Change</small><span className="text-up">{tickerFm.getChange()}</span></li>
-                      </ul>
-                      <Button className="btn btn-primary" onClick={gotoTrade.bind(this,item)}>Go To Trade</Button>
-                  </div>
-                )
-              })
-            }
-            </div>
+            <Spin spinning={list.loading}>
+              <div className="body" style={{minHeight:'50px'}}>
+                  {
+                    listedTickers.map((item,index)=>{
+                      const tickerFm = new TickerFm(item)
+                      return (
+                        <div className="item">
+                            <ul>
+                                <li><h3>{item.market}</h3></li>
+                                <li><small>Price</small><span class="text-down">{tickerFm.getChange()}</span></li>
+                                <li><small>Change</small><span className="text-up">{tickerFm.getChange()}</span></li>
+                            </ul>
+                            <Button className="btn btn-primary" onClick={gotoTrade.bind(this,item)}>Go To Trade</Button>
+                        </div>
+                      )
+                    })
+                  }
+              </div>
+            </Spin>
         </div>
         <div>
             <div className="card-header bordered">
