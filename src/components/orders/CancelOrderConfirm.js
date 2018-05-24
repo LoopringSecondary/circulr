@@ -29,7 +29,7 @@ class CancelOrderConfirm extends React.Component {
   };
 
   ConfirmCancel = async () => {
-    console.log('gasPrice',getLastGas(this.props.gas).gasPrice);
+
     const {cancelOrderConfirm,settings,wallet} = this.props;
     const {type, market,order} = cancelOrderConfirm;
     const {now} =  this.state;
@@ -64,29 +64,29 @@ class CancelOrderConfirm extends React.Component {
         throw new Error('Wrong cancel order type ')
     }
     const account = wallet.account || window.account;
-  //  this.setState({loading: true});
+   this.setState({loading: true});
     const signedTx = await account.signEthereumTx(tx);
-    // window.ETH.sendRawTransaction(signedTx).then(({response, rawTx}) => {
-    //   _this.cancel();
-    //   _this.setState({loading: false});
-    //   if (!response.error) {
-    //     // window.STORAGE.transactions.addTx({hash: response.result, owner: account.address});
-    //     window.STORAGE.wallet.setWallet({address: window.WALLET.getAddress(), nonce: tx.nonce});
-    //     window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.getAddress()})
-    //     Notification.open({
-    //       message: type === 'cancelOrder' ? intl.get('order.cancel_order_success') : intl.get('order.cancel_all_success', {pair: market}),
-    //       type: "success",
-    //       description: (<Button className="alert-btn mr5"
-    //                             onClick={() => window.open(`https://etherscan.io/tx/${response.result}`, '_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )
-    //     });
-    //   } else {
-    //     Notification.open({
-    //       message: type === 'cancelOrder' ? intl.get('order.cancel_order_failed') : intl.get('order.cancel_all_failed', {pair: market}),
-    //       type: "error",
-    //       description: response.error.message
-    //     })
-    //   }
-    // })
+    window.ETH.sendRawTransaction(signedTx).then(({response, rawTx}) => {
+      _this.cancel();
+      _this.setState({loading: false});
+      if (!response.error) {
+        // window.STORAGE.transactions.addTx({hash: response.result, owner: account.address});
+        window.STORAGE.wallet.setWallet({address: window.WALLET.getAddress(), nonce: tx.nonce});
+        window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.getAddress()})
+        Notification.open({
+          message: type === 'cancelOrder' ? intl.get('order.cancel_order_success') : intl.get('order.cancel_all_success', {pair: market}),
+          type: "success",
+          description: (<Button className="alert-btn mr5"
+                                onClick={() => window.open(`https://etherscan.io/tx/${response.result}`, '_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )
+        });
+      } else {
+        Notification.open({
+          message: type === 'cancelOrder' ? intl.get('order.cancel_order_failed') : intl.get('order.cancel_all_failed', {pair: market}),
+          type: "error",
+          description: response.error.message
+        })
+      }
+    })
   };
 
   computeTime = (until) => {
