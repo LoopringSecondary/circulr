@@ -12,8 +12,10 @@ export default {
   },
   reducers: {
     init(state, { payload }) {
+      const {gasLimit} = payload
       return  {
         ...state,
+        gasLimit : gasLimit || state.gasLimit,
         tabSelected:'easy'
       };
     },
