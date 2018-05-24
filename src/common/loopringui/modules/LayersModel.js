@@ -14,7 +14,6 @@ export default {
     },
     *showLayer({payload},{call, select,put}){
       // yield put({type:'currentChange',payload})
-      console.log('showLayer showLayer')
       yield put({
         type:'layerChange',
         payload:{
