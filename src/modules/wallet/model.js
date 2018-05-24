@@ -80,7 +80,7 @@ export default {
       }
     },
     lock(state, {payload}) {
-      window.wallet = null;
+      window.WALLET = null;
       return {
         ...state,
         address: "",

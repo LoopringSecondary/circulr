@@ -28,7 +28,7 @@ function TransferForm(props) {
   if(transfer.token && transfer.token !== "ETH") {
     gasLimit = config.getGasLimitByType('token_transfer').gasLimit
   }
-  const gasResult = getLastGas(gas, gasLimit)
+  const gasResult = getLastGas(gas, gasLimit) //TODO modify gasLimit or not ?
   const totalGas = gasResult.gas
   const gasPrice = gasResult.gasPrice
 
