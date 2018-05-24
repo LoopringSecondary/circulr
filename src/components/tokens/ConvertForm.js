@@ -7,17 +7,21 @@ import {toBig, toHex} from "../../common/loopringjs/src/common/formatter";
 import config from '../../common/config'
 import Currency from 'modules/settings/CurrencyContainer'
 import {connect} from "dva";
+import {Containers} from 'modules'
+import GasFee from '../setting/GasFee1'
 
 const WETH = Contracts.WETH;
 
 function ConvertForm(props) {
 
-  const {wallet, convert, dispatch, balance, marketcap,form} = props;
-  const {amount, token, gasPrice, gasLimit} = convert;
+  const {wallet, convert,convertToken, balances, prices,form,gasPrice} = props;
+  const {amount} = convert;
+  const {token} = convertToken;
+  const type = token.toLowerCase() === 'eth' ? 'deposit': 'withdraw';
+  const gasLimit = config.getGasLimitByType(type).gasLimit;
   const {address} = wallet;
   const account = wallet.account || window.account;
-  const assets = getBalanceBySymbol({balances: balance.items, symbol: token, toUnit: true});
-
+  const assets = getBalanceBySymbol({balances, symbol: token, toUnit: true});
   const tf = new TokenFormatter({symbol:token});
 
   const handleAmountChange = (e) => {
@@ -25,7 +29,7 @@ function ConvertForm(props) {
   };
   const setMax = () => {
     const gas = toBig(gasPrice).times(gasLimit).div(1e9);
-    let max = balance;
+    let max = assets.balance;
     if (token === 'ETH') {
       max = toBig(assets.balance).minus(gas).minus(0.1).isPositive() ? toBig(assets.balance).minus(gas).minus(0.1) : toBig(0)
     }
@@ -63,6 +67,14 @@ function ConvertForm(props) {
 
   };
 
+  const getGas = () =>{
+    return tf.toPricisionFixed(toBig(gasPrice).times(gasLimit).div(1e9))
+  };
+
+  const onGasChange = ({gasPrice}) => {
+    convert.gasPriceChange({gasPrice,token,gasLimit})
+  };
+
   return (
     <div>
       <div className="modal-header text-dark"><h3>转换</h3></div>
@@ -90,10 +102,10 @@ function ConvertForm(props) {
 
       <div className="d-flex justify-content-between text-color-dark-2">
         <small>
-          {amount && marketcap && isValidNumber(amount) &&
+          {amount && prices && isValidNumber(amount) &&
             <span>
               <Currency/>
-              {getWorthBySymbol({prices: marketcap.items, symbol: 'ETH', amount})}
+              {getWorthBySymbol({prices, symbol: 'ETH', amount})}
             </span>
           }
         </small>
@@ -107,9 +119,11 @@ function ConvertForm(props) {
         <div className="form-control-static d-flex justify-content-between mr-0">
           <span>Gas Fee</span>
           <span className="font-bold">
-
-            <span>0</span>
-                    <span className="offset-md"> ETH ≈ $1.15</span>
+                  <Containers.Gas initState={{gasLimit}}>
+                    <GasFee onGasChange={onGasChange}/>
+                  </Containers.Gas>
+            <span>{getGas()}</span>n
+                    <span className="offset-md"> ETH ≈ <Currency/> {getWorthBySymbol({prices, symbol: 'ETH', amount:getGas()})}</span>
                   </span>
         </div>
       </div>
@@ -118,4 +132,13 @@ function ConvertForm(props) {
   )
 }
 
-export default Form.create()(ConvertForm)
+function mapToProps(state) {
+  return {
+    balances:state.sockets.balance.items,
+    prices:state.sockets.marketcap.items,
+    gasPrice:state.gas.gasPrice.last
+  }
+
+}
+
+export default connect(mapToProps)(Form.create()(ConvertForm))
