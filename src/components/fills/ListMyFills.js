@@ -83,7 +83,7 @@ export default function ListMyFills(props) {
                 fills.items.map((item,index)=>{
                   const fillFm = new FillFm(item)
                   const actions = {
-                    gotoDetail:()=>props.dispatch({type:'modals/showModal',payload:{id:'ringDetail',ring:item}})
+                    gotoDetail:()=>props.dispatch({type:'layers/showLayer',payload:{id:'ringDetail',ring:item}})
                   }
                   return (
                     <tr key={index}>

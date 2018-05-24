@@ -6,7 +6,7 @@ function Modals(props) {
   return (
     <div>
       <Containers.Layers id="ringDetail">
-        <UiContianers.Panels id="ringDetail" position="right" width="480px">
+        <UiContianers.Panels id="ringDetail" position="right" width="450px">
           <Detail />
         </UiContianers.Panels>
       </Containers.Layers>

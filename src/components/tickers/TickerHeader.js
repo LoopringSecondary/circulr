@@ -7,7 +7,7 @@ function TickerHeader(props) {
   console.log('TickerHeader render',props)
   const showAllTickers = ()=>{
     props.dispatch({
-      type:"modals/showModal",
+      type:"layers/showLayer",
       payload:{
         id:'ListAllTickers',
       }
