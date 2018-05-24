@@ -159,8 +159,8 @@ class CancelOrderConfirm extends React.Component {
                   {intl.get('orders.confirm_to_cancel')}
                   <Icon type="right"/>
                 </a>
-                  <Containers.Gas initState={{}}>
-                    <GasFee gasLimit={200000}/>
+                  <Containers.Gas initState={{gasLimit:config.getGasLimitByType(type).gasLimit}}>
+                    <GasFee />
                   </Containers.Gas>
               </div>
               }

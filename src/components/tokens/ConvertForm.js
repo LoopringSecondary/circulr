@@ -6,7 +6,7 @@ import Contracts from 'LoopringJS/ethereum/contracts/Contracts'
 import {toBig, toHex} from "../../common/loopringjs/src/common/formatter";
 import config from '../../common/config'
 import Currency from 'modules/settings/CurrencyContainer'
-
+import {connect} from "dva";
 
 const WETH = Contracts.WETH;
 
