@@ -28,7 +28,7 @@ function TransferForm(props) {
   if(transfer.token && transfer.token !== "ETH") {
     gasLimit = config.getGasLimitByType('token_transfer').gasLimit
   }
-  const gasResult = getLastGas(gas, gasLimit)
+  const gasResult = getLastGas(gas)
   const totalGas = gasResult.gas
   const gasPrice = gasResult.gasPrice
 
@@ -303,8 +303,8 @@ function TransferForm(props) {
                 <div className="form-control-static d-flex justify-content-between mr-0">
                   <span>Gas Fee</span>
                   <span className="font-bold">
-                    <Containers.Gas initState={{}}>
-                      <GasFee gasLimit={gasLimit}/>
+                    <Containers.Gas initState={{gasLimit}}>
+                      <GasFee />
                     </Containers.Gas>
                     <span className="offset-md">{totalGas.toString(10)} ETH {gasWorth}</span>
                   </span>

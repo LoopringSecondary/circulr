@@ -10,8 +10,7 @@ import * as fm from 'LoopringJS/common/formatter'
 const GasFeeForm = (props) => {
   const {gas, form} = props
   const gasPriceStore = gas.gasPrice
-  const gasLimitStore = gas.gasLimit
-  const gasLimit = props.gasLimit ? fm.toNumber(props.gasLimit) : fm.toNumber(gasLimitStore)
+  const gasLimitStore = fm.toNumber(gas.gasLimit)
 
   if(gasPriceStore.last === 0 && form.getFieldValue('gasSelector') === 'last') {
     form.setFieldsValue({'gasSelector':'estimate'})
@@ -28,7 +27,7 @@ const GasFeeForm = (props) => {
       switch(gas.tabSelected){
         case 'easy':
           if(!err || (!err.gasSelector && !err.gasPriceSlider)){
-            l = gasLimit
+            l = gasLimitStore
             switch(form.getFieldValue('gasSelector')) {
               case 'last':
                 p = gasPriceStore.last
@@ -85,21 +84,21 @@ const GasFeeForm = (props) => {
                              <Radio value='last' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15" disabled={gasPriceStore.last === 0}>
                                <div className="ml5 pt10 pb10">
                                  <div className="fs14 color-black-1">
-                                   {gasShow(gasPriceStore.last, gasLimit, '上一次')}
+                                   {gasShow(gasPriceStore.last, gasLimitStore, '上一次')}
                                  </div>
                                </div>
                              </Radio>
                              <Radio value='estimate' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
                                <div className="ml5 pt10 pb10">
                                  <div className="fs14 color-black-1">
-                                   {gasShow(gasPriceStore.estimate, gasLimit, '推荐')}
+                                   {gasShow(gasPriceStore.estimate, gasLimitStore, '推荐')}
                                  </div>
                                </div>
                              </Radio>
                              <Radio value='custom' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
                                <div className="ml5 pt10 pb10">
                                  <div className="fs14 color-black-1">
-                                   {gasShow(form.getFieldValue('gasPriceSlider'), gasLimit, '自定义')}
+                                   {gasShow(form.getFieldValue('gasPriceSlider'), gasLimitStore, '自定义')}
                                  </div>
                                  <div>
                                    <Form.Item label={null} colon={false} className="mb0">
