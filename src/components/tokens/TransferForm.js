@@ -28,7 +28,7 @@ function TransferForm(props) {
   if(transfer.token && transfer.token !== "ETH") {
     gasLimit = config.getGasLimitByType('token_transfer').gasLimit
   }
-  const gasResult = getLastGas(gas, gasLimit) //TODO modify gasLimit or not ?
+  const gasResult = getLastGas(gas, gasLimit)
   const totalGas = gasResult.gas
   const gasPrice = gasResult.gasPrice
 
@@ -183,77 +183,6 @@ function TransferForm(props) {
     return gas + " ETH";
   }
 
-  const editGas = (
-    <Popover overlayClassName="place-order-form-popover"
-             title={
-               <div className="row pt5 pb5">
-                 <div className="col-auto">
-                   {intl.get('token.custum_gas_title')}
-                 </div>
-                 <div className="col"></div>
-                 <div className="col-auto"><a href="" onClick={gasSettingChange.bind(this)}>{transfer.gasPopularSetting ? 'gas_custom_setting' : 'token.gas_fast_setting' }</a></div>
-               </div>
-             }
-             content={
-               <div style={{maxWidth:'300px',padding:'5px'}}>
-                 {transfer.gasPopularSetting &&
-                 <div>
-                   <div className="pb10">custum_gas_content</div>
-                   <Form.Item className="mb0 pb10" colon={false} label={null}>
-                     {form.getFieldDecorator('transactionFee', {
-                       initialValue: datas.configs.defaultGasPrice, //TODO mock
-                       rules: []
-                     })(
-                       <Slider min={1} max={99} step={0.01}
-                               marks={
-                                 {
-                                  1: intl.get('token.slow'),
-                                  99: intl.get('token.fast')
-                                 }
-                               }
-                               tipFormatter={formatGas}
-                               onChange={setGas.bind(this)}
-                       />
-                     )}
-                   </Form.Item>
-                 </div>
-                 }
-                 {!transfer.gasPopularSetting &&
-                 <div>
-                   <div className="pb10">custum_gas_advance_content</div>
-                   <Form.Item label={<div className="fs3 color-black-2">{intl.get('token.gas_limit')}</div>} colon={false}>
-                     {form.getFieldDecorator('gasLimit', {
-                       initialValue: transfer.selectedGasLimit,
-                       rules: [{
-                         message:intl.get('trade.integer_verification_message'),
-                         validator: (rule, value, cb) => tokenFormatter.isValidNumber(value) ? cb() : cb(true)
-                       }],
-                     })(
-                       <Input className="d-block w-100" placeholder="" size="large" onChange={gasLimitChange.bind(this)}/>
-                     )}
-                   </Form.Item>
-                   <Form.Item label={<div className="fs3 color-black-2">{intl.get('token.gas_price')}</div>} colon={false}>
-                     {form.getFieldDecorator('gasPrice', {
-                       initialValue: transfer.selectedGasPrice,
-                       rules: []
-                     })(
-                       <Slider min={1} max={99} step={1}
-                               marks={{
-                                 1: intl.get('token.slow'),
-                                 99: intl.get('token.fast')
-                               }}
-                               onChange={gasPriceChange.bind(this)}
-                       />
-                     )}
-                   </Form.Item>
-                 </div>
-                 }
-               </div>
-             } trigger="click">
-      <a className="fs12 pointer color-black-3 mr5"><Icon type="edit" /></a>
-    </Popover>
-  )
-
   return (
     <div className="form-dark">
         <div className="card-header bordered">
@@ -374,7 +303,6 @@ function TransferForm(props) {
                 <div className="form-control-static d-flex justify-content-between mr-0">
                   <span>Gas Fee</span>
                   <span className="font-bold">
-                    {false && editGas}
                     <Containers.Gas initState={{}}>
                       <GasFee gasLimit={gasLimit}/>
                     </Containers.Gas>
