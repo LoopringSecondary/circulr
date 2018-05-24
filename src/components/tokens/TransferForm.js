@@ -14,7 +14,7 @@ import {Containers} from 'modules'
 import {getLastGas, getEstimateGas} from 'modules/settings/formatters'
 
 function TransferForm(props) {
-  const {transfer, balance, wallet, marketcap, form, modals, gas} = props
+  const {transfer, balance, wallet, marketcap, form, gas, dispatch} = props
   const { TextArea } = Input;
 
   let tokenSelected = {}
@@ -109,10 +109,22 @@ function TransferForm(props) {
             tx.data = contracts.ERC20Token.encodeInputs('transfer', {_to:values.to, _value:amount});
           }
           const extraData = {from:wallet.address, to:values.to, tokenSymbol:tokenSelected.symbol, amount:values.amount, gas:totalGas.toString(10)}
-          modals.showModal({id:'transferConfirm', tx, extraData})
+          dispatch({
+            type: 'modals/showModal',
+            payload: {
+              id:'transferConfirm',
+              tx,
+              extraData
+            }
+          })
         } else {
           //TODO show unlock modal
-          modals.hideModal({id:'transfer'})
+          dispatch({
+            type: 'modals/hideModal',
+            payload: {
+              id:'transfer',
+            }
+          })
         }
       }
     });

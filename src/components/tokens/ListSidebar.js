@@ -69,6 +69,12 @@ function ListTokensSidebar(props) {
         item,
       }
     })
+    dispatch({
+      type: 'transfer/assignedtokenChange',
+      payload: {
+        assignedToken:item.symbol
+      }
+    })
   }
   const gotoReceive = (item, e) => {
     dispatch({

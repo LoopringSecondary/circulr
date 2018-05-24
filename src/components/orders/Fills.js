@@ -43,7 +43,7 @@ export default class Fills extends React.Component {
     const {fills,loading,pageSize,pageIndex,total} = this.state;
     return(
       <Spin spinning={loading}>
-      <table style={{overflow:'auto'}} className="table table-dark table-striped text-left">
+      <table style={{overflow:'auto'}} className="table table-dark table-striped table-hover table-compact text-left">
         <thead>
         <tr>
           <th>环路</th>

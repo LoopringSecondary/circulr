@@ -239,7 +239,7 @@ class PlaceOrderForm extends React.Component {
     )
 
     const editOrderTTLPattern = (
-      <Popover overlayClassName="place-order-form-popover p0" ref="popover"
+      <Popover overlayClassName="place-order-form-popover" ref="popover"
                title={null &&<div className="pt5 pb5">{intl.get('trade.custom_time_to_live_title')}</div>}
                content={
                  <div style={{width:'382px'}}>

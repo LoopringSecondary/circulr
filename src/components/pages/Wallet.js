@@ -15,10 +15,10 @@ function Wallet(props) {
                 <div className="account-bar">
                   <ul>
                   <li><div className="logo"><img src={require('../../assets/images/logo-icon-inverse.png')} /></div><div className="account-address">0xeba7136a36da0f5e16c6bdbc739c716bb5b65a00</div></li>
-                  <li><i className="icon-analysis"></i></li>
+{/*                  <li><i className="icon-analysis"></i></li>
                   <li><i className="icon-pie"></i></li>
-                  <li><i className="icon-bell relative"><sup className="badge"></sup></i></li>
-                  <li><span className="language"><a href="#"><i className="icon en"></i></a></span></li>
+                  <li><i className="icon-bell relative"><sup class="badge"></sup></i></li>
+                  <li><span className="language"><a href="#"><i className="icon en"></i></a></span></li>*/}
                   <li><i className="icon-menu"></i></li>
                   </ul>
                 </div>
