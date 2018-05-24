@@ -32,9 +32,10 @@ export class FillFm{
     return commonFm.getFormatNum(toFixed(toBig(this.fill.lrcFee).div(1e18)),6) + ' LRC'
   }
   getTotalSplitFee(){
-    const tokenFm = this.fill.splitS ? new TokenFm({symbol:this.fill.tokenS}) : new TokenFm({symbol:this.fill.tokenB});
+    const token =  this.fill.splitS ? this.fill.tokenS : this.fill.tokenB;
+    const tokenFm = new TokenFm({symbol:token});
     const split =  this.fill.splitS ? this.fill.splitS : this.fill.splitB;
-    return commonFm.getFormatNum(tokenFm.toPricisionFixed(tokenFm.getUnitAmount(split)))
+    return commonFm.getFormatNum(tokenFm.toPricisionFixed(tokenFm.getUnitAmount(split))) + ' '
   }
 
   getAmount(){

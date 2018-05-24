@@ -76,11 +76,11 @@ function Mnemonic(props) {
                             value={mnemonic} onChange={handleMnemonic} className="mnemonic"/>
           )}
         </Form.Item>
-        <Form.Item colon={false} label="Password:">
-          {passRequired && <div className="text-muted">
+        {passRequired && <Form.Item colon={false} label="Password:">
+           <div className="text-muted">
             <Input value={password} onChange={handlePass}/>
-          </div>}
-        </Form.Item>
+          </div>
+        </Form.Item>}
         <Form.Item label="Default Address:">
           <Input value={address} disabled/>
         </Form.Item>

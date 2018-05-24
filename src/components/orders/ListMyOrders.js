@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form,Select,Badge } from 'antd'
+import {Form, Select, Badge} from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import SelectContainer from 'LoopringUI/components/SelectContainer'
 import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'
@@ -8,33 +8,43 @@ import {getShortAddress} from 'modules/formatter/common'
 import config from 'common/config'
 import intl from 'react-intl-universal'
 
-const ListHeader = ({orders})=>{
-  const sideChange = (side)=>{
-    orders.filtersChange({filters:{side}})
-  }
-  const marketChange = (market)=>{
-    orders.filtersChange({filters:{market}})
-  }
-  const statusChange = (status)=>{
-    orders.filtersChange({filters:{status}})
-  }
+const ListHeader = (props) => {
 
+  const {orders,dispatch} = props;
+  const sideChange = (side) => {
+    orders.filtersChange({filters: {side}})
+  };
+  const marketChange = (market) => {
+    orders.filtersChange({filters: {market}})
+  };
+  const statusChange = (status) => {
+    orders.filtersChange({filters: {status}})
+  };
+
+  const cancelAll = () => {
+    const {market} = orders.filters;
+    const type = market ? "cancelOrderByTokenPair" : "cancelAllOrder";
+    dispatch({type:'modals/showModal',payload:{id:'cancelOrderConfirm',type,market}})
+  };
   return (
     <div className="form-inline form-dark">
-        <div className="block-dark-filter">
-            <div>
+      <div className="block-dark-filter">
+        <div>
                 <span>
                   <SelectContainer
-                    loadOptions={getSupportedMarket.bind(this,window.config.rpc_host)}
-                    transform={(res)=>{
-                      if(res && !res.error){
-                        let pairs = config.getMarkets().map(item=>`${item.tokenx}-${item.tokeny}`)
-                        let options = res.result.filter(item=>pairs.includes(item)).map(item=>({label:item,value:item}))
+                    loadOptions={getSupportedMarket.bind(this, window.config.rpc_host)}
+                    transform={(res) => {
+                      if (res && !res.error) {
+                        let pairs = config.getMarkets().map(item => `${item.tokenx}-${item.tokeny}`)
+                        let options = res.result.filter(item => pairs.includes(item)).map(item => ({
+                          label: item,
+                          value: item
+                        }))
                         return [
-                          {label:`${intl.get('global.all')} ${intl.get('orders.market')}`,value:""},
+                          {label: `${intl.get('global.all')} ${intl.get('orders.market')}`, value: ""},
                           ...options,
                         ]
-                      }else{
+                      } else {
                         return []
                       }
                     }}
@@ -47,7 +57,7 @@ const ListHeader = ({orders})=>{
                   >
                   </SelectContainer>
                 </span>
-                <span>
+          <span>
                   <Select
                     placeholder={intl.get('orders.status')}
                     onChange={statusChange}
@@ -62,7 +72,7 @@ const ListHeader = ({orders})=>{
                     <Select.Option value="ORDER_EXPIRE">{intl.get('orders.status_expired')}</Select.Option>
                   </Select>
                 </span>
-                <span>
+          <span>
                    <Select
                      placeholder={intl.get('orders.side')}
                      onChange={sideChange}
@@ -75,71 +85,75 @@ const ListHeader = ({orders})=>{
                      <Select.Option value="buy">{intl.get('orders.side_buy')}</Select.Option>
                    </Select>
                 </span>
-            </div>
-            <div>
-                <span><button className="btn btn-primary">Cancel All</button></span>
-            </div>
         </div>
+        <div>
+          <span><button className="btn btn-primary" onClick={cancelAll}>Cancel All</button></span>
+        </div>
+      </div>
     </div>
   )
 }
 
 export default function ListMyOrders(props) {
-  const {orders={}}=props
+  const {orders = {},dispatch} = props;
+  const cancelOrder = (order) => {
+    dispatch({type:'modals/showModal',payload:{id:'cancelOrderConfirm',type:'cancelOrder',order}})
+  };
   return (
     <div className="">
-        <ListHeader orders={orders} />
-        <div style={{height:"160px",overflow:"auto"}}>
-          <table style={{overflow:'auto'}} className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2" >
-            <thead>
-                <tr>
-                    <th>Order</th>
-                    <th>Market</th>
-                    <th>Side</th>
-                    <th>Amount</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                    <th>LRC Fee</th>
-                    <th>Filled</th>
-                    <th>Created</th>
-                    <th>Expired</th>
-                    <th>Status</th>
+      <ListHeader orders={orders} dispatch={props.dispatch}/>
+      <div style={{height: "160px", overflow: "auto"}}>
+        <table style={{overflow: 'auto'}}
+               className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2">
+          <thead>
+          <tr>
+            <th>Order</th>
+            <th>Market</th>
+            <th>Side</th>
+            <th>Amount</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>LRC Fee</th>
+            <th>Filled</th>
+            <th>Created</th>
+            <th>Expired</th>
+            <th>Status</th>
+          </tr>
+          </thead>
+          <tbody>
+          {
+            orders.items.map((item, index) => {
+              const orderFm = new OrderFm(item)
+              const actions = {
+                gotoDetail: () => props.dispatch({type: 'modals/showModal', payload: {id: 'orderDetail', order: item}})
+              };
+              return (
+                <tr key={index}>
+                  <td>{renders.hash(orderFm, actions)}</td>
+                  <td>{orderFm.getMarket()}</td>
+                  <td>{renders.side(orderFm)}</td>
+                  <td>{orderFm.getAmount()}</td>
+                  <td>{orderFm.getPrice()}</td>
+                  <td>{orderFm.getTotal()}</td>
+                  <td>{orderFm.getLRCFee()}</td>
+                  <td>{orderFm.getFilledPercent()}%</td>
+                  <td>{orderFm.getCreateTime()}</td>
+                  <td>{orderFm.getExpiredTime()}</td>
+                  <td>{renders.status(orderFm,item.originalOrder,cancelOrder)}</td>
                 </tr>
-            </thead>
-            <tbody>
-                {
-                  orders.items.map((item,index)=>{
-                    const orderFm = new OrderFm(item)
-                    const actions = {
-                      gotoDetail:()=>props.dispatch({type:'modals/showModal',payload:{id:'orderDetail',order:item}})
-                    }
-                    return (
-                      <tr key={index}>
-                        <td>{renders.hash(orderFm,actions)}</td>
-                        <td>{orderFm.getMarket()}</td>
-                        <td>{renders.side(orderFm)}</td>
-                        <td>{orderFm.getAmount()}</td>
-                        <td>{orderFm.getPrice()}</td>
-                        <td>{orderFm.getTotal()}</td>
-                        <td>{orderFm.getLRCFee()}</td>
-                        <td>{orderFm.getFilledPercent()}%</td>
-                        <td>{orderFm.getCreateTime()}</td>
-                        <td>{orderFm.getExpiredTime()}</td>
-                        <td>{renders.status(orderFm)}</td>
-                     </tr>
-                    )
-                  })
-                }
-            </tbody>
-          </table>
-        </div>
-        <ListPagination list={orders}/>
-  </div>
+              )
+            })
+          }
+          </tbody>
+        </table>
+      </div>
+      <ListPagination list={orders}/>
+    </div>
   )
 }
 
 export const renders = {
-  hash: (fm,actions) => (
+  hash: (fm, actions) => (
     <a className="text-primary"
        onCopy={null}
        onClick={actions && actions.gotoDetail}
@@ -149,19 +163,19 @@ export const renders = {
   ),
   side: (fm) => (
     <div>
-      { fm.getSide() ==='buy' &&
-        <span className="text-success">{fm.getSide()}</span>
+      {fm.getSide() === 'buy' &&
+      <span className="text-success">{fm.getSide()}</span>
       }
-      { fm.getSide() ==='sell' &&
-        <span className="text-error">{fm.getSide()}</span>
+      {fm.getSide() === 'sell' &&
+      <span className="text-error">{fm.getSide()}</span>
       }
     </div>
   ),
-  status: (fm) => {
+  status: (fm,order,cancelOrder) => {
     const status = fm.getStatus()
     const cancleBtn = (
       <a className="ml5 fs12 color-black-2"
-         onClick={null}>
+         onClick={()=> cancelOrder(order)}>
         {intl.get('order.no')}
       </a>
     )
@@ -184,7 +198,7 @@ export const renders = {
     return (
       <span>
         {statusNode}
-        {status === 'ORDER_OPENED' && cancleBtn }
+        {status === 'ORDER_OPENED' && cancleBtn}
       </span>
     )
   },

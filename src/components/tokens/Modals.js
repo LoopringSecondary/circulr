@@ -46,15 +46,11 @@ function Modals(props) {
       </Containers.Modals>
       <Containers.Modals id="convertToken" >
         <UiContianers.Modals id="convertToken">
-          <Containers.Sockets id="balance">
-            <Containers.Sockets id="marketcap">
               <Containers.Wallet>
                 <Containers.Convert >
                   <Convert/>
                 </Containers.Convert>
               </Containers.Wallet>
-            </Containers.Sockets>
-          </Containers.Sockets>
         </UiContianers.Modals>
       </Containers.Modals>
     </div>

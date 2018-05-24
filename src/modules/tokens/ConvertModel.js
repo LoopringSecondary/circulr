@@ -4,7 +4,6 @@ import {toBig} from "LoopringJS/common/formatter";
 export default {
   namespace: 'convert',
   state: {
-    token: 'ETH',
     amount: toBig(0),
     isMax: false,
     gasPrice: 10,
@@ -57,21 +56,16 @@ export default {
     }
   },
   effects: {
-    * amountChange({payload}, {select, put}) {
+    * amountChange({payload}, {put}) {
       const {amount} = payload;
-      const {token} = yield select((state) => state.convert);
-      const assets = yield select((state) => getAssetsByToken(state, token, true));
-      const outBalance = assets.balance.lt(toBig(amount));
       yield put({type: "setAmount", payload: {amount:toBig(amount)}});
-      yield put({type: "setOutBalance", payload: {outBalance}})
     },
     * gasPriceChange({payload}, {select, put}) {
-      const {gasPrice} = payload;
-      const {token, isMax, gasLimit} = yield select((state) => state.convert);
+      const {gasPrice,token,gasLimit,balance} = payload;
+      const {isMax} = yield select((state) => state.convert);
       if (isMax && token.toLowerCase() === 'eth') {
-        const assets = yield select((state) => getAssetsByToken(state, token));
-        const gas = toBig(gasPrice).times(gasLimit).times(1e9);
-        const amount = assets.balance.minus(gas).minus(0.1).isPositive() ? assets.balance.minus(gas).minus(0.1) : toBig(0);
+        const gas = toBig(gasPrice).times(gasLimit).div(1e9);
+        const amount = balance.minus(gas).minus(0.1).isPositive() ? balance.minus(gas).minus(0.1) : toBig(0);
         yield put({type: 'amountChange', payload: {amount}})
       }
       yield put({type: 'setGasPrice', payload: {gasPrice}})

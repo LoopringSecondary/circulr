@@ -1,6 +1,6 @@
 import React from 'react'
 import FillFormater from '../../modules/fills/formatters'
-import {Spin} from 'antd'
+import {Spin,Pagination} from 'antd'
 
 export default class Fills extends React.Component {
 
@@ -24,9 +24,23 @@ export default class Fills extends React.Component {
     })
   }
 
+   onChange = (page, pageSize) => {
+     const {order} = this.props;
+    this.setState({
+      loading: true,
+      pageIndex: page,
+      pageSize: pageSize
+    }, () =>   window.RELAY.ring.getFills({pageIndex: page, pageSize: pageSize, orderHash: order.originalOrder.hash}).then(res => {
+      if (!res.error) {
+        this.setState({fills: res.result.data, loading: false, total: res.result.total})
+      }else{
+        this.setState({fills: [], loading: false, total: 0})
+      }
+    }));
+  };
 
   render(){
-    const {fills,loading} = this.state;
+    const {fills,loading,pageSize,pageIndex,total} = this.state;
     return(
       <Spin spinning={loading}>
       <table style={{overflow:'auto'}} className="table table-dark table-striped table-hover table-compact text-left">
@@ -43,7 +57,7 @@ export default class Fills extends React.Component {
         </thead>
         <tbody>
         {fills.length > 0 && fills.map((fill,index) =>{
-          const fm = new FillFormater.FillFm(fill)
+          const fm = new FillFormater.FillFm(fill);
            return <tr key={index}>
               <td>{fm.getRingIndex()}</td>
               <td>{fm.getAmount()}</td>
@@ -53,8 +67,7 @@ export default class Fills extends React.Component {
               <td>{fm.getLRCReward()}</td>
               <td>{fm.getCreateTime()}</td>
             </tr>
-        }
-        ) }
+        })}
         {
           fills.length ===0 && <div>
             NO Data
@@ -62,6 +75,8 @@ export default class Fills extends React.Component {
         }
         </tbody>
       </table>
+        {fills.length > 0 &&  <Pagination total={total} current={pageIndex} pageSize={pageSize} onChange={this.onChange}
+                      className='text-right'/>}
       </Spin>
     )
   }
