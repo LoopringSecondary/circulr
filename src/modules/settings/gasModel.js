@@ -7,7 +7,8 @@ export default {
   state: {
     ...storage.settings.getGas(),
     tabSelected:'easy',
-    fixedGasLimit:0
+    fixedGasLimit:0,
+    visible:false
   },
   effects:{
   },
@@ -39,6 +40,13 @@ export default {
       return  {
         ...state,
         tabSelected
+      };
+    },
+    visibleChange(state, { payload }) {
+      const {visible} = payload
+      return  {
+        ...state,
+        visible
       };
     },
   }
