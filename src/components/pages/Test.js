@@ -28,7 +28,7 @@ const TestModal = (props)=>{
       <span>
         <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'txDetail'})}>Transation detail</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'fillDetail'})}>Fill detail</Button></span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'ringDetail'})}>Fill detail</Button></span>
       <span>
         <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'userCenter'})}>UserCenter</Button></span>
       <span>
