@@ -6,16 +6,16 @@ import GasFee from './GasFee'
 function Modals(props) {
   return (
     <div>
-      <Containers.Modals id="setting">
-        <UiContianers.Modals id="setting">
+      <Containers.Layers id="setting">
+        <UiContianers.Panels id="setting" position="right" width="30vw">
           <Setting />
-        </UiContianers.Modals>
-      </Containers.Modals>
-      <Containers.Modals id="gasFee">
-        <UiContianers.Modals id="gasFee" wrapClassName="">
+        </UiContianers.Panels>
+      </Containers.Layers>
+      <Containers.Layers id="gasFee">
+        <UiContianers.Panels id="gasFee" position="right">
           <GasFee />
-        </UiContianers.Modals>
-      </Containers.Modals>
+        </UiContianers.Panels>
+      </Containers.Layers>
 
     </div>
   )

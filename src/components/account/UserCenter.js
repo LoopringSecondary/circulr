@@ -13,7 +13,7 @@ function UserCenter(props) {
     	        </div>
     	        <div className="blk-lg"></div>
     	        <div className="address">
-    	            <div className="text text-color-dark-1">{window.WALLET.address}</div>
+    	            <div className="text text-color-dark-1">{window.WALLET && window.WALLET.address}</div>
     	            <div className="blk"></div>
     	            <button className="btn btn-block btn-o-dark">Copy</button>
     	        </div>

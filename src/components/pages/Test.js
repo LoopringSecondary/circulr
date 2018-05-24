@@ -22,37 +22,37 @@ const TestModal = (props)=>{
   return (
     <div className="group-span" style={{padding:'10px'}}>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'orderDetail'})}>order detail</Button></span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'orderDetail'})}>order detail</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'placeOrderConfirm'})}>order placeOrderConfirm</Button></span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderConfirm'})}>order placeOrderConfirm</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'txDetail'})}>Transation detail</Button></span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'txDetail'})}>Transation detail</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'fillDetail'})}>Fill detail</Button></span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'ringDetail'})}>Fill detail</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'userCenter'})}>UserCenter</Button></span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'userCenter'})}>UserCenter</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'setting'})}>Setting</Button></span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'setting'})}>Setting</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'receiveToken',symbol:'LRC'})}>Receive</Button></span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'receiveToken',symbol:'LRC'})}>Receive</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'transferToken'})}>Transfer</Button></span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'transferToken'})}>Transfer</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'transferConfirm'})}>transferConfirm</Button></span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'transferConfirm'})}>transferConfirm</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'convertToken'})}>Convert</Button>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'convertToken'})}>Convert</Button>
       </span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'ListAllTickers'})}>All Tickers</Button>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'ListAllTickers'})}>All Tickers</Button>
       </span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'gasFee'})}>Gas Fee</Button>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'gasFee'})}>Gas Fee</Button>
       </span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'placeOrderSteps'})}>Steps</Button>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderSteps'})}>Steps</Button>
       </span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'placeOrderLRCFee'})}>LRC Fee</Button>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderLRCFee'})}>LRC Fee</Button>
       </span>
 
     </div>
@@ -77,7 +77,9 @@ const Test = (props)=>{
         <TestComp />
       </Containers.Orders>
       <Containers.Modals>
+        <Containers.Layers>
         <TestModal />
+      </Containers.Layers>
       </Containers.Modals>
       <Containers.Sockets>
         <TestScokets />
