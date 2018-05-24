@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'dva/router';
 
 function UserCenter(props) {
 
@@ -20,13 +21,13 @@ function UserCenter(props) {
     	        <div className="blk-lg"></div>
     	        <div className="menu">
     	            <ul>
-    	                <li><a  className="side-receive" onClick={() =>userCenter.showModal({id:'receiveToken',symbol:null}) }><i className="icon-receive"></i><span>Receive</span></a></li>
-    	                <li><a href="#" className="side-send"><i className="icon-send"></i><span>Send</span></a></li>
-    	                <li><a href="#"><i className="icon-trade"/><span>Trade</span></a></li>
-    	                <li><a href="#" className="side-settings"><i className="icon-cog-o"></i><span>Settings</span></a></li>
-    	                <li><a href="#" className="side-airdrop"><i className="icon-gift-o"></i><span>Airdrop</span></a></li>
-    	                <li><a href="#" className="side-help"><i className="icon-question-o"></i><span>Help</span></a></li>
-    	                <li><a href="#" className="side-feedback"><i className="icon-pencil"></i><span>Feedbak</span></a></li>
+    	                <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'receiveToken',symbol:null}) }} className="side-receive" ><i className="icon-receive"></i><span>Receive</span></a></li>
+    	                <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'transferToken',symbol:null}) }} className="side-send"><i className="icon-send"></i><span>Send</span></a></li>
+    	                <li><Link to="/trade"><i className="icon-trade"/><span>Trade</span></Link></li>
+    	                <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'setting',symbol:null}) }} className="side-settings"><i className="icon-cog-o"></i><span>Settings</span></a></li>
+    	                <li hidden><a className="side-airdrop"><i className="icon-gift-o"></i><span>Airdrop</span></a></li>
+    	                <li><a className="side-help"><i className="icon-question-o"></i><span>Help</span></a></li>
+    	                <li><a className="side-feedback"><i className="icon-pencil"></i><span>Feedbak</span></a></li>
     	            </ul>
     	        </div>
     	    </div>

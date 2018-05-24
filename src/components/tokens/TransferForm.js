@@ -110,7 +110,7 @@ function TransferForm(props) {
           }
           const extraData = {from:wallet.address, to:values.to, tokenSymbol:tokenSelected.symbol, amount:values.amount, gas:totalGas.toString(10)}
           dispatch({
-            type: 'modals/showModal',
+            type: 'layers/showLayer',
             payload: {
               id:'transferConfirm',
               tx,
@@ -120,7 +120,7 @@ function TransferForm(props) {
         } else {
           //TODO show unlock modal
           dispatch({
-            type: 'modals/hideModal',
+            type: 'layers/hideLayer',
             payload: {
               id:'transfer',
             }

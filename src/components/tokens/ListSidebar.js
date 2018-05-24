@@ -6,6 +6,7 @@ import TokensFm from 'modules/tokens/TokensFm'
 import config from 'common/config'
 import {Currency} from 'modules/containers'
 import {FormatAmount} from 'modules/formatter/FormatNumber'
+import routeActions from 'common/utils/routeActions'
 
 function ListTokensSidebar(props) {
   console.log('ListTokensSidebar component render',props)
@@ -98,7 +99,7 @@ function ListTokensSidebar(props) {
   const gotoTrade = (item) => {
     const foundMarket = config.getTokenSupportedMarket(item.symbol)
     if (foundMarket) {
-      window.routeActions.gotoPath('/trade/' + foundMarket)
+      routeActions.gotoPath('/trade/' + foundMarket)
       return
     }
     Notification.open({
