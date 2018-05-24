@@ -6,7 +6,8 @@ export default {
   namespace,
   state: {
     ...storage.settings.getGas(),
-    tabSelected:'easy'
+    tabSelected:'easy',
+    fixedGasLimit:0
   },
   effects:{
   },
@@ -15,7 +16,8 @@ export default {
       const {gasLimit} = payload
       return  {
         ...state,
-        gasLimit : gasLimit || state.gasLimit,
+        fixedGasLimit : gasLimit || state.fixedGasLimit,
+        gasLimit:0,
         tabSelected:'easy'
       };
     },
