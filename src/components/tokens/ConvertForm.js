@@ -9,13 +9,15 @@ import Currency from 'modules/settings/CurrencyContainer'
 import {connect} from "dva";
 import {Containers} from 'modules'
 import GasFee from '../setting/GasFee1'
+import Notification from '../../common/loopringui/components/Notification'
+import intl from 'react-intl-universal';
 
 const WETH = Contracts.WETH;
 
 function ConvertForm(props) {
 
   const {wallet, convert,convertToken, balances, prices,form,gasPrice} = props;
-  const {amount} = convert;
+  const {amount,isMax} = convert;
   const {token} = convertToken;
   const type = token.toLowerCase() === 'eth' ? 'deposit': 'withdraw';
   const gasLimit = config.getGasLimitByType(type).gasLimit;
@@ -23,7 +25,6 @@ function ConvertForm(props) {
   const account = wallet.account || window.account;
   const assets = getBalanceBySymbol({balances, symbol: token, toUnit: true});
   const tf = new TokenFormatter({symbol:token});
-
   const handleAmountChange = (e) => {
     convert.setAmount({amount: e.target.value});
   };
@@ -60,8 +61,23 @@ function ConvertForm(props) {
       };
 
         const signTx = await account.signEthereumTx(tx);
-        //  const res = await window.ETH.sendRawTransaction(signTx);
-        console.log(signTx)
+        window.ETH.sendRawTransaction(signTx).then(res => {
+          convert.reset();
+          if(!res.error){
+            Notification.open({
+              message:intl.get('token.convert_succ_notification_title'),
+              description:`${intl.get('token.result_convert_success', {amount, token})}`,
+              type:'success',
+              actions:(
+                <div>
+                  <Button className="alert-btn mr5"
+                          onClick={() => window.open(`https://etherscan.io/tx/${res.result}`, '_blank')}> {intl.get('token.transfer_result_etherscan')}
+                  </Button>
+                </div>
+              )
+            })
+          }
+        });
      }
     });
 
@@ -72,7 +88,13 @@ function ConvertForm(props) {
   };
 
   const onGasChange = ({gasPrice}) => {
-    convert.gasPriceChange({gasPrice,token,gasLimit})
+    let amount  = amount;
+    if (isMax && token.toLowerCase() === 'eth') {
+      const gas = toBig(gasPrice).times(gasLimit).div(1e9);
+      amount = assets.balance.minus(gas).minus(0.1).isPositive() ? assets.balance.minus(gas).minus(0.1) : toBig(0);
+      convert.setAmount({amount});
+    }
+    form.setFieldsValue({amount})
   };
 
   return (
@@ -122,7 +144,7 @@ function ConvertForm(props) {
                   <Containers.Gas initState={{gasLimit}}>
                     <GasFee onGasChange={onGasChange}/>
                   </Containers.Gas>
-            <span>{getGas()}</span>n
+            <span>{getGas()}</span>
                     <span className="offset-md"> ETH ≈ <Currency/> {getWorthBySymbol({prices, symbol: 'ETH', amount:getGas()})}</span>
                   </span>
         </div>

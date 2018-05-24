@@ -40,7 +40,7 @@ const TestModal = (props)=>{
       <span>
         <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'transferConfirm'})}>transferConfirm</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'convertToken',token:'WETH'})}>Convert</Button>
+        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'convertToken',token:'ETH'})}>Convert</Button>
       </span>
       <span>
         <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'ListAllTickers'})}>All Tickers</Button>
