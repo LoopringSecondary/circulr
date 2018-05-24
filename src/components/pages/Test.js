@@ -32,7 +32,7 @@ const TestModal = (props)=>{
       <span>
         <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'userCenter'})}>UserCenter</Button></span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'setting'})}>Setting</Button></span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'setting'})}>Setting</Button></span>
       <span>
         <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'receiveToken',symbol:'LRC'})}>Receive</Button></span>
       <span>
@@ -43,7 +43,7 @@ const TestModal = (props)=>{
         <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'convertToken'})}>Convert</Button>
       </span>
       <span>
-        <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'ListAllTickers'})}>All Tickers</Button>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'ListAllTickers'})}>All Tickers</Button>
       </span>
       <span>
         <Button className="" type="primary" onClick={props.modals.showModal.bind(this,{id:'gasFee'})}>Gas Fee</Button>
@@ -77,7 +77,9 @@ const Test = (props)=>{
         <TestComp />
       </Containers.Orders>
       <Containers.Modals>
+        <Containers.Layers>
         <TestModal />
+      </Containers.Layers>
       </Containers.Modals>
       <Containers.Sockets>
         <TestScokets />
