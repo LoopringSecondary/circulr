@@ -42,7 +42,10 @@ export const copyToPasteboard = (value, e) => {
 
 // locales for number format
 export function getFormatNum(number) {
-  number = toBig(number).toString(10).split('.');
+  if(!(typeof number === 'string' && number.indexOf('.') !== -1)){
+    number = toBig(number).toString(10);
+  }
+  number = number.split('.');
   let a = number[0];
   let b = number[1];
   a = intl.get('global.amount', {amount: toNumber(a)});
