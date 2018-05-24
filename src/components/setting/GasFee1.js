@@ -45,6 +45,7 @@ const GasFeeForm = (props) => {
               onGasChange({gasPrice:p})
             }
             gas.gasChange({gasPrice:p, gasLimit:l})
+            gas.visibleChange({visible:false})
           }
           break;
         case 'advance':
@@ -55,6 +56,7 @@ const GasFeeForm = (props) => {
             if(onGasChange) {
               onGasChange({gasPrice:p, gasLimit:l})
             }
+            gas.visibleChange({visible:false})
           }
           break;
       }
@@ -72,6 +74,10 @@ const GasFeeForm = (props) => {
       )
     }
     return <div>{`${title} 无`}</div>
+  }
+
+  const handleVisibleChange = (visible) => {
+    gas.visibleChange({visible})
   }
 
   return (
@@ -178,6 +184,8 @@ const GasFeeForm = (props) => {
                  </div>
                </div>
              }
+             visible={gas.visible}
+             onVisibleChange={handleVisibleChange}
              trigger="click">
       <a className="fs12 pointer color-black-3 mr5"><Icon type="edit" /></a>
     </Popover>
