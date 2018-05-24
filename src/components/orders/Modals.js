@@ -48,7 +48,9 @@ function Modals(props) {
         <UiContianers.Modals id="cancelOrderConfirm" wrapClassName="">
           <Containers.Settings>
             <Containers.Wallet>
-          <CancelOrderConfirm />
+            <Containers.Gas>
+              <CancelOrderConfirm />
+            </Containers.Gas>
             </Containers.Wallet>
           </Containers.Settings>
         </UiContianers.Modals>

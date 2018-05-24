@@ -6,9 +6,10 @@ import Notification from '../../common/loopringui/components/Notification'
 import moment from 'moment'
 import config from '../../common/config'
 import Contracts from "LoopringJS/ethereum/contracts/Contracts"
-import comFormatter from '../../modules/formatter/common'
-
-
+import comFormatter from 'modules/formatter/common'
+import {getLastGas} from 'modules/settings/formatters'
+import GasFee from '../setting/GasFee1'
+import {Containers} from 'modules'
 
 const LoopringProtocol = Contracts.LoopringProtocol;
 
@@ -25,10 +26,10 @@ class CancelOrderConfirm extends React.Component {
   cancel = () => {
     const {cancelOrderConfirm} = this.props;
     cancelOrderConfirm.hideModal({id:'cancelOrderConfirm'});
-    console.log('cancel_',cancelOrderConfirm)
   };
 
   ConfirmCancel = async () => {
+    console.log('gasPrice',getLastGas(this.props.gas).gasPrice);
     const {cancelOrderConfirm,settings,wallet} = this.props;
     const {type, market,order} = cancelOrderConfirm;
     const {now} =  this.state;
@@ -39,7 +40,7 @@ class CancelOrderConfirm extends React.Component {
       to:settings.trading.contract.address
     };
     tx.gasLimit = config.getGasLimitByType(type).gasLimit;
-    tx.gasPrice = '0x2540be400';
+    tx.gasPrice = toHex(toBig(getLastGas(this.props.gas).gasPrice).times(1e9));
     tx.nonce = toHex(await window.STORAGE.wallet.getNonce(window.WALLET.address));
     switch (type){
       case 'cancelOrder':
@@ -63,29 +64,29 @@ class CancelOrderConfirm extends React.Component {
         throw new Error('Wrong cancel order type ')
     }
     const account = wallet.account || window.account;
-    this.setState({loading: true});
+  //  this.setState({loading: true});
     const signedTx = await account.signEthereumTx(tx);
-    window.ETH.sendRawTransaction(signedTx).then(({response, rawTx}) => {
-      _this.cancel();
-      _this.setState({loading: false});
-      if (!response.error) {
-        // window.STORAGE.transactions.addTx({hash: response.result, owner: account.address});
-        window.STORAGE.wallet.setWallet({address: window.WALLET.getAddress(), nonce: tx.nonce});
-        window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.getAddress()})
-        Notification.open({
-          message: type === 'cancelOrder' ? intl.get('order.cancel_order_success') : intl.get('order.cancel_all_success', {pair: market}),
-          type: "success",
-          description: (<Button className="alert-btn mr5"
-                                onClick={() => window.open(`https://etherscan.io/tx/${response.result}`, '_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )
-        });
-      } else {
-        Notification.open({
-          message: type === 'cancelOrder' ? intl.get('order.cancel_order_failed') : intl.get('order.cancel_all_failed', {pair: market}),
-          type: "error",
-          description: response.error.message
-        })
-      }
-    })
+    // window.ETH.sendRawTransaction(signedTx).then(({response, rawTx}) => {
+    //   _this.cancel();
+    //   _this.setState({loading: false});
+    //   if (!response.error) {
+    //     // window.STORAGE.transactions.addTx({hash: response.result, owner: account.address});
+    //     window.STORAGE.wallet.setWallet({address: window.WALLET.getAddress(), nonce: tx.nonce});
+    //     window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.getAddress()})
+    //     Notification.open({
+    //       message: type === 'cancelOrder' ? intl.get('order.cancel_order_success') : intl.get('order.cancel_all_success', {pair: market}),
+    //       type: "success",
+    //       description: (<Button className="alert-btn mr5"
+    //                             onClick={() => window.open(`https://etherscan.io/tx/${response.result}`, '_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )
+    //     });
+    //   } else {
+    //     Notification.open({
+    //       message: type === 'cancelOrder' ? intl.get('order.cancel_order_failed') : intl.get('order.cancel_all_failed', {pair: market}),
+    //       type: "error",
+    //       description: response.error.message
+    //     })
+    //   }
+    // })
   };
 
   computeTime = (until) => {
@@ -101,7 +102,7 @@ class CancelOrderConfirm extends React.Component {
     const {cancelOrderConfirm} = this.props;
     const {loading,now} = this.state;
     const { type,market,order} = cancelOrderConfirm;
-    const title = type === 'order' ? intl.get('order.confirm_cancel_order') : intl.get('order.confirm_cancel_all', {pair: market || ''})
+    const title = type === 'cancelOrder' ? intl.get('order.confirm_cancel_order') : intl.get('order.confirm_cancel_all', {pair: market || ''})
     return (
       <Card title={title}>
         {type === 'cancelOrder' &&
@@ -127,15 +128,13 @@ class CancelOrderConfirm extends React.Component {
               <div className="color-black-2 fs14">{intl.get('orders.auto_cancel_not_cost_gas')}</div>
             </div>
             {toNumber(order.validUntil) > toNumber(now) && <div className="col-auto">
-              {
-                !loading &&
+              {!loading &&
                 <a onClick={this.cancel} className="color-primary-1 fs12 cursor-pointer">
                   {intl.get('orders.wait_expire')}
                   <Icon type="right"/>
                 </a>
               }
-              {
-                loading &&
+              {loading &&
                 <a className="color-black-3 fs12 cursor-pointer">
                   {intl.get('orders.wait_expire')}
                 </a>
@@ -155,16 +154,17 @@ class CancelOrderConfirm extends React.Component {
               <div className="color-black-2 fs14">{intl.get('orders.manual_cancel_cost_gas')}</div>
             </div>
             <div className="col-auto">
-
-              {
-                !loading &&
+              {!loading && <div>
                 <a onClick={this.ConfirmCancel} className="color-primary-1 fs12 cursor-pointer">
                   {intl.get('orders.confirm_to_cancel')}
                   <Icon type="right"/>
                 </a>
+                  <Containers.Gas initState={{}}>
+                    <GasFee gasLimit={200000}/>
+                  </Containers.Gas>
+              </div>
               }
-              {
-                loading &&
+              {loading &&
                 <a className="color-black-3 fs12 cursor-pointer">
                   {intl.get('orders.canceling')}
                 </a>
