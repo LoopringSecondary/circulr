@@ -27,6 +27,9 @@ const encodeCancelOrder = (signedOrder, amount) => {
   const addresses = [owner, tokenS, tokenB, walletAddress,authAddr];
   amount = amount || (buyNoMoreThanAmountB ? amountB : amountS);
   const orderValues = [amountS, amountB, validSince, validUntil, lrcFee, amount];
+
+   console.log('cancel_addresses:',addresses);
+   console.log('cancel_orderValues:',orderValues);
   return LoopringProtocol.encodeInputs('cancelOrder',{addresses, orderValues, buyNoMoreThanAmountB, marginSplitPercentage, v, r, s});
 };
 

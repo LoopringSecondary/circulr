@@ -5,6 +5,8 @@ import Detail from './Detail'
 import PlaceOrderConfirm from './PlaceOrderConfirm'
 import PlaceOrderSteps from './PlaceOrderSteps'
 import PlaceOrderLRCFee from './PlaceOrderLRCFee'
+import CancelOrderConfirm  from './CancelOrderConfirm'
+
 function Modals(props) {
   return (
     <div>
@@ -40,6 +42,15 @@ function Modals(props) {
       <Containers.Modals id="placeOrderLRCFee">
         <UiContianers.Modals id="placeOrderLRCFee" wrapClassName="">
           <PlaceOrderLRCFee />
+        </UiContianers.Modals>
+      </Containers.Modals>
+      <Containers.Modals id="cancelOrderConfirm">
+        <UiContianers.Modals id="cancelOrderConfirm" wrapClassName="">
+          <Containers.Settings>
+            <Containers.Wallet>
+          <CancelOrderConfirm />
+            </Containers.Wallet>
+          </Containers.Settings>
         </UiContianers.Modals>
       </Containers.Modals>
     </div>
