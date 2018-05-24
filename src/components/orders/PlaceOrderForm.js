@@ -565,8 +565,12 @@ class PlaceOrderForm extends React.Component {
                   </div>
                 </div>
                 <div className="blk"></div>
-                <Button type="primary" className="btn-block" onClick={handleSubmit} loading={placeOrder.submitButtonLoading}>Place Order</Button>
-                <Button type="danger" className="btn-block">Place Order</Button>
+                {
+                  side === 'buy' && <Button type="primary" className="btn-block" onClick={handleSubmit} loading={placeOrder.submitButtonLoading}>Place Order</Button>
+                }
+                {
+                  side === 'sell' && <Button type="danger" className="btn-block" onClick={handleSubmit} loading={placeOrder.submitButtonLoading}>Place Order</Button>
+                }
               </div>
             </div>
           </div>
