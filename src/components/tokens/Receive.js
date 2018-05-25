@@ -82,8 +82,8 @@ export default class Receive extends React.Component {
           <h3>My Ethereum Address</h3>
         </div>
         <div className="Receive-qrcode"><QRCode value={address} size={240}/></div>
-        {symbol && toBig(amount).isPositive() && toBig(this.getNeeded()).isPositive() && <div className='fs3 color-black-1 mt10'>
-          {intl.get('token.recommended_value')} {this.getNeeded()} {symbol.toUpperCase()}
+        {symbol && toBig(amount).gt(0) && toBig(this.getNeeded()).gt(0) && <div className='fs3 color-black-1 mt10'>
+          {intl.get('token.recommended_value')} {this.getNeeded()}  {symbol.toUpperCase()}
         </div>}
         <div className="form-dark">
         <Input.Group compact  className="d-flex">
