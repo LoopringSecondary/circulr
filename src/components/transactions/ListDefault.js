@@ -72,10 +72,10 @@ export default function ListTransaction(props) {
                       <tbody>
                           {
                             list.items.map((item,index)=>{
-                              const txFm = new TxFm(item)
+                              const txFm = new TxFm(item);
                               const actions = {
                                 gotoDetail:()=>props.dispatch({type:'layers/showLayer',payload:{id:'txDetail',tx:item}})
-                              }
+                              };
                               return (
                                 <tr key={index}>
                                   <td className="text-left">{txFm.getType()}</td>
