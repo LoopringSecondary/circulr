@@ -166,7 +166,7 @@ function TransferForm(props) {
 
   if(transfer.token && form.getFieldValue('amount') !== undefined && form.getFieldValue('amount') !== '') {
     let tokenBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.token, toUnit:true}).balance
-    const formBalance = fm.toBig(form.getFieldValue('amount'))
+    const formBalance = form.getFieldValue('amount') ? fm.toBig(form.getFieldValue('amount')) : fm.toBig(0)
     if(transfer.token === 'ETH') {
       if(transfer.isMax) {
         tokenBalance = tokenBalance.gt(totalGas) ?  tokenBalance.minus(totalGas) : fm.toBig(0);
