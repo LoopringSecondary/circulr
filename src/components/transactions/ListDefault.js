@@ -77,7 +77,7 @@ export default function ListTransaction(props) {
                                 gotoDetail:()=>props.dispatch({type:'layers/showLayer',payload:{id:'txDetail',tx:item}})
                               };
                               return (
-                                <tr key={index}>
+                                <tr key={index} className="cursor-pointer" onClick={actions.gotoDetail}>
                                   <td className="text-left">{txFm.getType()}</td>
                                   <td className="text-left">{renders.value(txFm)}</td>
                                   <td className="text-left">{txFm.getGas()} ETH</td>

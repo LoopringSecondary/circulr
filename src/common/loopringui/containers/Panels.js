@@ -44,6 +44,11 @@ const PanelsWrapper = (props)=>{
       return <span></span>
     }
   }
-  return <Drawer sidebar={sidebar()} {...layerProps} children={<div></div>}/>
+  if(layer.visible){
+    return <Drawer sidebar={sidebar()} {...layerProps} children={<div></div>}/>
+  }else{
+    return <span></span>
+  }
+
 }
 export default PanelsWrapper
