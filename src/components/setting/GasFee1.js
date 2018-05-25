@@ -85,7 +85,7 @@ const GasFeeForm = (props) => {
              content={
                <div>
                  <div className="pb10 fs16 color-black-1 zb-b-b">Gas Fee</div>
-                 <div className="zb-b">
+                 <div className="zb-b"  style={{width:'320px'}}>
                    <Tabs defaultActiveKey="easy" onChange={tabChange}>
                      <Tabs.TabPane tab={<div className="pb5">Recommended</div>} key="easy">
                        <Form.Item label={null} colon={false} className="mb0">
@@ -138,7 +138,7 @@ const GasFeeForm = (props) => {
                        <div className="fs12 color-black-3" hidden>
                          { intl.get('settings.gasPrice')+':  '+ gasPriceStore.last+" Gwei" }
                        </div>
-                       <div className="fs14 color-black-1 pl10 pr10" style={{minWidth:'300px'}}>
+                       <div className="fs14 color-black-1 pl10 pr10">
                          <div className="mb15">
                            <Form.Item label='Gas Limit' colon={false} className="mb0">
                              {form.getFieldDecorator('gasLimit', {
