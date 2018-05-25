@@ -26,6 +26,7 @@ const unlockWithMetaMask = () => {
         })
         return
       }
+      window.WALLET = {address:window.web3.eth.accounts[0], unlockType:'metaMask'};
       window.account = new MetaMaskAccount(window.web3);
       Notification.open({type:'success',message:'解锁成功',description:'unlock'});
     })
@@ -51,7 +52,7 @@ if(unlockedType && unlockedType === 'metaMask' && window.web3 && window.web3.eth
     unlockedType = 'address'
     window.WALLET = {address:unlockedAddress, unlockType:unlockedType};
     Notification.open({
-      type:'warning',
+      type:'info',
       message:intl.get('wallet.in_watch_only_mode_title'),
       description:intl.get('wallet.unlock_by_cookie_address_notification')
     });

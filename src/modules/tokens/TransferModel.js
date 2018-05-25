@@ -19,7 +19,7 @@ export default {
   },
   reducers: {
     reset(state, {payload}) {
-      const {assignedToken} = payload
+      const assignedToken = payload && payload.assignedToken ? payload.assignedToken : ''
       return {
         ...state,
         assignedToken: assignedToken || '',
