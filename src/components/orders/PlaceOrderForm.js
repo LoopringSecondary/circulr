@@ -10,16 +10,18 @@ import moment from 'moment'
 import ReactDOM from 'react-dom'
 import Notification from 'LoopringUI/components/Notification'
 import {createWallet} from 'LoopringJS/ethereum/account';
+import {getLastGas, getEstimateGas} from 'modules/settings/formatters'
 var _ = require('lodash');
 
 class PlaceOrderForm extends React.Component {
 
   render() {
-    const {form, placeOrder, settings, balance, wallet, marketcap, pendingTx, modals} = this.props
+    const {form, placeOrder, settings, balance, wallet, marketcap, pendingTx, gas, dispatch} = this.props
+    const gasResult = getLastGas(gas)
+    const gasPrice = gasResult.gasPrice
     const milliLrcFee = placeOrder.sliderMilliLrcFee >0 ? placeOrder.sliderMilliLrcFee : settings.trading.lrcFee
     const ttlValue = placeOrder.timeToLive >0 ? placeOrder.timeToLive : settings.trading.timeToLive
     const ttlUnit = placeOrder.timeToLiveUnit || settings.trading.timeToLiveUnit
-
     const {pair, side, priceInput, amountInput} = placeOrder
     const amount = orderFormatter.isValidAmount(amountInput) ? fm.toBig(amountInput) : fm.toBig(0)
     const price = orderFormatter.isValidAmount(amountInput) ? fm.toBig(priceInput) : fm.toBig(0)
@@ -82,18 +84,12 @@ class PlaceOrderForm extends React.Component {
       let price = '0', amount = '0'
       const marketConfig = config.getMarketBySymbol(left.symbol, right.symbol)
       if (type === 'price') {
-        price = e.target.value.toString()
-        if(orderFormatter.isValidAmount(price)) {
-          price = orderFormatter.formatPriceByMarket(price, marketConfig)
-        }
+        price = orderFormatter.formatPriceByMarket(e.target.value.toString(), marketConfig)
         //e.target.value = price
         placeOrder.priceChange({priceInput:price})
       } else if (type === 'amount') {
-        amount = e.target.value.toString()
-        if(orderFormatter.isValidAmount(amount)) {
-          const tokenRConfig = config.getTokenBySymbol(right.symbol)
-          amount = orderFormatter.formatAmountByMarket(amount, tokenRConfig, marketConfig)
-        }
+        const tokenRConfig = config.getTokenBySymbol(right.symbol)
+        amount = orderFormatter.formatAmountByMarket(e.target.value.toString(), tokenRConfig, marketConfig)
         //e.target.value = amount
         placeOrder.amountChange({amountInput:amount})
       }
@@ -338,7 +334,7 @@ class PlaceOrderForm extends React.Component {
           tradeInfo.delegateAddress = config.getDelegateAddress();
           tradeInfo.protocol = settings.trading.contract.address;
           tradeInfo.gasLimit = config.getGasLimitByType('approve').gasLimit;
-          tradeInfo.gasPrice = fm.toHex(Number(settings.trading.gasPrice) * 1e9);
+          tradeInfo.gasPrice = fm.toHex(Number(gasPrice) * 1e9);
           tradeInfo.pair = pair
           tradeInfo.side = side
 
@@ -363,7 +359,7 @@ class PlaceOrderForm extends React.Component {
 
           //TODO mock
           // const lrcBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:'LRC', toUnit:true})
-          // if(!lrcBalance || lrcBalance.balance.lessThan(900)){
+          // if(!lrcBalance || lrcBalance.balance.lt(900)){
           //   // TODO !await config.isinWhiteList(window.WALLET.getAddress())
           //   if(config.getChainId() !== 7107171){
           //     Notification.open({
@@ -408,7 +404,7 @@ class PlaceOrderForm extends React.Component {
             placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
             return
           }
-          await orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, pendingTx.items)
+          await orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, left.symbol, right.symbol, side, pendingTx.items, gasPrice)
           if(tradeInfo.error) {
             tradeInfo.error.map(item=>{
               if(item.value.symbol === 'ETH') {
@@ -418,7 +414,9 @@ class PlaceOrderForm extends React.Component {
                   type:'error',
                   actions:(
                     <div>
-                      <Button className="alert-btn mr5" onClick={modals.showModal.bind(this,{id:'receiveToken',symbol:'ETH'})}>{`${intl.get('tokens.options_receive')} ETH`}</Button>
+                      <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'ETH'}})}>
+                        {`${intl.get('tokens.options_receive')} ETH`}
+                      </Button>
                     </div>
                   )
                 })
@@ -429,7 +427,9 @@ class PlaceOrderForm extends React.Component {
                   type:'error',
                   actions:(
                     <div>
-                      <Button className="alert-btn mr5" onClick={modals.showModal.bind(this,{id:'receiveToken',symbol:'LRC'})}>{`${intl.get('tokens.options_receive')} LRC`}</Button>
+                      <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'LRC'}})}>
+                        {`${intl.get('tokens.options_receive')} LRC`}
+                      </Button>
                     </div>
                   )
                 })
@@ -454,7 +454,7 @@ class PlaceOrderForm extends React.Component {
 
     const showTradeModal = (tradeInfo, order, signed, unsigned) => {
       placeOrder.toConfirm({signed, unsigned})
-      modals.showModal({id:'placeOrderConfirm', side, pair, tradeInfo, order})
+      dispatch({type:'layers/showLayer', payload: {id: 'placeOrderConfirm', side, pair, tradeInfo, order}})
     }
 
     return (

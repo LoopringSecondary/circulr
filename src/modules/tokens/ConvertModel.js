@@ -65,7 +65,7 @@ export default {
       const {isMax} = yield select((state) => state.convert);
       if (isMax && token.toLowerCase() === 'eth') {
         const gas = toBig(gasPrice).times(gasLimit).div(1e9);
-        const amount = balance.minus(gas).minus(0.1).isPositive() ? balance.minus(gas).minus(0.1) : toBig(0);
+        const amount = balance.minus(gas).minus(0.1).gt(0) ? balance.minus(gas).minus(0.1) : toBig(0);
         yield put({type: 'amountChange', payload: {amount}})
       }
       yield put({type: 'setGasPrice', payload: {gasPrice}})

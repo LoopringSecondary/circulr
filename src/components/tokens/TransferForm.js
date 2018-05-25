@@ -51,7 +51,7 @@ function TransferForm(props) {
     if(transfer.token && tokenFormatter.isValidNumber(value)) {
       const token = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.token, toUnit:true})
       const v = fm.toBig(value)
-      return !v.lessThan(fm.toBig('0')) && !v.greaterThan(token.balance)
+      return !v.lt(fm.toBig('0')) && !v.gt(token.balance)
     } else {
       return false
     }
@@ -166,18 +166,18 @@ function TransferForm(props) {
 
   if(transfer.token && form.getFieldValue('amount') !== undefined && form.getFieldValue('amount') !== '') {
     let tokenBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.token, toUnit:true}).balance
-    const formBalance = fm.toBig(form.getFieldValue('amount'))
+    const formBalance = form.getFieldValue('amount') ? fm.toBig(form.getFieldValue('amount')) : fm.toBig(0)
     if(transfer.token === 'ETH') {
       if(transfer.isMax) {
         tokenBalance = tokenBalance.gt(totalGas) ?  tokenBalance.minus(totalGas) : fm.toBig(0);
       } else {
-        tokenBalance = formBalance.add(totalGas).gt(tokenBalance) ? tokenBalance.minus(totalGas) : formBalance
+        tokenBalance = formBalance.plus(totalGas).gt(tokenBalance) ? tokenBalance.minus(totalGas) : formBalance
       }
-      if(!formBalance.equals(tokenBalance)) {
+      if(!formBalance.isEqualTo(tokenBalance)) {
         form.setFieldsValue({"amount": tokenBalance.toString(10)})
       }
     } else {
-      if(transfer.isMax && !formBalance.equals(tokenBalance)) {
+      if(transfer.isMax && !formBalance.isEqualTo(tokenBalance)) {
         form.setFieldsValue({"amount": tokenBalance.toString(10)})
       }
     }
@@ -314,7 +314,7 @@ function TransferForm(props) {
               <span>Gas Fee</span>
               <span className="font-bold">
                 <Containers.Gas initState={{gasLimit}}>
-                  <GasFee /><span className="offset-md">{totalGas.toString(10)} ETH {gasWorth}</span>
+                  <GasFee  advanced={transfer.token.toLowerCase() === 'eth'}/><span className="offset-md">{totalGas.toString(10)} ETH {gasWorth}</span>
                 </Containers.Gas>
               </span>
             </div>
