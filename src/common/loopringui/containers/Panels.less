@@ -6,7 +6,7 @@
   right: 0;
   bottom: 0;
   overflow: hidden;
-  transition:transform 0.3s ease-out;
+  // transition:transform 0.3s ease-out;
   z-index:1001;
   &-sidebar {
     z-index: 2;
@@ -14,7 +14,6 @@
     transition: transform .3s ease-out;
     will-change: transform;
     overflow-y: auto;
-    // background: rgba(0,83,184,1);
   }
   &-draghandle {
     z-index: 1;
@@ -31,8 +30,7 @@
     opacity: 0;
     visibility: hidden;
     transition: all 0s ease-out;
-    background-color: rgba(0, 0, 0, 0.3);
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.4);
   }
   &-content {
     position: absolute;
@@ -87,12 +85,12 @@
 
 
   &&-right {
-    transform: translateX(100%);
+    // transform: translateX(100%);
     .@{drawerPrefixCls}-sidebar {
       right: 0;
       transform: translateX(100%);
       .@{drawerPrefixCls}-open& {
-        box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.15);
+        box-shadow: -4px 4px 4px rgba(0, 0, 0, 0.25);
       }
     }
     .@{drawerPrefixCls}-draghandle {
@@ -100,7 +98,7 @@
     }
   }
   &&-right.@{drawerPrefixCls}-open{
-    transform: translateX(0%);
+    // transform: translateX(0%);
   }
 
   &&-top {
