@@ -41,7 +41,7 @@ const PanelsWrapper = (props)=>{
         )
       }
     }else{
-      return null
+      return <span></span>
     }
   }
   return <Drawer sidebar={sidebar()} {...layerProps} children={<div></div>}/>
