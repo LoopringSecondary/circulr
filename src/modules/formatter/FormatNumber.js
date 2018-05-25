@@ -19,10 +19,6 @@ export const FormatAmount = ({value, precision})=>{
       const shortNumber = toFixed(x.div(1000000), precision)
       return {d:`${getFormatNum(shortNumber)} M`, o:x.toString(10), s:true};
     }
-    if(x.lt(1000000000)) {
-      const shortNumber = toFixed(x.div(1000000), precision)
-      return {d:`${getFormatNum(shortNumber)} M`, o:x.toString(10), s:true};
-    }
     if(x.lt(1000000000000)) {
       const shortNumber = toFixed(x.div(1000000000), precision)
       return {d:`${getFormatNum(shortNumber)} B`, o:x.toString(10), s:true};
