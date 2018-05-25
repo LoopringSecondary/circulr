@@ -46,7 +46,7 @@ export default class RingDetail extends React.Component{
         </Spin>}
         {!loading &&  !ring &&
           <div>
-            <h1>No data</h1>
+            <h1>No Ring Fund</h1>
           </div>
           }
       </div>

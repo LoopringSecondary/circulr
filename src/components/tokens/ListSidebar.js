@@ -91,7 +91,7 @@ function ListTokensSidebar(props) {
       type: 'layers/showLayer',
       payload: {
         id:'convertToken',
-        item,
+        token:item.symbol,
         showFrozenAmount: false,
       }
     })
