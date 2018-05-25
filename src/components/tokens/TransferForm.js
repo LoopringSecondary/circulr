@@ -51,7 +51,7 @@ function TransferForm(props) {
     if(transfer.token && tokenFormatter.isValidNumber(value)) {
       const token = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.token, toUnit:true})
       const v = fm.toBig(value)
-      return !v.lessThan(fm.toBig('0')) && !v.greaterThan(token.balance)
+      return !v.lt(fm.toBig('0')) && !v.gt(token.balance)
     } else {
       return false
     }

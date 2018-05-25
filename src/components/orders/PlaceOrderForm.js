@@ -359,7 +359,7 @@ class PlaceOrderForm extends React.Component {
 
           //TODO mock
           // const lrcBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:'LRC', toUnit:true})
-          // if(!lrcBalance || lrcBalance.balance.lessThan(900)){
+          // if(!lrcBalance || lrcBalance.balance.lt(900)){
           //   // TODO !await config.isinWhiteList(window.WALLET.getAddress())
           //   if(config.getChainId() !== 7107171){
           //     Notification.open({
