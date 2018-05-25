@@ -196,12 +196,11 @@ function TransferForm(props) {
   }
 
   return (
-    <div className="form-dark">
-        <div className="card-header bordered">
-            <h4 className="text-dark">Send {tokenSelected && tokenSelected.symbol}</h4>
-            <a href="#" className="close close-lg close-inverse" id="sendClose"></a>
+    <div className="form-dark pd-lg">
+        <div className="sidebar-header">
+          <h3>Send {tokenSelected && tokenSelected.symbol}</h3>
         </div>
-        <div className="card-body form-inverse">
+        <div className="">
             <Form>
               {
                 !transfer.assignedToken &&
@@ -249,7 +248,7 @@ function TransferForm(props) {
                   <Input placeholder="" size="large" onKeyDown={toContinue.bind(this)}/>
                 )}
               </Form.Item>
-              <Form.Item label='Amount' colon={false}>
+              <Form.Item label='Amount' colon={false} className="prefix">
                 {form.getFieldDecorator('amount', {
                   initialValue: 0,
                   rules: [
@@ -298,7 +297,7 @@ function TransferForm(props) {
                     ]
                   })(
                     <TextArea rows={4} />
-                  )}
+                  )}prefix
                 </Form.Item>
                 <div className="row mt5">
                   <div className="col"></div>
@@ -311,17 +310,15 @@ function TransferForm(props) {
               </div>
               }
             </Form>
-            <div className="text-color-dark-1">
-                <div className="form-control-static d-flex justify-content-between mr-0">
-                  <span>Gas Fee</span>
-                  <span className="font-bold">
-                    <Containers.Gas initState={{gasLimit}}>
-                      <GasFee />
-                    </Containers.Gas>
-                    <span className="offset-md">{totalGas.toString(10)} ETH {gasWorth}</span>
-                  </span>
-                </div>
+            <div className="form-control-static d-flex justify-content-between mr-0">
+              <span>Gas Fee</span>
+              <span className="font-bold">
+                <Containers.Gas initState={{gasLimit}}>
+                  <GasFee /><span className="offset-md">{totalGas.toString(10)} ETH {gasWorth}</span>
+                </Containers.Gas>
+              </span>
             </div>
+            <div className="blk"></div>
             <Button className="btn btn-o-dark btn-block btn-xlg" onClick={handleSubmit}>Continue</Button>
         </div>
 

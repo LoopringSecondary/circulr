@@ -101,12 +101,13 @@ class CancelOrderConfirm extends React.Component {
   render() {
     const {cancelOrderConfirm} = this.props;
     const {loading,now} = this.state;
+    console.log(this.props);
     const { type,market,order} = cancelOrderConfirm;
-    if(!order){return null}
     const title = type === 'cancelOrder' ? intl.get('order.confirm_cancel_order') : intl.get('order.confirm_cancel_all', {pair: market || ''})
     return (
       <Card title={title}>
-        {type === 'cancelOrder' &&
+        {type === 'cancelOrder' && <div>
+
         <div>
           <div className="p15 pb25 text-center">
             {toNumber(order.validUntil) > toNumber(now) && <div> <div className="fs12 pt5 color-black-2">{intl.get('orders.order_will_expire')}</div>
@@ -121,8 +122,7 @@ class CancelOrderConfirm extends React.Component {
             <div
               className="fs12 pt5 pb5 color-black-2">{intl.get('orders.order_validity')}：{comFormatter.getFormatTime(toNumber(order.validSince) * 1e3)} ~ {comFormatter.getFormatTime(toNumber(order.validUntil) * 1e3)}</div>
           </div>
-
-        </div>}
+        </div>
         <Alert className="mb10" type="info" showIcon message={
           <div className="row align-items-center">
             <div className="col">
@@ -172,7 +172,62 @@ class CancelOrderConfirm extends React.Component {
               }
             </div>
           </div>
-        }/>}
+        }/>} </div>}
+        {
+          type !== 'cancelOrder' &&
+            <div>
+              <Alert className="mb10" type="info" showIcon message={
+                <div className="row align-items-center">
+                  <div className="col">
+                    <div className="color-black-2 fs14">{intl.get('orders.auto_cancel_not_cost_gas')}</div>
+                  </div>
+                 <div className="col-auto">
+                    {!loading &&
+                    <a onClick={this.cancel} className="color-primary-1 fs12 cursor-pointer">
+                      {intl.get('orders.wait_expire')}
+                      <Icon type="right"/>
+                    </a>
+                    }
+                    {loading &&
+                    <a className="color-black-3 fs12 cursor-pointer">
+                      {intl.get('orders.wait_expire')}
+                    </a>
+                    }
+                  </div>
+                 <div className="col-auto">
+                    <a onClick={this.cancel} className="color-primary-1 fs12 cursor-pointer">
+                      return
+                      <Icon type="right"/>
+                    </a>
+                  </div>
+                </div>
+              }/>
+              <Alert className="mb10" type="info" showIcon message={
+                <div className="row align-items-center">
+                  <div className="col">
+                    <div className="color-black-2 fs14">{intl.get('orders.manual_cancel_cost_gas')}</div>
+                  </div>
+                  <div className="col-auto">
+                    {!loading && <div>
+                      <a onClick={this.ConfirmCancel} className="color-primary-1 fs12 cursor-pointer">
+                        {intl.get('orders.confirm_to_cancel')}
+                        <Icon type="right"/>
+                      </a>
+                      <Containers.Gas initState={{gasLimit:config.getGasLimitByType(type).gasLimit}}>
+                        <GasFee />
+                      </Containers.Gas>
+                    </div>
+                    }
+                    {loading &&
+                    <a className="color-black-3 fs12 cursor-pointer">
+                      {intl.get('orders.canceling')}
+                    </a>
+                    }
+                  </div>
+                </div>
+              }/>
+            </div>
+        }
       </Card>
     )
   }

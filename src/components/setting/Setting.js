@@ -11,12 +11,12 @@ function Setting(props) {
     console.log(key);
   }
   return (
-    <div>
+    <div className="pd-lg">
 	    <div className="popover-content">
         <div className="sidebar-header">
           <h3>Settings</h3>
         </div>
-        <Tabs defaultActiveKey="1" onChange={callback}>
+        <Tabs defaultActiveKey="1" onChange={callback} className="tabs-dark">
           <TabPane tab="Preferences" key="1">
             <Containers.Settings>
               <Preference />

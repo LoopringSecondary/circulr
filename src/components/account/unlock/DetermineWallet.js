@@ -87,6 +87,7 @@ export default class DetermineWallet extends React.Component {
         break;
       default:
     }
+    dispatch({type:'sockets/unlocked'});
     determineWallet.reset();
     routeActions.gotoPath('/wallet')
   };

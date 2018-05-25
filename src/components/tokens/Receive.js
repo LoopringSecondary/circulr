@@ -9,6 +9,8 @@ import {getBalanceBySymbol} from "../../modules/tokens/TokenFm";
 import TokenFormatter from '../../modules/tokens/TokenFm';
 import config from '../../common/config'
 import {connect} from 'dva'
+import routeActions from 'common/utils/routeActions'
+
 
 export default class Receive extends React.Component {
   state = {
@@ -47,7 +49,7 @@ export default class Receive extends React.Component {
 
   getNeeded = () => {
     const {symbol,amount} = this.state;
-    if(symbol){
+    if(symbol && window.WALLET){
       const {balance} = this.props;
       const asset = getBalanceBySymbol({balances: balance.items, symbol, toUnit: true});
       if(!asset){ return toFixed(toBig(0),8) }
@@ -58,7 +60,12 @@ export default class Receive extends React.Component {
 
 
   render(){
-    const address =  window.WALLET.address;
+    const address =   window.WALLET && window.WALLET.address;
+    if(!address){
+      Notification.open({message: 'please unlock your wallet first', type: "error", size: 'small'});
+     // routeActions.gotoPath('/unlock');
+      return null;
+    };
     const {symbol,amount} = this.state;
     const copyAddress = () => {
       copy(address) ? Notification.open({
@@ -67,16 +74,20 @@ export default class Receive extends React.Component {
       }) : Notification.open({message: intl.get('navbar.subs.copy_failed'), type: "error", size: 'small'})
     };
     return (
-      <div>
-        <div className="modal-header text-dark"><h3>我的以太坊地址</h3></div>
+      <div className="pd-lg">
+        <div className="sidebar-header">
+          <h3>My Ethereum Address</h3>
+        </div>
         <div className="Receive-qrcode"><QRCode value={address} size={240}/></div>
         {symbol && toBig(amount).isPositive() && toBig(this.getNeeded()).isPositive() && <div className='fs3 color-black-1 mt10'>
           {intl.get('token.recommended_value')} {this.getNeeded()} {symbol.toUpperCase()}
         </div>}
-        <Input.Group compact  className="d-flex form-dark">
+        <div className="form-dark">
+        <Input.Group compact  className="d-flex">
           <Input style={{ width: '100%' }} defaultValue={address} disabled />
-          <Button className="btn-xlg" onClick={copyAddress}>Copy</Button>
+          <Button onClick={copyAddress}>Copy</Button>
         </Input.Group>
+        </div>
       </div>
     )
   }
