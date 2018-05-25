@@ -297,7 +297,7 @@ function TransferForm(props) {
                     ]
                   })(
                     <TextArea rows={4} />
-                  )}prefix
+                  )}
                 </Form.Item>
                 <div className="row mt5">
                   <div className="col"></div>
