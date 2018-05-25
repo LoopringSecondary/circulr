@@ -3,7 +3,12 @@ import {Link} from 'dva/router';
 
 function UserCenter(props) {
 
-  const {userCenter} = props;
+  const {userCenter,dispatch} = props;
+  const transfer = () => {
+    userCenter.hideLayer();
+    dispatch({type: 'transfer/reset'})
+    userCenter.showLayer({id:'transferToken',symbol:null})
+  }
   return (
     <div>
     	<div id="account">
@@ -22,7 +27,7 @@ function UserCenter(props) {
     	        <div className="menu">
     	            <ul>
     	                <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'receiveToken',symbol:null}) }} className="side-receive" ><i className="icon-receive"></i><span>Receive</span></a></li>
-    	                <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'transferToken',symbol:null}) }} className="side-send"><i className="icon-send"></i><span>Send</span></a></li>
+    	                <li><a onClick={transfer} className="side-send"><i className="icon-send"></i><span>Send</span></a></li>
     	                <li><Link to="/trade"><i className="icon-trade"/><span>Trade</span></Link></li>
     	                <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'setting',symbol:null}) }} className="side-settings"><i className="icon-cog-o"></i><span>Settings</span></a></li>
     	                <li hidden><a className="side-airdrop"><i className="icon-gift-o"></i><span>Airdrop</span></a></li>
