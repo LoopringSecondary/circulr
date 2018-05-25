@@ -7,7 +7,7 @@ import {isValidInteger} from 'modules/orders/formatters'
 import * as fm from 'LoopringJS/common/formatter'
 
 const GasFeeForm = (props) => {
-  const {gas, form, onGasChange} = props
+  const {gas, form, onGasChange,advanced} = props
   const gasPriceStore = gas.gasPrice
   const gasLimitStore = fm.toNumber(gas.gasLimit)
   const fixedGasLimit = gas.fixedGasLimit ? fm.toNumber(gas.fixedGasLimit) : 0
@@ -85,7 +85,7 @@ const GasFeeForm = (props) => {
                <div>
                  <div className="pb10 fs16 color-black-1 zb-b-b">Gas Fee</div>
                  <div className="zb-b"  style={{width:'320px'}}>
-                   <Tabs defaultActiveKey="easy" onChange={tabChange}>
+                   {advanced && <Tabs defaultActiveKey="easy" onChange={tabChange}>
                      <Tabs.TabPane tab={<div className="pb5">Recommended</div>} key="easy">
                        <Form.Item label={null} colon={false} className="mb0">
                          {form.getFieldDecorator('gasSelector', {
@@ -176,7 +176,54 @@ const GasFeeForm = (props) => {
                          </div>
                        </div>
                      </Tabs.TabPane>
-                   </Tabs>
+                   </Tabs>}
+                   {!advanced &&
+                   <Form.Item label={null} colon={false} className="mb0">
+                     {form.getFieldDecorator('gasSelector', {
+                       initialValue:'last',
+                       rules:[]
+                     })(
+                       <Radio.Group className="d-block w-100">
+                         <Radio value='last' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15" disabled={gasPriceStore.last === 0}>
+                           <div className="ml5 pt10 pb10">
+                             <div className="fs14 color-black-1">
+                               {gasShow(gasPriceStore.last, gasLimit, '上一次')}
+                             </div>
+                           </div>
+                         </Radio>
+                         <Radio value='estimate' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
+                           <div className="ml5 pt10 pb10">
+                             <div className="fs14 color-black-1">
+                               {gasShow(gasPriceStore.estimate, gasLimit, '推荐')}
+                             </div>
+                           </div>
+                         </Radio>
+                         <Radio value='custom' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
+                           <div className="ml5 pt10 pb10">
+                             <div className="fs14 color-black-1">
+                               {gasShow(form.getFieldValue('gasPriceSlider'), gasLimit, '自定义')}
+                             </div>
+                             <div>
+                               <Form.Item label={null} colon={false} className="mb0">
+                                 {form.getFieldDecorator('gasPriceSlider', {
+                                   initialValue:configs.defaultGasPrice,
+                                   rules:[]
+                                 })(
+                                   <Slider min={1} max={99} step={1}
+                                           marks={{
+                                             1: intl.get('settings.slow') ,
+                                             99: intl.get('settings.fast') ,
+                                           }}
+                                   />
+                                 )}
+                               </Form.Item>
+                             </div>
+                           </div>
+                         </Radio>
+                       </Radio.Group>
+                     )}
+                   </Form.Item>
+                   }
                  </div>
                  <div className="mt20 text-right d-block w-100">
                    <Button onClick={handleSubmit} type="primary" size="large" className="d-block w-100">确认</Button>

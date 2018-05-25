@@ -314,7 +314,7 @@ function TransferForm(props) {
               <span>Gas Fee</span>
               <span className="font-bold">
                 <Containers.Gas initState={{gasLimit}}>
-                  <GasFee /><span className="offset-md">{totalGas.toString(10)} ETH {gasWorth}</span>
+                  <GasFee  advanced={transfer.token.toLowerCase() === 'eth'}/><span className="offset-md">{totalGas.toString(10)} ETH {gasWorth}</span>
                 </Containers.Gas>
               </span>
             </div>
