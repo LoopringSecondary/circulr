@@ -109,9 +109,11 @@ function TransferConfirm(props) {
   }
 
   return (
-    <div>
-        <div className="modal-header text-dark"><h3>发送 {extraData.tokenSymbol}</h3></div>
-        <div className="pd-lg text-center text-color-dark-1">
+    <div className="pd-lg">
+        <div className="sidebar-header">
+          <h3>发送 {extraData.tokenSymbol}</h3>
+        </div>
+        <div>
 	        <i className="icon-ETH icon-token-md"></i>
           <div className="blk-sm"></div>
 	        <h2>{`${extraData.amount}${extraData.tokenSymbol}`}</h2>
