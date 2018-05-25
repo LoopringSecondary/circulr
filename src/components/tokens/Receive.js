@@ -61,7 +61,7 @@ export default class Receive extends React.Component {
 
 
   render(){
-    const address =   window.WALLET && window.WALLET.address;
+    const address = window.WALLET && window.WALLET.address;
     const {receiveToken} = this.props;
     if(!address){
       Notification.open({message: 'please unlock your wallet first', type: "error", size: 'small'});
