@@ -74,16 +74,20 @@ export default class Receive extends React.Component {
       }) : Notification.open({message: intl.get('navbar.subs.copy_failed'), type: "error", size: 'small'})
     };
     return (
-      <div>
-        <div className="modal-header text-dark"><h3>我的以太坊地址</h3></div>
+      <div className="pd-lg">
+        <div className="sidebar-header">
+          <h3>My Ethereum Address</h3>
+        </div>
         <div className="Receive-qrcode"><QRCode value={address} size={240}/></div>
         {symbol && toBig(amount).isPositive() && toBig(this.getNeeded()).isPositive() && <div className='fs3 color-black-1 mt10'>
           {intl.get('token.recommended_value')} {this.getNeeded()} {symbol.toUpperCase()}
         </div>}
-        <Input.Group compact  className="d-flex form-dark">
+        <div className="form-dark">
+        <Input.Group compact  className="d-flex">
           <Input style={{ width: '100%' }} defaultValue={address} disabled />
-          <Button className="btn-xlg" onClick={copyAddress}>Copy</Button>
+          <Button onClick={copyAddress}>Copy</Button>
         </Input.Group>
+        </div>
       </div>
     )
   }

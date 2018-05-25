@@ -3,8 +3,11 @@ import Orders from '../orders'
 import Fills from '../fills'
 import Tickers from '../tickers'
 import Charts from '../charts'
-import { Tabs } from 'antd';
+import { Tabs,Tooltip } from 'antd';
 import { Containers } from 'modules';
+import { connect } from 'dva';
+import {AccountMenu} from './Wallet';
+
 
 function Trade(props) {
   const { children, match } = props
@@ -16,12 +19,13 @@ function Trade(props) {
   function callback(key) {
     console.log(key);
   }
+
   return (
     <div>
         <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000",borderBottom: "4px solid rgb(8, 34, 63)" }}>
             <div className="bg d-flex justify-content-between align-items-center">
                 <Tickers.TickerHeader />
-                <div className="account"><img  src={require('../../assets/images/user.png')} className="photo" /><span className="msg"><i className="icon-bell"></i></span></div>
+                <AccountMenu dispatch={props.dispatch} />
             </div>
         </header>
   	    <div className="side-fixed" style={{ top:"0", left:"0", width:"280px", paddingTop:"74px" }}>
@@ -85,4 +89,4 @@ function Trade(props) {
     </div>
   )
 }
-export default Trade
+export default connect()(Trade)

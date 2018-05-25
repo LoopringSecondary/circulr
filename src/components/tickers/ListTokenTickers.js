@@ -65,7 +65,7 @@ function ListTokenTickers(props) {
                     listedTickers.map((item,index)=>{
                       const tickerFm = new TickerFm(item)
                       return (
-                        <div className="item">
+                        <div className="item" key={index}>
                             <ul>
                                 <li><h3>{item.market}</h3></li>
                                 <li><small>Price</small><span className="text-down">{tickerFm.getChange()}</span></li>

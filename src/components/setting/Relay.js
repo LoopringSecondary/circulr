@@ -18,7 +18,7 @@ function Relay(props) {
       <Radio.Group className="d-block" onChange={handleChange} value={relayConfig.value}>
         {
           relay.nodes.map((item,index)=>
-            <div>
+            <div key={index}>
               <Radio className="d-flex align-items-center" value={item.value} key={index}>
                 <Input.Group size="large" className="d-flex justify-content-between" style={{width:"100%"}}>
                   <Col span={12}>

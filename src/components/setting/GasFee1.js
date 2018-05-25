@@ -186,7 +186,7 @@ const GasFeeForm = (props) => {
              visible={gas.visible}
              onVisibleChange={handleVisibleChange}
              trigger="click">
-      <a className="fs12 pointer color-black-3 mr5"><Icon type="edit" /></a>
+             <a className="text-dark"><i className="icon-pencil"></i></a>
     </Popover>
   );
 };
