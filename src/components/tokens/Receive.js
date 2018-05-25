@@ -49,6 +49,7 @@ export default class Receive extends React.Component {
 
   getNeeded = () => {
     const {symbol,amount} = this.state;
+
     if(symbol && window.WALLET){
       const {balance} = this.props;
       const asset = getBalanceBySymbol({balances: balance.items, symbol, toUnit: true});
@@ -61,11 +62,13 @@ export default class Receive extends React.Component {
 
   render(){
     const address =   window.WALLET && window.WALLET.address;
+    const {receiveToken} = this.props;
     if(!address){
       Notification.open({message: 'please unlock your wallet first', type: "error", size: 'small'});
-     // routeActions.gotoPath('/unlock');
+      receiveToken.hideLayer();
+      routeActions.gotoPath('/unlock');
       return null;
-    };
+    }
     const {symbol,amount} = this.state;
     const copyAddress = () => {
       copy(address) ? Notification.open({
