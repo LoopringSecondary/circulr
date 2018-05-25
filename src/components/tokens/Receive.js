@@ -9,6 +9,8 @@ import {getBalanceBySymbol} from "../../modules/tokens/TokenFm";
 import TokenFormatter from '../../modules/tokens/TokenFm';
 import config from '../../common/config'
 import {connect} from 'dva'
+import routeActions from 'common/utils/routeActions'
+
 
 export default class Receive extends React.Component {
   state = {
@@ -47,7 +49,7 @@ export default class Receive extends React.Component {
 
   getNeeded = () => {
     const {symbol,amount} = this.state;
-    if(symbol){
+    if(symbol && window.WALLET){
       const {balance} = this.props;
       const asset = getBalanceBySymbol({balances: balance.items, symbol, toUnit: true});
       if(!asset){ return toFixed(toBig(0),8) }
@@ -58,7 +60,12 @@ export default class Receive extends React.Component {
 
 
   render(){
-    const address =  window.WALLET.address;
+    const address =   window.WALLET && window.WALLET.address;
+    if(!address){
+      Notification.open({message: 'please unlock your wallet first', type: "error", size: 'small'});
+     // routeActions.gotoPath('/unlock');
+      return null;
+    };
     const {symbol,amount} = this.state;
     const copyAddress = () => {
       copy(address) ? Notification.open({
