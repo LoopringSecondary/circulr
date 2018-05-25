@@ -16,7 +16,7 @@ function Modals(props) {
         </UiContianers.Panels>
       </Containers.Layers>
       <Containers.Layers id="placeOrderConfirm">
-        <UiContianers.Panels id="placeOrderConfirm">
+        <UiContianers.Panels id="placeOrderConfirm" position="right" width="450px">
           <Containers.Settings>
             <Containers.Wallet>
               <Containers.Layers>

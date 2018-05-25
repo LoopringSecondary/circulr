@@ -20,7 +20,7 @@ export function tokenDisplayBalance(tokenSymbol, rawBalance) {
 export function calculateAvailableAmount(side, price, tokenL, tokenR, amountPrecision) {
   if(tokenL && tokenR) {
     if(side === 'buy') {
-      if(price && fm.toBig(price).gt(0)) {
+      if(price && isValidAmount(price) && fm.toBig(price).gt(0)) {
         return fm.toFixed(fm.toBig(tokenR.balance).div(price), amountPrecision, false)
       }
     } else {
@@ -70,8 +70,8 @@ export function isValidInteger(int) {
 
 export function formatPriceByMarket(price, marketConfig) {
   const priceArr = price.split(".")
-  if(priceArr.length === 2 && priceArr[1].length > marketConfig.pricePrecision){
-    return fm.toNumber(fm.toFixed(fm.toNumber(price), marketConfig.pricePrecision), false)
+  if(priceArr.length === 2 && isValidInteger(priceArr[0]) && isValidInteger(priceArr[1]) && priceArr[1].length > marketConfig.pricePrecision) {
+    return fm.toFixed(fm.toBig(price), marketConfig.pricePrecision, false)
   }
   return price
 }
@@ -79,7 +79,7 @@ export function formatPriceByMarket(price, marketConfig) {
 export function formatAmountByMarket(amount, tokenConfig, marketConfig) {
   const amountPrecision = tokenConfig.precision - marketConfig.pricePrecision
   if (amountPrecision > 0) {
-    return fm.toNumber(fm.toFixed(amount, amountPrecision, false))
+    return fm.toFixed(amount, amountPrecision, false)
   } else {
     return Math.floor(amount)
   }
@@ -156,7 +156,7 @@ function ceilDecimal(bn, precision) {
   }
 }
 
-export async function tradeVerification(balances, walletState, tradeInfo, sell, buy, tokenL, tokenR, side, txs) {
+export async function tradeVerification(balances, walletState, tradeInfo, sell, buy, tokenL, tokenR, side, txs, gasPrice) {
   const configSell = config.getTokenBySymbol(sell.symbol)
   const ethBalance = getBalanceBySymbol({balances, symbol:'ETH', toUnit:true})
   const lrcBalance = getBalanceBySymbol({balances, symbol:'LRC', toUnit:true})
@@ -176,8 +176,7 @@ export async function tradeVerification(balances, walletState, tradeInfo, sell, 
       approveCount += 1
       if(pendingAllowance.greaterThan(0)) {approveCount += 1}
     }
-    //TODO gas price
-    const gas = fm.toBig('21').times(fm.toNumber(approveGasLimit)).div(1e9).times(approveCount)
+    const gas = fm.toBig(gasPrice).times(fm.toNumber(approveGasLimit)).div(1e9).times(approveCount)
     if(ethBalance.balance.lessThan(gas)){
       error.push({type:"BalanceNotEnough", value:{symbol:'ETH', balance:cutDecimal(ethBalance.balance,6), required:ceilDecimal(gas,6)}})
       tradeInfo.error = error
@@ -220,8 +219,7 @@ export async function tradeVerification(balances, walletState, tradeInfo, sell, 
       approveCount += 1
       if(pendingLRCAllowance.greaterThan(0)) approveCount += 1
     }
-    //TODO gas price
-    const gas = fm.toBig('21').times(approveGasLimit).div(1e9).times(approveCount)
+    const gas = fm.toBig(gasPrice).times(approveGasLimit).div(1e9).times(approveCount)
     if(ethBalance.balance.lessThan(gas)){
       error.push({type:"BalanceNotEnough", value:{symbol:'ETH', balance:cutDecimal(ethBalance.balance,6), required:ceilDecimal(gas,6)}})
       failed = true
