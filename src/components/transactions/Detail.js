@@ -41,8 +41,10 @@ export default class Detail extends React.Component {
     const reSendTx = (txHash) => {
     }
     return (
-      <div>
-          <DetailHeader title="交易详情" />
+      <div className="pd-lg">       
+          <div className="sidebar-header">
+              <h3>Transaction Details</h3>
+          </div>
           <Tabs defaultActiveKey="basic" tabPosition="" animated={true}  className="tabs-dark">
             {item &&
               <Tabs.TabPane className="text-color-dark"  tab={intl.get('txs.tx_detail')} key="basic">
@@ -79,17 +81,17 @@ export default class Detail extends React.Component {
 }
 
 export const renders = {
-  txHash: (value) => <a className="text-truncate d-block" target="_blank" onCopy={copyToPasteboard.bind(this, value)}
+  txHash: (value) => <a className="text-truncate d-block text-dark" target="_blank" onCopy={copyToPasteboard.bind(this, value)}
                           href={`https://etherscan.io/tx/${value}`}>{value}</a>,
-  blockNumber: (value) => <a className="text-truncate d-block" target="_blank"
+  blockNumber: (value) => <a className="text-truncate d-block text-dark" target="_blank"
                                href={`https://etherscan.io/block/${value}`}>{value}</a>,
-  address: (value) => <a className="text-truncate d-block" target="_blank" onCopy={copyToPasteboard.bind(this, value)}
+  address: (value) => <a className="text-truncate d-block text-dark" target="_blank" onCopy={copyToPasteboard.bind(this, value)}
                            href={`https://etherscan.io/address/${value}`}>{value}</a>,
   gas:(fm)=>{
     return (
-      <div className="mr15">
+      <div>
         <div className="row justify-content-end">{`${fm.getGas()}  ETH`}</div>
-        <div className="row justify-content-end fs14 color-black-3">{`Gas(${fm.getGasLimit()}) * Gas Price(${fm.getGasPrice()} Gwei)`}</div>
+        <div className="row justify-content-end text-mute">{`Gas(${fm.getGasLimit()}) * Gas Price(${fm.getGasPrice()} Gwei)`}</div>
       </div>
     )
   }

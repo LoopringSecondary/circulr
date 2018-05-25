@@ -44,6 +44,7 @@ function UserCenter(props) {
     	            <div className="icon-unlock text-color-dark-1"><i className="icon-poweroff"></i></div>
     	            <h5>Quit</h5>
     	        </div>
+              <div className="blk-lg"></div>
     	        <div className="address">
     	            <div className="text text-color-dark-1">{window.WALLET && window.WALLET.address}</div>
     	            <div className="blk"></div>

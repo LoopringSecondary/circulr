@@ -15,8 +15,10 @@ function OrderDetail(props) {
   }
   const orderFm = new OrderFm(order);
   return (
-    <div>
-      <DetailHeader title="订单详情"/>
+    <div className="pd-lg">
+      <div className="sidebar-header">
+          <h3>Order Details</h3>
+      </div>
       <Tabs defaultActiveKey="1" className="tabs-dark">
         <Tabs.TabPane tab="基础详情" key="1" className="text-color-dark">
           <Spin spinning={false}>
