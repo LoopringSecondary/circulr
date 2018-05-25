@@ -16,7 +16,7 @@ function ListTradesHistory(props) {
         </div>
         <div className="trade-list h-full">
           <ul>
-            <li className="trade-list-header"><span>Price({tokens.right})</span><span>Amount({tokens.left})</span><span>Time</span></li>
+            <li className="trade-list-header"><span>Price({tokens.right})</span><span style={{textAlign:'right'}}>Amount({tokens.left})</span><span style={{textAlign:'right'}}>Time</span></li>
           </ul>
           <div style={{height: "100%",paddingBottom:"145px", }}>
             <ul style={{height: "100%", overflow:"auto",paddingBottom:"0" }}>
@@ -29,8 +29,8 @@ function ListTradesHistory(props) {
                     {
                       item.side === 'buy' && <span className="text-up">{item.price && item.price.toFixed(8)}</span>
                     }
-                    <span>{item.amount && item.amount.toFixed(8)}</span>
-                    <span>{getFormattedTime(item.createTime,'MM-DD HH:SS')}</span>
+                    <span style={{textAlign:'right'}}>{item.amount && item.amount.toFixed(8)}</span>
+                    <span style={{textAlign:'right'}}>{getFormattedTime(item.createTime,'MM-DD HH:SS')}</span>
                   </li>
                 )
               }

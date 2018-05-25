@@ -25,15 +25,15 @@ function ListOrderBook(props) {
     	        <ul className="mr-0">
 	    	            <li className="trade-list-header">
 			    	        <span>Price({tokens.right})</span>
-			    	        <span>Amount({tokens.left})</span>
-			    	        <span>Total({tokens.right})</span>
+			    	        <span style={{textAlign:'right'}}>Amount({tokens.left})</span>
+			    	        <span style={{textAlign:'right'}}>Total({tokens.right})</span>
 		    	        </li>
 		    	    </ul>
 	    	    <div style={{height: "-webkit-calc(50% - 85px)",marginTop:"5px",marginBottom:"0",paddiongBottom:"10" }}>
 	    	        <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0px" }}>
                       {
                         depth.item.sell.map((item,index)=>
-                          <li key={index}><span className="text-down">{Number(item[0]).toFixed(8)}</span><span>{Number(item[1]).toFixed(8)}</span><span>{Number(item[2]).toFixed(8)}</span></li>
+                          <li key={index}><span className="text-down">{Number(item[0]).toFixed(8)}</span><span style={{textAlign:'right'}}>{Number(item[1]).toFixed(4)}</span><span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span></li>
                         )
                       }
     	            </ul>
@@ -42,7 +42,7 @@ function ListOrderBook(props) {
     	            <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0" }}>
     	                {
                         depth.item.buy.map((item,index)=>
-                          <li key={index}><span className="text-up">{Number(item[0]).toFixed(8)}</span><span>{Number(item[1]).toFixed(8)}</span><span>{Number(item[2]).toFixed(8)}</span></li>
+                          <li key={index}><span className="text-up">{Number(item[0]).toFixed(8)}</span><span style={{textAlign:'right'}}>{Number(item[1]).toFixed(4)}</span><span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span></li>
                         )
                       }
     	            </ul>

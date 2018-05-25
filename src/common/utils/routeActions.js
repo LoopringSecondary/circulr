@@ -1,7 +1,7 @@
 import { routerRedux} from 'dva/router';
 import createHashHistory from 'history/createHashHistory';
 const history  = createHashHistory()
-
+console.log('history',history)
 export default  {
   goBack:()=>{
       history.goBack()

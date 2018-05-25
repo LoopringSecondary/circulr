@@ -52,6 +52,7 @@ class Unlock extends React.Component {
 
   render() {
     const {match} = this.props;
+    const pathname = this.props.location && this.props.location.pathname
     const {url} = match;
     return (
       <Layout.LayoutHome className="h-full">
@@ -60,30 +61,29 @@ class Unlock extends React.Component {
             <div>
               <h1>Generate Wallet & Unlock Wallet</h1>
               <ul className="tab tab-card d-flex justify-content-center inup">
-                <li className="item">
+                <li className={`item ${pathname==='/unlock/generateWallet' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('generateWallet')}><i className="icon-plus"/>
-                    <h4>Generate
-                      Wallet</h4></a>
+                    <h4>Generate Wallet</h4></a>
                 </li>
-                <li className="item">
+                <li className={`item ${pathname==='/unlock/metamask' ? 'active':''}`}>
                   <a data-toggle="tab"  onClick={() => this.changeTab('metamask')}><i className="icon-metamaskwallet"/><h4>MetaMask</h4></a>
                 </li>
-                <li className="item">
+                <li className={`item ${pathname==='/unlock/' ? 'active':''}`}>
                   <a onClick={() => this.unlock('trezor','trezor')}><i className="icon-trezorwallet"/><h4>Trezor</h4></a>
                 </li>
-                <li className="item">
+                <li className={`item ${pathname==='/unlock/' ? 'active':''}`}>
                   <a  data-toggle="tab" onClick={() => this.unlock('ledger','ledger')}><i className="icon-ledgerwallet"/><h4>Ledger</h4></a>
                 </li>
-                <li className="item">
+                <li className={`item ${pathname==='/unlock/json' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('json')}><i className="icon-json"/><h4>JSON</h4>
                   </a>
                 </li>
-                <li className="item">
+                <li className={`item ${pathname==='/unlock/mnemonic' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('mnemonic')}><i className="icon-mnemonic"/><h4>
                     Mnemonic</h4>
                   </a>
                 </li>
-                <li className="item">
+                <li className={`item ${pathname==='/unlock/privateKey' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('privateKey')}><i className="icon-key"/><h4>
                     Private Key</h4>
                   </a>
