@@ -99,8 +99,10 @@ function ConvertForm(props) {
   };
 
   return (
-    <div>
-      <div className="modal-header text-dark"><h3>转换</h3></div>
+    <div className="pd-lg">
+      <div className="sidebar-header">
+        <h3>转换</h3>
+      </div>
       <div className="pd-md text-center text-color-dark-1">
         <span><i className="icon-ETH icon-token-md"/><b>{token}</b></span>
         <span className="offset-lg"><i className="text-color-3 icon-long-arrow-right"/></span>
@@ -109,7 +111,7 @@ function ConvertForm(props) {
       </div>
       <div className="divider solid"/>
       <Form>
-        <Form.Item>
+        <Form.Item className="prefix">
           {form.getFieldDecorator('amount', {
             initialValue: amount,
             rules: [{
@@ -132,7 +134,7 @@ function ConvertForm(props) {
             </span>
           }
         </small>
-        <a onClick={setMax}>
+        <a onClick={setMax} className="text-dark">
           <small>最大数量</small>
         </a>
       </div>
@@ -143,10 +145,10 @@ function ConvertForm(props) {
           <span>Gas Fee</span>
           <span className="font-bold">
                   <Containers.Gas initState={{gasLimit}}>
-                    <GasFee onGasChange={onGasChange}/>
+                    <GasFee onGasChange={onGasChange}/><span className="offset-md"> ETH ≈ <Currency/> {getWorthBySymbol({prices, symbol: 'ETH', amount:getGas()})}</span>
                   </Containers.Gas>
             <span>{getGas()}</span>
-                    <span className="offset-md"> ETH ≈ <Currency/> {getWorthBySymbol({prices, symbol: 'ETH', amount:getGas()})}</span>
+                    
                   </span>
         </div>
       </div>
