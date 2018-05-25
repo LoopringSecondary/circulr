@@ -89,7 +89,6 @@ class PlaceOrderForm extends React.Component {
         placeOrder.priceChange({priceInput:price})
       } else if (type === 'amount') {
         const tokenRConfig = config.getTokenBySymbol(right.symbol)
-        //TODO
         amount = orderFormatter.formatAmountByMarket(e.target.value.toString(), tokenRConfig, marketConfig)
         //e.target.value = amount
         placeOrder.amountChange({amountInput:amount})
