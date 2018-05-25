@@ -31,7 +31,7 @@ function Wallet(props) {
                       {window.WALLET && window.WALLET.unlockType === 'mnemonic' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-mnemonic" /> </Tooltip>}
                       {window.WALLET && window.WALLET.unlockType === 'privateKey' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-key" /> </Tooltip>}
                     </div>
-                    <div className="account-address">0xeba7136a36da0f5e16c6bdbc739c716bb5b65a00</div>
+                    <div className="account-address">{window.WALLET && window.WALLET.address}</div>
                   </li>
                   {false && <li><i className="icon-bell relative"><sup class="badge"></sup></i></li>}
                   {false && <li><span className="language"><a href="#"><i className="icon en"></i></a></span></li>}
