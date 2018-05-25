@@ -12,7 +12,7 @@ export default class RingDetail extends React.Component{
   };
   componentDidMount() {
     const {ringDetail} = this.props;
-    const fill = ringDetail.ring;
+    const fill = ringDetail.fill;
     const  _this = this;
     if(fill && fill.ringIndex){
       window.RELAY.ring.getRingMinedDetail({ringIndex:fill.ringIndex,protocolAddress:fill.protocol}).then(res => {
@@ -24,7 +24,6 @@ export default class RingDetail extends React.Component{
       })
     }
   }
-
   render() {
     const {ring,loading} = this.state;
     const ringFm = ring ? new RingFm(ring) : null;
@@ -47,7 +46,7 @@ export default class RingDetail extends React.Component{
         </Spin>}
         {!loading &&  !ring &&
           <div>
-            <h1>No data</h1>
+            <h1>No Ring Fund</h1>
           </div>
           }
       </div>
