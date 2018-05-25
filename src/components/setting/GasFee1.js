@@ -1,7 +1,6 @@
 import React from 'react';
-import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs, Popover} from 'antd'
+import {Button, Form, Icon, Input, Popover, Radio, Slider, Tabs} from 'antd'
 import intl from 'react-intl-universal'
-import {connect} from 'dva'
 import {calculateGas} from 'LoopringJS/common/utils'
 import {configs} from 'common/config/data'
 import {isValidInteger} from 'modules/orders/formatters'

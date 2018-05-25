@@ -1,14 +1,33 @@
 import React from 'react';
 import {Link} from 'dva/router';
+import Notification from '../../common/loopringui/components/Notification'
+import copy from 'copy-to-clipboard';
+import intl from 'react-intl-universal';
+import routeActions from 'common/utils/routeActions'
 
 function UserCenter(props) {
+  const {userCenter,dispatch} = props;
+  const copyAddress = () => {
+    if(window.WALLET && window.WALLET.address){
+      copy(window.WALLET.address) ? Notification.open({
+        message: intl.get('navbar.subs.copy_success'),
+        type: 'success', size: 'small'
+      }) : Notification.open({message: intl.get('navbar.subs.copy_failed'), type: "error", size: 'small'})
+    }else {
+      Notification.open({message: 'please unlock your wallet first', type: "error", size: 'small'})
+    }
+  };
 
-  const {userCenter} = props;
+  const quit = () => {
+    dispatch({type:'wallet/lock'});
+    userCenter.hideLayer();
+    routeActions.gotoPath('/unlock')
+  };
   return (
     <div>
     	<div id="account">
     	    <div className="account-side">
-    	        <div className="poweroff text-color-dark" id="powerOff">
+    	        <div className="poweroff text-color-dark" id="powerOff" onClick={quit}>
     	            <div className="icon-unlock text-color-dark-1"><i className="icon-poweroff"></i></div>
     	            <h5>Quit</h5>
     	        </div>
@@ -16,7 +35,7 @@ function UserCenter(props) {
     	        <div className="address">
     	            <div className="text text-color-dark-1">{window.WALLET && window.WALLET.address}</div>
     	            <div className="blk"></div>
-    	            <button className="btn btn-block btn-o-dark">Copy</button>
+    	            <button className="btn btn-block btn-o-dark" onClick={copyAddress}>Copy</button>
     	        </div>
     	        <div className="blk-lg"></div>
     	        <div className="menu">

@@ -64,12 +64,13 @@ export class TxFm{
     }
   }
   getSide(){
-    if(this.tx.type==='receive'){
+    if(this.tx.type==='receive' || this.tx.type==='buy' || this.tx.type.indexOf('income')  !== -1){
       return 'income'
     }
-    if(this.tx.type==='send'){
+    if(this.tx.type==='send' || this.tx.type === 'sell' || this.tx.type.indexOf('outcome')  !== -1){
       return 'outcome'
     }
+
   }
 
   getConfirmTime(){
