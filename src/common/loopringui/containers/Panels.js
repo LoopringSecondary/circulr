@@ -22,22 +22,26 @@ const PanelsWrapper = (props)=>{
   }
   const childProps = {...rest}
   const sidebar = ()=>{
-    if(!props.render){
-      return (
-        <div className={sidebarClassName} style={{width}}>
-          {
-            React.Children.map(props.children, child => {
-              return React.cloneElement(child, {...childProps})
-            })
-          }
-        </div>
-      )
+    if(layer.visible){
+      if(!props.render){
+        return (
+          <div className={sidebarClassName} style={{width}}>
+            {
+              React.Children.map(props.children, child => {
+                return React.cloneElement(child, {...childProps})
+              })
+            }
+          </div>
+        )
+      }else{
+        return (
+          <div className={sidebarClassName}>
+            {props.render && props.render.call(this,childProps)}
+          </div>
+        )
+      }
     }else{
-      return (
-        <div className={sidebarClassName}>
-          {props.render && props.render.call(this,childProps)}
-        </div>
-      )
+      return null
     }
   }
   return <Drawer sidebar={sidebar()} {...layerProps} children={<div></div>}/>
