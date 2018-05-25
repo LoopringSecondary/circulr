@@ -171,7 +171,7 @@ function TransferForm(props) {
       if(transfer.isMax) {
         tokenBalance = tokenBalance.gt(totalGas) ?  tokenBalance.minus(totalGas) : fm.toBig(0);
       } else {
-        tokenBalance = formBalance.add(totalGas).gt(tokenBalance) ? tokenBalance.minus(totalGas) : formBalance
+        tokenBalance = formBalance.plus(totalGas).gt(tokenBalance) ? tokenBalance.minus(totalGas) : formBalance
       }
       if(!formBalance.equals(tokenBalance)) {
         form.setFieldsValue({"amount": tokenBalance.toString(10)})

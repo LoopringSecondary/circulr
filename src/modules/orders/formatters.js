@@ -150,9 +150,9 @@ function ceilDecimal(bn, precision) {
   const floor = cutDecimal(bn, precision)
   if(precision > 0) {
     const v = '0.'+ '0'.repeat(precision -1) + '1'
-    return cutDecimal(fm.toBig(floor).add(v), precision)
+    return cutDecimal(fm.toBig(floor).plus(v), precision)
   } else {
-    return bn.add(1).ceil().toString(10)
+    return bn.plus(1).ceil().toString(10)
   }
 }
 
@@ -162,7 +162,7 @@ export async function tradeVerification(balances, walletState, tradeInfo, sell, 
   const lrcBalance = getBalanceBySymbol({balances, symbol:'LRC', toUnit:true})
   const approveGasLimit = config.getGasLimitByType('approve').gasLimit
   let frozenSell = await window.RELAY.account.getEstimatedAllocatedAllowance({owner:walletState.address, token:sell.symbol})
-  let frozenAmountS = fm.toBig(frozenSell.result).div('1e'+configSell.digits).add(fm.toBig(tradeInfo.total))
+  let frozenAmountS = fm.toBig(frozenSell.result).div('1e'+configSell.digits).plus(fm.toBig(tradeInfo.total))
   let approveCount = 0
   const warn = new Array(), error = new Array()
   if(buy.symbol === 'LRC') { //buy lrc, only verify eth balance could cover gas cost if approve is needed
@@ -185,19 +185,19 @@ export async function tradeVerification(balances, walletState, tradeInfo, sell, 
   } else {
     //lrc balance not enough, lrcNeed = frozenLrc + lrcFee
     const frozenLrcFee = await window.RELAY.account.getFrozenLrcFee(walletState.address)
-    let frozenLrc = fm.toBig(frozenLrcFee.result).div(1e18).add(fm.toBig(tradeInfo.lrcFee))
+    let frozenLrc = fm.toBig(frozenLrcFee.result).div(1e18).plus(fm.toBig(tradeInfo.lrcFee))
     let failed = false
     if(lrcBalance.balance.lessThan(frozenLrc)){
       error.push({type:"BalanceNotEnough", value:{symbol:'LRC', balance:cutDecimal(lrcBalance.balance,6), required:ceilDecimal(frozenLrc,6)}})
       failed = true
     }
     const frozenLrcInOrderResult = await window.RELAY.account.getEstimatedAllocatedAllowance({owner:walletState.address, token:'LRC'})
-    frozenLrc = frozenLrc.add(fm.toBig(frozenLrcInOrderResult.result).div(1e18))
+    frozenLrc = frozenLrc.plus(fm.toBig(frozenLrcInOrderResult.result).div(1e18))
     if(tokenL === 'LRC' && side === 'sell') {// sell lrc-weth
-      frozenLrc = frozenLrc.add(fm.toBig(tradeInfo.amount))
+      frozenLrc = frozenLrc.plus(fm.toBig(tradeInfo.amount))
     }
     if(tokenR === 'LRC' && side === 'buy'){// buy eos-lrc
-      frozenLrc = frozenLrc.add(fm.toBig(tradeInfo.total))
+      frozenLrc = frozenLrc.plus(fm.toBig(tradeInfo.total))
     }
     // verify tokenL/tokenR balance and allowance cause gas cost
     if(sell.symbol === 'LRC') {
