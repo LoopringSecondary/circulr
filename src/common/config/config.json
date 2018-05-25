@@ -2,7 +2,7 @@
   "defaultPricePrecision": 8,
   "defaultVolumePrecision": 8,
   "defaultLrcFeePermillage": 2,
-  "defaultGasPrice": 21,
+  "defaultGasPrice": 10,
   "defaultMarginSplitPercentage": 50,
   "defaultGasLimit": "0x30d40",
   "defaultExpireTime": 1,

@@ -12,7 +12,7 @@ import * as uiFormatter from 'modules/formatter/common'
 import * as fm from 'LoopringJS/common/formatter'
 
 function PlaceOrderConfirm(props) {
-  const {placeOrderConfirm, placeOrder, settings, balance, wallet, marketcap, pendingTx, modals} = props
+  const {placeOrderConfirm, placeOrder, settings, balance, wallet, marketcap, pendingTx, dispatch} = props
   let {side, pair, tradeInfo, order} = placeOrderConfirm || {}
   let {unsigned, signed} = placeOrder || {}
   let {price, amount, total, validSince,validUntil, marginSplit, lrcFee, warn} = tradeInfo || {};
@@ -116,7 +116,7 @@ function PlaceOrderConfirm(props) {
         updateOrders();
       }
       // _this.setState({loading:false});
-      modals.hideModal({id: 'placeOrderConfirm'});
+      dispatch({type:'layers/hideLayer',payload:{id:'placeOrderConfirm'}})
     });
   }
 
@@ -180,10 +180,10 @@ function PlaceOrderConfirm(props) {
         }
 
         //TODO MOCK
-        const test = new Array()
-        test.push({type:"AllowanceNotEnough", value:{symbol:'LRC', allowance:12, required:123456}})
-        test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
-        tradeInfo.warn = test
+        // const test = new Array()
+        // test.push({type:"AllowanceNotEnough", value:{symbol:'LRC', allowance:12, required:123456}})
+        // test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
+        // tradeInfo.warn = test
 
         return orderFormatter.signOrder(tradeInfo, wallet)
       }).then(signResult => {
@@ -198,10 +198,9 @@ function PlaceOrderConfirm(props) {
   const ActionItem = (item) => {
     return (
       <div>
-        <Button className="alert-btn mr5" onClick={() => modals.showModal({
-          id: 'receive',
-          symbol: item.value.symbol.toUpperCase()
-        })}> {intl.get('order.receive_token', {token: item.value.symbol.toUpperCase()})}</Button>
+        <Button className="alert-btn mr5" onClick={() =>
+          dispatch({type:'layers/showLayer',payload:{id:'receive',symbol: item.value.symbol.toUpperCase()}})
+        }> {intl.get('order.receive_token', {token: item.value.symbol.toUpperCase()})}</Button>
         {item.value.symbol.toUpperCase() !== 'WETH' && item.value.symbol.toUpperCase() !== 'BAR' && item.value.symbol.toUpperCase() !== 'FOO' &&
         <Button className="alert-btn mr5"
                 onClick={() => window.routeActions.gotoPath(`/trade/${item.value.symbol.toUpperCase()}-WETH`)}> {intl.get('order.buy_token', {token: item.value.symbol.toUpperCase()})}</Button>}
@@ -209,11 +208,9 @@ function PlaceOrderConfirm(props) {
         <Button className="alert-btn mr5"
                 onClick={() => window.routeActions.gotoPath('/trade/FOO-BAR')}> {intl.get('order.buy_token', {token: item.value.symbol.toUpperCase()})}</Button>}
         {item.value.symbol.toUpperCase() === 'WETH' &&
-        <Button className="alert-btn mr5" onClick={() => modals.showModal({
-          id: 'convert',
-          item: {symbol: 'ETH'},
-          showFrozenAmount: true
-        })}> {intl.get('order.convert_token', {token: item.value.symbol.toUpperCase()})}</Button>}
+        <Button className="alert-btn mr5" onClick={() =>
+          dispatch({type:'layers/showLayer',payload:{id:'convert', item: {symbol: 'ETH'}, showFrozenAmount: true}})
+        }> {intl.get('order.convert_token', {token: item.value.symbol.toUpperCase()})}</Button>}
       </div>
     )
   };
