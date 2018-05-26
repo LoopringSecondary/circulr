@@ -12,14 +12,8 @@ import {AccountMenu} from './Wallet';
 function Trade(props) {
   const { children, match } = props
   // let pair = match.params.pair || window.STORAGE.markets.getCurrent() || 'LRC-WETH'
-  let pair = match.params.pair || 'LRC-WETH'
-  if(pair.indexOf('-') < 0){ }
-  // TODO if market is not support or goto some route
+  let market = match.params.market || 'LRC-WETH'
   const TabPane = Tabs.TabPane;
-  function callback(key) {
-    console.log(key);
-  }
-
   return (
     <div>
         <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000",borderBottom: "4px solid rgb(8, 34, 63)" }}>
@@ -30,7 +24,7 @@ function Trade(props) {
         </header>
   	    <div className="side-fixed" style={{ top:"0", left:"0", width:"280px", paddingTop:"74px" }}>
               <div className="card h-full">
-                <Containers.PlaceOrder initState={{pair:pair}}>
+                <Containers.PlaceOrder initState={{pair:market}}>
                   <Containers.Settings>
                     <Containers.Sockets id="balance">
                       <Containers.Sockets id="marketcap">
@@ -69,7 +63,7 @@ function Trade(props) {
                         </div>
                     </div>
       	            <div style={{position: "relative", height:"50%", paddingTop:"0"}}>
-          	            <Tabs defaultActiveKey="1" onChange={callback}  type="card">
+          	            <Tabs defaultActiveKey="1"  type="card">
           	                <TabPane tab="Orders" key="1">
                               <Containers.Orders id="MyOpenOrders" alias="orders"  >
                                 <Orders.ListMyOrders style={{height:"100%",overflow:"auto"}} />

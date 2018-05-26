@@ -30,7 +30,65 @@ export default {
     'loopringTickers':{...initState},
     'pendingTx':{...initState},
   },
+  subscriptions: {
+    setup({ dispatch, history }) {
+      history.listen(({ pathname })=> {
+        const market = 'LRC-WETH'
+        if (pathname.indexOf('/trade/')) {
+          dispatch({
+            type:'orders/filtersChange',
+            payload:{
+              id:'MyOpenOrders',
+              filters:{market}
+            }
+          })
+          dispatch({
+            type:'fills/filtersChange',
+            payload:{
+              id:'MyFills',
+              filters:{market}
+            }
+          })
+          dispatch({
+            type:'sockets/marketChange',
+            payload:{market}
+          })
+        }
+      })
+    },
+  },
   effects: {
+    *marketChange({payload},{call,select,put}){
+      const {market}=payload
+      yield put({
+        type:'filtersChange',
+        payload:{
+          id:'tickers',
+          filters:{market:market}
+        }
+      })
+      yield put({
+        type:'filtersChange',
+        payload:{
+          id:'depth',
+          filters:{market:market}
+        }
+      })
+      yield put({
+        type:'filtersChange',
+        payload:{
+          id:'trades',
+          filters:{market:market}
+        }
+      })
+      yield put({
+        type:'extraChange',
+        payload:{
+          id:'loopringTickers',
+          extra:{current:market} // for current page
+        }
+      })
+    },
     *urlChange({payload},{call,select,put}){
       yield put({type:'urlChangeStart',payload})
       yield put({type:'connect',payload})
@@ -231,8 +289,8 @@ export default {
         }
       }
     },
-
   },
+
 
 }
 

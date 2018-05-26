@@ -33,6 +33,7 @@ export default class Routes extends React.Component {
             <Route path="/home" exact component={Pages.Home} />
             <Route path="/wallet" exact component={Pages.Wallet} />
             <Route path="/trade" exact component={Pages.Trade} />
+            <Route path="/trade/:market" exact component={Pages.Trade} />
             <Route path="/dev" exact component={Pages.Test} />
             <Route path="/transfer" exact component={Tokens.TransferForm} />
             <Route path="/placeOrder" exact component={Orders.PlaceOrderForm} />
