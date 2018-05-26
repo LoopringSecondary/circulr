@@ -32,9 +32,10 @@ export default {
   },
   subscriptions: {
     setup({ dispatch, history }) {
-      history.listen(({ pathname })=> {
-        const market = 'LRC-WETH'
-        if (pathname.indexOf('/trade/')) {
+      history.listen(({pathname,search})=> {
+        if (pathname.indexOf('/trade/')>-1) {
+          const market = pathname.replace('/trade/','')
+          console.log('market',market)
           dispatch({
             type:'orders/filtersChange',
             payload:{
@@ -50,7 +51,7 @@ export default {
             }
           })
           dispatch({
-            type:'sockets/marketChange',
+            type:'marketChange',
             payload:{market}
           })
         }

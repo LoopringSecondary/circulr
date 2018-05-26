@@ -9,49 +9,7 @@ function ListTokenTickers(props) {
   const tickersFm = new TickersFm(list)
   const listedTickers = tickersFm.getTickersBySymbol('LRC') // TODO
   const gotoTrade = (item)=>{
-    routeActions.gotoPath('/trade')
-    dispatch({
-      type:'sockets/filtersChange',
-      payload:{
-        id:'tickers',
-        filters:{market:item.market}
-      }
-    })
-    dispatch({
-      type:'sockets/filtersChange',
-      payload:{
-        id:'depth',
-        filters:{market:item.market}
-      }
-    })
-    dispatch({
-      type:'sockets/filtersChange',
-      payload:{
-        id:'trades',
-        filters:{market:item.market}
-      }
-    })
-    dispatch({
-      type:'sockets/extraChange',
-      payload:{
-        id:'loopringTickers',
-        extra:{current:item.market}
-      }
-    })
-    dispatch({
-      type:'orders/filtersChange',
-      payload:{
-        id:'MyOpenOrders',
-        filters:{market:item.market}
-      }
-    })
-    dispatch({
-      type:'fills/filtersChange',
-      payload:{
-        id:'MyFills',
-        filters:{market:item.market}
-      }
-    })
+    routeActions.gotoPath(`/trade/${item.market}`)
   }
   return (
     <div>
