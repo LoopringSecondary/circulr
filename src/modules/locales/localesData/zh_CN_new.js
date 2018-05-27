@@ -18,10 +18,7 @@ const commons = {
 }
 const types = {
   order_status:{
-    open:'',
-    completed:'',
-    canceled:'',
-    expired:'',
+
   },
   trade_side:{
     sell:'',
@@ -29,34 +26,35 @@ const types = {
   },
 }
 export default {
-  order:{
-    types_schema:{
-      hash:'订单',
-      market:commons.market,
-      side:commons.side,
-      amount:commons.amount,
-      price:commons.price,
-      total:commons.total,
-      lrc_feelrc_fee:commons.lrc_fee,
-      filled:'成交',
-      created:'提交时间',
-      expired:'过期时间',
-      status:commons.total,
-    },
-    types_status:{
-      ...types.order_status
-    },
-    types_side:{
+  types_order:{
+    hash:'订单',
+    market:commons.market,
+    side:commons.side,
+    amount:commons.amount,
+    price:commons.price,
+    total:commons.total,
+    lrc_feelrc_fee:commons.lrc_fee,
+    filled:'成交',
+    created:'提交时间',
+    expired:'过期时间',
+    status:commons.total,
+  },
+  types_order_status:{
+      open:'',
+      completed:'',
+      canceled:'',
+      expired:'',
+  },
+  types_order_side:{
       ...types.trade_side
-    },
-    page_list:{
-      btns_cancel_all:'Cancel All',
-    },
-    page_detail:{
-      title:'订单详情',
-      tabs_basic:'基础信息',
-      tabs_fill:'成交信息',
-    },
+  },
+  page_order_list:{
+    btns_cancel_all:'Cancel All',
+  },
+  page_order_detail:{
+    title:'订单详情',
+    tabs_basic:'基础信息',
+    tabs_fill:'成交信息',
   },
 }
 
