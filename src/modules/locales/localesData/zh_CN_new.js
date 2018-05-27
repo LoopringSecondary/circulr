@@ -64,10 +64,10 @@ export default {
     buy:glossary.buy,
   },
   ui_order_list:{
-    btns_cancel_all:'Cancel All',
+    actions_cancel_all:'Cancel All',
   },
   ui_order_detail:{
-    page_title:'订单详情',
+    detail_title:'订单详情',
     tabs_basic:'基础信息',
     tabs_fill:'成交信息',
   },
@@ -114,7 +114,7 @@ export default {
     convert:'转换',
   },
   ui_tx_detail:{
-    page_title:'交易详情',
+    detail_title:'交易详情',
     tabs_basic:'基础信息',
     tabs_fill:'成交信息',
   },
@@ -130,23 +130,29 @@ export default {
     low:'24H 最低价',
     vol:'24H 交易量',
   },
-  ui_ticker:{
-    loopring_ticker_list_title:'Loopring DEX Markets',
-    reference_ticker_list_title:'Reference Markets',
-    go_to_trade:'前往交易',
+  ui_ticker_list:{
+    loopring_tickers_title:'Loopring DEX Markets',
+    reference_tickers_title:'Reference Markets',
+    actions_go_to_trade:'前往交易',
   },
   // -----------
   // token
   // -----------
   ui_token_list:{
-    hide_small_balance:'Hide tokens with small balance',
-    only_show_my_favorites:'Only show my favorites',
     total_value:'总资产',
-    actions_send:'转出',
-    actions_receive:'转入',
+    actions_hide_small_balance:'Hide tokens with small balance',
+    actions_show_my_favorites:'Only show my favorites',
+    actions_send:glossary.send,
+    actions_receive:glossary.receive,
+    actions_trade:glossary.trade,
     actions_convert_eth_to_weth:'转换 ETH 为 WETH',
     actions_convert_weth_to_eth:'转换 WETH 为 ETH',
-    actions_trade:glossary.trade,
+  },
+  ui_transfer:{
+
+  },
+  ui_convert:{
+
   },
 }
 
