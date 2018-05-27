@@ -13,11 +13,22 @@ const glossary = {
   price:'',
   total:'总计',
   lrc_fee:'LRC 撮合费',
+  lrc_fee_tips:'xxxxx',
   lrc_reward:'LRC 撮合奖励',
+  lrc_fee_tips:'xxxxx',
   block:'区块',
   nonce:'随机数',
-  sell:'买入'，
-  buy:'卖出'，
+  sell:'买入',
+  buy:'卖出',
+  buy:'卖出',
+  actions:'操作',
+  options:'选项',
+  balance:'余额',
+  balances:'余额',
+  send:'转出',
+  receive:'转入',
+  convert:'转换',
+  trade:'买卖',
 }
 const common_types = {
   trade_side:{
@@ -26,7 +37,10 @@ const common_types = {
   },
 }
 export default {
-  types_order:{
+  // -----------
+  // order
+  // -----------
+  type_order:{
     hash:'订单',
     market:glossary.market,
     side:glossary.side,
@@ -39,24 +53,43 @@ export default {
     expired:'过期时间',
     status:glossary.total,
   },
-  types_order_status:{
-      open:'',
-      completed:'',
-      canceled:'',
-      expired:'',
+  type_order_status:{
+    open:'撮合中',
+    completed:'已完成',
+    canceled:'已取消',
+    expired:'以过期',
   },
-  types_order_side:{
-      ...common_types.trade_side
+  type_order_side:{
+    sell:glossary.sell,
+    buy:glossary.buy,
   },
-  page_order_list:{
+  ui_order_list:{
     btns_cancel_all:'Cancel All',
   },
-  page_order_detail:{
-    title:'订单详情',
+  ui_order_detail:{
+    page_title:'订单详情',
     tabs_basic:'基础信息',
     tabs_fill:'成交信息',
   },
-  types_tx:{
+  ui_place_order:{
+    // TODO
+  },
+  ui_gas_setting:{
+    // TODO
+  },
+  ui_ttl_setting:{
+    // TODO
+  },
+  ui_lrc_setting:{
+    // TODO
+  },
+  ui_place_order_confirm:{
+    // TODO
+  },
+  // -----------
+  // transaction
+  // -----------
+  type_tx:{
     type:glossary.type,
     gas:glossary.gas,
     block:glossary.block,
@@ -65,12 +98,12 @@ export default {
     created:'提交时间',
     status:glossary.status,
   },
-  types_tx_status:{
+  type_tx_status:{
     pending:'处理中',
     success:'成功',
     failed:'失败',
   },
-  types_tx_type:{
+  type_tx_type:{
     sell:glossary.sell,
     buy:glossary.buy,
     transfer:'转出',
@@ -79,6 +112,41 @@ export default {
     lrc_fee:glossary.lrc_fee,
     lrc_reward:glossary.lrc_reward,
     convert:'转换',
+  },
+  ui_tx_detail:{
+    page_title:'交易详情',
+    tabs_basic:'基础信息',
+    tabs_fill:'成交信息',
+  },
+  // -----------
+  // ticker
+  // -----------
+  type_ticker:{
+    market:glossary.market,
+    price:glossary.price,
+    change:'24H 涨跌',
+    last:'最新成交价',
+    high:'24H 最高价',
+    low:'24H 最低价',
+    vol:'24H 交易量',
+  },
+  ui_ticker:{
+    loopring_ticker_list_title:'Loopring DEX Markets',
+    reference_ticker_list_title:'Reference Markets',
+    go_to_trade:'前往交易',
+  },
+  // -----------
+  // token
+  // -----------
+  ui_token_list:{
+    hide_small_balance:'Hide tokens with small balance',
+    only_show_my_favorites:'Only show my favorites',
+    total_value:'总资产',
+    actions_send:'转出',
+    actions_receive:'转入',
+    actions_convert_eth_to_weth:'转换 ETH 为 WETH',
+    actions_convert_weth_to_eth:'转换 WETH 为 ETH',
+    actions_trade:glossary.trade,
   },
 }
 
