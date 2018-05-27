@@ -1,4 +1,4 @@
-const commons = {
+const glossary = {
   all:'全部',
   status:'状态',
   statuses:'状态',
@@ -12,32 +12,32 @@ const commons = {
   gas:'油费',
   price:'',
   total:'总计',
-  lrc_fee:'',
+  lrc_fee:'LRC 撮合费',
+  lrc_reward:'LRC 撮合奖励',
   block:'区块',
   nonce:'随机数',
+  sell:'买入'，
+  buy:'卖出'，
 }
-const types = {
-  order_status:{
-
-  },
+const common_types = {
   trade_side:{
-    sell:'',
-    buy:'',
+    sell:glossary.sell,
+    buy:glossary.buy,
   },
 }
 export default {
   types_order:{
     hash:'订单',
-    market:commons.market,
-    side:commons.side,
-    amount:commons.amount,
-    price:commons.price,
-    total:commons.total,
-    lrc_feelrc_fee:commons.lrc_fee,
+    market:glossary.market,
+    side:glossary.side,
+    amount:glossary.amount,
+    price:glossary.price,
+    total:glossary.total,
+    lrc_feelrc_fee:glossary.lrc_fee,
     filled:'成交',
     created:'提交时间',
     expired:'过期时间',
-    status:commons.total,
+    status:glossary.total,
   },
   types_order_status:{
       open:'',
@@ -46,7 +46,7 @@ export default {
       expired:'',
   },
   types_order_side:{
-      ...types.trade_side
+      ...common_types.trade_side
   },
   page_order_list:{
     btns_cancel_all:'Cancel All',
@@ -55,6 +55,30 @@ export default {
     title:'订单详情',
     tabs_basic:'基础信息',
     tabs_fill:'成交信息',
+  },
+  types_tx:{
+    type:glossary.type,
+    gas:glossary.gas,
+    block:glossary.block,
+    nonce:glossary.nonce,
+    txHash:'交易Hash',
+    created:'提交时间',
+    status:glossary.status,
+  },
+  types_tx_status:{
+    pending:'处理中',
+    success:'成功',
+    failed:'失败',
+  },
+  types_tx_type:{
+    sell:glossary.sell,
+    buy:glossary.buy,
+    transfer:'转出',
+    receice:'转入',
+    approve:'授权',
+    lrc_fee:glossary.lrc_fee,
+    lrc_reward:glossary.lrc_reward,
+    convert:'转换',
   },
 }
 
