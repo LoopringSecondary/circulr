@@ -25,7 +25,7 @@ class CancelOrderConfirm extends React.Component {
 
   cancel = () => {
     const {cancelOrderConfirm} = this.props;
-    cancelOrderConfirm.hideModal({id:'cancelOrderConfirm'});
+    cancelOrderConfirm.hideLayer();
   };
 
   ConfirmCancel = async () => {
