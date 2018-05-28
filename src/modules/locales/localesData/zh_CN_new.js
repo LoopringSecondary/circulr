@@ -28,6 +28,10 @@ const words = {
   receive: '转入',
   convert: '转换',
   trade: '买卖',
+  password: '密码',
+  copy: "复制",
+  copy_suc: '复制成功',
+  copy_fail: "复制失败"
 }
 const types = {
   trade_side: {
@@ -166,10 +170,38 @@ export default {
       average: '一般',
       strong: '强'
     },
-    default_address: '默认地址:',
+    default_address: '默认地址',
     actions_unlock: '解锁',
     actions_generate: '生成',
     actions_more_address: '选择其他地址',
+    actions_get_metamask: "下载MetaMask插件",
+    actions_visit_metaMask: "访问MetaMask官网",
+    actions_connect: "连接您的{walletType}钱包",
+    actions_select_json: '选择JSON文件',
+    actions_paste_mnemonic: '请粘贴您的助记词',
+    error_json_tip: '无效的keystore Json ',
+    error_mnemonic_tip: "无效的助记词",
+    error_password_tip: "请输入密码",
+    notifications_unlock_suc: '解锁成功',
+    notification_unlock_fail: "解锁失败",
+  },
+  token: {
+    action_options: '{token} 选项',
+    action_types: {
+      receive: "接收{token}",
+      send: "转账{token}",
+      trade: "交易{token}",
+      convert: '转换成{token}'
+    },
+    receive_title: '我的以太坊地址',
+    receive_value_tip: '推荐值',
+    recipient: '接受者',
+    continue: '继续',
+    convert_eth_tip:'我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
+    actions_max:"最大数量",
+    actions_cancel_send:"取消转账",
+    actions_confirm_send:"确认转账",
+
   }
 }
 
