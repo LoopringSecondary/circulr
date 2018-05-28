@@ -6,7 +6,8 @@ class  GenerateWallet extends React.Component {
 
   state = {
     visible:false,
-    pass:''
+    pass:'',
+    strength:'weak'
   };
 
   togglePassword = () => {
@@ -15,23 +16,40 @@ class  GenerateWallet extends React.Component {
   };
 
   passChange = (e) => {
-    this.setState({pass:e.target.value})
+    const strength = this.getStrength(e.target.value);
+    this.setState({pass:e.target.value,strength});
   };
 
   generate =  () => {
     const {pass} = this.state;
     const {wallet,dispatch} = this.props;
+    const _this = this
     wallet.createWallet({password: pass,cb:(res) => {
       if(!res.error){
         const {address,mnemonic,keystore,privateKey} = res;
         dispatch({type:'backup/set',payload:{address,mnemonic,keystore,privateKey}});
-        routeActions.gotoPath(`/unlock/backup`)
+        routeActions.gotoPath(`/unlock/backup`);
+      _this.setState({    visible:false,
+        pass:'',
+        strength:'weak'})
       }
     }});
   };
 
+  getStrength(value) {
+    if (value.length <= 6) {
+      return 'weak'
+    }
+    if (value.length > 10) {
+      return 'strong'
+    }
+    if (6 < value.length <= 10) {
+      return 'average'
+    }
+  }
+
   render(){
-    const {visible,pass} = this.state;
+    const {visible,pass,strength} = this.state;
     const visibleIcon = (
       <div>
         {visible &&
@@ -53,8 +71,10 @@ class  GenerateWallet extends React.Component {
           </div>
           <div className="d-flex justify-content-start align-items-center password-strong" style={{width:"300px"}}>
             <b className="password-label">Password Strength</b>
-            <Progress percent={50}  />
-            <div><span className="offset-md text-up">average</span></div>
+            {strength === 'weak' && <Progress percent={30}  />}
+            {strength === 'average' && <Progress percent={50}  />}
+            {strength === 'strong' && <Progress percent={90}  />}
+            <div><span className="offset-md text-up">{strength}</span></div>
           </div>
           <button className="btn btn-primary btn-block btn-xxlg" onClick={this.generate}>Generate Now</button>
         </div>
