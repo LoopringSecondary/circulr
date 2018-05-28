@@ -65,6 +65,11 @@ class Unlock extends React.Component {
                   <a data-toggle="tab" onClick={() => this.changeTab('generateWallet')}><i className="icon-plus"/>
                     <h4>Generate Wallet</h4></a>
                 </li>
+                <li className={`item ${pathname==='/unlock/address' ? 'active':''}`}>
+                  <a data-toggle="tab" onClick={() => this.changeTab('address')}><i className="icon-key"/><h4>
+                    Address</h4>
+                  </a>
+                </li>
                 <li className={`item ${pathname==='/unlock/metamask' ? 'active':''}`}>
                   <a data-toggle="tab"  onClick={() => this.changeTab('metamask')}><i className="icon-metamaskwallet"/><h4>MetaMask</h4></a>
                 </li>
@@ -86,11 +91,6 @@ class Unlock extends React.Component {
                 <li className={`item ${pathname==='/unlock/privateKey' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('privateKey')}><i className="icon-key"/><h4>
                     Private Key</h4>
-                  </a>
-                </li>
-                <li className={`item ${pathname==='/unlock/address' ? 'active':''}`}>
-                  <a data-toggle="tab" onClick={() => this.changeTab('address')}><i className="icon-key"/><h4>
-                    Address</h4>
                   </a>
                 </li>
                 <li className="item remove" id="inupRemove">
