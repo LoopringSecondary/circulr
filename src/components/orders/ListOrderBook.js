@@ -35,6 +35,10 @@ function ListOrderBook(props) {
     e.preventDefault()
     props.dispatch({type:'placeOrder/priceChange', payload:{priceInput:value}})
   }
+  const amountSelected = (value, e) => {
+    e.preventDefault()
+    props.dispatch({type:'placeOrder/amountChange', payload:{amountInput:value}})
+  }
   return (
     <div>
 	    <div className="card dark" style={{height:"-webkit-calc(100vh - 40px)"}}>
@@ -64,7 +68,7 @@ function ListOrderBook(props) {
                           <Popover placement="right" content={<ItemMore item={item} />} title={null} key={index}>
                             <li >
                               <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, Number(item[0]).toFixed(8))}>{Number(item[0]).toFixed(8)}</span>
-                              <span style={{textAlign:'right'}}>{Number(item[1]).toFixed(4)}</span>
+                              <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, Number(item[1]).toFixed(4))}>{Number(item[1]).toFixed(4)}</span>
                               <span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span>
                             </li>
                           </Popover>
@@ -77,7 +81,10 @@ function ListOrderBook(props) {
     	                {
                         depth.item.buy.map((item,index)=>
                           <Popover placement="right" content={<ItemMore item={item} />} title={null} key={index}>
-                            <li key={index}><span className="text-up cursor-pointer" onClick={priceSelected.bind(this, Number(item[0]).toFixed(8))}>{Number(item[0]).toFixed(8)}</span><span style={{textAlign:'right'}}>{Number(item[1]).toFixed(4)}</span><span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span></li>
+                            <li key={index}>
+                              <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, Number(item[0]).toFixed(8))}>{Number(item[0]).toFixed(8)}</span>
+                              <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, Number(item[1]).toFixed(4))}>{Number(item[1]).toFixed(4)}</span>
+                              <span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span></li>
                           </Popover>
                         )
                       }
