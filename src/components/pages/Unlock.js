@@ -13,15 +13,9 @@ import Notification from '../../common/loopringui/components/Notification'
 
 class Unlock extends React.Component {
 
-  changeTab = async (path) => {
+  changeTab = (path) => {
     const {match} = this.props;
     const {url} = match;
-    const response = await window.ETH.getGasPrice();
-
-    if(response.error){
-      Notification.open({type: 'error', description: response.error.message});
-    }
-
     routeActions.gotoPath(`${url}/${path}`);
   };
 
