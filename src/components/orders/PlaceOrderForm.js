@@ -477,9 +477,9 @@ class PlaceOrderForm extends React.Component {
         <div className="card-body form-inverse">
           <ul className="pair-price text-inverse">
             <li>
-              <h4>{left.symbol}</h4><span className="token-price">0.00009470 USD</span><span className="text-up">+0.98</span></li>
+              <h4>{left.symbol}</h4><span className="token-price">{FormatAmount({value:left.balance.toString(10), precision:left.precision})}</span></li>
             <li>
-              <h4>{right.symbol}</h4><span className="token-price">0.56 USD</span><span className="text-up">+0.45</span></li>
+              <h4>{right.symbol}</h4><span className="token-price">{FormatAmount({value:right.balance.toString(10), precision:right.precision})}</span></li>
           </ul>
           {placeOrder.side === 'buy' &&
           <ul className="token-tab">
@@ -496,7 +496,7 @@ class PlaceOrderForm extends React.Component {
           <div className="tab-content">
             <div className="blk-sm"></div>
             <div className="" id="b1">
-              {sell && <small className="balance">{sell.token.symbol} Balance: <span>{FormatAmount({value:sell.token.balance.toString(10), precision:marketConfig.pricePrecision})}</span></small>}
+              {false && sell && <small className="balance">{sell.token.symbol} Balance: <span>{FormatAmount({value:sell.token.balance.toString(10), precision:marketConfig.pricePrecision})}</span></small>}
               <div className="blk-sm"></div>
               <Form.Item label={null} colon={false}>
                 {form.getFieldDecorator('price', {
