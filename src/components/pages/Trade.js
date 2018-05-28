@@ -16,7 +16,7 @@ function Trade(props) {
   const TabPane = Tabs.TabPane;
   return (
     <div>
-        <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000",borderBottom: "4px solid rgb(8, 34, 63)" }}>
+        <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000" }}>
             <div className="bg d-flex justify-content-between align-items-center">
                 <Tickers.TickerHeader />
                 <AccountMenu dispatch={props.dispatch} />

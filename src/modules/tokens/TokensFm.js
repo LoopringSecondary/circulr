@@ -60,7 +60,7 @@ export const sortTokens = (tokens)=>{
 export const filterTokens = (list)=>{
   const {items,filters,favored} = list
   let keys = Object.keys(filters)
-  let tokens = [...items]
+  let tokens = [...items.filter(token => token.symbol !== 'WETH_OLD')]
   keys.map(key => {
     const value = filters[key]
     if (key === 'ifOnlyShowMyFavorite') {
