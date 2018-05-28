@@ -47,7 +47,7 @@ function ListOrderBook(props) {
 	    	</div>
 	    	<div className="trade-list" style={{height:"-webkit-calc(100% - 31px)"}}>
     	    	    <div className="bg" style={{ position: "absolute", top:"50%", marginTop:"-45px", zIndex: "100", width: "100%", height: "40px", lineHeight: "38px", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0", fontSize: "16px"}}>
-	    	    		<div className="text-up text-center">0.00008189<span className="offset-md"><i className="icon-arrow-up"></i></span></div>
+	    	    		<div className="text-up text-center cursor-pointer" onClick={priceSelected.bind(this, '0.00008189')}>0.00008189<span className="offset-md"><i className="icon-arrow-up"></i></span></div>
 	    	    	</div>
 	    	    	<div className="bg blockbar" style={{ position: "absolute", bottom:"40px", zIndex: "100", width: "100%", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0 0", fontSize: "16px"}}>
 	    		    	<span>Aggregation</span>
