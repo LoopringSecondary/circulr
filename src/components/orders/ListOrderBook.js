@@ -2,7 +2,31 @@ import React from 'react'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'
 import {getTokensByMarket} from 'modules/formatter/common'
+import {Popover} from 'antd'
 
+const MetaItem = (props) => {
+  const {label, value, render} = props
+  return (
+    <div>
+      <span>
+        {label}
+      </span>
+      <span className="text-lg-control break-word text-right">
+        {render ? render(value) : value}
+      </span>
+    </div>
+  )
+}
+
+const ItemMore=({item})=>{
+  return (
+    <div>
+      <MetaItem label="LRC Fee" value="25.5LRC" />
+      <MetaItem label="Expired" value="2018-08-01" />
+      <MetaItem label="Status" value="撮合中" />
+    </div>
+  )
+}
 function ListOrderBook(props) {
   console.log('ListOrderBook render',props)
   const {depth} = props
@@ -37,7 +61,13 @@ function ListOrderBook(props) {
 	    	        <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0px" }}>
                       {
                         depth.item.sell.map((item,index)=>
-                          <li key={index}><span className="text-down"><span className="cursor-pointer" onClick={priceSelected.bind(this, Number(item[0]).toFixed(8))}> {Number(item[0]).toFixed(8)} </span></span><span style={{textAlign:'right'}}>{Number(item[1]).toFixed(4)}</span><span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span></li>
+                          <Popover placement="right" content={<ItemMore item={item} />} title={null} key={index}>
+                            <li >
+                              <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, Number(item[0]).toFixed(8))}>{Number(item[0]).toFixed(8)}</span>
+                              <span style={{textAlign:'right'}}>{Number(item[1]).toFixed(4)}</span>
+                              <span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span>
+                            </li>
+                          </Popover>
                         )
                       }
     	            </ul>
@@ -46,11 +76,12 @@ function ListOrderBook(props) {
     	            <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0" }}>
     	                {
                         depth.item.buy.map((item,index)=>
-                          <li key={index}><span className="text-up"><span className="cursor-pointer" onClick={priceSelected.bind(this, Number(item[0]).toFixed(8))}>{Number(item[0]).toFixed(8)}</span></span><span style={{textAlign:'right'}}>{Number(item[1]).toFixed(4)}</span><span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span></li>
+                          <Popover placement="right" content={<ItemMore item={item} />} title={null} key={index}>
+                            <li key={index}><span className="text-up cursor-pointer" onClick={priceSelected.bind(this, Number(item[0]).toFixed(8))}>{Number(item[0]).toFixed(8)}</span><span style={{textAlign:'right'}}>{Number(item[1]).toFixed(4)}</span><span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span></li>
+                          </Popover>
                         )
                       }
     	            </ul>
-
 	    	    </div>
 	        </div>
 	    </div>
