@@ -28,6 +28,7 @@ const words = {
   receive: '转入',
   convert: '转换',
   trade: '买卖',
+  password:'密码'
 }
 const types = {
   trade_side: {
@@ -151,6 +152,7 @@ export default {
   transfer: {},
   convert: {},
   wallet: {
+    password:words.password,
     types: {
       generate: '生成钱包',
       metamask: "MetaMask 钱包",
@@ -166,10 +168,19 @@ export default {
       average: '一般',
       strong: '强'
     },
-    default_address: '默认地址:',
+    default_address: '默认地址',
     actions_unlock: '解锁',
     actions_generate: '生成',
     actions_more_address: '选择其他地址',
+    actions_get_metamask:"下载MetaMask插件",
+    actions_visit_metaMask:"访问MetaMask官网",
+    actions_connect:"连接您的{walletType}钱包",
+    actions_select_json:'选择JSON文件',
+    actions_paste_mnemonic:'请粘贴您的助记词',
+    error_json_tip:'无效的keystore Json ',
+    error_mnemonic_tip:"无效的助记词",
+    notifications_unlock_suc:'解锁成功',
+    notification_unlock_fail:"解锁失败"
   }
 }
 
