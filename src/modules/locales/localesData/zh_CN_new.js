@@ -1,4 +1,4 @@
-const glossary = {
+const words = {
   all:'全部',
   status:'状态',
   statuses:'状态',
@@ -15,11 +15,10 @@ const glossary = {
   lrc_fee:'LRC 撮合费',
   lrc_fee_tips:'xxxxx',
   lrc_reward:'LRC 撮合奖励',
-  lrc_fee_tips:'xxxxx',
+  lrc_reward_tips:'xxxxx',
   block:'区块',
   nonce:'随机数',
   sell:'买入',
-  buy:'卖出',
   buy:'卖出',
   actions:'操作',
   options:'选项',
@@ -32,26 +31,27 @@ const glossary = {
 }
 const types = {
   trade_side:{
-    sell:glossary.sell,
-    buy:glossary.buy,
+    sell:words.sell,
+    buy:words.buy,
   },
 }
 export default {
+  ...words,
   // -----------
   // order
   // -----------
   order:{
     hash:'订单',
-    market:glossary.market,
-    side:glossary.side,
-    amount:glossary.amount,
-    price:glossary.price,
-    total:glossary.total,
-    lrc_feelrc_fee:glossary.lrc_fee,
+    market:words.market,
+    side:words.side,
+    amount:words.amount,
+    price:words.price,
+    total:words.total,
+    lrc_fee:words.lrc_fee,
     filled:'成交',
     created:'提交时间',
     expired:'过期时间',
-    status:glossary.total,
+    status:words.total,
   },
   order_status:{
     open:'撮合中',
@@ -60,8 +60,8 @@ export default {
     expired:'以过期',
   },
   order_side:{
-    sell:glossary.sell,
-    buy:glossary.buy,
+    sell:words.sell,
+    buy:words.buy,
   },
   order_list:{
     actions_cancel_all:'Cancel All',
@@ -90,13 +90,13 @@ export default {
   // transaction
   // -----------
   tx:{
-    type:glossary.type,
-    gas:glossary.gas,
-    block:glossary.block,
-    nonce:glossary.nonce,
+    type:words.type,
+    gas:words.gas,
+    block:words.block,
+    nonce:words.nonce,
     txHash:'交易Hash',
     created:'提交时间',
-    status:glossary.status,
+    status:words.status,
   },
   tx_status:{
     pending:'处理中',
@@ -104,13 +104,13 @@ export default {
     failed:'失败',
   },
   tx_type:{
-    sell:glossary.sell,
-    buy:glossary.buy,
+    sell:words.sell,
+    buy:words.buy,
     transfer:'转出',
     receice:'转入',
     approve:'授权',
-    lrc_fee:glossary.lrc_fee,
-    lrc_reward:glossary.lrc_reward,
+    lrc_fee:words.lrc_fee,
+    lrc_reward:words.lrc_reward,
     convert:'转换',
   },
   tx_detail:{
@@ -122,8 +122,8 @@ export default {
   // ticker
   // -----------
   ticker:{
-    market:glossary.market,
-    price:glossary.price,
+    market:words.market,
+    price:words.price,
     change:'24H 涨跌',
     last:'最新成交价',
     high:'24H 最高价',
@@ -142,9 +142,9 @@ export default {
     total_value:'总资产',
     actions_hide_small_balance:'Hide tokens with small balance',
     actions_show_my_favorites:'Only show my favorites',
-    actions_send:glossary.send,
-    actions_receive:glossary.receive,
-    actions_trade:glossary.trade,
+    actions_send:words.send,
+    actions_receive:words.receive,
+    actions_trade:words.trade,
     actions_convert_eth_to_weth:'转换 ETH 为 WETH',
     actions_convert_weth_to_eth:'转换 WETH 为 ETH',
   },
