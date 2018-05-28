@@ -45,6 +45,14 @@ function PlaceOrderConfirm(props) {
       return
     }
     try {
+      if(item.data.owner !== wallet.address) {
+        Notification.open({
+          message: intl.get('trade.place_order_failed'),
+          type: "error",
+          description: 'your address in original order is not the same as unlocked, please replace order'
+        });
+        return
+      }
       if(item.type === 'order') {
         const signedOrder = await account.signOrder(item.data)
         signedOrder.powNonce = 100;

@@ -1,0 +1,51 @@
+import React from 'react';
+import { Link } from 'dva/router';
+import { Modal, Button,Icon,Alert, Input, Form } from 'antd';
+import intl from 'react-intl-universal';
+import Notification from 'LoopringUI/components/Notification'
+import * as tokenFormatter from 'modules/tokens/TokenFm'
+import routeActions from 'common/utils/routeActions';
+import {connect} from 'dva';
+
+function UnlockByAddress(props) {
+
+  const {form} = props
+
+  function validateAddress(address) {
+    return tokenFormatter.validateEthAddress(address)
+  }
+
+  function unlocked() {
+    form.validateFields((err, values) => {
+      if (!err) {
+        const address = form.getFieldValue('address')
+        props.dispatch({type:"wallet/unlockAddressWallet",payload:{address}});
+        Notification.open({type:'success',message:'解锁成功',description:'unlock'});
+        props.dispatch({type: 'sockets/unlocked'})
+        routeActions.gotoPath('/wallet');
+      }
+    })
+  }
+
+  return (
+    <div className="text-left">
+      <h2 className="text-center text-primary">Paste Your Address Here</h2>
+      <div className="blk-md"></div>
+      <Form layout="horizontal">
+        <Form.Item colon={false}>
+          {form.getFieldDecorator('address', {
+            rules: [{
+              message: intl.get('wallet.invalid_eth_address'),
+              validator: (rule, value, cb) => validateAddress(value) ? cb() : cb(true)
+            }]
+          })(
+            <Input className="d-block w-100" placeholder={intl.get('wallet.address_input_placeholder')} size="large" />
+          )}
+        </Form.Item>
+      </Form>
+      <Button className="btn btn-primary btn-block btn-xxlg" onClick={unlocked}>Unlock</Button>
+    </div>
+  )
+}
+
+export default connect()(Form.create()(UnlockByAddress))

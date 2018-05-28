@@ -40,7 +40,7 @@ export function sliderEffectAmount(availableAmount, percentage, tokenL, tokenR) 
 }
 
 export function amountEffectSlider(availableAmount, amountInput) {
-  if(fm.toBig(availableAmount).gt(0) && fm.toBig(amountInput).gt(0)) {
+  if(fm.toBig(availableAmount).gte(0) && fm.toBig(amountInput).gte(0)) {
     if(fm.toBig(amountInput).gt(availableAmount)) {
       return 100
     }

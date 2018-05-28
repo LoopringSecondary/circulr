@@ -358,7 +358,7 @@ class PlaceOrderForm extends React.Component {
             Notification.open({
               message: intl.get('trade.place_order_failed'),
               type: "error",
-              description: ''
+              description: 'to unlock'
             });
             return
           }
@@ -397,7 +397,7 @@ class PlaceOrderForm extends React.Component {
             return
           }
           let allowed = false
-          let currency = 'USD';// TODO settings.preference.currency
+          let currency = settings.preference.currency;
           let priceSymbol = fm.getDisplaySymbol(currency)
           if(currency === 'USD') {
             priceSymbol = '100' + priceSymbol

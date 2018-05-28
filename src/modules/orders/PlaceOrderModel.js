@@ -79,21 +79,38 @@ export default {
     },
     priceChange(state, action) {
       const {priceInput} = action.payload
+      let price = 0
+      if(state.pair) {
+        const l = state.pair.split('-')[0].toUpperCase()
+        const r = state.pair.split('-')[1].toUpperCase()
+        const marketConfig = config.getMarketBySymbol(l, r)
+        if(marketConfig) {
+          price = orderFormatter.formatPriceByMarket(priceInput, marketConfig)
+        }
+      }
       return {
         ...state,
-        priceInput
+        priceInput : price
       }
     },
     amountChange(state, action) {
-      let amountInput = 0
+      let amount = 0
       if(!action.payload) {
-        amountInput = orderFormatter.sliderChangeEffectAmount(state)
+        amount = orderFormatter.sliderChangeEffectAmount(state)
       } else{
-        amountInput = action.payload.amountInput
+        if(state.pair) {
+          const l = state.pair.split('-')[0].toUpperCase()
+          const r = state.pair.split('-')[1].toUpperCase()
+          const tokenRConfig = config.getTokenBySymbol(r)
+          const marketConfig = config.getMarketBySymbol(l, r)
+          if(tokenRConfig && marketConfig) {
+            amount = orderFormatter.formatAmountByMarket(action.payload.amountInput, tokenRConfig, marketConfig)
+          }
+        }
       }
       return {
         ...state,
-        amountInput
+        amountInput : amount
       }
     },
     pairChange(state, action) {
