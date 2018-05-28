@@ -7,6 +7,10 @@ function ListOrderBook(props) {
   console.log('ListOrderBook render',props)
   const {depth} = props
   const tokens = getTokensByMarket(depth.filters.market)
+  const priceSelected = (value, e) => {
+    e.preventDefault()
+    props.dispatch({type:'placeOrder/priceChange', payload:{priceInput:value}})
+  }
   return (
     <div>
 	    <div className="card dark" style={{height:"-webkit-calc(100vh - 40px)"}}>
@@ -33,7 +37,7 @@ function ListOrderBook(props) {
 	    	        <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0px" }}>
                       {
                         depth.item.sell.map((item,index)=>
-                          <li key={index}><span className="text-down">{Number(item[0]).toFixed(8)}</span><span style={{textAlign:'right'}}>{Number(item[1]).toFixed(4)}</span><span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span></li>
+                          <li key={index}><span className="text-down"><span className="cursor-pointer" onClick={priceSelected.bind(this, Number(item[0]).toFixed(8))}> {Number(item[0]).toFixed(8)} </span></span><span style={{textAlign:'right'}}>{Number(item[1]).toFixed(4)}</span><span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span></li>
                         )
                       }
     	            </ul>
@@ -42,7 +46,7 @@ function ListOrderBook(props) {
     	            <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0" }}>
     	                {
                         depth.item.buy.map((item,index)=>
-                          <li key={index}><span className="text-up">{Number(item[0]).toFixed(8)}</span><span style={{textAlign:'right'}}>{Number(item[1]).toFixed(4)}</span><span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span></li>
+                          <li key={index}><span className="text-up"><span className="cursor-pointer" onClick={priceSelected.bind(this, Number(item[0]).toFixed(8))}>{Number(item[0]).toFixed(8)}</span></span><span style={{textAlign:'right'}}>{Number(item[1]).toFixed(4)}</span><span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span></li>
                         )
                       }
     	            </ul>
