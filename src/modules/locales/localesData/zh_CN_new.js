@@ -154,5 +154,14 @@ export default {
   convert:{
 
   },
+  wallet:{
+    default_address:'默认地址:',
+    password_strength:{
+      weak:'弱',
+      average:'一般',
+      strong:'强'
+    },
+
+  }
 }
 
