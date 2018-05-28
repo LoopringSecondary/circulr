@@ -9,12 +9,19 @@ import {getXPubKey as getTrezorPublicKey} from "LoopringJS/ethereum/trezor";
 import {getXPubKey as getLedgerPublicKey,connect as connectLedger} from "LoopringJS/ethereum/ledger";
 import {wallets} from "../../common/config/data";
 import {trimAll} from "LoopringJS/common/utils";
+import Notification from '../../common/loopringui/components/Notification'
 
 class Unlock extends React.Component {
 
-  changeTab = (path) => {
+  changeTab = async (path) => {
     const {match} = this.props;
     const {url} = match;
+    const response = await window.ETH.getGasPrice();
+
+    if(response.error){
+      Notification.open({type: 'error', description: response.error.message});
+    }
+
     routeActions.gotoPath(`${url}/${path}`);
   };
 

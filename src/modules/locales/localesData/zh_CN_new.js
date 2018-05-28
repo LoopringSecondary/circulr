@@ -161,6 +161,8 @@ export default {
       average:'一般',
       strong:'强'
     },
+    actions_unlock:'解锁',
+    actions_more_address:'选择更多地址',
 
   }
 }
