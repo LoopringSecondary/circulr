@@ -197,10 +197,14 @@ export default {
     receive_value_tip: '推荐值',
     recipient: '接受者',
     continue: '继续',
-    convert_eth_tip:'我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
-    actions_max:"最大数量",
-    actions_cancel_send:"取消转账",
-    actions_confirm_send:"确认转账",
+    convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
+    actions_max: "最大数量",
+    actions_cancel_send: "取消转账",
+    actions_confirm_send: "确认转账",
+    actions_confirm_convert: '确认转换'
+  },
+  transaction: {
+
 
   }
 }

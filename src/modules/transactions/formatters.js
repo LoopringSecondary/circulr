@@ -33,26 +33,26 @@ export class TxFm{
     this.tx = tx
     this.fill = tx.fill
   }
-  getType(){
+  getType(value){
     switch (this.tx.type) {
       case 'approve':
         return intl.get('txs.type_enable_title', {symbol: this.tx.symbol});
       case 'send':
-        return intl.get('txs.type_transfer_title', {symbol: this.tx.symbol});
+        return intl.get('txs.type_transfer_title', {symbol: this.tx.symbol,value});
       case 'receive':
-        return intl.get('txs.type_receive_title', {symbol: this.tx.symbol});
+        return intl.get('txs.type_receive_title', {symbol: this.tx.symbol,value});
       case 'sell':
-        return intl.get('txs.type_sell_title', {symbol: this.tx.symbol});
+        return intl.get('txs.type_sell_title', {symbol: this.tx.symbol,value});
       case 'buy':
-        return intl.get('txs.type_buy_title', {symbol: this.tx.symbol});
+        return intl.get('txs.type_buy_title', {symbol: this.tx.symbol,value});
       case 'lrc_fee':
         return  intl.get('orders.LrcFee');
       case 'lrc_reward':
         return intl.get('orders.LrcReward');
       case 'convert_outcome':
-        return this.tx.symbol === 'ETH' ? intl.get('txs.type_convert_title_eth') : intl.get('txs.type_convert_title_weth');
+        return this.tx.symbol === 'ETH' ? intl.get('txs.type_convert_title_eth',{value}) : intl.get('txs.type_convert_title_weth',{value});
       case 'convert_income':
-        return this.tx.symbol === 'WETH' ? intl.get('txs.type_convert_title_eth') : intl.get('txs.type_convert_title_weth');
+        return this.tx.symbol === 'WETH' ? intl.get('txs.type_convert_title_eth',{value}) : intl.get('txs.type_convert_title_weth',{value});
       case 'cancel_order':
         return intl.get('txs.cancel_order')
       case 'cutoff':
