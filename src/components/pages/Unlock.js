@@ -88,6 +88,11 @@ class Unlock extends React.Component {
                     Private Key</h4>
                   </a>
                 </li>
+                <li className={`item ${pathname==='/unlock/address' ? 'active':''}`}>
+                  <a data-toggle="tab" onClick={() => this.changeTab('address')}><i className="icon-key"/><h4>
+                    Address</h4>
+                  </a>
+                </li>
                 <li className="item remove" id="inupRemove">
                   <a href="#"><i className="icon-remove"/></a>
                 </li>
@@ -154,8 +159,12 @@ class Unlock extends React.Component {
                 <Containers.DetermineWallet>
                   <Account.DetermineWallet/>
                 </Containers.DetermineWallet>
-
               </div>}
+              />
+              <Route path={`${url}/address`} exact render={() =>
+                <div className="tab-content">
+                  <Account.UnlockByAddress/>
+                </div>}
               />
               <Redirect path={`${match.url}/`} to={`${match.url}/generateWallet`}/>
             </Switch>
