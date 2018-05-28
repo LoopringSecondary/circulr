@@ -30,7 +30,7 @@ const glossary = {
   convert:'转换',
   trade:'买卖',
 }
-const common_types = {
+const types = {
   trade_side:{
     sell:glossary.sell,
     buy:glossary.buy,
@@ -40,7 +40,7 @@ export default {
   // -----------
   // order
   // -----------
-  type_order:{
+  order:{
     hash:'订单',
     market:glossary.market,
     side:glossary.side,
@@ -53,43 +53,43 @@ export default {
     expired:'过期时间',
     status:glossary.total,
   },
-  type_order_status:{
+  order_status:{
     open:'撮合中',
     completed:'已完成',
     canceled:'已取消',
     expired:'以过期',
   },
-  type_order_side:{
+  order_side:{
     sell:glossary.sell,
     buy:glossary.buy,
   },
-  ui_order_list:{
+  order_list:{
     actions_cancel_all:'Cancel All',
   },
-  ui_order_detail:{
+  order_detail:{
     detail_title:'订单详情',
     tabs_basic:'基础信息',
     tabs_fill:'成交信息',
   },
-  ui_place_order:{
+  place_order:{
     // TODO
   },
-  ui_gas_setting:{
+  gas_setting:{
     // TODO
   },
-  ui_ttl_setting:{
+  ttl_setting:{
     // TODO
   },
-  ui_lrc_setting:{
+  lrc_setting:{
     // TODO
   },
-  ui_place_order_confirm:{
+  place_order_confirm:{
     // TODO
   },
   // -----------
   // transaction
   // -----------
-  type_tx:{
+  tx:{
     type:glossary.type,
     gas:glossary.gas,
     block:glossary.block,
@@ -98,12 +98,12 @@ export default {
     created:'提交时间',
     status:glossary.status,
   },
-  type_tx_status:{
+  tx_status:{
     pending:'处理中',
     success:'成功',
     failed:'失败',
   },
-  type_tx_type:{
+  tx_type:{
     sell:glossary.sell,
     buy:glossary.buy,
     transfer:'转出',
@@ -113,7 +113,7 @@ export default {
     lrc_reward:glossary.lrc_reward,
     convert:'转换',
   },
-  ui_tx_detail:{
+  tx_detail:{
     detail_title:'交易详情',
     tabs_basic:'基础信息',
     tabs_fill:'成交信息',
@@ -121,7 +121,7 @@ export default {
   // -----------
   // ticker
   // -----------
-  type_ticker:{
+  ticker:{
     market:glossary.market,
     price:glossary.price,
     change:'24H 涨跌',
@@ -130,7 +130,7 @@ export default {
     low:'24H 最低价',
     vol:'24H 交易量',
   },
-  ui_ticker_list:{
+  ticker_list:{
     loopring_tickers_title:'Loopring DEX Markets',
     reference_tickers_title:'Reference Markets',
     actions_go_to_trade:'前往交易',
@@ -138,7 +138,7 @@ export default {
   // -----------
   // token
   // -----------
-  ui_token_list:{
+  token_list:{
     total_value:'总资产',
     actions_hide_small_balance:'Hide tokens with small balance',
     actions_show_my_favorites:'Only show my favorites',
@@ -148,10 +148,10 @@ export default {
     actions_convert_eth_to_weth:'转换 ETH 为 WETH',
     actions_convert_weth_to_eth:'转换 WETH 为 ETH',
   },
-  ui_transfer:{
+  transfer:{
 
   },
-  ui_convert:{
+  convert:{
 
   },
 }
