@@ -31,6 +31,9 @@ function Home(props) {
 	                    <li className="item">
 	                        <Link to="/unlock/privateKey" data-toggle="tab"><i className="icon-key"></i><h4>Private Key</h4></Link>
 	                    </li>
+                      <li className="item">
+                          <Link to="/unlock/address" data-toggle="tab"><i className="icon-key"></i><h4>Address</h4></Link>
+                      </li>
 	                    <li className="item remove" id="inupRemove">
 	                        <Link to="/unlock"><i className="icon-remove"></i></Link>
 	                    </li>
