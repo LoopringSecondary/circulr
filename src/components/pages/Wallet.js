@@ -48,7 +48,9 @@ function Wallet(props) {
               <Containers.Tokens>
                   <Containers.Sockets id="balance">
                     <Containers.Sockets id="marketcap">
-                      <Tokens.ListSidebar />
+                      <Containers.Settings>
+                        <Tokens.ListSidebar />
+                      </Containers.Settings>
                     </Containers.Sockets>
                   </Containers.Sockets>
               </Containers.Tokens>
