@@ -35,14 +35,14 @@ function Modals(props) {
         </UiContianers.Panels>
       </Containers.Layers>
       <Containers.Layers id="placeOrderSteps">
-        <UiContianers.Panels id="placeOrderSteps">
+        <UiContianers.Modals id="placeOrderSteps">
           <PlaceOrderSteps />
-        </UiContianers.Panels>
+        </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="placeOrderLRCFee">
-        <UiContianers.Panels id="placeOrderLRCFee">
+        <UiContianers.Modals id="placeOrderLRCFee">
           <PlaceOrderLRCFee />
-        </UiContianers.Panels>
+        </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="cancelOrderConfirm">
         <UiContianers.Panels id="cancelOrderConfirm" position="right" width="450px">

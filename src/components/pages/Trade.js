@@ -69,7 +69,7 @@ function Trade(props) {
                                 <Orders.ListMyOrders style={{height:"100%",overflow:"auto"}} />
                               </Containers.Orders>
                             </TabPane>
-          	                <TabPane tab="Fill" key="2">
+          	                <TabPane tab="Fills" key="2">
                               <Containers.Fills id="MyFills" alias="fills"  >
                                 <Fills.ListMyFills style={{height:"100%",overflow:"auto"}} />
                               </Containers.Fills>
