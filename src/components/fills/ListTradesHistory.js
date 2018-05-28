@@ -32,6 +32,14 @@ function ListTradesHistory(props) {
   console.log('ListTradesHistory render',props)
   const {trades} = props
   const tokens = getTokensByMarket(trades.filters.market)
+  const priceSelected = (value, e) => {
+    e.preventDefault()
+    props.dispatch({type:'placeOrder/priceChange', payload:{priceInput:value}})
+  }
+  const amountSelected = (value, e) => {
+    e.preventDefault()
+    props.dispatch({type:'placeOrder/amountChange', payload:{amountInput:value}})
+  }
   return (
     <div>
       <div className="card dark h-full">
@@ -49,12 +57,12 @@ function ListTradesHistory(props) {
                   <Popover placement="left" content={<ItemMore item={item} />} title={null} key={index}>
                     <li key={index}>
                       {
-                        item.side === 'sell' && <span className="text-down">{item.price && item.price.toFixed(8)}</span>
+                        item.side === 'sell' && <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, item.price.toFixed(8))}>{item.price && item.price.toFixed(8)}</span>
                       }
                       {
-                        item.side === 'buy' && <span className="text-up">{item.price && item.price.toFixed(8)}</span>
+                        item.side === 'buy' && <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, item.price.toFixed(8))}>{item.price && item.price.toFixed(8)}</span>
                       }
-                      <span style={{textAlign:'right'}}>{item.amount && item.amount.toFixed(8)}</span>
+                      <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, item.amount.toFixed(8))}>{item.amount && item.amount.toFixed(8)}</span>
                       <span style={{textAlign:'right'}}>{getFormattedTime(item.createTime,'MM-DD HH:SS')}</span>
                     </li>
                   </Popover>
