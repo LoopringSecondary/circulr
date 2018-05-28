@@ -1,6 +1,7 @@
 import React from 'react';
 import {Input, Progress} from 'antd';
 import routeActions from 'common/utils/routeActions'
+import Notification from '../../common/loopringui/components/Notification'
 
 class  GenerateWallet extends React.Component {
 
@@ -22,18 +23,23 @@ class  GenerateWallet extends React.Component {
 
   generate =  () => {
     const {pass} = this.state;
-    const {wallet,dispatch} = this.props;
-    const _this = this
-    wallet.createWallet({password: pass,cb:(res) => {
-      if(!res.error){
-        const {address,mnemonic,keystore,privateKey} = res;
-        dispatch({type:'backup/set',payload:{address,mnemonic,keystore,privateKey}});
-        routeActions.gotoPath(`/unlock/backup`);
-      _this.setState({    visible:false,
-        pass:'',
-        strength:'weak'})
-      }
-    }});
+
+    if(pass.length >6){
+      const {wallet,dispatch} = this.props;
+      const _this = this;
+      wallet.createWallet({password: pass,cb:(res) => {
+        if(!res.error){
+          const {address,mnemonic,keystore,privateKey} = res;
+          dispatch({type:'backup/set',payload:{address,mnemonic,keystore,privateKey}});
+          routeActions.gotoPath(`/unlock/backup`);
+          _this.setState({    visible:false,
+            pass:'',
+            strength:'weak'})
+        }
+      }});
+    }else{
+      Notification.open({type:'warning',message:'password is too weak'})
+    }
   };
 
   getStrength(value) {
