@@ -101,7 +101,7 @@ function ConvertForm(props) {
   return (
     <div className="pd-lg">
       <div className="sidebar-header">
-        <h3>转换</h3>
+        <h3>转换{token}</h3>
       </div>
       <div className="pd-md text-center text-color-dark-1">
         <span><i className="icon-ETH icon-token-md"/><b>{token}</b></span>
@@ -139,7 +139,7 @@ function ConvertForm(props) {
         </a>
       </div>
       <div className="blk"/>
-      <p className="text-color-dark-1">我们为您保留0.1 ETH作为油费以保证后续可以发送交易</p>
+      {token.toLowerCase() === 'eth' && <p className="text-color-dark-1">我们为您保留0.1 ETH作为油费以保证后续可以发送交易</p>}
       <div className="text-color-dark-1">
         <div className="form-control-static d-flex justify-content-between mr-0">
           <span>Gas Fee</span>
@@ -148,7 +148,7 @@ function ConvertForm(props) {
                     <GasFee onGasChange={onGasChange}/><span className="offset-md"> ETH ≈ <Currency/> {getWorthBySymbol({prices, symbol: 'ETH', amount:getGas()})}</span>
                   </Containers.Gas>
             <span>{getGas()}</span>
-                    
+
                   </span>
         </div>
       </div>
