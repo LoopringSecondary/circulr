@@ -212,7 +212,7 @@ class TokenActions extends React.Component {
           item.symbol === 'ETH' &&
           <Button onClick={actions.gotoConvert.bind(this,item)} className="d-block w-100 text-left mb5">Convert ETH To WETH</Button>
         }
-        <Button onClick={actions.gotoTrade.bind(this,item)} className="d-block w-100 text-left">Trade {item.symbol}</Button>
+        {false && <Button onClick={actions.gotoTrade.bind(this,item)} className="d-block w-100 text-left">Trade {item.symbol}</Button>}
       </div>
     )
     return (
