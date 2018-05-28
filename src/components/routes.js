@@ -9,6 +9,7 @@ import Account from './account';
 import Tickers from './tickers';
 import Setting from './setting';
 import Tools from './tools';
+import UnlockModals from './account/unlock/Modals'
 
 const UnLogged = ()=>{
   return (
@@ -53,6 +54,7 @@ export default class Routes extends React.Component {
           <Account.Modals />
           <Setting.Modals />
           <Tickers.Modals />
+          <UnlockModals />
       </div>
     );
   }
