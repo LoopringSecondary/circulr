@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import {Button,notification} from 'antd';
 import Alert from './Alert';
+import './Notification.less';
 
 export default {
   open:(config)=>{
