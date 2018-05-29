@@ -121,7 +121,7 @@ function ListTokensSidebar(props) {
     <span className="">
         {totalWorth && totalWorth.gt(0) &&
         <span>{getDisplaySymbol(settings.preference.currency)}
-          {FormatAmount({value:totalWorth.toString(10), precision:2})}
+          {FormatAmount({value:totalWorth.toString(10), precision:2, tooptip:false})}
           </span>
         }
       {(!totalWorth || !totalWorth.gt(0)) &&

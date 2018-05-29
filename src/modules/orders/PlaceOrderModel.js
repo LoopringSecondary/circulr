@@ -19,11 +19,12 @@ export default {
    timeToLiveEnd: null,
    submitButtonLoading: false,
    unsigned:null,
-   signed:null
+   signed:null,
+   confirmButtonState : 1, //1:init, 2:loading, 3:submitted
   },
   effects:{
     *init({ payload={} }, { put }) {
-       yield put({ type: 'pairChangeEffects',payload});
+      yield put({ type: 'pairChangeEffects',payload});
     },
     *pairChangeEffects({ payload={} }, { put }) {
       let {pair, price} = payload
@@ -66,6 +67,12 @@ export default {
       const {unsigned, signed} = payload
       yield put({ type: 'unsignedChange',payload:{unsigned}});
       yield put({ type: 'signedChange',payload:{signed}});
+      yield put({ type: 'confirmButtonStateChange',payload:{buttonState:1}});
+    },
+    *sendDone({ payload={} }, { put }) {
+      const {signed} = payload
+      yield put({ type: 'signedChange',payload:{signed}});
+      yield put({ type: 'confirmButtonStateChange',payload:{buttonState:3}});
     }
   },
   reducers: {
@@ -185,7 +192,15 @@ export default {
         ...state,
         signed
       }
-    }
+    },
+    confirmButtonStateChange(state, action) {
+      const {payload} = action
+      let {buttonState} = payload
+      return {
+        ...state,
+        confirmButtonState:buttonState
+      }
+    },
   },
 };
 
