@@ -98,7 +98,7 @@ function PlaceOrderConfirm(props) {
         }
       } else {
         const response = await window.RELAY.order.placeOrder(tx.data)
-        console.log('...submit order :', response)
+        // console.log('...submit order :', response)
         if (response.error) {
           Notification.open({
             message: intl.get('trade.place_order_failed'),
