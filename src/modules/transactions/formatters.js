@@ -5,12 +5,15 @@ import TokenFm from "modules/tokens/TokenFm";
 export const getTypes = (token)=>{
   let types = [
     {label:intl.get(`global.all`)+ ' ' +intl.get('txs.type'),value:''},
-    {label:intl.get(`txs.type_sell`),value:'sell'},
-    {label:intl.get(`txs.type_buy`),value:'buy'},
     {label:intl.get(`txs.type_transfer`),value:'send'},
     {label:intl.get(`txs.type_receive`),value:'receive'},
     {label:intl.get(`txs.type_enable`),value:'approve'},
   ]
+
+  const tradeTypes = [
+    {label:intl.get(`txs.type_sell`),value:'sell'},
+    {label:intl.get(`txs.type_buy`),value:'buy'},
+  ];
   let convertTypes = [{label:intl.get(`txs.type_convert`),value:'convert'}]
   let lrcTypes = [
      {label:intl.get(`txs.type_lrc_fee`),value:'lrc_fee'},
@@ -22,6 +25,12 @@ export const getTypes = (token)=>{
   if(token.toUpperCase() === 'WETH' || token.toUpperCase() === 'ETH'){
     types = [...types,...convertTypes]
   }
+
+  if(token.toUpperCase() !== 'ETH'){
+    types = [...types,...tradeTypes]
+  }
+
+
   if(token.toUpperCase() === 'LRC'){
     types = [...types,...lrcTypes]
   }
@@ -46,15 +55,15 @@ export class TxFm{
       case 'buy':
         return intl.get('txs.type_buy_title', {symbol: this.tx.symbol,value});
       case 'lrc_fee':
-        return  intl.get('orders.LrcFee');
+        return  intl.get('orders.LrcFee',{value});
       case 'lrc_reward':
-        return intl.get('orders.LrcReward');
+        return intl.get('orders.LrcReward',{value});
       case 'convert_outcome':
         return this.tx.symbol === 'ETH' ? intl.get('txs.type_convert_title_eth',{value}) : intl.get('txs.type_convert_title_weth',{value});
       case 'convert_income':
         return this.tx.symbol === 'WETH' ? intl.get('txs.type_convert_title_eth',{value}) : intl.get('txs.type_convert_title_weth',{value});
       case 'cancel_order':
-        return intl.get('txs.cancel_order')
+        return intl.get('txs.cancel_order');
       case 'cutoff':
         return intl.get('txs.cancel_all');
       case 'cutoff_trading_pair':

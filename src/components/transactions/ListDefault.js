@@ -12,6 +12,7 @@ export default function ListTransaction(props) {
     list.filtersChange({status:value})
   }
   const typeChange = (value)=>{
+
     list.filtersChange({type:value})
   }
   const token = list.filters.token || 'LRC'
