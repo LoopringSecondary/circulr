@@ -428,7 +428,18 @@ class PlaceOrderForm extends React.Component {
             placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
             return
           }
-          await orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, left.symbol, right.symbol, side, pendingTx.items, gasPrice)
+          try {
+            await orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, left.symbol, right.symbol, side, pendingTx.items, gasPrice)
+          } catch(e) {
+            Notification.open({
+              message:intl.get('trade.send_failed'),
+              description:e.message,
+              type:'error'
+            })
+            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+            return
+          }
+
           if(tradeInfo.error) {
             tradeInfo.error.map(item=>{
               if(item.value.symbol === 'ETH') {
@@ -469,8 +480,16 @@ class PlaceOrderForm extends React.Component {
           // test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
           // tradeInfo.warn = test
 
-          const {order, signed, unsigned} = await orderFormatter.signOrder(tradeInfo, wallet)
-          showTradeModal(tradeInfo, order, signed, unsigned)
+          try {
+            const {order, signed, unsigned} = await orderFormatter.signOrder(tradeInfo, wallet)
+            showTradeModal(tradeInfo, order, signed, unsigned)
+          } catch (e) {
+            Notification.open({
+              message:intl.get('trade.send_failed'),
+              description:e.message,
+              type:'error'
+            })
+          }
           placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
         }
       });
@@ -596,7 +615,7 @@ class PlaceOrderForm extends React.Component {
                   side === 'sell' && <Button className="btn btn-block btn-danger btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>Broadcast Order</Button>
                 }
                 <div style={{textAlign:'center'}}> OR </div>
-                <Button className="btn-block" onClick={handleSubmit.bind(this, 'p2p_order')} loading={placeOrder.submitButtonLoading}>P2P Order</Button>
+                <Button className="btn btn-block btn-xlg" onClick={handleSubmit.bind(this, 'p2p_order')} loading={placeOrder.submitButtonLoading}>P2P Order</Button>
               </div>
             </div>
           </div>

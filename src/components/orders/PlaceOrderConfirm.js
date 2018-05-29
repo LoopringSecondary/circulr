@@ -36,7 +36,7 @@ function PlaceOrderConfirm(props) {
   const unsignedOrder = unsigned.find(item => item.type === 'order')
   const signedOrder = signed.find(item => item.type === 'order')
   let qrCodeData = ''
-  if(tradeInfo.orderType === 'p2p_order' && unsignedOrder.completeOrder.authPrivateKey && signedOrder.orderHash) {
+  if(tradeInfo.orderType === 'p2p_order' && unsignedOrder.completeOrder && unsignedOrder.completeOrder.authPrivateKey && signedOrder && signedOrder.orderHash) {
     qrCodeData = JSON.stringify({type:'p2p_order', data:{authPrivateKey:unsignedOrder.completeOrder.authPrivateKey, orderHash:signedOrder.orderHash}})
   }
 
@@ -319,9 +319,6 @@ function PlaceOrderConfirm(props) {
             })
           }
           {
-            qrCodeData && <li><QRCode value={qrCodeData} size={240} level='H'/></li>
-          }
-          {
             null &&
             <li className="d-block">
               <b><i className="icon-chevron-up"></i>签名信息</b>
@@ -343,6 +340,13 @@ function PlaceOrderConfirm(props) {
             </li>
           }
         </ul>
+      {
+        qrCodeData &&
+        <div>
+          <div><QRCode value={qrCodeData} size={240} level='H'/></div>
+          <div>*For your order's security, your QR code only generated once and will not be stored, please save it properly</div>
+        </div>
+      }
       {isUnlocked && order.owner && orderType === 'market_order' &&
         <Button className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>提交订单</Button>
       }

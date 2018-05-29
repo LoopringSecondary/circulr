@@ -162,6 +162,9 @@ export async function tradeVerification(balances, walletState, tradeInfo, sell, 
   const lrcBalance = getBalanceBySymbol({balances, symbol:'LRC', toUnit:true})
   const approveGasLimit = config.getGasLimitByType('approve').gasLimit
   let frozenSell = await window.RELAY.account.getEstimatedAllocatedAllowance({owner:walletState.address, token:sell.symbol})
+  if(frozenSell.error) {
+    throw new Error(frozenSell.error)
+  }
   let frozenAmountS = fm.toBig(frozenSell.result).div('1e'+configSell.digits).plus(fm.toBig(tradeInfo.total))
   let approveCount = 0
   const warn = new Array(), error = new Array()
@@ -185,6 +188,9 @@ export async function tradeVerification(balances, walletState, tradeInfo, sell, 
   } else {
     //lrc balance not enough, lrcNeed = frozenLrc + lrcFee
     const frozenLrcFee = await window.RELAY.account.getFrozenLrcFee(walletState.address)
+    if(frozenLrcFee.error) {
+      throw new Error(frozenLrcFee.error)
+    }
     let frozenLrc = fm.toBig(frozenLrcFee.result).div(1e18).plus(fm.toBig(tradeInfo.lrcFee))
     let failed = false
     if(lrcBalance.balance.lt(frozenLrc)){
@@ -192,6 +198,9 @@ export async function tradeVerification(balances, walletState, tradeInfo, sell, 
       failed = true
     }
     const frozenLrcInOrderResult = await window.RELAY.account.getEstimatedAllocatedAllowance({owner:walletState.address, token:'LRC'})
+    if(frozenLrcInOrderResult.error) {
+      throw new Error(frozenLrcInOrderResult.error)
+    }
     frozenLrc = frozenLrc.plus(fm.toBig(frozenLrcInOrderResult.result).div(1e18))
     if(tokenL === 'LRC' && side === 'sell') {// sell lrc-weth
       frozenLrc = frozenLrc.plus(fm.toBig(tradeInfo.amount))
@@ -281,6 +290,9 @@ export async function signOrder(tradeInfo, wallet) {
     const gasLimit = tradeInfo.gasLimit;
     const gasPrice = tradeInfo.gasPrice;
     let nonce = await window.STORAGE.wallet.getNonce(wallet.address)
+    if(nonce.error) {
+      throw new Error(nonce.error)
+    }
     approveWarn.forEach(item => {
       const tokenConfig = config.getTokenBySymbol(item.value.symbol);
       if (item.value.allowance > 0) {
