@@ -431,6 +431,7 @@ class PlaceOrderForm extends React.Component {
           try {
             await orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, left.symbol, right.symbol, side, pendingTx.items, gasPrice)
           } catch(e) {
+            console.log(e)
             Notification.open({
               message:intl.get('trade.send_failed'),
               description:e.message,
@@ -484,6 +485,7 @@ class PlaceOrderForm extends React.Component {
             const {order, signed, unsigned} = await orderFormatter.signOrder(tradeInfo, wallet)
             showTradeModal(tradeInfo, order, signed, unsigned)
           } catch (e) {
+            console.log(e)
             Notification.open({
               message:intl.get('trade.send_failed'),
               description:e.message,
