@@ -67,7 +67,7 @@ class Unlock extends React.Component {
                     <h4>Generate Wallet</h4></a>
                 </li>
                 <li className={`item ${pathname==='/unlock/address' ? 'active':''}`}>
-                  <a data-toggle="tab" onClick={() => this.changeTab('address')}><i className="icon-key"/><h4>
+                  <a data-toggle="tab" onClick={() => this.changeTab('address')}><i className="icon-view"/><h4>
                     Address</h4>
                   </a>
                 </li>
