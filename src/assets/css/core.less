@@ -190,9 +190,9 @@ a.btn.disabled, fieldset[disabled] a.btn { pointer-events: none; }
 .btn-secondary { background-color: @light-color-1; }
 .btn-secondary:hover { color: @text-color-dark-1; background-color: fade(@light-color-1, 54%) }
 .btn-secondary.disabled, .btn-secondary:disabled { background-color: fade(@light-color-1, 27%) }
-.btn-success { color: @text-color-dark; background-color: @success-color; }
-.btn-success:hover { color: @text-color-dark; background-color: fade(@success-color, 54%); }
-.btn-success.disabled, .btn-success:disabled { background-color: fade(@success-color, 27%); }
+.btn-success { color: @text-color-dark  !important; background-color: @success-color  !important; }
+.btn-success:hover { color: @text-color-dark !important; background-color: fade(@success-color, 54%)  !important; }
+.btn-success.disabled, .btn-success:disabled { background-color: fade(@success-color, 27%) !important; }
 .btn-danger { color: @text-color-dark !important; background-color: @error-color !important; border:0 !important;  }
 .btn-danger:hover { color: @text-color-dark!important; background-color: fade(@error-color, 54%)!important; }
 .btn-danger.disabled, .btn-danger:disabled { background-color: fade(@error-color, 27%)!important; }

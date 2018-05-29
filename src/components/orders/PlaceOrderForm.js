@@ -474,8 +474,8 @@ class PlaceOrderForm extends React.Component {
 
     return (
       <div>
-        <div className="card-body form-inverse">
-          <ul className="pair-price text-inverse">
+        <div className="card-body form-dark">
+          <ul className="pair-price">
             <li>
               <h4>{left.symbol}</h4><span className="token-price">{FormatAmount({value:left.balance.toString(10), precision:left.precision})}</span></li>
             <li>
@@ -581,10 +581,10 @@ class PlaceOrderForm extends React.Component {
                 </div>
                 <div className="blk"></div>
                 {
-                  side === 'buy' && <Button className="btn-block btn-primary" onClick={handleSubmit} loading={placeOrder.submitButtonLoading}>Place Order</Button>
+                  side === 'buy' && <Button className="btn btn-block btn-success btn-xlg" onClick={handleSubmit} loading={placeOrder.submitButtonLoading}>Place Order</Button>
                 }
                 {
-                  side === 'sell' && <Button className="btn-block btn-danger" onClick={handleSubmit} loading={placeOrder.submitButtonLoading}>Place Order</Button>
+                  side === 'sell' && <Button className="btn btn-block btn-danger btn-xlg" onClick={handleSubmit} loading={placeOrder.submitButtonLoading}>Place Order</Button>
                 }
               </div>
             </div>
