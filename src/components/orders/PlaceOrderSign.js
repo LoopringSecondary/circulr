@@ -55,25 +55,25 @@ const PlaceOrderSteps = ({
     return (
       <div className="row pl0 pr0 ">
         <div className="col-6 pr5">
-          <Input.TextArea placeholder="" autosize={{ minRows: 4, maxRows: 6 }} value={""}/>
+          <Input.TextArea placeholder="" autosize={{ minRows: 3, maxRows: 6 }} value={""}/>
         </div>
         <div className="col-6 pl5">
-          <Input.TextArea placeholder="" autosize={{ minRows: 4, maxRows: 6 }} value={""}/>
+          <Input.TextArea placeholder="" autosize={{ minRows: 3, maxRows: 6 }} value={""}/>
         </div>
       </div>
     )
   }
   const txs = [
     {
-      title:'Sign tx for enable LRC',
+      title:'Sign tx to enable LRC',
       isSigned:true,
     },
     {
-      title:'Sign tx for enable EOS',
+      title:'Sign tx to enable EOS',
       isSigned:false,
     },
     {
-      title:'Sign tx for submitting order',
+      title:'Sign tx to submit order',
       isSigned:false,
     },
   ]
@@ -82,10 +82,6 @@ const PlaceOrderSteps = ({
       <div className="pb10 fs18 color-black-1 zb-b-b">交易签名</div>
       <div className="mb15"></div>
       <div>
-        <Alert title="您一共需要签名 3 次" theme="light" />
-        <div className="mb15"></div>
-        <Alert title="请在 Metamask 中完成签名操作" theme="light" />
-        <div className="mb15"></div>
         <Collapse defaultActiveKey={[]}>
           {
             txs.map((item,index)=>
@@ -95,6 +91,10 @@ const PlaceOrderSteps = ({
             )
           }
         </Collapse>
+        <div className="mb15"></div>
+        <Alert type="info" title="您需要完成 3 个交易的签名 " theme="light" size="small"/>
+        <div className="mb15"></div>
+        <Alert type="info" title="您需要通过 Metamask 逐个完成签名操作" theme="light" size="small" />
       </div>
 
     </div>
