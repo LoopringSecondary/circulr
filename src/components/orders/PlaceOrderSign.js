@@ -3,38 +3,18 @@ import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps,Collapse}
 import Alert from 'LoopringUI/components/Alert'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'
-const OrderMetaItem = (props) => {
-  const {label, value} = props
-  return (
-    <div className="row pt5 pb5 pl0 pr0 ">
-      <div className="col">
-        <div className="fs14 color-black-2">{label}</div>
-      </div>
-      <div className="col-auto text-right">
-        <div className="fs14 color-black-1 text-wrap">{value}</div>
-      </div>
-    </div>
-  )
-}
-const SignItem = (props) => {
-  const {title, description,icon} = props
-  return (
-    <div className="text-center">
-      { icon && <div className=""><i className={`fs24 icon-${icon}`}></i></div> }
-      { title && <div className="fs14 color-black-1 text-wrap">{title}</div> }
-      { description && <div className="fs12 color-black-3">{description}</div> }
-    </div>
-  )
-}
 
 const PlaceOrderSteps = ({
     settings,form
   }) => {
-  const TxHeader = ({tx,key})=>{
+  const TxHeader = ({tx,index})=>{
     return (
-      <div className="row pl0 pr0 align-items-center">
+      <div className="row pl0 pr0 pt10 pb10 align-items-center">
         <div className="col">
-          <div className="fs16 color-black-1">{tx.title}</div>
+          <div className="fs18 color-black-1">
+            <Button type="primary" shape="circle" className="mr10">{index+1}</Button>
+            {tx.title}
+          </div>
         </div>
         <div className="col-auto pr20">
           {tx.isSigned &&
@@ -44,7 +24,7 @@ const PlaceOrderSteps = ({
           }
           {!tx.isSigned &&
             <div className="color-black-3">
-              UnSigned <Icon className="ml5" type="check-circle-o"  />
+              <a href="">Sign<Icon className="ml5" type="right"  /></a>
             </div>
           }
         </div>
@@ -80,23 +60,19 @@ const PlaceOrderSteps = ({
   return (
     <div>
       <div className="pb10 fs18 color-black-1 zb-b-b">交易签名</div>
-      <div className="mb15"></div>
-      <div>
-        <Collapse defaultActiveKey={[]}>
-          {
-            txs.map((item,index)=>
-              <Collapse.Panel header={<TxHeader tx={item} />} key={index}>
-                <TxContent tx={item} />
-              </Collapse.Panel>
-            )
-          }
-        </Collapse>
-        <div className="mb15"></div>
-        <Alert type="info" title="您需要完成 3 个交易的签名 " theme="light" size="small"/>
-        <div className="mb15"></div>
-        <Alert type="info" title="您需要通过 Metamask 逐个完成签名操作" theme="light" size="small" />
-      </div>
 
+      <div className="mb15"></div>
+      <Alert type="info" title="您需要通过 Metamask 完成下面 3 个交易的签名：" theme="light" size="small" />
+      <div className="mb15"></div>
+      <Collapse defaultActiveKey={[]}>
+        {
+          txs.map((item,index)=>
+            <Collapse.Panel header={<TxHeader tx={item} index={index} />} key={index} showArrow={false}>
+              <TxContent tx={item} />
+            </Collapse.Panel>
+          )
+        }
+      </Collapse>
     </div>
   );
 };
