@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import {Button,Icon} from 'antd';
+import './Alert.less';
 
 const Alert = ({title,description,type='info',theme='dark',actions,size="medium",className="",...rest})=>{
   return (
@@ -10,22 +11,20 @@ const Alert = ({title,description,type='info',theme='dark',actions,size="medium"
           <div className="col-auto alert-gutter">
             {
               type === 'success' &&
-              <i className="icon-loopring icon-loopring-success alert-icon"  />
+              <i className="loopring-icon loopring-icon-success alert-icon"  />
             }
             {
               type === 'info' &&
-              <i className="icon-loopring icon-loopring-success alert-icon"  />
-              &&
-              <Icon type="info-circle-o" className="alert-icon" />
+              <i className="loopring-icon loopring-icon-warn alert-icon"  />
             }
             {
               type === 'warning' &&
-              <i className="icon-loopring icon-loopring-warn alert-icon"  />
+              <i className="loopring-icon loopring-icon-warn alert-icon"  />
             }
 
             {
               type === 'error' &&
-              <i className="icon-loopring icon-loopring-close alert-icon"  />
+              <i className="loopring-icon loopring-icon-close alert-icon"  />
             }
           </div>
         }

@@ -32,37 +32,30 @@ const GasFeeForm = ({
                 <Radio value={1} className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
                   <div className="ml5 pt10 pb10">
                       <div className="fs14 color-black-1">
-                        0.000055ETH ≈ $0.55
+                        上一次：0.000055ETH
                       </div>
                       <div className="fs12 color-black-3">
-                      速度快：费用较高，但是交易速度比较快
+                      Gas(200000) * Gas Price(10 Gwei)
                       </div>
                   </div>
                 </Radio>
                 <Radio value={2} className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
                   <div className="ml5 pt10 pb10">
                       <div className="fs14 color-black-1">
-                        0.000015ETH ≈ $0.15
+                        推荐值：0.000015ETH
                       </div>
                       <div className="fs12 color-black-3" >
-                      费用低：费用较低，但是等待时间可能比较长
-                      </div>
-                  </div>
-                </Radio>
-                <Radio value={3} className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
-                  <div className="ml5 pt10 pb10">
-                      <div className="fs14 color-black-1">
-                        0.000035ETH ≈ $0.35
-                      </div>
-                      <div className="fs12 color-black-3">
-                        平均值：基于当前以太网络交易的平均gas值，
+                        Gas(200000) * Gas Price(10 Gwei)
                       </div>
                   </div>
                 </Radio>
                 <Radio value={4} className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
                   <div className="ml5 pt10 pb10">
                       <div className="fs14 color-black-1">
-                        自定义油费
+                        自定义值：0.000015ETH
+                      </div>
+                      <div className="fs12 color-black-3" >
+                        Gas(200000) * Gas Price(10 Gwei)
                       </div>
                       <div>
                         <Form.Item label={null} colon={false} className="mb0">
