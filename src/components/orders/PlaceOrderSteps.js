@@ -36,13 +36,13 @@ const GasFeeForm = ({
   return (
     <div>
       <div className="pb10 fs18 color-black-1">提交订单</div>
-      <Steps current="0">
+      <Steps current={0}>
           {steps.map(item => <Steps.Step key={item.title} title={item.title} />)}
       </Steps>
       <div className="zb-b p10 mt10">
-        <div classname="pt20 pb20">订单信息</div>
-        <div classname="pt20 pb20">交易方式设置</div>
-        <div classname="pt20 pb20">签名方式设置</div>
+        <div className="pt20 pb20">订单信息</div>
+        <div className="pt20 pb20">交易方式设置</div>
+        <div className="pt20 pb20">签名方式设置</div>
       </div>
       <div className="mt20 text-right d-block w-100">
         <Button onClick={handleReset} type="primary" size="large" className="d-block w-100">确认</Button>
