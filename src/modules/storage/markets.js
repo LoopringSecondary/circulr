@@ -1,45 +1,65 @@
-
-const setCurrent = (market)=>{
+const setCurrent = (market) => {
   let markets = {}
-  if(
+  if (
     localStorage.markets &&
     localStorage.markets !== 'undefined' &&
     localStorage.markets !== 'null'
-  ){
+  ) {
     markets = JSON.parse(localStorage.markets)
   }
   markets.current = market
   localStorage.markets = JSON.stringify(markets)
 }
-const getCurrent = ()=>{
-  if(localStorage.markets){
+const getCurrent = () => {
+  if (localStorage.markets) {
     let markets = JSON.parse(localStorage.markets)
     return markets.current
-  }else{
+  } else {
     return 'LRC-WETH'
   }
+};
 
-}
-const toggleFavor = (market)=>{
+const setRecent = (market) => {
+  let markets = localStorage.markets ? JSON.parse(localStorage.markets) :{};
+  const recent = getRecent();
+  if (!recent.find(item => item.toLowerCase() === market.toLowerCase())) {
+    markets.recent = [...recent, market];
+    if (markets.recent.length > 3) {
+      markets.recent = markets.recent.slice(1)
+    }
+    localStorage.markets = JSON.stringify(markets);
+  }
+};
+
+const getRecent = () => {
+  if (localStorage.markets) {
+    let markets = JSON.parse(localStorage.markets);
+    return markets.recent ? markets.recent : [];
+  }
+  return []
+};
+
+
+const toggleFavor = (market) => {
   let markets = {}
-  if(
+  if (
     localStorage.markets &&
     localStorage.markets !== 'undefined' &&
     localStorage.markets !== 'null'
-  ){
+  ) {
     markets = JSON.parse(localStorage.markets)
   }
-  if(typeof markets.favors !== 'object'){
+  if (typeof markets.favors !== 'object') {
     markets.favors = {}
   }
   markets.favors[market] = !markets.favors[market]
   localStorage.markets = JSON.stringify(markets)
 }
-const getFavors = (market)=>{
-  if(localStorage.markets){
+const getFavors = (market) => {
+  if (localStorage.markets) {
     let markets = JSON.parse(localStorage.markets)
     return markets.favors || {}
-  }else{
+  } else {
     return {}
   }
 }
@@ -49,5 +69,7 @@ export default {
   getCurrent,
   toggleFavor,
   getFavors,
+  setRecent,
+  getRecent
 }
 

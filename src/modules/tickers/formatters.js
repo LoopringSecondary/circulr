@@ -1,15 +1,17 @@
 import intl from 'react-intl-universal'
 import {getTokensByMarket} from '../formatter/common'
+import storage  from '../storage'
+
 
 export class TickersFm{
   constructor(tickers){
     this.tickers = tickers
   }
   getFavoredTickers(){
-    return getFavoredTickers()
+    return getFavoredTickers(this.tickers)
   }
   getRecentTickers(){
-    return getRecentTickers()
+    return getRecentTickers(this.tickers)
   }
   getAllTickers(){
     return getAllTickers(this.tickers)
@@ -33,20 +35,41 @@ export const sortTickers = (items)=>{
   }
   return new_items.sort(sorter)
 }
-export const getFavoredTickers = (items)=>{
-  return []
+export const getFavoredTickers = (tickers)=>{
+  const {extra,items} = tickers;
+  let new_items = [];
+  if(extra && extra.favored){
+    const {favored} = extra;
+     new_items = items.filter(item => !!favored[item.market])
+  }
+
+  if(extra.keywords){
+    new_items = new_items.filter(item=>item.market.toLowerCase().indexOf(extra.keywords.toLowerCase())> -1 )
+  }
+
+  return sortTickers(new_items)
+};
+export const getRecentTickers = (tickers)=>{
+  const {items} = tickers;
+  const recentMarkets = storage.markets.getRecent();
+  return items.filter((item) => recentMarkets.find(market => market.toLowerCase() === item.market.toLowerCase()))
 }
-export const getRecentTickers = (items)=>{
-  return []
-}
+
 export const getAllTickers = (tickers)=>{
   const {extra,items} = tickers
   let new_items = [...items]
   if(extra.keywords){
     new_items = new_items.filter(item=>item.market.toLowerCase().indexOf(extra.keywords.toLowerCase())> -1 )
   }
+
+  if(extra && extra.favored){
+    const {favored} = extra;
+    new_items = items.filter(item => !favored[item.market])
+  }
   return sortTickers(new_items)
 }
+
+
 
 export class TickerFm {
   constructor(ticker){
