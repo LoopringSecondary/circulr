@@ -18,7 +18,7 @@ function ListTokenTickers(props) {
                 <h4>Loopring DEX Markets</h4>
             </div>
             <Spin spinning={list.loading}>
-              <div className="body" style={{minHeight:'50px'}}>
+              <div className="body" style={{minHeight:'65px'}}>
                   {
                     listedTickers.map((item,index)=>{
                       const tickerFm = new TickerFm(item)

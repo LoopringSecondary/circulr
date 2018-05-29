@@ -10,12 +10,13 @@ import Notification from 'LoopringUI/components/Notification'
 import {createWallet} from 'LoopringJS/ethereum/account';
 import * as uiFormatter from 'modules/formatter/common'
 import * as fm from 'LoopringJS/common/formatter'
+import QRCode from 'qrcode.react';
 
 function PlaceOrderConfirm(props) {
   const {placeOrderConfirm, placeOrder, settings, balance, wallet, marketcap, pendingTx, dispatch} = props
   let {side, pair, tradeInfo, order} = placeOrderConfirm || {}
-  let {unsigned, signed} = placeOrder || {}
-  let {price, amount, total, validSince,validUntil, marginSplit, lrcFee, warn} = tradeInfo || {};
+  let {unsigned, signed, confirmButtonState} = placeOrder || {}
+  let {price, amount, total, validSince,validUntil, marginSplit, lrcFee, warn, orderType} = tradeInfo || {};
   if(!pair){return null}
   const token = pair.split('-')[0];
   const token2 = pair.split('-')[1];
@@ -32,6 +33,12 @@ function PlaceOrderConfirm(props) {
     actualSigned = signed.filter(item => item !== undefined)
   }
   const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
+  const unsignedOrder = unsigned.find(item => item.type === 'order')
+  const signedOrder = signed.find(item => item.type === 'order')
+  let qrCodeData = ''
+  if(tradeInfo.orderType === 'p2p_order' && unsignedOrder.completeOrder && unsignedOrder.completeOrder.authPrivateKey && signedOrder && signedOrder.orderHash) {
+    qrCodeData = JSON.stringify({type:'p2p_order', data:{authPrivateKey:unsignedOrder.completeOrder.authPrivateKey, orderHash:signedOrder.orderHash}})
+  }
 
   async function sign(item, index, e) {
     e.preventDefault()
@@ -71,15 +78,7 @@ function PlaceOrderConfirm(props) {
     }
   }
 
-  function handelSubmit() {
-    if(!order || (unsigned.length > 0 && unsigned.length !== actualSigned.length)) {
-      Notification.open({
-        message: intl.get('trade.place_order_failed'),
-        type: "error",
-        description: 'Not Signed'
-      });
-      return
-    }
+  async function doSubmit(signed) {
     eachLimit(signed, 1, async function (tx, callback) {
       if(tx.type === 'tx') {
         const {response, rawTx} = await window.ETH.sendRawTransaction(tx.data)
@@ -92,6 +91,7 @@ function PlaceOrderConfirm(props) {
           });
           callback(response.error.message)
         } else {
+          tx.txHash = response.result
           window.STORAGE.wallet.setWallet({address: wallet.address, nonce: tx.nonce});
           window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: wallet.address});
           callback()
@@ -107,6 +107,7 @@ function PlaceOrderConfirm(props) {
           })
           callback(response.error.message)
         } else {
+          tx.orderHash = response.result
           callback()
         }
       }
@@ -119,14 +120,55 @@ function PlaceOrderConfirm(props) {
           type: "error",
           description: error.message
         });
+        placeOrder.confirmButtonStateChange({state:1})
       }else {
         const balanceWarn = warn ? warn.filter(item => item.type === "BalanceNotEnough") : [];
         openNotification(balanceWarn);
         updateOrders();
+        placeOrder.sendDone({signed})
       }
-      // _this.setState({loading:false});
-      dispatch({type:'layers/hideLayer',payload:{id:'placeOrderConfirm'}})
     });
+  }
+
+  async function generateQrCode() {
+    if(orderType !== 'p2p_order') {
+      Notification.open({
+        message: intl.get('trade.place_order_failed'),
+        type: "error",
+        description: 'order type Error'
+      });
+      return
+    }
+    if(!order || (unsigned.length > 0 && unsigned.length !== actualSigned.length)) {
+      Notification.open({
+        message: intl.get('trade.place_order_failed'),
+        type: "error",
+        description: 'Not Signed'
+      });
+      return
+    }
+    await doSubmit(signed)
+  }
+
+  async function handelSubmit() {
+    if(orderType !== 'market_order') {
+      Notification.open({
+        message: intl.get('trade.place_order_failed'),
+        type: "error",
+        description: 'order type Error'
+      });
+      return
+    }
+    if(!order || (unsigned.length > 0 && unsigned.length !== actualSigned.length)) {
+      Notification.open({
+        message: intl.get('trade.place_order_failed'),
+        type: "error",
+        description: 'Not Signed'
+      });
+      return
+    }
+    await doSubmit(signed)
+    dispatch({type:'layers/hideLayer',payload:{id:'placeOrderConfirm'}})
   }
 
   function updateOrders() {
@@ -249,8 +291,10 @@ function PlaceOrderConfirm(props) {
   };
 
   return (
-    <div>
-        <div className="modal-header text-dark"><h3>{intl.get(`order.${side}`)} {token}</h3></div>
+    <div className="pd-lg">
+        <div className="sidebar-header">
+            <h3>{intl.get(`order.${side}`)} {token}</h3>
+        </div>
         <div className="pd-lg text-center text-color-dark">
 	        <h5>{intl.get(`order.${side === 'sell' ? 'selling' : 'buying'}`)}</h5>
 	        <h2>{intl.get('global.amount', {amount:amount.toString(10)})} {token}</h2>
@@ -298,14 +342,27 @@ function PlaceOrderConfirm(props) {
             </li>
           }
         </ul>
-      {isUnlocked && order.owner &&
+      {
+        qrCodeData &&
+        <div>
+          <div><QRCode value={qrCodeData} size={240} level='H'/></div>
+          <div>*For your order's security, your QR code only generated once and will not be stored, please save it properly</div>
+        </div>
+      }
+      {isUnlocked && order.owner && orderType === 'market_order' &&
         <Button className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>提交订单</Button>
       }
-      {!isUnlocked &&
+      {isUnlocked && order.owner && orderType === 'p2p_order' && confirmButtonState === 1 &&
+        <Button className="btn-block btn-o-dark btn-xlg" onClick={generateQrCode} loading={confirmButtonState === 2}>Generate QR Code</Button>
+      }
+      {!isUnlocked &&  
         <div>
+          <div className="blk"></div>
           <Button className="btn-block btn-o-dark btn-xlg" onClick={toUnlock}>Unlock Your Wallet</Button>
+          <div className="blk"></div>
           <div>* You should unlock your wallet first </div>
         </div>
+
       }
     </div>
   )
