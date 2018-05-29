@@ -251,6 +251,7 @@ export async function signOrder(tradeInfo, wallet) {
   let order = {};
   const unsigned = new Array()
   const signed = new Array()
+  order.owner = wallet.address
   order.delegateAddress = tradeInfo.delegateAddress;
   order.protocol = tradeInfo.protocol;
   const tokenB = tradeInfo.side.toLowerCase() === "buy" ? config.getTokenBySymbol(token) : config.getTokenBySymbol(token2);
@@ -265,45 +266,47 @@ export async function signOrder(tradeInfo, wallet) {
   order.marginSplitPercentage = Number(tradeInfo.marginSplit);
   order.buyNoMoreThanAmountB = tradeInfo.side.toLowerCase() === "buy";
   order.walletAddress = config.getWalletAddress();
+  order.orderType = tradeInfo.orderType
   const authAccount = createWallet()
   order.authAddr = authAccount.getAddressString();
-  order.authPrivateKey = fm.clearHexPrefix(authAccount.getPrivateKeyString());
-  if(wallet && wallet.address) {
-    order.owner = wallet.address
-    // sign orders and txs
-    unsigned.push({type: 'order', data:order, description: `Sign Order`})
-    const approveWarn = tradeInfo.warn.filter(item => item.type === "AllowanceNotEnough");
-    if (approveWarn) {
-      const gasLimit = tradeInfo.gasLimit;
-      const gasPrice = tradeInfo.gasPrice;
-      let nonce = await window.STORAGE.wallet.getNonce(wallet.address)
-      approveWarn.forEach(item => {
-        const tokenConfig = config.getTokenBySymbol(item.value.symbol);
-        if (item.value.allowance > 0) {
-          const cancel = generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:'0x0', nonce:fm.toHex(nonce)})
-          unsigned.push({type: 'tx', data:cancel, description: `Cancel ${item.value.symbol} allowance`})
-          nonce = nonce + 1;
-        }
-        const approve = generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:fm.toHex(fm.toBig('9223372036854775806').times('1e' + tokenConfig.digits || 18)), nonce:fm.toHex(nonce)})
-        unsigned.push({type: 'tx', data:approve, description: `Approve ${item.value.symbol} allowance`})
+  const completeOrder = {...order}
+  completeOrder.authPrivateKey = fm.clearHexPrefix(authAccount.getPrivateKeyString());
+  if(tradeInfo.orderType === 'market_order') {
+    order.authPrivateKey = fm.clearHexPrefix(authAccount.getPrivateKeyString());
+  }
+  // sign orders and txs
+  unsigned.push({type: 'order', data:order, completeOrder:completeOrder, description: `Sign Order`})
+  const approveWarn = tradeInfo.warn.filter(item => item.type === "AllowanceNotEnough");
+  if (approveWarn) {
+    const gasLimit = tradeInfo.gasLimit;
+    const gasPrice = tradeInfo.gasPrice;
+    let nonce = await window.STORAGE.wallet.getNonce(wallet.address)
+    approveWarn.forEach(item => {
+      const tokenConfig = config.getTokenBySymbol(item.value.symbol);
+      if (item.value.allowance > 0) {
+        const cancel = generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:'0x0', nonce:fm.toHex(nonce)})
+        unsigned.push({type: 'tx', data:cancel, description: `Cancel ${item.value.symbol} allowance`})
         nonce = nonce + 1;
-      });
-
-      console.log('    unsigned:', unsigned)
-      const account = wallet.account || window.account
-      if(wallet.unlockType === 'keystore' || wallet.unlockType === 'mnemonic' || wallet.unlockType === 'privateKey'){
-        unsigned.forEach(tx=> {
-          if(tx.type === 'order') {
-            const signedOrder = account.signOrder(tx.data)
-            signedOrder.powNonce = 100;
-            signed.push({type: 'order', data:signedOrder});
-          } else {
-            signed.push({type: 'tx', data:account.signEthereumTx(tx.data)});
-          }
-        })
       }
-      console.log('    signed:', signed)
+      const approve = generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:fm.toHex(fm.toBig('9223372036854775806').times('1e' + tokenConfig.digits || 18)), nonce:fm.toHex(nonce)})
+      unsigned.push({type: 'tx', data:approve, description: `Approve ${item.value.symbol} allowance`})
+      nonce = nonce + 1;
+    });
+
+    console.log('    unsigned:', unsigned)
+    const account = wallet.account || window.account
+    if(wallet.unlockType === 'keystore' || wallet.unlockType === 'mnemonic' || wallet.unlockType === 'privateKey'){
+      unsigned.forEach(tx=> {
+        if(tx.type === 'order') {
+          const signedOrder = account.signOrder(tx.data)
+          signedOrder.powNonce = 100;
+          signed.push({type: 'order', data:signedOrder});
+        } else {
+          signed.push({type: 'tx', data:account.signEthereumTx(tx.data)});
+        }
+      })
     }
+    console.log('    signed:', signed)
   }
   return {order, signed, unsigned}
 }
