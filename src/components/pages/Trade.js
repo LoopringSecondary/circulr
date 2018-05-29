@@ -62,7 +62,7 @@ function Trade(props) {
                             </div>
                         </div>
                     </div>
-      	            <div style={{position: "relative", height:"50%", paddingTop:"0"}}>
+      	            <div className="orders" style={{position: "relative", height:"50%", paddingTop:"0"}}>
           	            <Tabs defaultActiveKey="1"  type="card">
           	                <TabPane tab="Orders" key="1">
                               <Containers.Orders id="MyOpenOrders" alias="orders"  >
