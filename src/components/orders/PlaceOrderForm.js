@@ -483,8 +483,8 @@ class PlaceOrderForm extends React.Component {
 
     return (
       <div>
-        <div className="card-body form-inverse">
-          <ul className="pair-price text-inverse">
+        <div className="card-body form-dark">
+          <ul className="pair-price">
             <li>
               <h4>{left.symbol}</h4><span className="token-price">{FormatAmount({value:left.balance.toString(10), precision:left.precision})}</span></li>
             <li>
@@ -590,10 +590,10 @@ class PlaceOrderForm extends React.Component {
                 </div>
                 <div className="blk"></div>
                 {
-                  side === 'buy' && <Button className="btn-block btn-primary" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>Broadcast Order</Button>
+                  side === 'buy' && <Button className="btn btn-block btn-success btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>Broadcast Order</Button>
                 }
                 {
-                  side === 'sell' && <Button className="btn-block btn-danger" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>Broadcast Order</Button>
+                  side === 'sell' && <Button className="btn btn-block btn-danger btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>Broadcast Order</Button>
                 }
                 <div style={{textAlign:'center'}}> OR </div>
                 <Button className="btn-block" onClick={handleSubmit.bind(this, 'p2p_order')} loading={placeOrder.submitButtonLoading}>P2P Order</Button>
