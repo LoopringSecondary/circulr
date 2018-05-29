@@ -292,7 +292,9 @@ function PlaceOrderConfirm(props) {
 
   return (
     <div className="pd-lg">
-        <div className="modal-header text-dark"><h3>{intl.get(`order.${side}`)} {token}</h3></div>
+        <div className="sidebar-header">
+            <h3>{intl.get(`order.${side}`)} {token}</h3>
+        </div>
         <div className="pd-lg text-center text-color-dark">
 	        <h5>{intl.get(`order.${side === 'sell' ? 'selling' : 'buying'}`)}</h5>
 	        <h2>{intl.get('global.amount', {amount:amount.toString(10)})} {token}</h2>
@@ -353,9 +355,9 @@ function PlaceOrderConfirm(props) {
       {isUnlocked && order.owner && orderType === 'p2p_order' && confirmButtonState === 1 &&
         <Button className="btn-block btn-o-dark btn-xlg" onClick={generateQrCode} loading={confirmButtonState === 2}>Generate QR Code</Button>
       }
-      {!isUnlocked &&
-           
+      {!isUnlocked &&  
         <div>
+          <div className="blk"></div>
           <Button className="btn-block btn-o-dark btn-xlg" onClick={toUnlock}>Unlock Your Wallet</Button>
           <div className="blk"></div>
           <div>* You should unlock your wallet first </div>
