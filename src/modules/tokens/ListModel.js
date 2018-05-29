@@ -14,7 +14,7 @@ export default {
       current:0,
     },
     filters:initTokens.filters || {},
-    selected:initTokens.selected || "LRC",
+    selected: "LRC",
     favored:initTokens.favored || {},
   },
   reducers: {
