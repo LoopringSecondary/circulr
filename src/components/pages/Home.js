@@ -13,6 +13,9 @@ function Home(props) {
 	                    <li className="item">
 	                        <Link to="/unlock/generatewallet" data-toggle="tab"><i className="icon-plus"></i><h4>Generate Wallet</h4></Link>
 	                    </li>
+                      <li className="item">
+                          <Link to="/unlock/address" data-toggle="tab"><i className="icon-view"></i><h4>Address</h4></Link>
+                      </li>
 	                    <li className="item">
 	                        <Link to="/unlock/metamask" data-toggle="tab"><i className="icon-metamaskwallet"></i><h4>MetaMask</h4></Link>
 	                    </li>

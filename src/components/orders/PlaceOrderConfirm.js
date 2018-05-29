@@ -31,6 +31,7 @@ function PlaceOrderConfirm(props) {
   if(order && order.owner) { // verified
     actualSigned = signed.filter(item => item !== undefined)
   }
+  const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
 
   async function sign(item, index, e) {
     e.preventDefault()
@@ -44,6 +45,14 @@ function PlaceOrderConfirm(props) {
       return
     }
     try {
+      if(item.data.owner !== wallet.address) {
+        Notification.open({
+          message: intl.get('trade.place_order_failed'),
+          type: "error",
+          description: 'your address in original order is not the same as unlocked, please replace order'
+        });
+        return
+      }
       if(item.type === 'order') {
         const signedOrder = await account.signOrder(item.data)
         signedOrder.powNonce = 100;
@@ -131,7 +140,7 @@ function PlaceOrderConfirm(props) {
     // })
   }
 
-  function toUnlock() {
+  function unlock() {
     if(wallet && balance && marketcap) { // just unlocked, to verify
       const totalWorth = orderFormatter.calculateWorthInLegalCurrency(marketcap.items, token2, tradeInfo.total)
       if(!totalWorth.gt(0)) {
@@ -144,7 +153,7 @@ function PlaceOrderConfirm(props) {
         return
       }
       let allowed = false
-      let currency = 'USD';// TODO settings.preference.currency
+      let currency = settings.preference.currency;
       let priceSymbol = fm.getDisplaySymbol(currency)
       if(currency === 'USD') {
         priceSymbol = '100' + priceSymbol
@@ -193,6 +202,10 @@ function PlaceOrderConfirm(props) {
         placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
       })
     }
+  }
+
+  const toUnlock = () => {
+    dispatch({type:'layers/showLayer',payload:{id:'unlock'}})
   }
 
   const ActionItem = (item) => {
@@ -253,7 +266,7 @@ function PlaceOrderConfirm(props) {
             <li><span>订单生效时间</span><span>{uiFormatter.getFormatTime(validSince * 1e3)}</span></li>
             <li><span>订单失效时间</span><span>{uiFormatter.getFormatTime(validUntil * 1e3)}</span></li>
           {
-            unsigned.length !== actualSigned.length && unsigned.map((item, index)=>{
+            isUnlocked && unsigned.length !== actualSigned.length && unsigned.map((item, index)=>{
               const signedItem = signed[index]
               return (
                 <li key={index} className="d-block">
@@ -285,13 +298,13 @@ function PlaceOrderConfirm(props) {
             </li>
           }
         </ul>
-      {order.owner &&
+      {isUnlocked && order.owner &&
         <Button className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>提交订单</Button>
       }
-      {!order.owner &&
+      {!isUnlocked &&
         <div>
-          <Button className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>Unlock Your Wallet</Button>
-          <div>* You should unlock your wallet first, but your order may not available after verification </div>
+          <Button className="btn-block btn-o-dark btn-xlg" onClick={toUnlock}>Unlock Your Wallet</Button>
+          <div>* You should unlock your wallet first </div>
         </div>
       }
     </div>

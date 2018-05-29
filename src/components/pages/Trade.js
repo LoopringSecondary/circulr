@@ -16,7 +16,7 @@ function Trade(props) {
   const TabPane = Tabs.TabPane;
   return (
     <div>
-        <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000",borderBottom: "4px solid rgb(8, 34, 63)" }}>
+        <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000" }}>
             <div className="bg d-flex justify-content-between align-items-center">
                 <Tickers.TickerHeader />
                 <AccountMenu dispatch={props.dispatch} />
@@ -69,7 +69,7 @@ function Trade(props) {
                                 <Orders.ListMyOrders style={{height:"100%",overflow:"auto"}} />
                               </Containers.Orders>
                             </TabPane>
-          	                <TabPane tab="Fill" key="2">
+          	                <TabPane tab="Fills" key="2">
                               <Containers.Fills id="MyFills" alias="fills"  >
                                 <Fills.ListMyFills style={{height:"100%",overflow:"auto"}} />
                               </Containers.Fills>

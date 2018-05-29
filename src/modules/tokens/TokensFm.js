@@ -1,6 +1,7 @@
 import {toBig, toNumber,toFixed} from "LoopringJS/common/formatter";
 import {formatLength,toUnitAmount,toDecimalsAmount} from "../formatter/common";
 import {getBalanceBySymbol,getPriceBySymbol} from "./TokenFm";
+import {calculateWorthInLegalCurrency} from '../orders/formatters'
 
 export default class TokensFm{
   constructor({marketcap,balance,tokens}){
@@ -12,6 +13,15 @@ export default class TokensFm{
     const filteredTokens = filterTokens(this.tokens)
     const sortedTokens = sortTokens(filteredTokens)
     return setBalancesAndPrices({balances:this.balance.items,prices:this.marketcap.items,tokens:sortedTokens})
+  }
+  getTotalWorth() {
+    const filteredTokens = filterTokens(this.tokens)
+    let totalWorth = toBig(0)
+    filteredTokens.forEach(item => {
+      const worth = calculateWorthInLegalCurrency(this.marketcap.items, item.symbol, item.balance)
+      totalWorth = totalWorth.plus(worth)
+    })
+    return totalWorth
   }
 }
 
@@ -60,7 +70,7 @@ export const sortTokens = (tokens)=>{
 export const filterTokens = (list)=>{
   const {items,filters,favored} = list
   let keys = Object.keys(filters)
-  let tokens = [...items]
+  let tokens = [...items.filter(token => token.symbol !== 'WETH_OLD')]
   keys.map(key => {
     const value = filters[key]
     if (key === 'ifOnlyShowMyFavorite') {

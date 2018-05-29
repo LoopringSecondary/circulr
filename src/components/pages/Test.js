@@ -49,41 +49,11 @@ const TestScokets = (props)=>{
 const Test = (props)=>{
   return (
     <div>
-    	<Containers.Orders id="MyOpenOrders">
-        <TestComp />
-      </Containers.Orders>
       <Containers.Modals>
         <Containers.Layers>
-        <TestModal />
-      </Containers.Layers>
+          <TestModal />
+        </Containers.Layers>
       </Containers.Modals>
-      <Containers.Sockets>
-        <TestScokets />
-      </Containers.Sockets>
-
-      {
-        true &&
-        <Containers.Tabs id="MyOpenOrders" initState={{activeKey:'orders'}} render={(props)=>{
-            return (
-                <div>
-                  <div className="tabs-header">
-                    <span className="tab" onClick={props.MyOpenOrders.activeKeyChange.bind(this,{activeKey:'orders'})}>Orders</span>
-                    <span className="tab" onClick={props.MyOpenOrders.activeKeyChange.bind(this,{activeKey:'fills'})}>Fills</span>
-                  </div>
-                  <div className="tabs-body">
-                    {
-                      props.MyOpenOrders.activeKey === 'orders' &&
-                      <span className="">Orders</span>
-                    }
-                    {
-                      props.MyOpenOrders.activeKey === 'fills' &&
-                      <span className="">Fills</span>
-                    }
-                  </div>
-                </div>
-            )
-        }}/>
-      }
     </div>
   )
 }

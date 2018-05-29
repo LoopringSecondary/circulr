@@ -2,12 +2,44 @@ import React from 'react'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'
 import {getTokensByMarket,getFormattedTime} from 'modules/formatter/common'
+import {Popover} from 'antd'
 
+const MetaItem = (props) => {
+  const {label, value, render} = props
+  return (
+    <div>
+      <span>
+        {label}
+      </span>
+      <span className="text-lg-control break-word text-right">
+        {render ? render(value) : value}
+      </span>
+    </div>
+  )
+}
+
+const ItemMore=({item})=>{
+  return (
+    <div>
+      <MetaItem label="LRC Fee" value="25.5LRC" />
+      <MetaItem label="LRC Reward" value="3.5LRC" />
+      <MetaItem label="Total" value="10ETH" />
+    </div>
+  )
+}
 
 function ListTradesHistory(props) {
   console.log('ListTradesHistory render',props)
   const {trades} = props
   const tokens = getTokensByMarket(trades.filters.market)
+  const priceSelected = (value, e) => {
+    e.preventDefault()
+    props.dispatch({type:'placeOrder/priceChange', payload:{priceInput:value}})
+  }
+  const amountSelected = (value, e) => {
+    e.preventDefault()
+    props.dispatch({type:'placeOrder/amountChange', payload:{amountInput:value}})
+  }
   return (
     <div>
       <div className="card dark h-full">
@@ -22,16 +54,18 @@ function ListTradesHistory(props) {
             <ul style={{height: "100%", overflow:"auto",paddingBottom:"0" }}>
               {
                 trades.items.map((item,index)=>
-                  <li key={index}>
-                    {
-                      item.side === 'sell' && <span className="text-down">{item.price && item.price.toFixed(8)}</span>
-                    }
-                    {
-                      item.side === 'buy' && <span className="text-up">{item.price && item.price.toFixed(8)}</span>
-                    }
-                    <span style={{textAlign:'right'}}>{item.amount && item.amount.toFixed(8)}</span>
-                    <span style={{textAlign:'right'}}>{getFormattedTime(item.createTime,'MM-DD HH:SS')}</span>
-                  </li>
+                  <Popover placement="left" content={<ItemMore item={item} />} title={null} key={index}>
+                    <li key={index}>
+                      {
+                        item.side === 'sell' && <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, item.price.toFixed(8))}>{item.price && item.price.toFixed(8)}</span>
+                      }
+                      {
+                        item.side === 'buy' && <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, item.price.toFixed(8))}>{item.price && item.price.toFixed(8)}</span>
+                      }
+                      <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, item.amount.toFixed(8))}>{item.amount && item.amount.toFixed(8)}</span>
+                      <span style={{textAlign:'right'}}>{getFormattedTime(item.createTime,'MM-DD HH:SS')}</span>
+                    </li>
+                  </Popover>
                 )
               }
             </ul>

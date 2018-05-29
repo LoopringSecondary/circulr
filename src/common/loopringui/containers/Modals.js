@@ -4,7 +4,7 @@ import {Modal} from 'antd'
 const ModalsWrapper = (props)=>{
   const {
     children,id,
-    width,mask,closable=true,maskClosable=true,apisOnly=false,wrapClassName="right-panel-modal",
+    width,mask,closable=true,maskClosable=true,apisOnly=false,wrapClassName="",
     ...rest
   } = props
   const {[id]:module={}} = props
@@ -18,7 +18,8 @@ const ModalsWrapper = (props)=>{
     closable,
     maskClosable,
     mask,
-    onCancel:module.hideModal && module.hideModal.bind(this),
+    onCancel:module.hideLayer && module.hideLayer.bind(this),
+    zIndex:'1002',
   }
   const childProps = {...rest}
   return (

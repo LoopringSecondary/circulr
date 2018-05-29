@@ -12,8 +12,7 @@ import BackupWallet from './backup/BackupWallet'
 import Modals from './Modals'
 import UserCenter from './UserCenter'
 import ExportKeystore from './ExportKeystore'
-
-
+import UnlockByAddress from './unlock/UnlockByAddress'
 
 export default {
 	Auth,
@@ -29,7 +28,8 @@ export default {
 	BackupWallet,
 	Modals,
 	UserCenter,
-	ExportKeystore
+	ExportKeystore,
+  UnlockByAddress
 }
 
 

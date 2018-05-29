@@ -7,12 +7,14 @@ import config from 'common/config'
 import {Currency} from 'modules/containers'
 import {FormatAmount} from 'modules/formatter/FormatNumber'
 import routeActions from 'common/utils/routeActions'
+import {getDisplaySymbol} from 'LoopringJS/common/formatter'
 
 function ListTokensSidebar(props) {
   console.log('ListTokensSidebar component render',props)
-  const {tokens,balance,marketcap,dispatch}= props
+  const {tokens,balance,marketcap,settings,dispatch}= props
   const tokensFm = new TokensFm({tokens,marketcap,balance})
   const formatedTokens = tokensFm.getList()
+  const totalWorth = tokensFm.getTotalWorth()
   const {filters,favored={},selected}= tokens
   const toggleMyFavorite = () => {
     tokens.filtersChange({
@@ -115,10 +117,23 @@ function ListTokensSidebar(props) {
     gotoTrade,
   }
 
+  const totalWorthDisplay = (
+    <span className="">
+        {totalWorth && totalWorth.gt(0) &&
+        <span>{getDisplaySymbol(settings.preference.currency)}
+          {FormatAmount({value:totalWorth.toString(10), precision:2})}
+          </span>
+        }
+      {(!totalWorth || !totalWorth.gt(0)) &&
+      <span>{getDisplaySymbol(settings.preference.currency)}0</span>
+      }
+      </span>
+  )
+
   return (
     <div>
     	<div className="token-total">
-          <h3 className="text-success">$39,484,950</h3><small>Total Value</small>
+          <h3 className="text-success">{totalWorthDisplay}</h3><small>Total Value</small>
       </div>
       <div className="tool-bar d-flex justify-content-between">
         <div className="search">
@@ -212,7 +227,7 @@ class TokenActions extends React.Component {
           item.symbol === 'ETH' &&
           <Button onClick={actions.gotoConvert.bind(this,item)} className="d-block w-100 text-left mb5">Convert ETH To WETH</Button>
         }
-        <Button onClick={actions.gotoTrade.bind(this,item)} className="d-block w-100 text-left">Trade {item.symbol}</Button>
+        {false && <Button onClick={actions.gotoTrade.bind(this,item)} className="d-block w-100 text-left">Trade {item.symbol}</Button>}
       </div>
     )
     return (
