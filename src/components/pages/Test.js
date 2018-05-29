@@ -33,7 +33,9 @@ const TestModal = (props)=>{
       <span>
         <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderSign'})}>Sign</Button>
       </span>
-
+      <span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'tradeByP2P'})}>TradeByP2P</Button>
+      </span>
     </div>
   )
 }

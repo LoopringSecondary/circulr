@@ -4,8 +4,8 @@ import Alert from 'LoopringUI/components/Alert'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'
 
-const PlaceOrderSteps = ({
-    settings,form
+const PlaceOrderSign = ({
+    form
   }) => {
   const TxHeader = ({tx,index})=>{
     return (
@@ -77,7 +77,6 @@ const PlaceOrderSteps = ({
   );
 };
 
-
-export default Form.create()(connect(({settings})=>({settings}))(PlaceOrderSteps));
+export default Form.create()(connect()(PlaceOrderSign));
 
 

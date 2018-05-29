@@ -16,22 +16,9 @@ const OrderMetaItem = (props) => {
     </div>
   )
 }
-const SignItem = (props) => {
-  const {title, description,icon} = props
-  return (
-    <div className="text-center">
-      { icon && <div className=""><i className={`fs24 icon-${icon}`}></i></div> }
-      { title && <div className="fs14 color-black-1 text-wrap">{title}</div> }
-      { description && <div className="fs12 color-black-3">{description}</div> }
-    </div>
-  )
-}
-
 const PlaceOrderSteps = ({
-    settings,form
+    form
   }) => {
-  const {trading} = settings
-
   function handleSubmit() {
     form.validateFields((err,values) => {
       console.log('values',values);
@@ -46,26 +33,9 @@ const PlaceOrderSteps = ({
   function resetForm(){
     form.resetFields()
   }
-  const steps = [{
-    title: '交易设置',
-    content: 'First-content',
-  }, {
-    title: '交易签名',
-    content: 'Second-content',
-  }, {
-    title: '提交成功',
-    content: 'Last-content',
-  }];
-
   return (
     <div>
       <div className="pb10 fs18 color-black-1 zb-b-b">提交订单</div>
-      {
-        false &&
-        <Steps current={0} className="mt20 mb20">
-            {steps.map(item => <Steps.Step key={item.title} title={item.title} />)}
-        </Steps>
-      }
       <div className="mb15"></div>
       <div>
         <OrderMetaItem label="订单类型" value="P2P订单" />
@@ -86,32 +56,6 @@ const PlaceOrderSteps = ({
           <Button onClick={handleReset} type="primary" size="large" disabled className="d-block w-100">提交订单</Button>
         </div>
         <div className="mb15"></div>
-        {
-          false &&
-          <Card title="选择签名方式" >
-            <Card.Grid style={{width:'25%'}}>
-              <SignItem icon="metamaskwallet" title="MetaMask" />
-            </Card.Grid>
-            <Card.Grid style={{width:'25%'}}>
-              <SignItem icon="ledgerwallet" title="Ledger" />
-            </Card.Grid>
-            <Card.Grid style={{width:'25%'}}>
-              <SignItem icon="trezorwallet" title="TREZOR" />
-            </Card.Grid>
-            <Card.Grid style={{width:'25%'}}>
-              <SignItem icon="json" title="KeyStore" />
-            </Card.Grid>
-            <Card.Grid style={{width:'25%'}}>
-              <SignItem icon="mnemonic" title="Mnemonic" />
-            </Card.Grid>
-            <Card.Grid style={{width:'25%'}}>
-              <SignItem icon="key" title="PrivateKey" />
-            </Card.Grid>
-            <Card.Grid style={{width:'25%'}}>
-              <SignItem icon="qrcode" title="Qrcode" />
-            </Card.Grid>
-          </Card>
-        }
       </div>
 
     </div>
@@ -119,6 +63,6 @@ const PlaceOrderSteps = ({
 };
 
 
-export default Form.create()(connect(({settings})=>({settings}))(PlaceOrderSteps));
+export default Form.create()(connect()(PlaceOrderSteps));
 
 

@@ -5,6 +5,7 @@ import Detail from './Detail'
 import PlaceOrderConfirm from './PlaceOrderConfirm'
 import PlaceOrderSteps from './PlaceOrderSteps'
 import PlaceOrderSign from './PlaceOrderSign'
+import TradeByP2P from './TradeByP2P'
 import PlaceOrderLRCFee from './PlaceOrderLRCFee'
 import CancelOrderConfirm  from './CancelOrderConfirm'
 
@@ -43,6 +44,11 @@ function Modals(props) {
       <Containers.Layers id="placeOrderSign">
         <UiContianers.Modals id="placeOrderSign" width="650px">
           <PlaceOrderSign />
+        </UiContianers.Modals>
+      </Containers.Layers>
+      <Containers.Layers id="tradeByP2P">
+        <UiContianers.Modals id="tradeByP2P" width="650px">
+          <TradeByP2P />
         </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="placeOrderLRCFee">
