@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps,Collapse} from 'antd'
+import Alert from 'LoopringUI/components/Alert'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'
 const OrderMetaItem = (props) => {
@@ -64,15 +65,15 @@ const PlaceOrderSteps = ({
   }
   const txs = [
     {
-      title:'Enable LRC To Trade',
+      title:'Sign tx for enable LRC',
       isSigned:true,
     },
     {
-      title:'Enable EOS To Trade',
+      title:'Sign tx for enable EOS',
       isSigned:false,
     },
     {
-      title:'Submit Order',
+      title:'Sign tx for submitting order',
       isSigned:false,
     },
   ]
@@ -81,7 +82,11 @@ const PlaceOrderSteps = ({
       <div className="pb10 fs18 color-black-1 zb-b-b">交易签名</div>
       <div className="mb15"></div>
       <div>
-        <Collapse defaultActiveKey={['1']}>
+        <Alert title="您一共需要签名 3 次" theme="light" />
+        <div className="mb15"></div>
+        <Alert title="请在 Metamask 中完成签名操作" theme="light" />
+        <div className="mb15"></div>
+        <Collapse defaultActiveKey={[]}>
           {
             txs.map((item,index)=>
               <Collapse.Panel header={<TxHeader tx={item} />} key={index}>
