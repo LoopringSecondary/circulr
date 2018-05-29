@@ -121,7 +121,7 @@ export default {
       yield put({type:'emitEvent',payload})
     },
     *filtersChange({payload},{call,select,put}){
-      yield put({type:'filtersChangeStart',payload:{id:payload.id,filters:payload}})
+      yield put({type:'filtersChangeStart',payload})
       yield put({type:'emitEvent',payload})
     },
     *sortChange({payload},{call,select,put}){
@@ -224,6 +224,7 @@ export default {
       }
     },
     filtersChangeStart(state,action){
+      console.log('filtersChangeStart',action)
       let {payload} = action
       let {id} = payload
       return {

@@ -13,7 +13,7 @@ export default function ListTransaction(props) {
   }
   const typeChange = (value)=>{
 
-    list.filtersChange({type:value})
+    list.filtersChange({filters:{type:value}})
   }
   const token = list.filters.token || 'LRC'
   const types = getTypes(token)
