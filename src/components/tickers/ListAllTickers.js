@@ -33,7 +33,7 @@ function ListAllTickers(props) {
   console.log('ListAllTickers render',props)
   const {loopringTickers:list,dispatch} = props
   const tickersFm = new TickersFm(list)
-  const {extra:{favored={},keywords}} = list
+  const {extra:{favored={},keywords,current}} = list
   const allTickers = tickersFm.getAllTickers()
   const favoredTickers = tickersFm.getFavoredTickers()
   const recentTickers = tickersFm.getRecentTickers()
@@ -44,7 +44,8 @@ function ListAllTickers(props) {
         id:'loopringTickers',
         extra:{
           keywords:e.target.value ,
-          favored
+          favored,
+          current
         }
       }
     })
@@ -57,7 +58,8 @@ function ListAllTickers(props) {
         id:'loopringTickers',
         extra:{
           favored:{...favored,[item.market]:!favored[item.market]},
-          keywords
+          keywords,
+          current
         }
       }
     })
