@@ -249,7 +249,7 @@ function PlaceOrderConfirm(props) {
   };
 
   return (
-    <div>
+    <div className="pd-lg">
         <div className="modal-header text-dark"><h3>{intl.get(`order.${side}`)} {token}</h3></div>
         <div className="pd-lg text-center text-color-dark">
 	        <h5>{intl.get(`order.${side === 'sell' ? 'selling' : 'buying'}`)}</h5>
@@ -302,10 +302,13 @@ function PlaceOrderConfirm(props) {
         <Button className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>提交订单</Button>
       }
       {!isUnlocked &&
+           
         <div>
           <Button className="btn-block btn-o-dark btn-xlg" onClick={toUnlock}>Unlock Your Wallet</Button>
+          <div className="blk"></div>
           <div>* You should unlock your wallet first </div>
         </div>
+
       }
     </div>
   )
