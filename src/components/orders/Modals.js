@@ -35,7 +35,7 @@ function Modals(props) {
         </UiContianers.Panels>
       </Containers.Layers>
       <Containers.Layers id="placeOrderSteps">
-        <UiContianers.Modals id="placeOrderSteps">
+        <UiContianers.Modals id="placeOrderSteps" width="650px">
           <PlaceOrderSteps />
         </UiContianers.Modals>
       </Containers.Layers>
