@@ -1,14 +1,16 @@
 import React from 'react'
 import {Modal} from 'antd'
+import './Modals.less'
 
 const ModalsWrapper = (props)=>{
   const {
     children,id,
-    width,mask,closable=true,maskClosable=true,apisOnly=false,wrapClassName="",
+    width,mask,closable=true,maskClosable=true,apisOnly=false,wrapClassName="",className="",
     ...rest
   } = props
   const {[id]:module={}} = props
   const modalProps = {
+    className:`${className} rs`,
     wrapClassName,
     destroyOnClose:true,
     title:null,
