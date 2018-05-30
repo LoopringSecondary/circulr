@@ -35,11 +35,12 @@ export const AccountMenu = (props)=>{
 }
 
 function Wallet(props) {
+ const {token} = props;
   return (
     <div>
         <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000"}}>
             <div className="bg text-color-dark-1 w-control d-flex justify-content-between align-items-center">
-                <h2>LRC<span>Ethereum</span></h2>
+                <h2>{token.toUpperCase()}</h2>
                 <AccountMenu dispatch={props.dispatch} />
             </div>
         </header>
@@ -71,4 +72,12 @@ function Wallet(props) {
     </div>
   )
 }
-export default connect()(Wallet)
+
+function mapStateToProps(state) {
+
+  return {
+    token:state.tokens.selected
+  }
+}
+
+export default connect(mapStateToProps)(Wallet)

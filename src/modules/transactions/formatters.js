@@ -5,12 +5,15 @@ import TokenFm from "modules/tokens/TokenFm";
 export const getTypes = (token)=>{
   let types = [
     {label:intl.get(`global.all`)+ ' ' +intl.get('txs.type'),value:''},
-    {label:intl.get(`txs.type_sell`),value:'sell'},
-    {label:intl.get(`txs.type_buy`),value:'buy'},
     {label:intl.get(`txs.type_transfer`),value:'send'},
     {label:intl.get(`txs.type_receive`),value:'receive'},
     {label:intl.get(`txs.type_enable`),value:'approve'},
   ]
+
+  const tradeTypes = [
+    {label:intl.get(`txs.type_sell`),value:'sell'},
+    {label:intl.get(`txs.type_buy`),value:'buy'},
+  ];
   let convertTypes = [{label:intl.get(`txs.type_convert`),value:'convert'}]
   let lrcTypes = [
      {label:intl.get(`txs.type_lrc_fee`),value:'lrc_fee'},
@@ -22,6 +25,12 @@ export const getTypes = (token)=>{
   if(token.toUpperCase() === 'WETH' || token.toUpperCase() === 'ETH'){
     types = [...types,...convertTypes]
   }
+
+  if(token.toUpperCase() !== 'ETH'){
+    types = [...types,...tradeTypes]
+  }
+
+
   if(token.toUpperCase() === 'LRC'){
     types = [...types,...lrcTypes]
   }
@@ -33,28 +42,28 @@ export class TxFm{
     this.tx = tx
     this.fill = tx.fill
   }
-  getType(){
+  getType(value){
     switch (this.tx.type) {
       case 'approve':
         return intl.get('txs.type_enable_title', {symbol: this.tx.symbol});
       case 'send':
-        return intl.get('txs.type_transfer_title', {symbol: this.tx.symbol});
+        return intl.get('txs.type_transfer_title', {symbol: this.tx.symbol,value});
       case 'receive':
-        return intl.get('txs.type_receive_title', {symbol: this.tx.symbol});
+        return intl.get('txs.type_receive_title', {symbol: this.tx.symbol,value});
       case 'sell':
-        return intl.get('txs.type_sell_title', {symbol: this.tx.symbol});
+        return intl.get('txs.type_sell_title', {symbol: this.tx.symbol,value});
       case 'buy':
-        return intl.get('txs.type_buy_title', {symbol: this.tx.symbol});
+        return intl.get('txs.type_buy_title', {symbol: this.tx.symbol,value});
       case 'lrc_fee':
-        return  intl.get('orders.LrcFee');
+        return  intl.get('orders.LrcFee',{value});
       case 'lrc_reward':
-        return intl.get('orders.LrcReward');
+        return intl.get('orders.LrcReward',{value});
       case 'convert_outcome':
-        return this.tx.symbol === 'ETH' ? intl.get('txs.type_convert_title_eth') : intl.get('txs.type_convert_title_weth');
+        return this.tx.symbol === 'ETH' ? intl.get('txs.type_convert_title_eth',{value}) : intl.get('txs.type_convert_title_weth',{value});
       case 'convert_income':
-        return this.tx.symbol === 'WETH' ? intl.get('txs.type_convert_title_eth') : intl.get('txs.type_convert_title_weth');
+        return this.tx.symbol === 'WETH' ? intl.get('txs.type_convert_title_eth',{value}) : intl.get('txs.type_convert_title_weth',{value});
       case 'cancel_order':
-        return intl.get('txs.cancel_order')
+        return intl.get('txs.cancel_order');
       case 'cutoff':
         return intl.get('txs.cancel_all');
       case 'cutoff_trading_pair':

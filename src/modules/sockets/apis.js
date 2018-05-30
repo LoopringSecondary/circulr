@@ -29,7 +29,7 @@ const transfromers = {
         owner:window.WALLET.address,
         symbol:filters.token,
         status:filters.status,
-        txType:filters.txType,
+        txType:filters.type,
         pageIndex:page.current,
         pageSize:page.size || 10,
       })
