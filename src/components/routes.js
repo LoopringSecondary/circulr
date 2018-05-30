@@ -12,14 +12,31 @@ import Tools from './tools';
 import UnlockModals from './account/unlock/Modals'
 
 const UnLogged = ()=>{
-  return (
-    <div>UnLogged</div>
-  )
+  const isLogged = !!window.WALLET && !!window.WALLET.address
+  if(isLogged){
+    return <Redirect to="/wallet" />
+  }else{
+    return (
+      <Switch>
+        <Route path="/home" component={Pages.Home} />
+        <Route path="/unlock" component={Pages.Unlock} />
+      </Switch>
+    )
+  }
 }
 const Logged = ()=>{
-  return (
-      <div>Logged</div>
-  )
+  const isLogged = !!window.WALLET && !!window.WALLET.address
+  if(isLogged){
+    return (
+      <Switch>
+        <Route path={`/wallet`} component={Pages.Wallet} />
+        <Route path="/trade/:market" component={Pages.Trade} />
+        <Route path="/trade"  exact component={Pages.Trade} />
+      </Switch>
+    )
+  }else{
+    return <Redirect to="/home" />
+  }
 }
 
 export default class Routes extends React.Component {
@@ -31,21 +48,11 @@ export default class Routes extends React.Component {
       <div>
           <Switch>
             <Route path="/" exact component={Pages.Home} />
-            <Route path="/home" exact component={Pages.Home} />
-            <Route path="/wallet" exact component={Pages.Wallet} />
-            <Route path="/trade" exact component={Pages.Trade} />
-            <Route path="/trade/:market" exact component={Pages.Trade} />
+            <Route path="/home" component={UnLogged} />
+            <Route path="/unlock" component={UnLogged} />
+            <Route path="/wallet" render={Logged} />
+            <Route path="/trade" render={Logged} />
             <Route path="/dev" exact component={Pages.Test} />
-            <Route path="/transfer" exact component={Tokens.TransferForm} />
-            <Route path="/placeOrder" exact component={Orders.PlaceOrderForm} />
-            <Route path="/wallet/test" exact component={Pages.WalletTest} />
-            <Route path="/usercenter" exact component={Account.UserCenter} />
-            <Route path="/tickers" exact component={Tickers.ListAllTickers} />
-            <Route path="/unlock" component={Pages.Unlock} />
-            <Route path="/setting" exact component={Setting.Setting} />
-            <Route path="/AirdropList" exact component={Tools.AirdropList} />
-            <Route path="/Receive" exact component={Tokens.Receive} />
-            <Route path="/ExportKeystore" exact component={Account.ExportKeystore} />
           </Switch>
           <Orders.Modals />
           <Fills.Modals />
