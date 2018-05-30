@@ -9,8 +9,6 @@ const PlaceOrderSign = (props) => {
   const {placeOrder, wallet, dispatch} = props
   const {signed, unsigned} = placeOrder
   const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
-  const actualSigned = signed ? signed.filter(item => item !== undefined) : []
-  console.log(1111, signed, unsigned)
 
   async function sign(item, index, e) {
     e.preventDefault()
