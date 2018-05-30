@@ -18,7 +18,7 @@ function Modals(props) {
         </UiContianers.Panels>
       </Containers.Layers>
       <Containers.Layers id="placeOrderConfirm">
-        <UiContianers.Panels id="placeOrderConfirm" position="right" width="450px">
+        <UiContianers.Panels id="placeOrderConfirm" position="left" width="450px">
           <Containers.Settings>
             <Containers.Wallet>
               <Containers.Layers>
@@ -47,7 +47,7 @@ function Modals(props) {
         </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="tradeByP2P">
-        <UiContianers.Modals id="tradeByP2P" width="650px">
+        <UiContianers.Modals id="tradeByP2P" width="500px">
           <TradeByP2P />
         </UiContianers.Modals>
       </Containers.Layers>
