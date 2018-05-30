@@ -7,13 +7,13 @@ import {Popover} from 'antd'
 const MetaItem = (props) => {
   const {label, value, render} = props
   return (
-    <div>
-      <span>
+    <div className="row pt5 pb5 align-items-center zb-b-b" style={{minWidth:'150px',maxWidth:'250px'}}>
+      <div className="col-auto fs12 color-black-2" style={{fontWeight:'bold'}}>
         {label}
-      </span>
-      <span className="text-lg-control break-word text-right">
+      </div>
+      <div className="col text-right fs14 color-black-1 text-wrap pl15">
         {render ? render(value) : value}
-      </span>
+      </div>
     </div>
   )
 }
