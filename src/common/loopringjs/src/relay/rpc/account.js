@@ -42,6 +42,13 @@ export default class Account{
   getPortfolio(owner){
     return getPortfolio(this.host, owner);
   }
+
+  getPendingRawTxByHash(txHash){
+    return getPendingRawTxByHash(this.host,txHash)
+  }
+  getGasPrice(){
+    return getGasPrice(this.host)
+  }
 }
 
 
@@ -251,5 +258,43 @@ export function getPortfolio(host,owner) {
   })
 }
 
+/**
+ * Gets pending tx detail that sent to relay
+ * @param host
+ * @param txHash
+ * @returns {Promise}
+ */
+export function getPendingRawTxByHash(host,txHash) {
+  try {
+    validator.validate({value: txHash, type: "HASH"})
+  } catch (e) {
+    throw new Error('Invalid tx hash')
+  }
+  const params = [{thxHash: txHash}];
+  const body = {};
+  body.method = 'loopring_getPendingRawTxByHash';
+  body.params = params;
+  body.id = id();
+  body.jsonrpc = '2.0';
+  return request(host,{
+    method: 'post',
+    body,
+  })
+}
+
+/**
+ * Get network gasPrice that relay computes
+ * @returns {Promise}
+ */
+export async function getGasPrice(host) {
+  let body = {};
+  body.method = 'loopring_getEstimateGasPrice';
+  body.params = [{}];
+  return request(host,{
+    method:'post',
+    headers,
+    body,
+  })
+}
 
 
