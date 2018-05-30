@@ -23,7 +23,6 @@ const Option = Select.Option;
     window.RELAY.account.getPendingRawTxByHash(item.txHash).then(async (res) => {
       if (!res.error) {
         const tx = res.result;
-
         tx.gasPrice = toHex(toBig(gasPriceRes.result));
         tx.data = tx.input;
         window.WALLET.sendTransaction(tx).then(({response, rawTx}) => {
