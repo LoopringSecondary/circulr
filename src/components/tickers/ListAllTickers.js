@@ -33,7 +33,7 @@ function ListAllTickers(props) {
   console.log('ListAllTickers render',props)
   const {loopringTickers:list,dispatch} = props
   const tickersFm = new TickersFm(list)
-  const {extra:{favored={},keywords,current}} = list
+  const {extra:{favored={},keywords}} = list
   const allTickers = tickersFm.getAllTickers()
   const favoredTickers = tickersFm.getFavoredTickers()
   const recentTickers = tickersFm.getRecentTickers()
