@@ -528,6 +528,7 @@ class PlaceOrderForm extends React.Component {
     }
 
 
+
     return (
       <div>
         <div className="card-body form-dark">
@@ -535,15 +536,13 @@ class PlaceOrderForm extends React.Component {
             <div className="row pb10">
               <div className="col-auto fs14">{left.symbol}</div>
               <div className="col fs14 text-right">
-                {FormatAmount({value:left.balance.toString(10), precision:left.precision})}
-                <Icon type="right" className="ml5" />
+                <TokenActions item={left} />
               </div>
             </div>
             <div className="row">
               <div className="col-auto fs14">{right.symbol}</div>
               <div className="col fs14 text-right">
-                {FormatAmount({value:right.balance.toString(10), precision:right.precision})}
-                <Icon type="right" className="ml5" />
+                <TokenActions item={right} />
               </div>
             </div>
           </div>
@@ -658,6 +657,45 @@ class PlaceOrderForm extends React.Component {
     )
   }
 }
+class TokenActions extends React.Component {
+      constructor(props) {
+        super(props);
+      }
+
+      render() {
+        const {item} = this.props
+        const gotoTransfer = ()=>{}
+        const gotoConvert = ()=>{}
+        const gotoReceive = ()=>{}
+        const btns = (
+          <div style={{width:'180px'}}>
+            <Button onClick={gotoTransfer.bind(this,item)} className="d-block w-100 text-left mb5">Send {item.symbol}</Button>
+            <Button onClick={gotoReceive.bind(this,{symbol:item.symbol})} className="d-block w-100 text-left mb5">Receive {item.symbol}</Button>
+            {
+              item.symbol === 'WETH' &&
+              <Button onClick={gotoConvert.bind(this,item)} className="d-block w-100 text-left mb5">Convert WETH To ETH</Button>
+            }
+            {
+              item.symbol === 'ETH' &&
+              <Button onClick={gotoConvert.bind(this,item)} className="d-block w-100 text-left mb5">Convert ETH To WETH</Button>
+            }
+          </div>
+        )
+        return (
+          <div className="more token-action" onClick={e=>{ e.stopPropagation();e.preventDefault()}}>
+            <Popover
+              title={null}
+              placement="right"
+              arrowPointAtCenter
+              content={btns}
+            >
+              {FormatAmount({value:item.balance.toString(10), precision:item.precision})}
+              <Icon type="right" className="ml5" />
+            </Popover>
+          </div>
+        );
+      }
+    }
 
 export default Form.create({
   // mapPropsToFields(props) {
