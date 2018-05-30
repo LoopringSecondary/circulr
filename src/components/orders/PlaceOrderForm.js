@@ -14,6 +14,25 @@ import {getLastGas, getEstimateGas} from 'modules/settings/formatters'
 import {FormatAmount} from 'modules/formatter/FormatNumber'
 var _ = require('lodash');
 
+const MenuItem = (prop)=>{
+  return (
+    <div className="row pt5 pb5 align-items-center" style={{borderBottom:'1px solid rgba(255,255,255,0.07)'}}>
+      <div className="col">
+        <span className="fs14 color-white-2 pr10">{prop.label}</span>
+      </div>
+      {prop.value &&
+        <div className="col-auto fs14 color-white-1">
+          {prop.value}
+        </div>
+      }
+      {prop.action &&
+        <div className="col-auto fs14 color-white-1">
+          {prop.action}
+        </div>
+      }
+    </div>
+  )
+}
 class PlaceOrderForm extends React.Component {
 
   render() {
@@ -505,12 +524,22 @@ class PlaceOrderForm extends React.Component {
     return (
       <div>
         <div className="card-body form-dark">
-          <ul className="pair-price">
-            <li>
-              <h4>{left.symbol}</h4><span className="token-price">{FormatAmount({value:left.balance.toString(10), precision:left.precision})}</span></li>
-            <li>
-              <h4>{right.symbol}</h4><span className="token-price">{FormatAmount({value:right.balance.toString(10), precision:right.precision})}</span></li>
-          </ul>
+          <div className="p10 mb15" style={{border:"1px solid rgba(255,255,255,0.07)"}}>
+            <div className="row pb10">
+              <div className="col-auto fs14">{left.symbol}</div>
+              <div className="col fs14 text-right">
+                {FormatAmount({value:left.balance.toString(10), precision:left.precision})}
+                <Icon type="right" className="ml5" />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-auto fs14">{right.symbol}</div>
+              <div className="col fs14 text-right">
+                {FormatAmount({value:right.balance.toString(10), precision:right.precision})}
+                <Icon type="right" className="ml5" />
+              </div>
+            </div>
+          </div>
           {placeOrder.side === 'buy' &&
           <ul className="token-tab">
             <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>Buy {left.symbol}</a></li>
@@ -585,22 +614,20 @@ class PlaceOrderForm extends React.Component {
                 )}
               </Form.Item>
               <div>
-                <div className="form-group mr-0">
-                  <div className="form-control-static d-flex justify-content-between">
-                    <span className="font-bold">Total</span><span>{totalDisplay} {right.symbol}{totalWorthDisplay}</span>
-                  </div>
-                </div>
-                <div className="form-group mr-0">
+                <MenuItem label="Total" value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>}  />
+                <MenuItem label="LRC Fee" action={<div>{lrcFee} LRC <Icon type="right" className="" /></div>}  />
+                <MenuItem label="Time To Live" action={<div>{ttlShow} <Icon type="right" className="" /></div>}  />
+                <div hidden className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
                     <span className="font-bold">LRC Fee <i className="icon-info tradingfeetip"></i></span>
                     <span>
                       <span>{editLRCFee}</span>
                       <span></span>
-                      <span className="offset-md">{lrcFee}LRC ({milliLrcFee}‰)</span>
+                      <span className="offset-md"></span>
                     </span>
                   </div>
                 </div>
-                <div className="form-group mr-0">
+                <div hidden className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
                     <span className="font-bold">Time to live <i className="icon-info"></i></span>
                     <span>
@@ -611,13 +638,11 @@ class PlaceOrderForm extends React.Component {
                 </div>
                 <div className="blk"></div>
                 {
-                  side === 'buy' && <Button className="btn btn-block btn-success btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>Broadcast Order</Button>
+                  side === 'buy' && <Button className="btn btn-block btn-success btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>Place Buy Order</Button>
                 }
                 {
-                  side === 'sell' && <Button className="btn btn-block btn-danger btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>Broadcast Order</Button>
+                  side === 'sell' && <Button className="btn btn-block btn-danger btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>Place Sell Order</Button>
                 }
-                <div style={{textAlign:'center'}}> OR </div>
-                <Button className="btn btn-block btn-xlg" onClick={handleSubmit.bind(this, 'p2p_order')} loading={placeOrder.submitButtonLoading}>P2P Order</Button>
               </div>
             </div>
           </div>
