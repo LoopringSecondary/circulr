@@ -186,9 +186,6 @@ function PlaceOrderConfirm(props) {
         tradeInfo.orderType === 'market_order' &&
         <div>
           <div className="sidebar-header">
-            <h3>Market Order</h3>
-          </div>
-          <div className="sidebar-header">
             <h3>{intl.get(`order.${side}`)} {pair.split('-')[0]}</h3>
           </div>
           <div className="pd-lg text-center text-color-dark">
@@ -204,9 +201,6 @@ function PlaceOrderConfirm(props) {
       {
         tradeInfo.orderType === 'p2p_order' &&
         <div>
-          <div className="sidebar-header">
-            <h3>P2P Order</h3>
-          </div>
           <div className="pd-lg text-center text-color-dark">
             <h2>Sell {intl.get('global.amount', {amount:tradeInfo.amountS.toString(10)})} {tradeInfo.tokenS}</h2>
             <h2>Buy {intl.get('global.amount', {amount:tradeInfo.amountB.toString(10)})} {tradeInfo.tokenB}</h2>
@@ -216,6 +210,11 @@ function PlaceOrderConfirm(props) {
 
         <div className="divider solid"></div>
         <ul className="list list-label list-dark list-justify-space-between divided">
+            {
+              tradeInfo.orderType === 'p2p_order' &&
+              <li><span>订单类型</span><span>P2P Order</span></li>
+            }
+
             <li><span>撮合费</span><span>{`${uiFormatter.getFormatNum(lrcFee)} LRC`}</span></li>
             <li><span>分润比例</span><span>{`${marginSplit} %`}</span></li>
             <li><span>订单生效时间</span><span>{uiFormatter.getFormatTime(validSince * 1e3)}</span></li>

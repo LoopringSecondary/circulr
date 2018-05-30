@@ -16,9 +16,9 @@ var _ = require('lodash');
 
 const MenuItem = (prop)=>{
   return (
-    <div className="row pt5 pb5 align-items-center" style={{borderBottom:'1px solid rgba(255,255,255,0.07)'}}>
+    <div className="row pt5 pb5 align-items-center">
       <div className="col">
-        <span className="fs14 color-white-2 pr10">{prop.label}</span>
+        <span className="fs14 color-white-1 pr10">{prop.label}</span>
       </div>
       {prop.value &&
         <div className="col-auto fs14 color-white-1">
@@ -26,7 +26,7 @@ const MenuItem = (prop)=>{
         </div>
       }
       {prop.action &&
-        <div className="col-auto fs14 color-white-1">
+        <div className="col-auto fs14 color-white-1 text-nowrap text-truncate">
           {prop.action}
         </div>
       }
@@ -520,6 +520,13 @@ class PlaceOrderForm extends React.Component {
       placeOrder.toConfirm({signed, unsigned})
       dispatch({type:'layers/showLayer', payload: {id: 'placeOrderConfirm', side, pair, tradeInfo, order}})
     }
+    const setLRCFee = ()=>{
+      dispatch({type:'layers/showLayer', payload: {id: 'placeOrderLRCFee', side, pair}})
+    }
+    const setTTL = ()=>{
+      dispatch({type:'layers/showLayer', payload: {id: 'placeOrderTTL', side, pair}})
+    }
+
 
     return (
       <div>
@@ -613,10 +620,10 @@ class PlaceOrderForm extends React.Component {
                          }}/>
                 )}
               </Form.Item>
-              <div>
+              <div className="pl10 pr10 pt5 pb5" style={{border:'1px solid rgba(255,255,255,0.07)',margin:'0px 0px'}}>
                 <MenuItem label="Total" value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>}  />
-                <MenuItem label="LRC Fee" action={<div>{lrcFee} LRC <Icon type="right" className="" /></div>}  />
-                <MenuItem label="Time To Live" action={<div>{ttlShow} <Icon type="right" className="" /></div>}  />
+                <MenuItem label="LRC Fee" action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFee} LRC <Icon type="right" className="" /></div>}  />
+                <MenuItem label="Time To Live" action={<div onClick={setTTL} className="cursor-pointer">{ttlShow} <Icon type="right" className="" /></div>}  />
                 <div hidden className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
                     <span className="font-bold">LRC Fee <i className="icon-info tradingfeetip"></i></span>
@@ -636,14 +643,14 @@ class PlaceOrderForm extends React.Component {
                     </span>
                   </div>
                 </div>
-                <div className="blk"></div>
-                {
+              </div>
+              <div className="mb15"></div>
+              {
                   side === 'buy' && <Button className="btn btn-block btn-success btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>Place Buy Order</Button>
                 }
                 {
                   side === 'sell' && <Button className="btn btn-block btn-danger btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>Place Sell Order</Button>
                 }
-              </div>
             </div>
           </div>
         </div>
