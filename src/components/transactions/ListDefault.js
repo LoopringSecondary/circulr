@@ -12,7 +12,8 @@ export default function ListTransaction(props) {
     list.filtersChange({status:value})
   }
   const typeChange = (value)=>{
-    list.filtersChange({type:value})
+
+    list.filtersChange({filters:{type:value}})
   }
   const token = list.filters.token || 'LRC'
   const types = getTypes(token)
@@ -59,7 +60,6 @@ export default function ListTransaction(props) {
                       <thead>
                           <tr>
                               <th className="text-left">Type</th>
-                              <th className="text-left">Value</th>
                               <th className="text-left">Gas</th>
                               <th className="text-left">Block</th>
                               <th className="text-left">Nonce</th>
@@ -78,8 +78,7 @@ export default function ListTransaction(props) {
                               };
                               return (
                                 <tr key={index} className="cursor-pointer" onClick={actions.gotoDetail}>
-                                  <td className="text-left">{txFm.getType()}</td>
-                                  <td className="text-left">{renders.value(txFm)}</td>
+                                  <td className="text-left">{renders.type(txFm)}</td>
                                   <td className="text-left">{txFm.getGas()} ETH</td>
                                   <td className="text-left">{item.blockNumber}</td>
                                   <td className="text-left">{item.nonce}</td>
@@ -114,17 +113,10 @@ export const renders = {
       <span className="" onClick={actions && actions.gotoDetail}>{getShortAddress(fm.tx.txHash)}</span>
     </span>
   ),
-  value:(fm)=>{
+  type:(fm)=>{
     return (
       <div>
-        {
-          fm.getSide()==='income' &&
-          <span className="text-success">+ {fm.getValue()} {fm.tx.symbol}</span>
-        }
-        {
-          fm.getSide()==='outcome' &&
-          <span className="text-error">- {fm.getValue()} {fm.tx.symbol}</span>
-        }
+          <span className="text-success">{fm.getType((fm.getSide()==='income' || fm.getSide()==='outcome') && fm.getValue())} </span>
       </div>
     )
   },
