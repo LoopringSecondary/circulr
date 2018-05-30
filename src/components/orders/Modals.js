@@ -7,6 +7,7 @@ import PlaceOrderSteps from './PlaceOrderSteps'
 import PlaceOrderSign from './PlaceOrderSign'
 import TradeByP2P from './TradeByP2P'
 import PlaceOrderLRCFee from './PlaceOrderLRCFee'
+import PlaceOrderTTL from './PlaceOrderTTL'
 import CancelOrderConfirm  from './CancelOrderConfirm'
 
 function Modals(props) {
@@ -54,6 +55,11 @@ function Modals(props) {
       <Containers.Layers id="placeOrderLRCFee">
         <UiContianers.Modals id="placeOrderLRCFee">
           <PlaceOrderLRCFee />
+        </UiContianers.Modals>
+      </Containers.Layers>
+      <Containers.Layers id="placeOrderTTL">
+        <UiContianers.Modals id="placeOrderTTL">
+          <PlaceOrderTTL />
         </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="cancelOrderConfirm">

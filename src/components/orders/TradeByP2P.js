@@ -116,9 +116,7 @@ const TradeByP2P = ({
       </div>
       <div className="mb15"></div>
       <Button type="primary" size="large" className="d-block w-100">Generate Order</Button>
-      <div className="mb15"></div>
       { false && <Alert type="info" title={<div className="color-black-1">分享给指定的人</div>} theme="light" size="small"/> }
-      <div className="mb15"></div>
     </div>
   );
 };
