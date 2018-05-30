@@ -6,16 +6,20 @@ import {connect} from 'dva'
 
 const MenuItem = (prop)=>{
   return (
-    <div className="row pt10 pb10 pl0 pr0 zb-b-b">
+    <div className="row pt10 pb10 pl10 pr10 zb-b-b align-items-center">
       <div className="col">
-        <div className="fs14 color-black-2">Time To Live</div>
+        <span className="fs14 color-black-1 pr10">{prop.label}</span>
       </div>
-      <div className="col-auto text-right">
-        <div className="fs14 color-black-1 text-wrap">
-          Customize
-          <Icon type="right" />
+      {prop.value &&
+        <div className="col-auto text-right">
+          {prop.value}
         </div>
-      </div>
+      }
+      {prop.action &&
+        <div className="col-auto text-right">
+          {prop.action}
+        </div>
+      }
     </div>
   )
 }
@@ -59,7 +63,7 @@ const TradeByP2P = ({
   return (
     <div>
       <div className="pb10 fs18 color-black-1 zb-b-b mb25">Privacy P2P Trade</div>
-      <div className="row pl0 pr0 pt10 pb10">
+      <div className="row pl0 pr0 pt10 pb10 align-items-center">
         <div className="col pl0 pr0">
           <Select
             placeholder={"LRC"}
@@ -90,6 +94,17 @@ const TradeByP2P = ({
           { false && <Input placeholder="" size="large" className="d-block mt5"/> }
         </div>
       </div>
+      <div className="row pl0 pr0 pt10 pb10 align-items-center">
+        <div className="col pl0 pr0">
+          <Input placeholder="" size="large" className="d-block mt5"/>
+        </div>
+        <div className="col-auto pl15 pr15">
+          <i className="loopring-icon loopring-icon-convert fs24"></i>
+        </div>
+        <div className="col pl0 pr0">
+          <Input placeholder="" size="large" className="d-block mt5"/>
+        </div>
+      </div>
       <div className="row pl0 pr0 pt10 pb10">
         <div className="col pl0 pr0">
           <Input placeholder="1.00" size="large"
@@ -104,14 +119,17 @@ const TradeByP2P = ({
           />
         </div>
       </div>
-      <div className="mt10"></div>
-      <MenuItem label="Price" value="0.00015 LRC/WETH" />
-      <MenuItem label="Time to Live"  />
-      { false && <Alert type="info" title={<div className="color-black-1">Privacy P2P order blablabla  </div>} theme="light" size="small"/> }
+      <div className="mt10 zb-b">
+        <MenuItem label="Price" value="0.00015 LRC/WETH" />
+        <MenuItem label="LRC Fee" value="0 LRC" />
+        <MenuItem label="ETH Gas" action={<span className="">0.000052 ETH<Icon type="right" className="ml5" /></span>} />
+        <MenuItem label="Time to Live" action={<span className="">06-10 10:22<Icon type="right" className="ml5" /></span>} />
+      </div>
       <div className="mb15"></div>
       <Button type="primary" size="large" className="d-block w-100">Generate Order</Button>
       <div className="mb15"></div>
-
+      { false && <Alert type="info" title={<div className="color-black-1">分享给指定的人</div>} theme="light" size="small"/> }
+      <div className="mb15"></div>
     </div>
   );
 };
