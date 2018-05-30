@@ -10,6 +10,7 @@ function TransferConfirm(props) {
   const {transferConfirm, marketcap, wallet, dispatch} = props
   const {tx, extraData={}} = transferConfirm
   if(!tx){return null}
+  const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
 
   const worth = (
     <span>
@@ -108,6 +109,10 @@ function TransferConfirm(props) {
     dispatch({type: 'layers/hideLayer', payload: {id:'transferConfirm'}})
   }
 
+  const toUnlock = () => {
+    dispatch({type:'layers/showLayer',payload:{id:'unlock'}})
+  }
+
   return (
     <div className="pd-lg">
         <div className="sidebar-header">
@@ -130,12 +135,22 @@ function TransferConfirm(props) {
               </span>
             </li>
         </ul>
-        <div className="col-row">
-          <div className="col2-2">
-         		<div className="item"><Button className="btn-block btn-o-dark btn-xlg" onClick={cancel}>不，取消发送</Button></div>
-         		<div className="item"><Button className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>马上发送</Button></div>
-          </div>
+      {isUnlocked &&
+      <div className="col-row">
+        <div className="col2-2">
+          <div className="item"><Button className="btn-block btn-o-dark btn-xlg" onClick={cancel}>不，取消发送</Button></div>
+          <div className="item"><Button className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>马上发送</Button></div>
         </div>
+      </div>
+      }
+      {!isUnlocked &&
+      <div className="col-row">
+        <div className="col2-2">
+          <Button className="btn-block btn-o-dark btn-xlg" onClick={toUnlock}>Unlock Your Wallet</Button>
+          <div>* You should unlock your wallet first </div>
+        </div>
+      </div>
+      }
     </div>
   )
 }

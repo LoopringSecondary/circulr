@@ -46,7 +46,7 @@ function ListTradesHistory(props) {
         <div className="card-header card-header-dark bordered">
           <h4>Trade History</h4>
         </div>
-        <div className="trade-list h-full">
+        <div className="trade-list trade-history-list h-full">
           <ul>
             <li className="trade-list-header"><span>Price({tokens.right})</span><span style={{textAlign:'right'}}>Amount({tokens.left})</span><span style={{textAlign:'right'}}>Time</span></li>
           </ul>

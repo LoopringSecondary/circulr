@@ -1,6 +1,7 @@
 import config from 'common/config'
 import * as datas from 'common/config/data'
 import * as orderFormatter from './formatters'
+import * as apis from './apis'
 
 const MODULES = 'placeOrder'
 export default {
@@ -19,11 +20,12 @@ export default {
    timeToLiveEnd: null,
    submitButtonLoading: false,
    unsigned:null,
-   signed:null
+   signed:null,
+   confirmButtonState : 1, //1:init, 2:loading, 3:submitted
   },
   effects:{
     *init({ payload={} }, { put }) {
-       yield put({ type: 'pairChangeEffects',payload});
+      yield put({ type: 'pairChangeEffects',payload});
     },
     *pairChangeEffects({ payload={} }, { put }) {
       let {pair, price} = payload
@@ -66,6 +68,30 @@ export default {
       const {unsigned, signed} = payload
       yield put({ type: 'unsignedChange',payload:{unsigned}});
       yield put({ type: 'signedChange',payload:{signed}});
+      yield put({ type: 'confirmButtonStateChange',payload:{buttonState:1}});
+    },
+    *sendDone({ payload={} }, { put }) {
+      const {signed} = payload
+      yield put({ type: 'signedChange',payload:{signed}});
+      yield put({ type: 'confirmButtonStateChange',payload:{buttonState:3}});
+    },
+    *unlock({ payload={} }, { select, put ,call}) {
+      const {signed,unsigned} = yield select(({ [MODULES]:state }) => state )
+      if(!unsigned || unsigned.length === 0) {
+        return
+      }
+      let actualSigned = signed ? signed.filter(item => item !== undefined) : []
+      if(unsigned.length === actualSigned.length) {
+        return
+      }
+      const {account, unlockType, address} = yield select(({ ['wallet']:state }) => state )
+      if(!account || unlockType === 'address') {
+        return
+      }
+      console.log('11111 place order', signed,unsigned,address)
+      const signedNew = yield call(apis.signAll, {signed,unsigned,account,address})
+      yield put({ type: 'signedChange',payload:{signed:signedNew}});
+      yield put({ type: 'confirmButtonStateChange',payload:{buttonState:1}});
     }
   },
   reducers: {
@@ -185,7 +211,15 @@ export default {
         ...state,
         signed
       }
-    }
+    },
+    confirmButtonStateChange(state, action) {
+      const {payload} = action
+      let {buttonState} = payload
+      return {
+        ...state,
+        confirmButtonState:buttonState
+      }
+    },
   },
 };
 

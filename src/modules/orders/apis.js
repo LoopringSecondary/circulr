@@ -1,5 +1,6 @@
 import {getOrders} from 'LoopringJS/relay/rpc/order'
 import config from 'common/config'
+import eachLimit from 'async/eachLimit';
 
 export async function fetchList(payload){
     let {page,filters,sort} = payload
@@ -38,4 +39,20 @@ export async function fetchList(payload){
         }
       }
     })
+}
+
+export async function signAll(payload) {
+  const {signed,unsigned,account,address} = payload
+  return await unsigned.map((item, index)=>{
+    if(item.address !== address) return null
+    const signedItem = signed[index]
+    if(signedItem) return signedItem
+    if(item.type === 'order') {
+      const signedOrder =  account.signOrder(item.data)
+      signedOrder.powNonce = 100;
+      return {type: 'order', data:signedOrder};
+    } else {
+      return {type: 'tx', data: account.signEthereumTx(item.data)};
+    }
+  })
 }

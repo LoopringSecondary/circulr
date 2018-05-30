@@ -25,12 +25,20 @@ const TestModal = (props)=>{
         <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'gasFee'})}>Gas Fee</Button>
       </span>
       <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderSteps'})}>Steps</Button>
-      </span>
-      <span>
         <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderLRCFee'})}>LRC Fee</Button>
       </span>
-
+      <span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderTTL'})}>TTL</Button>
+      </span>
+      <span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderSteps'})}>PlaceOrder Confirm</Button>
+      </span>
+      <span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderSign'})}>Sign</Button>
+      </span>
+      <span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'tradeByP2P'})}>TradeByP2P</Button>
+      </span>
     </div>
   )
 }

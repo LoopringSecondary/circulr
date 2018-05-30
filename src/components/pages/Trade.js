@@ -42,12 +42,12 @@ function Trade(props) {
               </div>
   	    </div>
   	    <div className="m-container h-full relative" style={{marginLeft: "284px"}}>
-  	        <div className="side" style={{left:"0",width: "300px"}}>
+  	        <div className="side" style={{left:"0",width: "320px"}}>
   	            <div className="card h-full">
   	                <Orders.ListOrderBook />
   	            </div>
   	        </div>
-  	        <div className="fulid-container" style={{marginLeft:"304px", marginRight: "304px", height: "100%" }}>
+  	        <div className="fulid-container" style={{marginLeft:"324px", marginRight: "324px", height: "100%" }}>
   	            <div className="card dark h-full">
       	            <div style={{position: "relative", height: "-webkit-calc(50% - 40px)", overflow:"hidden" }}>
         	              <div className="card-header card-header-dark bordered">
@@ -62,7 +62,7 @@ function Trade(props) {
                             </div>
                         </div>
                     </div>
-      	            <div style={{position: "relative", height:"50%", paddingTop:"0"}}>
+      	            <div className="orders" style={{position: "relative", height:"50%", paddingTop:"0"}}>
           	            <Tabs defaultActiveKey="1"  type="card">
           	                <TabPane tab="Orders" key="1">
                               <Containers.Orders id="MyOpenOrders" alias="orders"  >
@@ -77,7 +77,7 @@ function Trade(props) {
           	            </Tabs>
       	            </div>
   	            </div>
-    		        <div className="side" style={{top:"74px", right:"0", width: "300px"}}>
+    		        <div className="side" style={{top:"74px", right:"0", width: "320px"}}>
     		            <Fills.ListTradesHistory />
     		        </div>
   	        </div>
