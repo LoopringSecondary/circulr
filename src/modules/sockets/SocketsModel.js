@@ -278,7 +278,6 @@ export default {
       }
     },
     extraChange(state,action){
-      console.log('extraChange',action);
       let {payload} = action;
       let {id} = payload
       return {

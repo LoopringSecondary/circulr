@@ -103,6 +103,13 @@ function ListAllTickers(props) {
         filters:{market:item.market}
       }
     });
+
+    dispatch({
+      type:'placeOrder/pairChange',
+      payload:{
+        pair:item.market
+      }
+    })
     storage.markets.setRecent(item.market)
   }
   const actions = {

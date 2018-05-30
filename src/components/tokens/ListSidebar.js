@@ -53,7 +53,14 @@ function ListTokensSidebar(props) {
     tokens.nodeChange({
       selected: item.symbol
     })
-    updateTransations(item.symbol)
+    updateTransations(item.symbol);
+    // dispatch({
+    //   type: 'sockets/filtersChange',
+    //   payload:{
+    //     id:'tickers',
+    //     filters:{}
+    //   }
+    // })
   }
   const updateTransations = (token) => {
     dispatch({
