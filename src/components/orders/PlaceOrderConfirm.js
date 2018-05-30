@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,Button } from 'antd';
+import { Input,Button,Icon } from 'antd';
 import {toBig, toHex, clearHexPrefix} from 'LoopringJS/common/formatter'
 import config from 'common/config'
 import intl from 'react-intl-universal';
@@ -11,6 +11,7 @@ import {createWallet} from 'LoopringJS/ethereum/account';
 import * as uiFormatter from 'modules/formatter/common'
 import * as fm from 'LoopringJS/common/formatter'
 import QRCode from 'qrcode.react';
+import Alert from 'LoopringUI/components/Alert'
 
 function PlaceOrderConfirm(props) {
   const {placeOrderConfirm, placeOrder, settings, balance, wallet, marketcap, pendingTx, dispatch} = props
@@ -28,13 +29,10 @@ function PlaceOrderConfirm(props) {
     sell = token
     buy = token2
   }
-  let actualSigned = []
-  if(order && order.owner) { // verified
-    actualSigned = signed.filter(item => item !== undefined)
-  }
+  let actualSigned = signed && wallet ? signed.filter(item => item !== undefined && item !== null) : []
   const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
   const unsignedOrder = unsigned.find(item => item.type === 'order')
-  const signedOrder = signed.find(item => item.type === 'order')
+  const signedOrder = signed.find(item => item && item.type === 'order')
   let qrCodeData = ''
   if(tradeInfo.orderType === 'p2p_order' && unsignedOrder.completeOrder && unsignedOrder.completeOrder.authPrivateKey && signedOrder && signedOrder.orderHash) {
     qrCodeData = JSON.stringify({type:'p2p_order', data:{authPrivateKey:unsignedOrder.completeOrder.authPrivateKey, orderHash:signedOrder.orderHash}})
@@ -250,6 +248,10 @@ function PlaceOrderConfirm(props) {
     dispatch({type:'layers/showLayer',payload:{id:'unlock'}})
   }
 
+  const toSign = () => {
+    dispatch({type:'layers/showLayer',payload:{id:'placeOrderSign'}})
+  }
+
   const ActionItem = (item) => {
     return (
       <div>
@@ -309,61 +311,39 @@ function PlaceOrderConfirm(props) {
             <li><span>分润比例</span><span>{`${marginSplit} %`}</span></li>
             <li><span>订单生效时间</span><span>{uiFormatter.getFormatTime(validSince * 1e3)}</span></li>
             <li><span>订单失效时间</span><span>{uiFormatter.getFormatTime(validUntil * 1e3)}</span></li>
-          {
-            isUnlocked && unsigned.length !== actualSigned.length && unsigned.map((item, index)=>{
-              const signedItem = signed[index]
-              return (
-                <li key={index} className="d-block">
-                  {!signedItem && <Button className="btn-block btn-o-dark btn-xlg" onClick={sign.bind(this, item, index)}>{item.description}</Button>}
-                  {signedItem && 'Signed'}
-                </li>
-              )
-            })
-          }
-          {
-            null &&
-            <li className="d-block">
-              <b><i className="icon-chevron-up"></i>签名信息</b>
-              <div className="blk"></div>
-              <div className="col-row form-dark">
-                <div className="col2-2 d-flex justify-space-between">
-                  <div className="item">
-                    <p className="text-color-dark-2">未签名的订单</p>
-                    <Input.TextArea placeholder="" autosize={{ minRows: 4, maxRows: 6 }} value={JSON.stringify(order)}/>
-                  </div>
-                  <div className="item">
-                    <p className="text-color-dark-2">签名的订单</p>
-                    <Input.TextArea placeholder="" autosize={{ minRows: 4, maxRows: 6 }} />
-                  </div>
-                </div>
-                <div className="blk"></div>
-                <div className="text-center text-color-dark-3">提交订单是免费的，不需要消耗Gas</div>
-              </div>
-            </li>
-          }
         </ul>
       {
         qrCodeData &&
         <div>
           <div><QRCode value={qrCodeData} size={240} level='H'/></div>
-          <div>*For your order's security, your QR code only generated once and will not be stored, please save it properly</div>
+          <div>*For your order's security, your QR code will only generated once and not be stored locally. Make sure to save it properly, any one who received your QR code could take your order</div>
         </div>
       }
-      {isUnlocked && order.owner && orderType === 'market_order' &&
-        <Button className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>提交订单</Button>
-      }
-      {isUnlocked && order.owner && orderType === 'p2p_order' && confirmButtonState === 1 &&
-        <Button className="btn-block btn-o-dark btn-xlg" onClick={generateQrCode} loading={confirmButtonState === 2}>Generate QR Code</Button>
-      }
-      {!isUnlocked &&  
-        <div>
-          <div className="blk"></div>
-          <Button className="btn-block btn-o-dark btn-xlg" onClick={toUnlock}>Unlock Your Wallet</Button>
-          <div className="blk"></div>
-          <div>* You should unlock your wallet first </div>
-        </div>
-
-      }
+      <div className="mt20 d-block w-100">
+        {
+          !isUnlocked &&
+          <div>
+            <div className="mb15"></div>
+            <Alert type="info" title={<div className="color-black-1">您的钱包还没有解锁 <a onClick={toUnlock}>解锁钱包<Icon type="right" /></a></div>} theme="light" size="small"/>
+          </div>
+        }
+        {
+          isUnlocked && unsigned.length !== actualSigned.length &&
+          <div>
+            <div className="mb15"></div>
+            <Alert type="info" title={<div className="color-black-1">您的订单还没有完成签名 <a onClick={toSign}>订单签名<Icon type="right" /></a></div>} theme="light" size="small" />
+            <div className="mb15"></div>
+          </div>
+        }
+        {
+          orderType === 'market_order' &&
+          <Button className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit} disabled={!isUnlocked || !order.owner || orderType !== 'market_order'}>提交订单</Button>
+        }
+        {
+          orderType === 'p2p_order' &&
+          <Button className="btn-block btn-o-dark btn-xlg" onClick={generateQrCode} loading={confirmButtonState === 2} disabled={!isUnlocked || !order.owner || confirmButtonState !== 1}>Generate QR Code</Button>
+        }
+      </div>
     </div>
   )
 }
