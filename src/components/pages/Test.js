@@ -34,11 +34,16 @@ const TestModal = (props)=>{
         <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderSteps'})}>PlaceOrder Confirm</Button>
       </span>
       <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderSign'})}>Sign</Button>
-      </span>
-      <span>
         <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'tradeByP2P'})}>TradeByP2P</Button>
       </span>
+      <span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderConfirm'})}>PlaceOrderConfirm</Button>
+      </span>
+      <span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'unlock'})}>Unlock</Button>
+      </span>
+
+
     </div>
   )
 }

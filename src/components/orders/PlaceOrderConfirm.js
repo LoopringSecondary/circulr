@@ -322,8 +322,7 @@ function PlaceOrderConfirm(props) {
       <div className="mt20 d-block w-100">
         {
           !isUnlocked &&
-          <div>
-            <div className="mb15"></div>
+          <div className="mb10 mt10">
             <Alert type="info" title={<div className="color-black-1">您的钱包还没有解锁 <a onClick={toUnlock}>解锁钱包<Icon type="right" /></a></div>} theme="light" size="small"/>
           </div>
         }

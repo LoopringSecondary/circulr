@@ -292,7 +292,6 @@ export async function getGasPrice(host) {
   body.params = [{}];
   return request(host,{
     method:'post',
-    headers,
     body,
   })
 }
