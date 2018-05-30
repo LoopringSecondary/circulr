@@ -5,6 +5,7 @@ import {getBalanceBySymbol, getPriceBySymbol} from '../tokens/TokenFm'
 import {isApproving} from '../transactions/formatters'
 import contracts from 'LoopringJS/ethereum/contracts/Contracts'
 import {createWallet} from 'LoopringJS/ethereum/account';
+import * as tokenFormatter from 'modules/tokens/TokenFm'
 
 const integerReg = new RegExp("^[0-9]*$")
 const amountReg = new RegExp("^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$")
@@ -258,8 +259,6 @@ export async function signOrder(tradeInfo, wallet) {
   const token = tradeInfo.pair.split('-')[0];
   const token2 = tradeInfo.pair.split('-')[1];
   let order = {};
-  const unsigned = new Array()
-  const signed = new Array()
   order.owner = wallet.address
   order.delegateAddress = tradeInfo.delegateAddress;
   order.protocol = tradeInfo.protocol;
@@ -283,6 +282,72 @@ export async function signOrder(tradeInfo, wallet) {
   if(tradeInfo.orderType === 'market_order') {
     order.authPrivateKey = fm.clearHexPrefix(authAccount.getPrivateKeyString());
   }
+  // sign orders and txs
+  return generateSignData({tradeInfo, order, completeOrder, wallet})
+}
+
+export async function p2pVerification(balances, walletState, tradeInfo, txs, gasPrice) {
+  const configSell = config.getTokenBySymbol(tradeInfo.tokenS)
+  const ethBalance = getBalanceBySymbol({balances, symbol:'ETH', toUnit:true})
+  const approveGasLimit = config.getGasLimitByType('approve').gasLimit
+  const balanceS = tokenFormatter.getBalanceBySymbol({balances, symbol:tradeInfo.tokenS, toUnit:true})
+  let approveCount = 0
+  let failed = false
+  const warn = new Array(), error = new Array()
+  if(balanceS.balance.lt(tradeInfo.amountS)) {
+    error.push({type:"BalanceNotEnough", value:{symbol:tradeInfo.tokenS, balance:cutDecimal(balanceS.balance,6), required:ceilDecimal(tradeInfo.amountS.minus(balanceS.balance),6)}})
+    failed = true
+  }
+  const pendingAllowance = fm.toBig(isApproving(txs, tradeInfo.tokenS) ? isApproving(txs, tradeInfo.tokenS).div('1e'+configSell.digits) : balanceS.allowance);
+  if(pendingAllowance.lt(tradeInfo.amountS)) {
+    warn.push({type:"AllowanceNotEnough", value:{symbol:tradeInfo.tokenS, allowance:cutDecimal(pendingAllowance,6), required:ceilDecimal(tradeInfo.amountS.minus(balanceS.allowance),6)}})
+    approveCount += 1
+    if(pendingAllowance.gt(0)) approveCount += 1
+  }
+  const gas = fm.toBig(gasPrice).times(approveGasLimit).div(1e9).times(approveCount)
+  if(ethBalance.balance.lt(gas)){
+    error.push({type:"BalanceNotEnough", value:{symbol:'ETH', balance:cutDecimal(ethBalance.balance,6), required:ceilDecimal(gas.minus(ethBalance),6)}})
+    failed = true
+  }
+  if(failed) {
+    tradeInfo.error = error
+    return
+  }
+  tradeInfo.warn = warn
+}
+
+export async function signP2POrder(tradeInfo, wallet) {
+  let order = {};
+  order.owner = wallet.address
+  order.delegateAddress = tradeInfo.delegateAddress;
+  order.protocol = tradeInfo.protocol;
+  const tokenB = config.getTokenBySymbol(tradeInfo.tokenB);
+  const tokenS = config.getTokenBySymbol(tradeInfo.tokenS);
+  order.tokenB = tokenB.address;
+  order.tokenS = tokenS.address;
+  order.amountB = fm.toHex(tradeInfo.amountB.times('1e' + tokenB.digits));
+  order.amountS = fm.toHex(tradeInfo.amountS.times('1e' + tokenS.digits));
+  order.lrcFee = fm.toHex(0);
+  order.validSince = fm.toHex(tradeInfo.validSince);
+  order.validUntil = fm.toHex(tradeInfo.validUntil);
+  order.marginSplitPercentage = Number(tradeInfo.marginSplit);
+  order.buyNoMoreThanAmountB = true;
+  order.walletAddress = config.getWalletAddress();
+  order.orderType = tradeInfo.orderType
+  const authAccount = createWallet()
+  order.authAddr = authAccount.getAddressString();
+  const completeOrder = {...order}
+  completeOrder.authPrivateKey = fm.clearHexPrefix(authAccount.getPrivateKeyString());
+  if(tradeInfo.orderType === 'market_order') {
+    order.authPrivateKey = fm.clearHexPrefix(authAccount.getPrivateKeyString());
+  }
+  // sign orders and txs
+  return generateSignData({tradeInfo, order, completeOrder, wallet})
+}
+
+async function generateSignData({tradeInfo, order, completeOrder, wallet}) {
+  const unsigned = new Array()
+  const signed = new Array()
   // sign orders and txs
   unsigned.push({type: 'order', data:order, completeOrder:completeOrder, description: `Sign Order`, address:wallet.address})
   const approveWarn = tradeInfo.warn.filter(item => item.type === "AllowanceNotEnough");
