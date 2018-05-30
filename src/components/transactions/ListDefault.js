@@ -25,12 +25,14 @@ const Option = Select.Option;
         const tx = res.result;
         tx.gasPrice = toHex(toBig(gasPrice).times(1e9));
         tx.data = tx.input;
+        tx.gasLimit = tx.gas;
+        tx.chainId = config.getChainId();
         const account = props.account || window.account;
         const signedTx = await account.signEthereumTx(tx);
-        window.RELAY.account.sendRawTransaction(signedTx).then(({response, rawTx}) => {
+        window.ETH.sendRawTransaction(signedTx).then((response) => {
           if (!response.error) {
             Notification.open({message: intl.get("txs.resend_success"), type: "success", description:(<Button className="alert-btn mr5" onClick={() => window.open(`https://etherscan.io/tx/${response.result}`,'_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )});
-            window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.address});
+            window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx:tx, from: window.WALLET.address});
           } else {
             Notification.open({message: intl.get("txs.resend_failed"), type: "error", description:response.error.message})
           }
@@ -50,17 +52,19 @@ const Option = Select.Option;
         to:window.WALLET.address,
         value:"0x0",
         data:'0x',
-        chain:config.getChainId(),
+        chainId:config.getChainId(),
         gasLimit:'0x5208',
         gasPrice:toHex(toBig(gasPrice).times(1e9)),
         nonce:toHex(toNumber(item.nonce))
       };
+
     const account = props.account || window.account;
     const signedTx = await account.signEthereumTx(tx);
-    window.RELAY.account.sendRawTransaction(signedTx).then(({response, rawTx}) => {
+
+    window.ETH.sendRawTransaction(signedTx).then((response) => {
       if (!response.error) {
         Notification.open({message: 'Canceling', type: "success", description:(<Button className="alert-btn mr5" onClick={() => window.open(`https://etherscan.io/tx/${response.result}`,'_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )});
-        window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.address});
+        window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx:tx, from: window.WALLET.address});
       } else {
         Notification.open({message: 'Failed to canceling', type: "error", description:response.error.message})
       }
@@ -204,7 +208,7 @@ export const renders = {
         {
           (fm.tx.status === 'pending') &&
           <div>
-            <span className="text-primary" onClick={actions.toResend}>Resend</span> <span> | </span> <span className="text-primary" onClick={actions.toCancel}>Cancel</span>
+            <span className="text-primary" onClick={(e) => {e.stopPropagation();actions.toResend()}}>Resend</span> <span> | </span> <span className="text-primary" onClick={(e) => {e.stopPropagation();actions.toCancel()}}>Cancel</span>
           </div>
         }
       </div>
