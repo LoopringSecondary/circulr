@@ -55,6 +55,7 @@ class Unlock extends React.Component {
     const {match} = this.props;
     const pathname = this.props.location && this.props.location.pathname
     const {url} = match;
+    console.log('url',url)
     return (
       <Layout.LayoutHome className="h-full">
         <div className="body home">
@@ -74,10 +75,10 @@ class Unlock extends React.Component {
                 <li className={`item ${pathname==='/unlock/metamask' ? 'active':''}`}>
                   <a data-toggle="tab"  onClick={() => this.changeTab('metamask')}><i className="icon-metamaskwallet"/><h4>MetaMask</h4></a>
                 </li>
-                <li className={`item ${pathname==='/unlock/' ? 'active':''}`}>
+                <li className={`item ${pathname==='/unlock/trezor' ? 'active':''}`}>
                   <a onClick={() => this.unlock('trezor','trezor')}><i className="icon-trezorwallet"/><h4>Trezor</h4></a>
                 </li>
-                <li className={`item ${pathname==='/unlock/' ? 'active':''}`}>
+                <li className={`item ${pathname==='/unlock/ledger' ? 'active':''}`}>
                   <a  data-toggle="tab" onClick={() => this.unlock('ledger','ledger')}><i className="icon-ledgerwallet"/><h4>Ledger</h4></a>
                 </li>
                 <li className={`item ${pathname==='/unlock/json' ? 'active':''}`}>

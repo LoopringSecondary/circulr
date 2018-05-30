@@ -18,6 +18,7 @@ const UnLogged = ()=>{
   }else{
     return (
       <Switch>
+        <Route path="/" exact component={Pages.Home} />
         <Route path="/home" component={Pages.Home} />
         <Route path="/unlock" component={Pages.Unlock} />
       </Switch>
@@ -31,7 +32,7 @@ const Logged = ()=>{
       <Switch>
         <Route path={`/wallet`} component={Pages.Wallet} />
         <Route path="/trade/:market" component={Pages.Trade} />
-        <Route path="/trade"  exact component={Pages.Trade} />
+        <Route path="/trade" exact component={Pages.Trade} />
       </Switch>
     )
   }else{
@@ -47,7 +48,7 @@ export default class Routes extends React.Component {
     return (
       <div>
           <Switch>
-            <Route path="/" exact component={Pages.Home} />
+            <Route path="/" exact component={UnLogged} />
             <Route path="/home" component={UnLogged} />
             <Route path="/unlock" component={UnLogged} />
             <Route path="/wallet" render={Logged} />
