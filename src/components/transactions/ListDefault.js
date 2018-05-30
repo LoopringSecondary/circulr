@@ -3,20 +3,60 @@ import {Form, Select, Spin} from 'antd';
 import intl from 'react-intl-universal';
 import {TxFm, getTypes} from 'modules/transactions/formatters';
 import {getShortAddress} from 'modules/formatter/common';
+import {connect} from "dva";
+import config from '../../common/config'
+import {toHex,toNumber,toBig} from "LoopringJS/common/formatter";
+import Notification from '../../common/loopringui/components/Notification'
+
 
 const Option = Select.Option;
 
-export default function ListTransaction(props) {
-  console.log('ListTransaction component render')
+ function ListTransaction(props) {
   const {transaction: list} = props
   const statusChange = (value) => {
     list.filtersChange({filters:{status: value}})
   }
   const typeChange = (value) => {
-
     list.filtersChange({filters: {type: value}})
   }
-  const token = list.filters.token || 'LRC'
+  const resendTx  = async (item)  => {
+    window.RELAY.account.getPendingRawTxByHash(item.txHash).then(async (res) => {
+      if (!res.error) {
+        const tx = res.result;
+
+        tx.gasPrice = toHex(toBig(gasPriceRes.result));
+        tx.data = tx.input;
+        window.WALLET.sendTransaction(tx).then(({response, rawTx}) => {
+          if (!response.error) {
+            Notification.open({message: intl.get("txs.resend_success"), type: "success", description:(<Button className="alert-btn mr5" onClick={() => window.open(`https://etherscan.io/tx/${response.result}`,'_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )});
+            window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.getAddress()});
+          } else {
+            Notification.open({message: intl.get("txs.resend_failed"), type: "error", description:response.error.message})
+          }
+        })
+      } else {
+        Notification.open({
+          type: 'error',
+          message: intl.get('txs.can_not_resend'),
+          description: intl.get('txs.not_detail')
+        });
+      }
+    })
+  };
+
+  const cancelTx = async (item) => {
+      const tx = {
+        to:window.WALLET.address,
+        value:"0x0",
+        data:'0x',
+        chain:config.getChainId(),
+        gasLimit:'0x5208',
+        nonce:toHex(toNumber(item.nonce))
+      }
+
+  };
+
+  const token = list.filters.token || 'LRC';
   const types = getTypes(token)
   return (
     <div>
@@ -76,7 +116,9 @@ export default function ListTransaction(props) {
                 list.items.map((item, index) => {
                   const txFm = new TxFm(item);
                   const actions = {
-                    gotoDetail: () => props.dispatch({type: 'layers/showLayer', payload: {id: 'txDetail', tx: item}})
+                    gotoDetail: () => props.dispatch({type: 'layers/showLayer', payload: {id: 'txDetail', tx: item}}),
+                    toResend:() => resendTx(item),
+                    toCancel: () => cancelTx(item)
                   };
                   return (
                     <tr key={index} className="cursor-pointer" onClick={actions.gotoDetail}>
@@ -151,10 +193,19 @@ export const renders = {
         {
           (fm.tx.status === 'pending') &&
           <div>
-            <span className="text-primary">Resend</span> <span> | </span> <span className="text-primary">Cancel</span>
+            <span className="text-primary" onClick={actions.toResend}>Resend</span> <span> | </span> <span className="text-primary" onClick={actions.toCancel}>Cancel</span>
           </div>
         }
       </div>
     )
   },
 }
+
+function mapStateToProps(state) {
+   return {
+     gasPrice:state.gas.gasPrice.estimate
+   }
+}
+
+export default connect(mapStateToProps)(ListTransaction)
+
