@@ -10,7 +10,7 @@ const ModalsWrapper = (props)=>{
   } = props
   const {[id]:module={}} = props
   const modalProps = {
-    className:`${className} rs`,
+    className,
     wrapClassName,
     destroyOnClose:true,
     title:null,

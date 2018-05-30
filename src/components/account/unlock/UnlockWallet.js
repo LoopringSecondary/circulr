@@ -25,7 +25,7 @@ const SignItem = (props) => {
 const SignItemCol = (props) => {
   const {title, description,icon} = props
   return (
-    <div className="">
+    <div className="mt5 mb5">
       <div className="text-center">
         <i className={`fs24 icon-${icon}`}></i>
       </div>
@@ -40,7 +40,7 @@ function UnlockWallet(props) {
   return (
     <div>
       <Card title={<div className="pl15 pr15">Unlock Wallet</div>} className="rs">
-        <Tabs className="unlock-tabs">
+        <Tabs className="rs-flex">
           <TabPane tab={<SignItemCol icon="metamaskwallet" title="MetaMask" />} key="7">
             <div className="p15">
               <Containers.MetaMask>
