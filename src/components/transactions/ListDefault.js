@@ -25,10 +25,12 @@ const Option = Select.Option;
         const tx = res.result;
         tx.gasPrice = toHex(toBig(gasPrice).times(1e9));
         tx.data = tx.input;
-        window.WALLET.sendTransaction(tx).then(({response, rawTx}) => {
+        const account = props.account || window.account;
+        const signedTx = await account.signEthereumTx(tx);
+        window.RELAY.account.sendRawTransaction(signedTx).then(({response, rawTx}) => {
           if (!response.error) {
             Notification.open({message: intl.get("txs.resend_success"), type: "success", description:(<Button className="alert-btn mr5" onClick={() => window.open(`https://etherscan.io/tx/${response.result}`,'_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )});
-            window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.getAddress()});
+            window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.address});
           } else {
             Notification.open({message: intl.get("txs.resend_failed"), type: "error", description:response.error.message})
           }
@@ -50,9 +52,19 @@ const Option = Select.Option;
         data:'0x',
         chain:config.getChainId(),
         gasLimit:'0x5208',
+        gasPrice:toHex(toBig(gasPrice).times(1e9)),
         nonce:toHex(toNumber(item.nonce))
+      };
+    const account = props.account || window.account;
+    const signedTx = await account.signEthereumTx(tx);
+    window.RELAY.account.sendRawTransaction(signedTx).then(({response, rawTx}) => {
+      if (!response.error) {
+        Notification.open({message: 'Canceling', type: "success", description:(<Button className="alert-btn mr5" onClick={() => window.open(`https://etherscan.io/tx/${response.result}`,'_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )});
+        window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.address});
+      } else {
+        Notification.open({message: 'Failed to canceling', type: "error", description:response.error.message})
       }
-
+    })
   };
 
   const token = list.filters.token || 'LRC';
@@ -202,7 +214,8 @@ export const renders = {
 
 function mapStateToProps(state) {
    return {
-     gasPrice:state.gas.gasPrice.estimate
+     gasPrice:state.gas.gasPrice.estimate,
+     account:state.wallet.account
    }
 }
 
