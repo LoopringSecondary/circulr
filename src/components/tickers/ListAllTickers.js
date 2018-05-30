@@ -1,14 +1,14 @@
 import React from 'react'
 import {connect} from 'dva'
 import {TickersFm,TickerFm} from 'modules/tickers/formatters'
-
+import storage from '../../modules/storage'
 
 const TickItem = ({item,actions})=>{
     const tickerFm = new TickerFm(item)
     return (
       <li onClick={actions.selectTicker.bind(this,item)}>
         <span>
-          <i className="icon-star icon-favorites" onClick={actions.toggleTickerFavored.bind(this,item)} />
+          <i className="icon-star icon-favorites" onClick={(e) => actions.toggleTickerFavored(e,item)} />
         </span>
         <span className="">{item.market}</span>
         <span>{tickerFm.getLast()} {tickerFm.getTokens().right}</span>
@@ -43,24 +43,24 @@ function ListAllTickers(props) {
       payload:{
         id:'loopringTickers',
         extra:{
-          keywords:e.target.value
+          keywords:e.target.value ,
         }
       }
     })
   }
-  const toggleTickerFavored = (item)=>{
+  const toggleTickerFavored = (e,item)=>{
+    e.stopPropagation();
     dispatch({
-      type:'sockets/filtersChange',
+      type:'sockets/extraChange',
       payload:{
         id:'loopringTickers',
         extra:{
-          favored:{[item.symbol]:true}
+          favored:{...favored,[item.market]:!favored[item.market]},
         }
       }
     })
   }
   const selectTicker= (item)=>{
-    console.log('selectTicker',item.market)
     dispatch({
       type:'sockets/filtersChange',
       payload:{
@@ -102,35 +102,33 @@ function ListAllTickers(props) {
         id:'MyFills',
         filters:{market:item.market}
       }
-    })
+    });
+    storage.markets.setRecent(item.market)
   }
   const actions = {
     selectTicker,
     toggleTickerFavored
   }
-  // TODO
-  const currentMarket = list.extra.current || "LRC-WETH"
 
   return (
     <div>
 	    <div className="token-select">
 	        <div className="token-select-header">
-              { keywords && <input value={keywords.toUpperCase()} onChange={searchTicker} /> }
-              {!(keywords && keywords.length > 0) && <input value={currentMarket} onChange={searchTicker} /> }
+              <input value={keywords && keywords.toUpperCase()} onChange={searchTicker} />
               <i className="icon-search" />
               <i hidden className="icon-star icon-favorites active" />
 	        </div>
 	        <div className="token-select-body" style={{height: "400px"}}>
 	            <div className="content-scroll">
 	                {
-                    recentTickers.lenth >0 &&
+	                  recentTickers.length >0 && !keywords &&
                     <div className="item">
                         <div className="title">Recent</div>
                         <ul>{recentTickers.map((item,index)=><TickItem item={item} actions={actions} />)}</ul>
                     </div>
                   }
                   {
-                    favoredTickers.lenth >0 &&
+                    favoredTickers.length >0 &&
                     <div className="item">
                         <div className="title">Favorites</div>
                         <ul>{favoredTickers.map((item,index)=><TickItem item={item} actions={actions} />)}</ul>

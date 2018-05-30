@@ -121,10 +121,10 @@ export default {
       yield put({type:'emitEvent',payload})
     },
     *filtersChange({payload},{call,select,put}){
-      console.log('filtersChange payload',payload)
       yield put({type:'filtersChangeStart',payload})
       yield put({type:'emitEvent',payload})
     },
+
     *sortChange({payload},{call,select,put}){
       yield put({type:'sortChangeStart',payload})
       yield put({type:'emitEvent',payload})
@@ -278,13 +278,15 @@ export default {
       }
     },
     extraChange(state,action){
-      let {payload} = action
+      console.log('extraChange',action);
+      let {payload} = action;
       let {id} = payload
       return {
         ...state,
         [id]:{
           ...state[id],
           extra:{
+            ...state[id].extra,
             ...payload.extra
           }
         }
