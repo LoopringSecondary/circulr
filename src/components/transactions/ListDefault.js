@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Select, Spin} from 'antd';
+import {Form, Select, Spin,Button} from 'antd';
 import intl from 'react-intl-universal';
 import {TxFm, getTypes} from 'modules/transactions/formatters';
 import {getShortAddress} from 'modules/formatter/common';
@@ -12,7 +12,7 @@ import Notification from '../../common/loopringui/components/Notification'
 const Option = Select.Option;
 
  function ListTransaction(props) {
-  const {transaction: list} = props
+  const {transaction: list,gasPrice} = props
   const statusChange = (value) => {
     list.filtersChange({filters:{status: value}})
   }
@@ -23,7 +23,7 @@ const Option = Select.Option;
     window.RELAY.account.getPendingRawTxByHash(item.txHash).then(async (res) => {
       if (!res.error) {
         const tx = res.result;
-        tx.gasPrice = toHex(toBig(gasPriceRes.result));
+        tx.gasPrice = toHex(toBig(gasPrice).times(1e9));
         tx.data = tx.input;
         window.WALLET.sendTransaction(tx).then(({response, rawTx}) => {
           if (!response.error) {
