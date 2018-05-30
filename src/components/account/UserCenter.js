@@ -62,7 +62,8 @@ function UserCenter(props) {
     	            <ul>
                     {window.WALLET && window.WALLET.address && <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'receiveToken',symbol:null}) }} className="side-receive" ><i className="icon-receive"></i><span>Receive</span></a></li>}
                     {window.WALLET && window.WALLET.address &&  <li><a onClick={transfer} className="side-send"><i className="icon-send"></i><span>Send</span></a></li>}
-                    {window.WALLET && window.WALLET.address &&  <li><Link to="/trade"><i className="icon-trade"/><span>Trade</span></Link></li>}
+                    {window.WALLET && window.WALLET.address &&  <li><Link to="/trade"><i className="icon-trade"/><span>Market</span></Link></li>}
+                    {window.WALLET && window.WALLET.address &&  <li><a onClick={() => dispatch({type:'layers/showLayer',payload:{id:'tradeByP2P'}})}><i className="icon-trade"/><span>P2P Trade</span></a></li>}
     	                <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'setting',symbol:null}) }} className="side-settings"><i className="icon-cog-o"></i><span>Settings</span></a></li>
     	                 <li hidden><a className="side-airdrop"><i className="icon-gift-o"></i><span>Airdrop</span></a></li>
     	                <li><a className="side-help"><i className="icon-question-o"></i><span>Help</span></a></li>
