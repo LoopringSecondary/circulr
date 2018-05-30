@@ -54,7 +54,7 @@ function ListTokenTickers(props) {
                     </thead>
                     <tbody>
                     {tickers && Object.keys(tickers).length > 0 && Object.keys(tickers).map((key) => {
-                     const item = tickers[key];
+                      const item = tickers[key];
                       const tf  = new TickerFm(item);
                       return (
                         <tr>
