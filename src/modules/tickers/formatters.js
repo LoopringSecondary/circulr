@@ -95,6 +95,9 @@ export class TickerFm {
   getTokens(){
     return getTokensByMarket(this.ticker.market || 'LRC-WETH') //TODO
   }
+  getExchange(){
+    return this.ticker.exchange
+  }
 }
 
 export const getVol = (value)=>{

@@ -9,34 +9,11 @@ import {TxFm} from 'modules/transactions/formatters'
 import {getTransactionByhash} from 'LoopringJS/ethereum/eth'
 
 export default class Detail extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state= {
-      tx:{},
-      loading:false,
-    }
-  }
-  componentDidMount() {
-    const {txDetail} =  this.props;
-    const txHash = txDetail.tx && txDetail.tx.txHash;
-    const _this = this;
-    if(txHash){
-      window.ETH.getTransactionByhash(txHash).then(res => {
-       if (!res.error) {
-          const tx = res.result;
-          _this.setState({loading: false, tx})
-        } else {
-          _this.setState({loading: false})
-        }
-      })
-    }
-  }
   render() {
     const {txDetail} = this.props;
-    const {loading,tx} = this.state;
     const item = txDetail.tx;
     const fill = item && item.content && item.content.fill ? JSON.parse(item.content.fill): null;
-    const txFm = new TxFm({...tx,...item,fill});
+    const txFm = new TxFm({...item,fill});
 
     const reSendTx = (txHash) => {
     }
@@ -49,11 +26,10 @@ export default class Detail extends React.Component {
             item && fill &&
             <Tabs defaultActiveKey="basic" tabPosition="" animated={true}  className="tabs-dark">
               <Tabs.TabPane className="text-color-dark"  tab={intl.get('txs.tx_detail')} key="basic">
-                <Spin spinning={loading}>
                   <MetaList>
                       <MetaItem label={intl.get('txs.tx_hash')} value={item.txHash} render={renders.txHash}/>
-                      <MetaItem label={intl.get('txs.to')} value={tx.to} render={renders.address}/>
-                      <MetaItem label={intl.get('txs.block_num')} value={tx.blockNumber} render={renders.blockNumber}/>
+                      <MetaItem label={intl.get('txs.to')} value={txFm.getTo()} render={renders.address}/>
+                      <MetaItem label={intl.get('txs.block_num')} value={txFm.getBlockNum()} render={renders.blockNumber}/>
                       <MetaItem label={intl.get('txs.status')} value={intl.get('txs.' + item.status)}/>
                       <MetaItem label={intl.get('txs.confirm_time')} value={txFm.getConfirmTime()}/>
                       <MetaItem label={intl.get('txs.type')} value={txFm.getType()}/>
@@ -61,7 +37,6 @@ export default class Detail extends React.Component {
                       <MetaItem label={intl.get('wallet.nonce')} value={txFm.getNonce()}/>
                       <MetaItem label={intl.get('txs.value')} value={txFm.getValue() + ' ETH'}/>
                   </MetaList>
-                </Spin>
               </Tabs.TabPane>
               <Tabs.TabPane  tab={intl.get('orders.fill_detail')} key="fill">
                 <MetaList>
@@ -76,11 +51,10 @@ export default class Detail extends React.Component {
           }
           {
             item && !fill &&
-            <Spin spinning={loading}>
               <MetaList>
                   <MetaItem label={intl.get('txs.tx_hash')} value={item.txHash} render={renders.txHash}/>
-                  <MetaItem label={intl.get('txs.to')} value={tx.to} render={renders.address}/>
-                  <MetaItem label={intl.get('txs.block_num')} value={tx.blockNumber} render={renders.blockNumber}/>
+                  <MetaItem label={intl.get('txs.to')} value={txFm.getTo()} render={renders.address}/>
+                  <MetaItem label={intl.get('txs.block_num')} value={txFm.getBlockNum()} render={renders.blockNumber}/>
                   <MetaItem label={intl.get('txs.status')} value={intl.get('txs.' + item.status)}/>
                   <MetaItem label={intl.get('txs.confirm_time')} value={txFm.getConfirmTime()}/>
                   <MetaItem label={intl.get('txs.type')} value={txFm.getType()}/>
@@ -88,7 +62,6 @@ export default class Detail extends React.Component {
                   <MetaItem label={intl.get('wallet.nonce')} value={txFm.getNonce()}/>
                   <MetaItem label={intl.get('txs.value')} value={txFm.getValue() + ' ETH'}/>
               </MetaList>
-            </Spin>
           }
       </div>
     )
