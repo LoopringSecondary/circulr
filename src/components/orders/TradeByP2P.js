@@ -62,7 +62,7 @@ const TradeByP2P = ({
   }
   return (
     <div>
-      <div className="pb10 fs18 color-black-1 zb-b-b mb25">Privacy P2P Trade</div>
+      <div className="pb10 fs18 color-black-1 zb-b-b mb15">Privacy P2P Trade</div>
       <div className="row pl0 pr0 pt10 pb10 align-items-center">
         <div className="col pl0 pr0">
           <Select
@@ -94,17 +94,6 @@ const TradeByP2P = ({
           { false && <Input placeholder="" size="large" className="d-block mt5"/> }
         </div>
       </div>
-      <div className="row pl0 pr0 pt10 pb10 align-items-center">
-        <div className="col pl0 pr0">
-          <Input placeholder="" size="large" className="d-block mt5"/>
-        </div>
-        <div className="col-auto pl15 pr15">
-          <i className="loopring-icon loopring-icon-convert fs24"></i>
-        </div>
-        <div className="col pl0 pr0">
-          <Input placeholder="" size="large" className="d-block mt5"/>
-        </div>
-      </div>
       <div className="row pl0 pr0 pt10 pb10">
         <div className="col pl0 pr0">
           <Input placeholder="1.00" size="large"
@@ -122,8 +111,8 @@ const TradeByP2P = ({
       <div className="mt10 zb-b">
         <MenuItem label="Price" value="0.00015 LRC/WETH" />
         <MenuItem label="LRC Fee" value="0 LRC" />
-        <MenuItem label="ETH Gas" action={<span className="">0.000052 ETH<Icon type="right" className="ml5" /></span>} />
-        <MenuItem label="Time to Live" action={<span className="">06-10 10:22<Icon type="right" className="ml5" /></span>} />
+        <MenuItem label="ETH Gas" action={<span onClick={()=>{}} className="cursor-pointer">0.000052 ETH<Icon type="right" className="ml5" /></span>} />
+        <MenuItem label="Time to Live" action={<span onClick={()=>{}} className="cursor-pointer">06-10 10:00 ~ 06-15 24:00<Icon type="right" className="ml5" /></span>} />
       </div>
       <div className="mb15"></div>
       <Button type="primary" size="large" className="d-block w-100">Generate Order</Button>
