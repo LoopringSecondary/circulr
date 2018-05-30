@@ -10,7 +10,7 @@ export default function ListTransaction(props) {
   console.log('ListTransaction component render')
   const {transaction: list} = props
   const statusChange = (value) => {
-    list.filtersChange({status: value})
+    list.filtersChange({filters:{status: value}})
   }
   const typeChange = (value) => {
 
