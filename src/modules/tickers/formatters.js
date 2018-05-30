@@ -52,23 +52,22 @@ export const getFavoredTickers = (tickers)=>{
 export const getRecentTickers = (tickers)=>{
   const {items} = tickers;
   const recentMarkets = storage.markets.getRecent();
-  return items.filter((item) => recentMarkets.find(market => market.toLowerCase() === item.market.toLowerCase()))
+  return recentMarkets.map(market => items.find(item => market.toLowerCase() === item.market.toLowerCase()))
 }
 
 export const getAllTickers = (tickers)=>{
   const {extra,items} = tickers
   let new_items = [...items]
-  if(extra.keywords){
-    new_items = new_items.filter(item=>item.market.toLowerCase().indexOf(extra.keywords.toLowerCase())> -1 )
+  if(extra && extra.keywords){
+    new_items = new_items.filter(item=>item.market.toLowerCase().indexOf(extra.keywords.toLowerCase())> -1 );
   }
 
   if(extra && extra.favored){
     const {favored} = extra;
-    new_items = items.filter(item => !favored[item.market])
+    new_items = new_items.filter(item => !favored[item.market])
   }
   return sortTickers(new_items)
-}
-
+};
 
 
 export class TickerFm {

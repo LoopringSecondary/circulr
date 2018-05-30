@@ -5,9 +5,9 @@ import routeActions from 'common/utils/routeActions'
 import { Button,Spin } from 'antd'
 
 function ListTokenTickers(props) {
-  const {loopringTickers:list,dispatch} = props
-  const tickersFm = new TickersFm(list)
-  const listedTickers = tickersFm.getTickersBySymbol('LRC') // TODO
+  const {loopringTickers:list,dispatch} = props;
+  const tickersFm = new TickersFm(list);
+  const listedTickers = tickersFm.getTickersBySymbol(props.token);
   const gotoTrade = (item)=>{
     routeActions.gotoPath(`/trade/${item.market}`)
   }
@@ -99,6 +99,13 @@ function ListTokenTickers(props) {
   )
 }
 
-export default connect(
-  ({sockets:{loopringTickers}})=>({loopringTickers})
-)(ListTokenTickers)
+function mapStateToProps(state) {
+
+  return {
+    loopringTickers:state.sockets.loopringTickers,
+    token:state.tokens.selected
+  }
+}
+
+
+export default connect(mapStateToProps)(ListTokenTickers)

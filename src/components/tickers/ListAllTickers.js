@@ -44,8 +44,6 @@ function ListAllTickers(props) {
         id:'loopringTickers',
         extra:{
           keywords:e.target.value ,
-          favored,
-          current
         }
       }
     })
@@ -58,8 +56,6 @@ function ListAllTickers(props) {
         id:'loopringTickers',
         extra:{
           favored:{...favored,[item.market]:!favored[item.market]},
-          keywords,
-          current
         }
       }
     })
@@ -90,7 +86,7 @@ function ListAllTickers(props) {
       type:'sockets/extraChange',
       payload:{
         id:'loopringTickers',
-        extra:{current:item.market,favored,keywords}
+        extra:{current:item.market}
       }
     })
     dispatch({

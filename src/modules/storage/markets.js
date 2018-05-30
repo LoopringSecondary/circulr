@@ -23,12 +23,16 @@ const setRecent = (market) => {
   let markets = localStorage.markets ? JSON.parse(localStorage.markets) :{};
   const recent = getRecent();
   if (!recent.find(item => item.toLowerCase() === market.toLowerCase())) {
-    markets.recent = [...recent, market];
+    markets.recent = [market,...recent,];
     if (markets.recent.length > 3) {
-      markets.recent = markets.recent.slice(1)
+      markets.recent = markets.recent.slice(0,3)
     }
-    localStorage.markets = JSON.stringify(markets);
+  }else{
+    const index = recent.indexOf(market);
+     recent.splice(index,index);
+     markets.recent = [market,...recent]
   }
+  localStorage.markets = JSON.stringify(markets);
 };
 
 const getRecent = () => {

@@ -121,7 +121,6 @@ export default {
       yield put({type:'emitEvent',payload})
     },
     *filtersChange({payload},{call,select,put}){
-      console.log('filtersChangeStart',payload)
       yield put({type:'filtersChangeStart',payload})
       yield put({type:'emitEvent',payload})
     },
@@ -226,7 +225,6 @@ export default {
       }
     },
     filtersChangeStart(state,action){
-      console.log('filtersChangeStart',action)
       let {payload} = action
       let {id} = payload
       return {
@@ -288,7 +286,7 @@ export default {
         [id]:{
           ...state[id],
           extra:{
-            ...state.extra,
+            ...state[id].extra,
             ...payload.extra
           }
         }
