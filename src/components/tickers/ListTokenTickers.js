@@ -53,11 +53,11 @@ function ListTokenTickers(props) {
                         </tr>
                     </thead>
                     <tbody>
-                    {tickers && Object.keys(tickers).length > 0 && Object.keys(tickers).map((key) => {
+                    {tickers && Object.keys(tickers).length > 0 && Object.keys(tickers).map((key,index) => {
                       const item = tickers[key];
                       const tf  = new TickerFm(item);
                       return (
-                        <tr>
+                        <tr key={index}>
                         <td>{tf.getExchange() || key}</td>
                         <td>{tf.getLast()}</td>
                         <td className="text-up">{tf.getChange()}</td>
