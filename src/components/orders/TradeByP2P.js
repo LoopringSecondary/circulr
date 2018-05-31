@@ -11,6 +11,7 @@ import moment from 'moment'
 import config from 'common/config'
 import Notification from 'LoopringUI/components/Notification'
 import {getLastGas, getEstimateGas} from 'modules/settings/formatters'
+import {FormatAmount} from 'modules/formatter/FormatNumber'
 
 const MenuItem = (prop)=>{
   return (
@@ -36,6 +37,9 @@ const TradeByP2P = (props) => {
   const gasResult = getLastGas(gas)
   const gasPrice = gasResult.gasPrice
   const {tokenS, tokenB, amountS, amountB} = p2pOrder
+  const balanceS = tokenS ? tokenFormatter.getBalanceBySymbol({balances:balance, symbol:tokenS, toUnit:true}).balance : fm.toBig(0)
+  const balanceB = tokenB ? tokenFormatter.getBalanceBySymbol({balances:balance, symbol:tokenB, toUnit:true}).balance : fm.toBig(0)
+
   const price = amountB && amountB.gt(0) ? fm.toFixed(amountB.div(amountS), 8) : fm.toBig(0)
   // const tokenSells = balance.map(item => {
   //   const tokenBalance = tokenFormatter.getBalanceBySymbol({balances:balance, symbol:item.symbol, toUnit:true})
@@ -114,7 +118,7 @@ const TradeByP2P = (props) => {
         }
         //TODO mock datas
         tradeInfo.milliLrcFee = 2
-        tradeInfo.lrcFee = 5
+        tradeInfo.lrcFee = 0
         tradeInfo.delegateAddress = config.getDelegateAddress();
         tradeInfo.protocol = settings.trading.contract.address;
         tradeInfo.gasLimit = config.getGasLimitByType('approve').gasLimit;
@@ -167,7 +171,7 @@ const TradeByP2P = (props) => {
         }
         try {
           const {order, signed, unsigned} = await orderFormatter.signP2POrder(tradeInfo, wallet)
-          showTradeModal(tradeInfo, order, signed, unsigned)
+          showConfirm(tradeInfo, order, signed, unsigned)
         } catch (e) {
           console.log(e)
           Notification.open({
@@ -180,13 +184,27 @@ const TradeByP2P = (props) => {
       }
     });
   }
-  const showTradeModal = (tradeInfo, order, signed, unsigned) => {
+  const showConfirm = (tradeInfo, order, signed, unsigned) => {
     dispatch({type:'placeOrder/toConfirm', payload:{signed, unsigned}})
     dispatch({type:'layers/showLayer', payload: {id: 'placeOrderConfirm', tradeInfo, order}})
     dispatch({type:'layers/hideLayer', payload: {id: 'tradeByP2P'}})
   }
-  function resetForm(){
-    form.resetFields()
+
+  const worthDisplay = (prefix, symbol, amount) => {
+    return (
+      <span className="">
+        {symbol && amount && fm.toBig(amount).gt(0) &&
+          <span>
+            {prefix} {amount.toString(10)} {symbol}
+            ≈{fm.getDisplaySymbol(settings.preference.currency)}
+            {FormatAmount({value:orderFormatter.calculateWorthInLegalCurrency(marketcap, symbol, amount).toFixed(2), precision:2})}
+          </span>
+        }
+        {(!symbol || !fm.toBig(amount).gt(0)) &&
+          <span></span>
+        }
+      </span>
+    )
   }
 
   const TokenItem = ({token})=>{
@@ -200,87 +218,104 @@ const TradeByP2P = (props) => {
   return (
     <div>
       <div className="pb10 fs18 color-black-1 zb-b-b mb15">Privacy P2P Trade</div>
-      <div className="row pl0 pr0 pt10 pb10 align-items-center">
-        <div className="col pl0 pr0">
-          <Select
-            showSearch
-            placeholder={tokenS || 'Sell'}
-            dropdownMatchSelectWidth={false}
-            size="small"
-            defaultValue={tokenS}
-            className="d-block"
-            onChange={tokenChange.bind(this, 'sell')}
-          >
-            {
-              tokenSells && tokenSells.map((item, index) => {
-                const tokenBalance = tokenFormatter.getBalanceBySymbol({balances:balance, symbol:item.symbol, toUnit:true})
-                return <Select.Option key={index} value={item.symbol}><TokenItem token={{symbol:item.symbol,balance:tokenBalance.balance.toString(10)}} /></Select.Option>
-              })
-            }
-          </Select>
-          { false && <Input placeholder="" size="large" className="d-block mt5"/> }
-        </div>
-        <div className="col-auto pl15 pr15">
-          <i className="loopring-icon loopring-icon-convert fs24"></i>
-        </div>
-        <div className="col pl0 pr0">
-          <Select
-            showSearch
-            placeholder={tokenB || 'Buy'}
-            dropdownMatchSelectWidth={false}
-            size="small"
-            defaultValue={tokenB}
-            className="d-block"
-            onChange={tokenChange.bind(this, 'buy')}
-          >
-            {
-              tokenBuys && tokenBuys.map((item, index) => {
-                return <Select.Option key={index} value={item.symbol}><TokenItem token={{symbol:item.symbol,balance:item.balance.toString(10)}} /></Select.Option>
-              })
-            }
-          </Select>
-          { false && <Input placeholder="" size="large" className="d-block mt5"/> }
-        </div>
+      <div className="row pl0 pr0 pt10 pb10">
+        p2p订单介绍...
       </div>
       <div className="row pl0 pr0 pt10 pb10">
         <div className="col pl0 pr0">
           <Form.Item label={null} colon={false}>
             {form.getFieldDecorator('amountS', {
-            rules: [{
-              message: 'invalid amountS',
-              validator: (rule, value, cb) => validateAmountS(value) ? cb() : cb(true)
-            }]
+              initialValue: amountS.toString(10),
+              rules: [{
+                message: 'invalid amountS',
+                validator: (rule, value, cb) => validateAmountS(value) ? cb() : cb(true)
+              }]
           })(
             <Input size="large"
-                   addonAfter={<div style={{width:'50px'}}>{tokenS}</div>}
+                   placeholder="Amount to sell"
+                   addonBefore='Sell'
+                   addonAfter={
+                     <Select
+                       showSearch
+                       placeholder={tokenS || 'Sell'}
+                       dropdownMatchSelectWidth={false}
+                       size="small"
+                       defaultValue={tokenS}
+                       className="d-block"
+                       onChange={tokenChange.bind(this, 'sell')}
+                     >
+                       {
+                         tokenSells && tokenSells.map((item, index) => {
+                           const tokenBalance = tokenFormatter.getBalanceBySymbol({balances:balance, symbol:item.symbol, toUnit:true})
+                           return <Select.Option key={index} value={item.symbol}><TokenItem token={{symbol:item.symbol,balance:tokenBalance.balance.toString(10)}} /></Select.Option>
+                         })
+                       }
+                     </Select>
+                   }
                    onChange={amountChange.bind(this, 'sell')}
             />
           )}
           </Form.Item>
         </div>
       </div>
-      <div className="row pl0 pr0 pt10 pb10">
+      <div className="row pl0 pr0">
         <div className="col pl0 pr0">
           <Form.Item label={null} colon={false}>
             {form.getFieldDecorator('amountB', {
+              initialValue: amountB.toString(10),
               rules: [{
                 message: 'invalid amountB',
                 validator: (rule, value, cb) => tokenFormatter.isValidNumber(value) ? cb() : cb(true)
               }]
             })(
               <Input size="large"
-                     addonAfter={<div style={{width:'50px'}}>{tokenB}</div>}
+                     placeholder="Amount to buy"
+                     addonBefore='Buy'
+                     addonAfter={
+                       <Select
+                         showSearch
+                         placeholder={tokenB || 'Buy'}
+                         dropdownMatchSelectWidth={false}
+                         size="small"
+                         defaultValue={tokenB}
+                         className="d-block"
+                         onChange={tokenChange.bind(this, 'buy')}
+                       >
+                         {
+                           tokenBuys && tokenBuys.map((item, index) => {
+                             return <Select.Option key={index} value={item.symbol}><TokenItem token={{symbol:item.symbol,balance:item.balance.toString(10)}} /></Select.Option>
+                           })
+                         }
+                       </Select>
+                     }
                      onChange={amountChange.bind(this, 'buy')}
               />
             )}
           </Form.Item>
         </div>
       </div>
-      <div className="mt10 zb-b">
-        <MenuItem label="Price" value={`${price.toString(10)} ${tokenB}`} />
-        <MenuItem label="LRC Fee" value="0 LRC" />
-        <MenuItem label="ETH Gas" action={<span onClick={()=>{}} className="cursor-pointer">{price.toString(10)} {tokenB}<Icon type="right" className="ml5" /></span>} />
-        <MenuItem label="Time to Live" action={<span onClick={()=>{}} className="cursor-pointer">06-10 10:00 ~ 06-15 24:00<Icon type="right" className="ml5" /></span>} />
+      {
+        tokenB && tokenS &&
+        <div className="mt10">
+          <div>Token Balance</div>
+          <div className="zb-b">
+            <MenuItem label={`${tokenS}`} value={balanceS.toString()} />
+            <MenuItem label={`${tokenB}`} value={balanceB.toString()} />
+          </div>
+        </div>
+      }
+      <div className="mt10">
+        <div>Order Detail</div>
+        <div className="zb-b">
+          <MenuItem label="Price" value={`${price.toString(10)} ${tokenB}`} />
+          <MenuItem label="Worth" value={
+            <div>
+              <div>{worthDisplay('Sell', tokenS, amountS)}</div>
+              <div>{worthDisplay('Buy', tokenB, amountB)}</div>
+            </div>
+          } />
+          <MenuItem label="Time to Live" action={<span onClick={()=>{}} className="cursor-pointer">06-10 10:00 ~ 06-15 24:00<Icon type="right" className="ml5" /></span>} />
+        </div>
       </div>
       <div className="mb15"></div>
       <Button type="primary" size="large" className="d-block w-100" onClick={handleSubmit} loading={p2pOrder.loading}>Generate Order</Button>
