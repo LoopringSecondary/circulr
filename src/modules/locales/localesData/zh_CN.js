@@ -10,16 +10,18 @@ const words = {
   type: '类型',
   types: '类型',
   gas: '油费',
-  price: '',
+  price: '价格',
   total: '总计',
+  worth: "价值",
   lrc_fee: 'LRC 撮合费',
   lrc_fee_tips: 'xxxxx',
   lrc_reward: 'LRC 撮合奖励',
   lrc_reward_tips: 'xxxxx',
+  ttl: '订单有效期',
   block: '区块',
   nonce: '随机数',
-  sell: '买入',
-  buy: '卖出',
+  sell: '卖出',
+  buy: '买入',
   actions: '操作',
   options: '选项',
   balance: '余额',
@@ -31,7 +33,8 @@ const words = {
   password: '密码',
   copy: "复制",
   copy_suc: '复制成功',
-  copy_fail: "复制失败"
+  copy_fail: "复制失败",
+  token:'代币'
 }
 const types = {
   trade_side: {
@@ -41,8 +44,25 @@ const types = {
 }
 
 const validation_messages = {
-  invalid_number: "Please input a valid number value"
+  invalid_number: "请输入合法的数字"
 }
+
+const notifications = {
+  title:{
+    place_order_failed: "订单提交失败 !",
+  },
+  message:{
+    wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
+    failed_fetch_data_from_server: '从服务器获取数据失败, 请稍后在尝试',
+    eth_is_required_when_place_order: '由于需要支付ETH油费, 根据您当前订单需要发送的以太坊交易计算，还需要 {required} ETH',
+    lrcfee_is_required_when_place_order: '由于需要支付LRC油费, 汇总您历史订单所需LRC，还需要 {required} LRC',
+  }
+}
+
+const actions = {
+  receive: "接收",
+}
+
 const time_unit = {
   second: "秒",
   minute: "分钟",
@@ -51,10 +71,13 @@ const time_unit = {
   week: "周",
   month: "月",
 }
+
 export default {
   ...words,
   ...validation_messages,
   ...time_unit,
+  notifications,
+  actions,
   // -----------
   // order
   // -----------
@@ -101,27 +124,18 @@ export default {
   lrc_setting: {
     // TODO
   },
-  place_order_notification:{
-    title:{
-
-    },
-    message:{
-
-    }
-  },
   place_order_confirm: {
     // TODO
   },
   p2p_order: {
     order_title: '线下点对点交易',
-  },
-  p2p_order_notification:{
-    title:{
-
-    },
-    message:{
-
-    }
+    amounts_placeholder: '卖出数量',
+    amountb_placeholder: '买入数量',
+    token_balance: '代币余额',
+    order_detail: '订单详情',
+    generate_order: '生成订单',
+    instruction:'1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
+    notice: '* P2P订单不需要支付LRC手续费</br>'
   },
   // -----------
   // transaction
@@ -224,7 +238,7 @@ export default {
     error_mnemonic_tip: "无效的助记词",
     error_address_tip:'不合法的地址',
     error_password_tip: "请输入密码",
-    notifications_unlock_suc: '解锁成功',
+    notification_unlock_suc: '解锁成功',
     notification_unlock_fail: "解锁失败",
   },
   token: {

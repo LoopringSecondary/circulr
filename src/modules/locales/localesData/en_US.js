@@ -1,28 +1,30 @@
 const words = {
   all: 'All',
-  status: '状态',
+  status: 'Status',
   statuses: '状态',
-  side: '方向',
+  side: 'Side',
   sides: '方向',
   market: '市场',
   markets: '市场',
-  amount: '数量',
-  type: '类型',
+  amount: 'Amount',
+  type: 'Type',
   types: '类型',
   gas: '油费',
-  price: '',
-  total: '总计',
+  price: 'Price',
+  total: 'Total',
+  worth: "Worth",
   lrc_fee: 'LRC 撮合费',
   lrc_fee_tips: 'xxxxx',
   lrc_reward: 'LRC 撮合奖励',
   lrc_reward_tips: 'xxxxx',
+  ttl: 'Time to Live',
   block: '区块',
   nonce: '随机数',
-  sell: '买入',
-  buy: '卖出',
+  sell: 'Sell',
+  buy: 'Buy',
   actions: '操作',
   options: '选项',
-  balance: '余额',
+  balance: 'Balance',
   balances: '余额',
   send: '转出',
   receive: '转入',
@@ -31,7 +33,8 @@ const words = {
   password: '密码',
   copy: "Copy",
   copy_suc: 'Copy Successfully',
-  copy_fail: "Copy Failed"
+  copy_fail: "Copy Failed",
+  token:'Token'
 }
 const types = {
   trade_side: {
@@ -44,9 +47,35 @@ const validation_messages = {
   invalid_number: "Please input a valid number value"
 }
 
+const notifications = {
+  title:{
+    place_order_failed: "Whoops, order submission somehow failed!",
+  },
+  message:{
+    wallet_locked: 'Your wallet seems unlocked yet, please unlock first',
+    failed_fetch_data_from_server: 'Failed fetch data from server, you could wait a moment and come back later',
+    eth_is_required_when_place_order: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
+    lrcfee_is_required_when_place_order: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
+  }
+}
+
+const actions = {
+  receive: "Receive",
+}
+
+const time_unit = {
+  second: "Second",
+  minute: "Minute",
+  hour: "Hour",
+  day: "Day",
+  week: "Week",
+  month: "Month",
+}
+
 export default {
   ...words,
   ...validation_messages,
+  ...time_unit,
   // -----------
   // order
   // -----------
@@ -91,20 +120,18 @@ export default {
   lrc_setting: {
     // TODO
   },
-  place_order_notification: {
-    title: {},
-    message: {}
-  },
   place_order_confirm: {
     // TODO
   },
   p2p_order: {
     order_title: 'Privacy P2P Trade',
-
-  },
-  p2p_order_notification: {
-    title: {},
-    message: {}
+    amounts_placeholder: 'Amount to sell',
+    amountb_placeholder: 'Amount to buy',
+    token_balance: 'Token Balance',
+    order_detail: 'Order Detail',
+    generate_order: 'Generate Order',
+    instruction:'1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
+    notice: '* P2P订单不需要支付LRC手续费</br>'
   },
   // -----------
   // transaction
@@ -207,8 +234,8 @@ export default {
     error_mnemonic_tip: "无效的助记词",
     error_password_tip: "请输入密码",
     error_address_tip: "Invalid Address",
-    notifications_unlock_suc: '解锁成功',
-    notification_unlock_fail: "解锁失败",
+    notification_unlock_suc: 'Unlock Successfully',
+    notification_unlock_fail: "Unlock Failed",
   },
   token: {
     action_options: '{token} 选项',

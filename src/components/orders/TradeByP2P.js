@@ -89,21 +89,19 @@ const TradeByP2P = (props) => {
 
   function handleSubmit() {
     form.validateFields(async (err,values) => {
-      console.log('values',values);
       if(!err){
-        if(!wallet.address) { // locked, do not verify
-          //TODO notification to user, order verification in confirm page(unlocked)
+        if(!wallet.address) {
           Notification.open({
-            message: intl.get('trade.place_order_failed'),
+            message: intl.get('notifications.title.place_order_failed'),
             type: "error",
-            description: 'to unlock'
+            description: intl.get('notifications.message.wallet_locked')
           });
           return
         }
         if(!balance || !marketcap) {
           Notification.open({
-            message:intl.get('trade.send_failed'),
-            description:intl.get('trade.failed_fetch_data'),
+            message: intl.get('notifications.title.place_order_failed'),
+            description: intl.get('notifications.message.failed_fetch_data_from_server'),
             type:'error'
           })
           return
@@ -133,8 +131,8 @@ const TradeByP2P = (props) => {
         } catch(e) {
           console.log(e)
           Notification.open({
-            message:intl.get('trade.send_failed'),
-            description:e.message,
+            message: intl.get('notifications.title.place_order_failed'),
+            description: e.message,
             type:'error'
           })
           dispatch({type:'p2pOrder/loadingChange', payload:{loading:false}})
@@ -144,26 +142,26 @@ const TradeByP2P = (props) => {
           tradeInfo.error.map(item=>{
             if(item.value.symbol === 'ETH') {
               Notification.open({
-                message: intl.get('trade.send_failed'),
-                description: intl.get('trade.eth_is_required', {required:item.value.required}),
+                message: intl.get('notifications.title.place_order_failed'),
+                description: intl.get('notifications.message.eth_is_required_when_place_order', {required:item.value.required}),
                 type:'error',
                 actions:(
                   <div>
                     <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'ETH'}})}>
-                      {`${intl.get('tokens.options_receive')} ETH`}
+                      {`${intl.get('actions.receive')} ETH`}
                     </Button>
                   </div>
                 )
               })
             } else if (item.value.symbol === 'LRC') {
               Notification.open({
-                message: intl.get('trade.send_failed'),
-                description: intl.get('trade.lrcfee_is_required', {required:item.value.required}),
+                message: intl.get('notifications.title.place_order_failed'),
+                description: intl.get('notifications.message.lrcfee_is_required_when_place_order', {required:item.value.required}),
                 type:'error',
                 actions:(
                   <div>
                     <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'LRC'}})}>
-                      {`${intl.get('tokens.options_receive')} LRC`}
+                      {`${intl.get('actions.receive')} LRC`}
                     </Button>
                   </div>
                 )
@@ -179,7 +177,7 @@ const TradeByP2P = (props) => {
         } catch (e) {
           console.log(e)
           Notification.open({
-            message:intl.get('trade.send_failed'),
+            message: intl.get('notifications.title.place_order_failed'),
             description:e.message,
             type:'error'
           })
@@ -223,25 +221,22 @@ const TradeByP2P = (props) => {
     <div>
       <div className="pb10 fs18 color-black-1 zb-b-b mb15">{intl.get('p2p_order.order_title')}</div>
       <div className="row pl0 pr0 pt10 pb10">
-        p2p订单介绍...
-      </div>
-      <div className="row pl0 pr0 pt10 pb10">
         <div className="col pl0 pr0">
           <Form.Item label={null} colon={false}>
             {form.getFieldDecorator('amountS', {
               initialValue: amountS.toString(10),
               rules: [{
-                message: 'invalid amountS',
+                message: intl.get('invalid_number'),
                 validator: (rule, value, cb) => validateAmountS(value) ? cb() : cb(true)
               }]
           })(
             <Input size="large"
-                   placeholder="Amount to sell"
-                   addonBefore='Sell'
+                   placeholder={intl.get('p2p_order.amounts_placeholder')}
+                   addonBefore={intl.get('sell')}
                    addonAfter={
                      <Select
                        showSearch
-                       placeholder={tokenS || 'Sell'}
+                       placeholder={tokenS}
                        dropdownMatchSelectWidth={false}
                        size="small"
                        defaultValue={tokenS}
@@ -280,17 +275,17 @@ const TradeByP2P = (props) => {
             {form.getFieldDecorator('amountB', {
               initialValue: amountB.toString(10),
               rules: [{
-                message: 'invalid amountB',
+                message: intl.get('invalid_number'),
                 validator: (rule, value, cb) => tokenFormatter.isValidNumber(value) ? cb() : cb(true)
               }]
             })(
               <Input size="large"
-                     placeholder="Amount to buy"
-                     addonBefore='Buy'
+                     placeholder={intl.get('p2p_order.amountb_placeholder')}
+                     addonBefore={intl.get('buy')}
                      addonAfter={
                        <Select
                          showSearch
-                         placeholder={tokenB || 'Buy'}
+                         placeholder={tokenB}
                          dropdownMatchSelectWidth={false}
                          size="small"
                          defaultValue={tokenB}
@@ -325,7 +320,7 @@ const TradeByP2P = (props) => {
       {
         tokenB && tokenS &&
         <div className="mt10">
-          <div>Token Balance</div>
+          <div>{intl.get('p2p_order.token_balance')}</div>
           <div className="zb-b">
             <MenuItem label={`${tokenS}`} value={balanceS.toString()} />
             <MenuItem label={`${tokenB}`} value={balanceB.toString()} />
@@ -333,21 +328,25 @@ const TradeByP2P = (props) => {
         </div>
       }
       <div className="mt10">
-        <div>Order Detail</div>
+        <div>{intl.get('p2p_order.order_detail')}</div>
         <div className="zb-b">
-          <MenuItem label="Price" value={`${price.toString(10)} ${tokenB}`} />
-          <MenuItem label="Worth" value={
+          {false && <MenuItem label={intl.get('price')} value={`${price.toString(10)} ${tokenB}`} />}
+          <MenuItem label={intl.get('worth')} value={
             <div>
-              <div>{worthDisplay('Sell', tokenS, amountS)}</div>
-              <div>{worthDisplay('Buy', tokenB, amountB)}</div>
+              <div>{worthDisplay(intl.get('sell'), tokenS, amountS)}</div>
+              <div>{worthDisplay(intl.get('buy'), tokenB, amountB)}</div>
             </div>
           } />
-          <MenuItem label="Time to Live" action={<span onClick={()=>{}} className="cursor-pointer">06-10 10:00 ~ 06-15 24:00<Icon type="right" className="ml5" /></span>} />
+          <MenuItem label={intl.get('ttl')} action={<span onClick={()=>{}} className="cursor-pointer">06-10 10:00 ~ 06-15 24:00<Icon type="right" className="ml5" /></span>} />
         </div>
       </div>
       <div className="mb15"></div>
-      <Button type="primary" size="large" className="d-block w-100" onClick={handleSubmit} loading={p2pOrder.loading}>Generate Order</Button>
+      <Button type="primary" size="large" className="d-block w-100" onClick={handleSubmit} loading={p2pOrder.loading}>{intl.get('p2p_order.generate_order')}</Button>
       { false && <Alert type="info" title={<div className="color-black-1">分享给指定的人</div>} theme="light" size="small"/> }
+      <div className="row pt10 pl0 pr0 pb10">
+        {intl.getHTML('p2p_order.instruction')}
+        <div className="pt5">{intl.getHTML('p2p_order.notice')}</div>
+      </div>
     </div>
   );
 };
