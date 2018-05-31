@@ -27,11 +27,11 @@ class PrivateKey extends React.Component {
     const {privateKey} = this.state;
     if(this.isValidPrivateKey(privateKey)){
       this.props.dispatch({type:"wallet/unlockPrivateKeyWallet",payload:{privateKey}});
-      Notification.open({type:'success',message:'解锁成功',description:'unlock'});
+      Notification.open({type:'success',message:intl.get('wallet.notification_unlock_suc')});
       this.props.dispatch({type: 'sockets/unlocked'})
       routeActions.gotoPath('/wallet');
     }else{
-      Notification.open({type:'error',message:'unlock failed ',description:'Invalid privateKey'})
+      Notification.open({type:'error',message:intl.get('wallet.notification_unlock_fail'),description:intl.get('wallet.error_private_tip')})
     }
   };
 
@@ -60,7 +60,7 @@ class PrivateKey extends React.Component {
     return (
       <div>
         <div id="privateKey">
-          <h2 className="text-center text-primary">Paste Your PrivateKey Here</h2>
+          <h2 className="text-center text-primary">{intl.get('wallet.paste_private_title')}</h2>
           <div className="blk-md" />
           <Form>
             <Form.Item className="eye-switch form-dark">
