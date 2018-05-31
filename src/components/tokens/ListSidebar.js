@@ -1,5 +1,6 @@
 import React from 'react'
 import {Input,Icon,Tooltip,Spin,Popover,Button} from 'antd'
+import {connect} from 'dva'
 import Notification from 'LoopringUI/components/Notification'
 import intl from 'react-intl-universal'
 import TokensFm from 'modules/tokens/TokensFm'
@@ -53,7 +54,14 @@ function ListTokensSidebar(props) {
     tokens.nodeChange({
       selected: item.symbol
     })
-    updateTransations(item.symbol)
+    updateTransations(item.symbol);
+    // dispatch({
+    //   type: 'sockets/filtersChange',
+    //   payload:{
+    //     id:'tickers',
+    //     filters:{}
+    //   }
+    // })
   }
   const updateTransations = (token) => {
     dispatch({
@@ -245,4 +253,4 @@ class TokenActions extends React.Component {
   }
 }
 
-export default ListTokensSidebar
+export default connect(({sockets:{marketcap,balance}})=>({marketcap,balance}))(ListTokensSidebar)

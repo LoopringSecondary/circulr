@@ -20,7 +20,7 @@ function Home(props) {
 	                        <Link to="/unlock/metamask" data-toggle="tab"><i className="icon-metamaskwallet"></i><h4>MetaMask</h4></Link>
 	                    </li>
 	                    <li className="item">
-	                        <Link to="https://connect.trezor.io/4/popup/popup.html?v=1523254722813"><i className="icon-trezorwallet"></i><h4>Trezor</h4></Link>
+	                        <Link to="/unlock/trezor"><i className="icon-trezorwallet"></i><h4>Trezor</h4></Link>
 	                    </li>
 	                    <li className="item">
 	                        <Link to="/unlock/ledger" data-toggle="tab"><i className="icon-ledgerwallet"></i><h4>Ledger</h4></Link>

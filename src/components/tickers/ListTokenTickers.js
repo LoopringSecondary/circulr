@@ -5,12 +5,14 @@ import routeActions from 'common/utils/routeActions'
 import { Button,Spin } from 'antd'
 
 function ListTokenTickers(props) {
-  const {loopringTickers:list,dispatch} = props;
+  const {loopringTickers:list,dispatch,token,tickers} = props;
   const tickersFm = new TickersFm(list);
-  const listedTickers = tickersFm.getTickersBySymbol(props.token);
+  const listedTickers = tickersFm.getTickersBySymbol(token);
   const gotoTrade = (item)=>{
     routeActions.gotoPath(`/trade/${item.market}`)
-  }
+  };
+
+  console.log('tickers:', tickers);
   return (
     <div>
         <div className="loopring-dex">
@@ -51,46 +53,16 @@ function ListTokenTickers(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>OKEX</td>
-                            <td>0.56 USD</td>
-                            <td className="text-up">+9.8%</td>
-                        </tr>
-                        <tr>
-                            <td>Binance</td>
-                            <td>0.56 USD</td>
-                            <td className="text-down">-1.45%</td>
-                        </tr>
-                        <tr>
-                            <td>Coinbase</td>
-                            <td>0.56 USD</td>
-                            <td className="text-up">+9.8%</td>
-                        </tr>
-                        <tr>
-                            <td>Bittrex</td>
-                            <td>0.56 USD</td>
-                            <td className="text-up">+9.8%</td>
-                        </tr>
-                        <tr>
-                            <td>Poloniex</td>
-                            <td>0.56 USD</td>
-                            <td className="text-down">-1.45%</td>
-                        </tr>
-                        <tr>
-                            <td>Bitfinex</td>
-                            <td>0.56 USD</td>
-                            <td className="text-up">+9.8%</td>
-                        </tr>
-                        <tr>
-                            <td>Bitmex</td>
-                            <td>0.56 USD</td>
-                            <td className="text-up">+9.8%</td>
-                        </tr>
-                        <tr>
-                            <td>GDAX</td>
-                            <td>0.56 USD</td>
-                            <td className="text-down">-1.45%</td>
-                        </tr>
+                    {tickers && Object.keys(tickers).length > 0 && Object.keys(tickers).map((key,index) => {
+                      const item = tickers[key];
+                      const tf  = new TickerFm(item);
+                      return (
+                        <tr key={index}>
+                        <td>{tf.getExchange() || key}</td>
+                        <td>{tf.getLast()}</td>
+                        <td className="text-up">{tf.getChange()}</td>
+                      </tr>)
+                    })}
                     </tbody>
                 </table>
             </div>
@@ -103,7 +75,8 @@ function mapStateToProps(state) {
 
   return {
     loopringTickers:state.sockets.loopringTickers,
-    token:state.tokens.selected
+    token:state.tokens.selected,
+    tickers:state.sockets.tickers.item
   }
 }
 
