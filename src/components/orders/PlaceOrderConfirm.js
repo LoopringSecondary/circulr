@@ -35,7 +35,7 @@ function PlaceOrderConfirm(props) {
         // console.log('...tx:', response)
         if (response.error) {
           Notification.open({
-            message: intl.get('trade.place_order_failed'),
+            message: intl.get('notifications.title.place_order_failed'),
             type: "error",
             description: response.error.message
           });
@@ -51,7 +51,7 @@ function PlaceOrderConfirm(props) {
         // console.log('...submit order :', response)
         if (response.error) {
           Notification.open({
-            message: intl.get('trade.place_order_failed'),
+            message: intl.get('notifications.title.place_order_failed'),
             type: "error",
             description: response.error.message
           })
@@ -62,11 +62,9 @@ function PlaceOrderConfirm(props) {
         }
       }
     }, function (error) {
-      //TODO
-      //_this.reEmitPendingTransaction();
       if(error){
         Notification.open({
-          message: intl.get('trade.place_order_failed'),
+          message: intl.get('notifications.title.place_order_failed'),
           type: "error",
           description: error.message
         });
@@ -74,7 +72,6 @@ function PlaceOrderConfirm(props) {
       }else {
         const balanceWarn = warn ? warn.filter(item => item.type === "BalanceNotEnough") : [];
         openNotification(balanceWarn);
-        updateOrders();
         placeOrder.sendDone({signed})
       }
     });
@@ -82,18 +79,13 @@ function PlaceOrderConfirm(props) {
 
   async function generateQrCode() {
     if(orderType !== 'p2p_order') {
-      Notification.open({
-        message: intl.get('trade.place_order_failed'),
-        type: "error",
-        description: 'order type Error'
-      });
-      return
+      throw new Error('orderType Data Error')
     }
     if(!order || (unsigned.length > 0 && unsigned.length !== actualSigned.length)) {
       Notification.open({
-        message: intl.get('trade.place_order_failed'),
+        message: intl.get('notifications.title.place_order_failed'),
         type: "error",
-        description: 'Not Signed'
+        description: intl.get('notifications.message.some_items_not_signed')
       });
       return
     }
@@ -102,34 +94,18 @@ function PlaceOrderConfirm(props) {
 
   async function handelSubmit() {
     if(orderType !== 'market_order') {
-      Notification.open({
-        message: intl.get('trade.place_order_failed'),
-        type: "error",
-        description: 'order type Error'
-      });
-      return
+      throw new Error('orderType Data Error')
     }
     if(!order || (unsigned.length > 0 && unsigned.length !== actualSigned.length)) {
       Notification.open({
-        message: intl.get('trade.place_order_failed'),
+        message: intl.get('notifications.title.place_order_failed'),
         type: "error",
-        description: 'Not Signed'
+        description: intl.get('notifications.message.some_items_not_signed')
       });
       return
     }
     await doSubmit(signed)
     dispatch({type:'layers/hideLayer',payload:{id:'placeOrderConfirm'}})
-  }
-
-  function updateOrders() {
-    //TODO
-    // const {dispatch} = this.props;
-    // dispatch({
-    //   type: 'orders/filtersChange',
-    //   payload: {
-    //     id: 'orders/trade',
-    //   }
-    // })
   }
 
   const toUnlock = () => {
@@ -162,8 +138,8 @@ function PlaceOrderConfirm(props) {
 
   const openNotification = (warn) => {
     const args = {
-      message: intl.get('order.place_success'),
-      description: intl.get('order.place_success_tip'),
+      message: intl.get('notifications.title.place_order_success'),
+      description: intl.get('notifications.message.place_order_success'),
       type: 'success',
     };
     Notification.open(args);

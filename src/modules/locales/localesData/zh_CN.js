@@ -50,12 +50,15 @@ const validation_messages = {
 const notifications = {
   title:{
     place_order_failed: "订单提交失败 !",
+    place_order_success: "下单成功!",
   },
   message:{
     wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
     failed_fetch_data_from_server: '从服务器获取数据失败, 请稍后在尝试',
     eth_is_required_when_place_order: '由于需要支付ETH油费, 根据您当前订单需要发送的以太坊交易计算，还需要 {required} ETH',
     lrcfee_is_required_when_place_order: '由于需要支付LRC油费, 汇总您历史订单所需LRC，还需要 {required} LRC',
+    some_items_not_signed:"您可能还有一些数据还未签名，请把所有未签名项签名后再继续操作",
+    place_order_success: '恭喜, 您的订单已经可以等待交易',
   }
 }
 

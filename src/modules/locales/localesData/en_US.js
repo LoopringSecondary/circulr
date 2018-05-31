@@ -50,12 +50,15 @@ const validation_messages = {
 const notifications = {
   title:{
     place_order_failed: "Whoops, order submission somehow failed!",
+    place_order_success: "Order placed successfully.",
   },
   message:{
     wallet_locked: 'Your wallet seems unlocked yet, please unlock first',
     failed_fetch_data_from_server: 'Failed fetch data from server, you could wait a moment and come back later',
     eth_is_required_when_place_order: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
     lrcfee_is_required_when_place_order: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
+    some_items_not_signed:"You may have some items not signed, please signed all items then continue",
+    place_order_success: 'Good job. Your order has been submitted for ring-matching.',
   }
 }
 
@@ -76,6 +79,8 @@ export default {
   ...words,
   ...validation_messages,
   ...time_unit,
+  notifications,
+  actions,
   // -----------
   // order
   // -----------
