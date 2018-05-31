@@ -2,6 +2,9 @@ import React from 'react';
 import {Link} from 'dva/router';
 import Layout from '../../layout';
 import Footer from '../../layout/Footer';
+import intl from 'react-intl-universal';
+
+
 function Home(props) {
   return (
     <Layout.LayoutHome className="h-full">
@@ -11,7 +14,7 @@ function Home(props) {
 	                <h1>Generate Wallet  &  Unlock Wallet</h1>
 	                <ul className="tab tab-card d-flex justify-content-center">
 	                    <li className="item">
-	                        <Link to="/unlock/generatewallet" data-toggle="tab"><i className="icon-plus"></i><h4>Generate Wallet</h4></Link>
+	                        <Link to="/unlock/generatewallet" data-toggle="tab"><i className="icon-plus"></i><h4>{intl.get('wallet.title_generate')}</h4></Link>
 	                    </li>
                       <li className="item">
                           <Link to="/unlock/address" data-toggle="tab"><i className="icon-view"></i><h4>Address</h4></Link>

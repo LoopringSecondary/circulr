@@ -9,6 +9,8 @@ import {getXPubKey as getTrezorPublicKey} from "LoopringJS/ethereum/trezor";
 import {getXPubKey as getLedgerPublicKey,connect as connectLedger} from "LoopringJS/ethereum/ledger";
 import {wallets} from "../../common/config/data";
 import {trimAll} from "LoopringJS/common/utils";
+import intl from 'react-intl-universal'
+
 import Notification from '../../common/loopringui/components/Notification'
 
 class Unlock extends React.Component {
@@ -55,7 +57,6 @@ class Unlock extends React.Component {
     const {match} = this.props;
     const pathname = this.props.location && this.props.location.pathname
     const {url} = match;
-    console.log('url',url)
     return (
       <Layout.LayoutHome className="h-full">
         <div className="body home">
@@ -65,7 +66,7 @@ class Unlock extends React.Component {
               <ul className="tab tab-card d-flex justify-content-center inup">
                 <li className={`item ${pathname==='/unlock/generateWallet' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('generateWallet')}><i className="icon-plus"/>
-                    <h4>Generate Wallet</h4></a>
+                    <h4>{intl.get('wallet.title_generate')}</h4></a>
                 </li>
                 <li className={`item ${pathname==='/unlock/address' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('address')}><i className="icon-view"/><h4>
