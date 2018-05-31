@@ -34,7 +34,11 @@ const words = {
   copy: "复制",
   copy_suc: '复制成功',
   copy_fail: "复制失败",
-  token:'代币'
+  token:'代币',
+  back:'返回',
+  previous_page:'前一页',
+  next_page:'后一页',
+  import:"导入"
 }
 const types = {
   trade_side: {
@@ -231,6 +235,9 @@ export default {
     paste_address_title:'请粘贴您的地址',
     paste_private_title:"请粘贴您的私钥",
     title_json:'选择JSON文件',
+    title_deter_address:"选择地址",
+    title_select_path:'选择dpath',
+    custom_path:'自定义dpath',
     actions_backup_json:'我已经明白，下载钱包文件',
     actions_backup_mnemonic:'我已经明白，复制助记词',
     actions_backup_private:'我已经明白，复制私钥',
@@ -247,6 +254,7 @@ export default {
     error_address_tip:'不合法的地址',
     error_private_tip:'不合法的私钥',
     error_invalid_tip:"信息不合法",
+    no_address_tip:'没有合法的地址',
     mnemonic_tip_lack:"请输入您的助记词",
     error_password_tip: "请输入密码",
     notification_unlock_suc: '解锁成功',

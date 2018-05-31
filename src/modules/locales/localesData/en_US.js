@@ -34,7 +34,11 @@ const words = {
   copy: "Copy",
   copy_suc: 'Copy Successfully',
   copy_fail: "Copy Failed",
-  token:'Token'
+  token:'Token',
+  back:'Return',
+  previous_page:'Previous Page',
+  next_page:'Next Page',
+  import:"Import"
 }
 const types = {
   trade_side: {
@@ -230,6 +234,9 @@ export default {
     paste_address_title:'Paste Your Address Here',
     paste_private_title:'Paste Your Private Key Here',
     title_json:'Select JSON File',
+    title_deter_address:"Select Address",
+    title_select_path:'elect path',
+    custom_path:'Custom Dpath',
     actions_backup_json: 'I understand，download the wallet file',
     actions_backup_mnemonic: 'I understand, copy mnemonic',
     actions_backup_private: 'I understand, copy private key',
@@ -243,6 +250,7 @@ export default {
     error_json_tip: 'Invalid keystore Json',
     error_mnemonic_tip: "Invalid Mnemonic",
     error_invalid_tip:'Invalid Information',
+    no_address_tip:'No valid addresses',
     mnemonic_tip_lack:'Please Input your mnemonic',
     error_password_tip: "请输入密码",
     error_address_tip: "Invalid Address",
