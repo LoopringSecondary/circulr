@@ -40,20 +40,20 @@ const types = {
     buy: words.buy,
   },
 }
-const error_messages = {
+const validation_messages = {
   invalid_number: "Please input a valid number value"
 }
 const time_unit = {
-  second: "Second",
-  minute: "Minute",
-  hour: "Hour",
-  day: "Day",
-  week: "Week",
-  month: "Month",
+  second: "秒",
+  minute: "分钟",
+  hour: "小时",
+  day: "天",
+  week: "周",
+  month: "月",
 }
 export default {
   ...words,
-  ...error_messages,
+  ...validation_messages,
   ...time_unit,
   // -----------
   // order
@@ -101,8 +101,27 @@ export default {
   lrc_setting: {
     // TODO
   },
+  place_order_notification:{
+    title:{
+
+    },
+    message:{
+
+    }
+  },
   place_order_confirm: {
     // TODO
+  },
+  p2p_order: {
+    order_title: '线下点对点交易',
+  },
+  p2p_order_notification:{
+    title:{
+
+    },
+    message:{
+
+    }
   },
   // -----------
   // transaction
