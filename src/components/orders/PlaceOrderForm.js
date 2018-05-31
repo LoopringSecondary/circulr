@@ -548,26 +548,26 @@ class PlaceOrderForm extends React.Component {
           </div>
           {placeOrder.side === 'buy' &&
           <ul className="token-tab">
-            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>Buy {left.symbol}</a></li>
-            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>Sell {left.symbol}</a></li>
+            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('buy')} {left.symbol}</a></li>
+            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('sell')} {left.symbol}</a></li>
           </ul>
           }
           {placeOrder.side === 'sell' &&
           <ul className="token-tab">
-            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>Buy {left.symbol}</a></li>
-            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>Sell {left.symbol}</a></li>
+            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('buy')} {left.symbol}</a></li>
+            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('sell')} {left.symbol}</a></li>
           </ul>
           }
           <div className="tab-content">
             <div className="blk-sm"></div>
             <div className="" id="b1">
-              {false && sell && <small className="balance">{sell.token.symbol} Balance: <span>{FormatAmount({value:sell.token.balance.toString(10), precision:marketConfig.pricePrecision})}</span></small>}
+              {false && sell && <small className="balance">{sell.token.symbol} {intl.get('balance')}: <span>{FormatAmount({value:sell.token.balance.toString(10), precision:marketConfig.pricePrecision})}</span></small>}
               <div className="blk-sm"></div>
               <Form.Item label={null} colon={false}>
                 {form.getFieldDecorator('price', {
                   initialValue: placeOrder.priceInput,
                   rules: [{
-                    message: intl.get('trade.price_verification_message'),
+                    message: intl.get('invalid_number'),
                     validator: (rule, value, cb) => validatePirce(value) ? cb() : cb(true)
                   }]
                 })(
@@ -597,7 +597,7 @@ class PlaceOrderForm extends React.Component {
                 {form.getFieldDecorator('amount', {
                   initialValue: '0',
                   rules: [{
-                    message: intl.get('trade.amount_verification_message'),
+                    message: intl.get('invalid_number'),
                     validator: (rule, value, cb) => validateAmount(value) ? cb() : cb(true)
                   }]
                 })(
@@ -620,9 +620,9 @@ class PlaceOrderForm extends React.Component {
                 )}
               </Form.Item>
               <div className="pl10 pr10 pt5 pb5" style={{border:'1px solid rgba(255,255,255,0.07)',margin:'0px 0px'}}>
-                <MenuItem label="Total" value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>}  />
-                <MenuItem label="LRC Fee" action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFee} LRC <Icon type="right" className="" /></div>}  />
-                <MenuItem label="Time To Live" action={<div onClick={setTTL} className="cursor-pointer">{ttlShow} <Icon type="right" className="" /></div>}  />
+                <MenuItem label={intl.get('total')} value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>}  />
+                <MenuItem label={intl.get('lrc_fee')} action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFee} LRC <Icon type="right" className="" /></div>}  />
+                <MenuItem label={intl.get('ttl')} action={<div onClick={setTTL} className="cursor-pointer">{ttlShow} <Icon type="right" className="" /></div>}  />
                 <div hidden className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
                     <span className="font-bold">LRC Fee <i className="icon-info tradingfeetip"></i></span>
