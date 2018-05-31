@@ -40,12 +40,12 @@ const types = {
     buy: words.buy,
   },
 }
-const error_messages = {
+const validation_messages = {
   invalid_number: "Please input a valid number value"
 }
 export default {
   ...words,
-  ...error_messages,
+  ...validation_messages,
   // -----------
   // order
   // -----------
@@ -92,8 +92,28 @@ export default {
   lrc_setting: {
     // TODO
   },
+  place_order_notification:{
+    title:{
+
+    },
+    message:{
+
+    }
+  },
   place_order_confirm: {
     // TODO
+  },
+  p2p_order: {
+    order_title: 'Privacy P2P Trade',
+
+  },
+  p2p_order_notification:{
+    title:{
+
+    },
+    message:{
+
+    }
   },
   // -----------
   // transaction

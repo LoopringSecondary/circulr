@@ -221,7 +221,7 @@ const TradeByP2P = (props) => {
   }
   return (
     <div>
-      <div className="pb10 fs18 color-black-1 zb-b-b mb15">Privacy P2P Trade</div>
+      <div className="pb10 fs18 color-black-1 zb-b-b mb15">{intl.get('p2p_order.order_title')}</div>
       <div className="row pl0 pr0 pt10 pb10">
         p2p订单介绍...
       </div>
