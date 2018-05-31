@@ -112,14 +112,11 @@ const TradeByP2P = (props) => {
         tradeInfo.amountS = amountS
         tradeInfo.tokenB = tokenB
         tradeInfo.tokenS = tokenS
+        //TODO mock datas
         tradeInfo.validSince = moment().unix()
         tradeInfo.validUntil = moment().add(3600, 'seconds').unix()
-        tradeInfo.marginSplit = settings.trading.marginSplit
-        if (values.marginSplit) {
-          tradeInfo.marginSplit = Number(values.marginSplit)
-        }
-        //TODO mock datas
-        tradeInfo.milliLrcFee = 2
+        tradeInfo.marginSplit = 0
+        tradeInfo.milliLrcFee = 0
         tradeInfo.lrcFee = 0
         tradeInfo.delegateAddress = config.getDelegateAddress();
         tradeInfo.protocol = settings.trading.contract.address;
