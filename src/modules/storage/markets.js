@@ -29,7 +29,7 @@ const setRecent = (market) => {
     }
   }else{
     const index = recent.indexOf(market);
-     recent.splice(index,index);
+     recent.splice(index,1);
      markets.recent = [market,...recent]
   }
   localStorage.markets = JSON.stringify(markets);
