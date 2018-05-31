@@ -102,13 +102,20 @@ function ConvertForm(props) {
       <div className="sidebar-header">
         <h3>转换{token}</h3>
       </div>
-      <div className="pd-md text-center text-color-dark-1">
-        <span><i className="icon-ETH icon-token-md"/><b>{token}</b></span>
-        <span className="offset-lg"><i className="text-color-3 icon-long-arrow-right"/></span>
-        <span className="offset-lg"><b>{token.toLowerCase() === 'eth' ? 'WETH' : 'ETH'} </b><i
-          className="icon-WETH icon-token-md"/></span>
-      </div>
       <div className="divider solid"/>
+      <div className="row align-items-center justify-content-center mt25 mb25">
+        <div className="col-auto text-center pr30">
+          <div className="fs18">{amount.toString() ? amount.toString() : 0}</div>
+          <div className="fs16">{token}</div>
+        </div>
+        <div className="col-auto">
+          <i className="loopring-icon loopring-icon-convert fs32"></i>
+        </div>
+        <div className="col-auto text-center pl30">
+          <div className="fs18">{amount.toString() ? amount.toString() : 0}</div>
+          <div className="fs16">{token.toLowerCase() === 'eth' ? 'WETH' : 'ETH'}</div>
+        </div>
+      </div>
       <Form>
         <Form.Item className="prefix">
           {form.getFieldDecorator('amount', {
@@ -123,7 +130,7 @@ function ConvertForm(props) {
               <a onClick={setMax} className="text-primary mr5">
                 <small>最大数量</small>
               </a>
-              <span className="color-black-2">{token.toLowerCase() === 'eth' ? 'WETH' : 'ETH'}</span>
+              <span className="color-black-2">{token}</span>
             </div>} onChange={handleAmountChange}/>
           )}
         </Form.Item>
@@ -157,7 +164,7 @@ function ConvertForm(props) {
 
       </div>
       <Button className="btn-block btn-xlg btn-o-dark" onClick={toConvert}>转换</Button>
-      {token.toLowerCase() === 'eth' && <p className="text-color-dark-1 mt15">我们为您保留0.1 ETH作为油费以保证后续可以发送交易</p>}
+      {false && token.toLowerCase() === 'eth' && <p className="text-color-dark-1 mt15">我们为您保留0.1 ETH作为油费以保证后续可以发送交易</p>}
     </div>
   )
 }
