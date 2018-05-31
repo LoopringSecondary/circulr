@@ -221,6 +221,7 @@ export default {
     actions_paste_mnemonic: '请粘贴您的助记词',
     error_json_tip: '无效的keystore Json ',
     error_mnemonic_tip: "无效的助记词",
+    error_address_tip:'不合法的地址',
     error_password_tip: "请输入密码",
     notifications_unlock_suc: '解锁成功',
     notification_unlock_fail: "解锁失败",

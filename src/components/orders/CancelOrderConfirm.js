@@ -194,12 +194,6 @@ class CancelOrderConfirm extends React.Component {
                     </a>
                     }
                   </div>
-                 <div className="col-auto">
-                    <a onClick={this.cancel} className="color-primary-1 fs12 cursor-pointer">
-                      return
-                      <Icon type="right"/>
-                    </a>
-                  </div>
                 </div>
               }/>
               <Alert className="mb10" type="info" showIcon message={

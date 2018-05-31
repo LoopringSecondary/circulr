@@ -81,9 +81,7 @@ export default {
     tabs_basic: '基础信息',
     tabs_fill: '成交信息',
   },
-  place_order: {
-
-  },
+  place_order: {},
   gas_setting: {
     // TODO
   },
@@ -93,13 +91,9 @@ export default {
   lrc_setting: {
     // TODO
   },
-  place_order_notification:{
-    title:{
-
-    },
-    message:{
-
-    }
+  place_order_notification: {
+    title: {},
+    message: {}
   },
   place_order_confirm: {
     // TODO
@@ -108,13 +102,9 @@ export default {
     order_title: 'Privacy P2P Trade',
 
   },
-  p2p_order_notification:{
-    title:{
-
-    },
-    message:{
-
-    }
+  p2p_order_notification: {
+    title: {},
+    message: {}
   },
   // -----------
   // transaction
@@ -180,7 +170,7 @@ export default {
   },
   transfer: {},
   convert: {},
-   wallet: {
+  wallet: {
     types: {
       generate: 'Generate',
       metamask: "MetaMask Wallet",
@@ -191,19 +181,19 @@ export default {
       ledger: 'Ledger Wallet',
     },
     title_generate: 'Generate Wallet',
-    password_strength_title:'Password Strength',
+    password_strength_title: 'Password Strength',
     password_strength: {
       weak: 'weak',
       average: 'average',
       strong: 'strong'
     },
-    password_tips_weak:'Password is too weak, at least 7 characters',
-    backup_title:'Backup Wallet',
-    backup_tip:'Circular doesn\'t keep a copy of your privatekey, keystore file, or mnemonic words. Make sure you back up these information immediately.',
+    password_tips_weak: 'Password is too weak, at least 7 characters',
+    backup_title: 'Backup Wallet',
+    backup_tip: 'Circular doesn\'t keep a copy of your privatekey, keystore file, or mnemonic words. Make sure you back up these information immediately.',
     default_address: 'Default Address',
-    actions_backup_json:'I understand，download the wallet file',
-    actions_backup_mnemonic:'I understand, copy mnemonic',
-    actions_backup_private:'I understand, copy private key',
+    actions_backup_json: 'I understand，download the wallet file',
+    actions_backup_mnemonic: 'I understand, copy mnemonic',
+    actions_backup_private: 'I understand, copy private key',
     actions_unlock: 'Unlock',
     actions_generate: 'Generate Now',
     actions_more_address: 'More Addresses',
@@ -215,6 +205,7 @@ export default {
     error_json_tip: '无效的keystore Json ',
     error_mnemonic_tip: "无效的助记词",
     error_password_tip: "请输入密码",
+    error_address_tip: "Invalid Address",
     notifications_unlock_suc: '解锁成功',
     notification_unlock_fail: "解锁失败",
   },
@@ -236,8 +227,5 @@ export default {
     actions_confirm_send: "确认转账",
     actions_confirm_convert: '确认转换'
   },
-  transaction: {
-
-
-  }
+  transaction: {}
 }

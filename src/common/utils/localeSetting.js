@@ -25,7 +25,6 @@ export function setLocale(value) {
     currentLocale: value || 'en-US',
     locales,
   });
-  console.log('locales:',intl);
   window.locale = value || 'en-US'
 }
 
