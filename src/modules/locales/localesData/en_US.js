@@ -4,37 +4,44 @@ const words = {
   statuses: '状态',
   side: 'Side',
   sides: '方向',
-  market: '市场',
+  market: 'Market',
   markets: '市场',
   amount: 'Amount',
   type: 'Type',
   types: '类型',
-  gas: '油费',
+  gas: 'Gas',
   price: 'Price',
   total: 'Total',
   worth: "Worth",
-  lrc_fee: 'LRC 撮合费',
+  lrc_fee: 'LRC fee',
   lrc_fee_tips: 'xxxxx',
-  lrc_reward: 'LRC 撮合奖励',
+  lrc_reward: 'LRC reward',
   lrc_reward_tips: 'xxxxx',
   ttl: 'Time to Live',
-  block: '区块',
-  nonce: '随机数',
+  block: 'Block',
+  nonce: 'Nonce',
   sell: 'Sell',
   buy: 'Buy',
+  buying: "You are buying",
+  selling: "You are selling",
   actions: '操作',
   options: '选项',
   balance: 'Balance',
   balances: '余额',
-  send: '转出',
-  receive: '转入',
-  convert: '转换',
-  trade: '买卖',
+  send: 'Send',
+  receive: 'Receive',
+  convert: 'Convert',
+  trade: 'Trade',
   password: 'Password',
   copy: "Copy",
   copy_suc: 'Copy Successfully',
   copy_fail: "Copy Failed",
   token:'Token',
+  order_type:'Order Type',
+  margin_split: "Margin Split",
+  order_since: "Valid Since",
+  order_until: "Valid Until",
+  format_amount: "{amount,number}",
   back:'Return',
   previous_page:'Previous Page',
   next_page:'Next Page',
@@ -55,6 +62,7 @@ const notifications = {
   title:{
     place_order_failed: "Whoops, order submission somehow failed!",
     place_order_success: "Order placed successfully.",
+    place_order_warn: "Your order can not be fully filled.",
   },
   message:{
     wallet_locked: 'Your wallet seems unlocked yet, please unlock first',
@@ -63,11 +71,14 @@ const notifications = {
     lrcfee_is_required_when_place_order: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
     some_items_not_signed:"You may have some items not signed, please signed all items then continue",
     place_order_success: 'Good job. Your order has been submitted for ring-matching.',
+    place_order_balance_not_enough: 'In order for your order to be fully filled, {amount} more {token} is required.',
   }
 }
 
 const actions = {
   receive: "Receive",
+  submit_order: 'Submit Order',
+  generate_qrcode: 'Generate QR Code'
 }
 
 const time_unit = {
@@ -104,6 +115,10 @@ export default {
     expired: '过期时间',
     status: words.total,
   },
+  order_type:{
+    market_order : 'Open Market Order',
+    p2p_order : 'Privacy P2P Order'
+  },
   order_status: {
     open: '撮合中',
     completed: '已完成',
@@ -133,7 +148,7 @@ export default {
     // TODO
   },
   place_order_confirm: {
-    // TODO
+    qrcode_security:'*For your order\'s security, your QR code will only generated once and not be stored locally. Make sure to save it properly, any one who received your QR code could take your order',
   },
   p2p_order: {
     order_title: 'Privacy P2P Trade',
@@ -142,8 +157,12 @@ export default {
     token_balance: 'Token Balance',
     order_detail: 'Order Detail',
     generate_order: 'Generate Order',
-    instruction:'1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
+    instruction:'1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方使用Circulr移动端扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
     notice: '* P2P订单不需要支付LRC手续费</br>'
+  },
+  sign: {
+    not_signed : "You may have some items not signed",
+    to_sign: "To Sign"
   },
   // -----------
   // transaction
@@ -209,6 +228,13 @@ export default {
   },
   transfer: {},
   convert: {},
+  // -----------
+  // wallet
+  // -----------
+  unlock:{
+    has_not_unlocked: 'Your wallet hasn\'t unlocked yet',
+    to_unlock:'To Unlock'
+  },
   wallet: {
     types: {
       generate: 'Generate',

@@ -22,6 +22,8 @@ const words = {
   nonce: '随机数',
   sell: '卖出',
   buy: '买入',
+  buying: "您正在购买",
+  selling: "您正在出售",
   actions: '操作',
   options: '选项',
   balance: '余额',
@@ -35,6 +37,11 @@ const words = {
   copy_suc: '复制成功',
   copy_fail: "复制失败",
   token:'代币',
+  order_type:'订单类型',
+  margin_split: "分润",
+  order_since: "订单生效时间",
+  order_until: "订单失效时间",
+  format_amount: "{amount,number}",
   back:'返回',
   previous_page:'前一页',
   next_page:'后一页',
@@ -55,6 +62,7 @@ const notifications = {
   title:{
     place_order_failed: "订单提交失败 !",
     place_order_success: "下单成功!",
+    place_order_warn: '您的订单只能被部分撮合',
   },
   message:{
     wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
@@ -63,11 +71,14 @@ const notifications = {
     lrcfee_is_required_when_place_order: '由于需要支付LRC油费, 汇总您历史订单所需LRC，还需要 {required} LRC',
     some_items_not_signed:"您可能还有一些数据还未签名，请把所有未签名项签名后再继续操作",
     place_order_success: '恭喜, 您的订单已经可以等待交易',
+    place_order_balance_not_enough: '为使订单全部成交, 至少还需要{amount} {token}',
   }
 }
 
 const actions = {
   receive: "接收",
+  submit_order: '提交订单',
+  generate_qrcode: '生成二维码'
 }
 
 const time_unit = {
@@ -103,6 +114,10 @@ export default {
     expired: '过期时间',
     status: words.total,
   },
+  order_type:{
+    market_order : '公开市场订单',
+    p2p_order : '私密点对点订单'
+  },
   order_status: {
     open: '撮合中',
     completed: '已完成',
@@ -134,17 +149,21 @@ export default {
     // TODO
   },
   place_order_confirm: {
-    // TODO
+    qrcode_security:'*为了您订单的安全，二维码只会生成一次并且不会保存在任何地方。请确认妥善保存二维码，任何收到您二维码的人都有可能吃掉您的订单。'
   },
   p2p_order: {
-    order_title: '线下点对点交易',
+    order_title: '私密点对点交易',
     amounts_placeholder: '卖出数量',
     amountb_placeholder: '买入数量',
     token_balance: '代币余额',
     order_detail: '订单详情',
     generate_order: '生成订单',
-    instruction:'1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
-    notice: '* P2P订单不需要支付LRC手续费</br>'
+    instruction:'1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方使用Circulr移动端扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
+    notice: '* P2P订单双方都不需要支付LRC手续费</br>'
+  },
+  sign: {
+    not_signed : "您还未完成签名",
+    to_sign: "去签名"
   },
   // -----------
   // transaction
@@ -210,6 +229,10 @@ export default {
   },
   transfer: {},
   convert: {},
+  unlock:{
+    has_not_unlocked: '您的钱包还未解锁',
+    to_unlock:'解锁钱包'
+  },
   wallet: {
     types: {
       generate: '生成钱包',
