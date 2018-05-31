@@ -197,7 +197,7 @@ class PlaceOrderForm extends React.Component {
       25: '25％',
       50: '50％',
       75: '75％',
-      100: '100％'
+      100: '100'
     };
 
     const amountSliderField = form.getFieldDecorator('amountSlider', {
@@ -217,7 +217,7 @@ class PlaceOrderForm extends React.Component {
     const totalWorthDisplay = (
       <span className="">
         {total && fm.toBig(total).gt(0) &&
-          <span>≈{fm.getDisplaySymbol(settings.preference.currency)}
+          <span>≈ {fm.getDisplaySymbol(settings.preference.currency)}
             {FormatAmount({value:orderFormatter.calculateWorthInLegalCurrency(marketcap.items, right.symbol, total).toFixed(2), precision:2})}
           </span>
         }
@@ -619,7 +619,7 @@ class PlaceOrderForm extends React.Component {
                          }}/>
                 )}
               </Form.Item>
-              <div className="pl10 pr10 pt5 pb5" style={{border:'1px solid rgba(255,255,255,0.07)',margin:'0px 0px'}}>
+              <div className="pt5 pb5" style={{border:'0px solid rgba(255,255,255,0.07)',margin:'0px 0px'}}>
                 <MenuItem label={intl.get('total')} value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>}  />
                 <MenuItem label={intl.get('lrc_fee')} action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFee} LRC <Icon type="right" className="" /></div>}  />
                 <MenuItem label={intl.get('ttl')} action={<div onClick={setTTL} className="cursor-pointer">{ttlShow} <Icon type="right" className="" /></div>}  />

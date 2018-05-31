@@ -230,7 +230,7 @@ function TransferForm(props) {
                         return <Select.Option value={token.symbol} key={index}>
                           <div className="row mr0">
                             <div className="col color-black-2">{token.symbol}</div>
-                            <div className="col-atuo color-black-3">{tokenBalance.balance.gt(0) ? tokenBalance.balance.toString(10) : ''}</div>
+                            <div className="col-atuo color-black-3 pl5">{tokenBalance.balance.gt(0) ? tokenBalance.balance.toString(10) : ''}</div>
                           </div>
                         </Select.Option>}
                       )}
@@ -288,7 +288,7 @@ function TransferForm(props) {
                       }
                     ]
                   })(
-                    <TextArea rows={4} />
+                    <TextArea autosize={{ minRows: 4, maxRows: 8 }} />
                   )}
                 </Form.Item>
               }

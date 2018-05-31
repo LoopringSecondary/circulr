@@ -31,7 +31,7 @@ function ListTokenTickers(props) {
                                 <li><small>Price</small><span className="text-down">{tickerFm.getChange()}</span></li>
                                 <li><small>Change</small><span className="text-up">{tickerFm.getChange()}</span></li>
                             </ul>
-                            <Button className="btn btn-primary" onClick={gotoTrade.bind(this,item)}>Go To Trade</Button>
+                            <Button className="btn btn-primary" onClick={gotoTrade.bind(this,item)}>Trade {token}</Button>
                         </div>
                       )
                     })

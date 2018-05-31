@@ -63,7 +63,7 @@ function Modals(props) {
         </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="cancelOrderConfirm">
-        <UiContianers.Panels id="cancelOrderConfirm" position="right" width="450px">
+        <UiContianers.Modals id="cancelOrderConfirm" className="rs">
           <Containers.Settings>
             <Containers.Wallet>
             <Containers.Gas>
@@ -71,7 +71,7 @@ function Modals(props) {
             </Containers.Gas>
             </Containers.Wallet>
           </Containers.Settings>
-        </UiContianers.Panels>
+        </UiContianers.Modals>
       </Containers.Layers>
     </div>
   )
