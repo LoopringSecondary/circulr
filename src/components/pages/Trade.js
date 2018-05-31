@@ -22,7 +22,7 @@ function Trade(props) {
                 <AccountMenu dispatch={props.dispatch} />
             </div>
         </header>
-  	    <div className="side-fixed" style={{ top:"0", left:"0", width:"280px", paddingTop:"74px" }}>
+  	    <div className="side-fixed" style={{ top:"0", left:"0", width:"320px", paddingTop:"74px" }}>
               <div className="card h-full">
                 <Containers.PlaceOrder initState={{pair:market}}>
                   <Containers.Settings>
@@ -41,7 +41,7 @@ function Trade(props) {
                 </Containers.PlaceOrder>
               </div>
   	    </div>
-  	    <div className="m-container h-full relative" style={{marginLeft: "284px"}}>
+  	    <div className="m-container h-full relative" style={{marginLeft: "324px"}}>
   	        <div className="side" style={{left:"0",width: "320px"}}>
   	            <div className="card h-full">
   	                <Orders.ListOrderBook />

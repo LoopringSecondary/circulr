@@ -23,7 +23,7 @@ const LRCFeeForm = ({
     form.resetFields()
   }
   return (
-    <Card title={<div className="pl15 pr15">LRC Fee</div>} className="rs">
+    <Card title={<div className="pl15 pr15">Set LRC Fee</div>} className="rs">
       <div className="">
         <Radio.Group defaultValue={1} className="d-block w-100">
             <Radio value={1} className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">

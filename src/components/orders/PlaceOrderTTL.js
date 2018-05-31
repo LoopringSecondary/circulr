@@ -35,7 +35,7 @@ const TTLForm = ({
     </Select>
   )
   return (
-    <Card title={<div className="pl15 pr15">Time To Live Of Order</div>} className="rs">
+    <Card title={<div className="pl15 pr15">Set Time To Live Of Order</div>} className="rs">
       <div className="zb-b m15">
           <Collapse accordion style={customPanelStyle} defaultActiveKey={['easy']} onChange={timeToLivePatternChanged}>
             <Collapse.Panel header={intl.get('trade.order_ttl_expire_in')} key="easy">
