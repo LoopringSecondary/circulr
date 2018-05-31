@@ -67,10 +67,12 @@ const TradeByP2P = (props) => {
   }
 
   function amountChange(side, e) {
-    if(validateAmountS(e.target.value)) {
-      if(side === 'buy') {
+    if(side === 'buy') {
+      if(tokenFormatter.isValidNumber(e.target.value)) {
         dispatch({type:'p2pOrder/amountChange', payload:{'amountB':fm.toBig(e.target.value)}})
-      } else {
+      }
+    } else {
+      if(validateAmountS(e.target.value)){
         dispatch({type:'p2pOrder/amountChange', payload:{'amountS':fm.toBig(e.target.value)}})
       }
     }
