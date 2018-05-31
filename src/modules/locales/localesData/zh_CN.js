@@ -41,6 +41,7 @@ const words = {
   margin_split: "分润",
   order_since: "订单生效时间",
   order_until: "订单失效时间",
+  format_amount: "{amount,number}",
 }
 const types = {
   trade_side: {

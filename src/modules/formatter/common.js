@@ -48,7 +48,7 @@ export function getFormatNum(number) {
   number = number.split('.');
   let a = number[0];
   let b = number[1];
-  a = intl.get('global.amount', {amount: toNumber(a)});
+  a = intl.get('common.format_amount', {amount: toNumber(a)});
   const symbol = window.locale && window.locale.startsWith('fr') ? ',' : '.';
   return b ? a.concat(symbol).concat(b) : a
 }
