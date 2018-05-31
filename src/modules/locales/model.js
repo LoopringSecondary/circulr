@@ -1,7 +1,8 @@
 import {setLocale} from "../../common/utils/localeSetting";
+import STORAGE from '../storage';
 
-//TODO modify read and storage
-let language = '' //window.STORAGE.settings.get().preference.language;
+const language = STORAGE.settings.get().preference.language;
+
 export default {
   namespace: 'locales',
   state: {
