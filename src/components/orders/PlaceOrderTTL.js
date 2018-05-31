@@ -35,9 +35,8 @@ const TTLForm = ({
     </Select>
   )
   return (
-    <div>
-      <div className="pb10 fs16 color-black-1 zb-b-b mb20">TTL Fee</div>
-      <div className="zb-b">
+    <Card title={<div className="pl15 pr15">Time To Live Of Order</div>} className="rs">
+      <div className="zb-b m15">
           <Collapse accordion style={customPanelStyle} defaultActiveKey={['easy']} onChange={timeToLivePatternChanged}>
             <Collapse.Panel header={intl.get('trade.order_ttl_expire_in')} key="easy">
               <div className="pt5 pb5">
@@ -86,10 +85,10 @@ const TTLForm = ({
             </Collapse.Panel>
           </Collapse>
       </div>
-      <div className="mt20 text-right d-block w-100">
+      <div className="d-block w-100 p15">
         <Button type="primary" size="large" className="d-block w-100">确认</Button>
       </div>
-    </div>
+    </Card>
   );
 };
 export default Form.create()(connect()(TTLForm));
