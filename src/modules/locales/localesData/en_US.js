@@ -44,9 +44,19 @@ const validation_messages = {
   invalid_number: "Please input a valid number value"
 }
 
+const time_unit = {
+  second: "Second",
+  minute: "Minute",
+  hour: "Hour",
+  day: "Day",
+  week: "Week",
+  month: "Month",
+}
+
 export default {
   ...words,
   ...validation_messages,
+  ...time_unit,
   // -----------
   // order
   // -----------

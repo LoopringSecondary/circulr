@@ -222,8 +222,11 @@ const TradeByP2P = (props) => {
   return (
     <div>
       <div className="pb10 fs18 color-black-1 zb-b-b mb15">{intl.get('p2p_order.order_title')}</div>
-      <div className="row pl0 pr0 pt10 pb10">
-        您可以生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息发给relay，同时将生成的订单hash和鉴权信息生成二维码。您可以线下私密的传播这个二维码，对方需要下一个与您卖出量完全匹配的
+      <div className="row pl0 pr0 pb10">
+        <div>1. 您可以以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</div>
+        <div>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</div>
+        <div>3. 对方扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。</div>
+        <div className="pt5">* P2P订单不需要支付LRC手续费</div>
       </div>
       <div className="row pl0 pr0 pt10 pb10">
         <div className="col pl0 pr0">
