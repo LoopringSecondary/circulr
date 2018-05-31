@@ -41,6 +41,7 @@ const words = {
   margin_split: "Margin Split",
   order_since: "Valid Since",
   order_until: "Valid Until",
+  format_amount: "{amount,number}",
 }
 const types = {
   trade_side: {
