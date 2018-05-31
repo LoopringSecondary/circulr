@@ -10,7 +10,7 @@ const words = {
   type: '类型',
   types: '类型',
   gas: '油费',
-  price: '',
+  price: '价格',
   total: '总计',
   lrc_fee: 'LRC 撮合费',
   lrc_fee_tips: 'xxxxx',
@@ -43,9 +43,18 @@ const types = {
 const error_messages = {
   invalid_number: "Please input a valid number value"
 }
+const time_unit = {
+  second: "Second",
+  minute: "Minute",
+  hour: "Hour",
+  day: "Day",
+  week: "Week",
+  month: "Month",
+}
 export default {
   ...words,
   ...error_messages,
+  ...time_unit,
   // -----------
   // order
   // -----------

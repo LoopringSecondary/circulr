@@ -279,11 +279,11 @@ class PlaceOrderForm extends React.Component {
                          <Form.Item className="ttl mb0" colon={false} label={null}>
                            {form.getFieldDecorator('timeToLivePopularSetting')(
                              <Radio.Group onChange={timeToLiveValueChange.bind(this, 'popular')}>
-                               <Radio className="mb5" value="1hour">1 {intl.get('trade.hour')}</Radio>
-                               <Radio className="mb5" value="1day">1 {intl.get('trade.day')}</Radio>
-                               <Radio className="mb5" value="1week">1 {intl.get('trade.week')}</Radio>
-                               <Radio className="mb5" value="1month">1 {intl.get('trade.month')}</Radio>
-                               <Radio className="mb5" value="more">{intl.get('trade.more')}</Radio>
+                               <Radio className="mb5" value="1hour">1 {intl.get('hour')}</Radio>
+                               <Radio className="mb5" value="1day">1 {intl.get('day')}</Radio>
+                               <Radio className="mb5" value="1week">1 {intl.get('week')}</Radio>
+                               <Radio className="mb5" value="1month">1 {intl.get('month')}</Radio>
+                               <Radio className="mb5" value="more">{intl.get('more')}</Radio>
                              </Radio.Group>
                            )}
                          </Form.Item>
@@ -333,11 +333,11 @@ class PlaceOrderForm extends React.Component {
       const ttl = Number(ttlValue)
       const unit = ttlUnit
       switch(unit){
-        case 'minute': ttlInSecond = ttl * 60 ; ttlShow = `${ttl} ${intl.get('trade.minute')}`; break;
-        case 'hour': ttlInSecond = ttl * 3600 ; ttlShow = `${ttl} ${intl.get('trade.hour')}`; break;
-        case 'day': ttlInSecond = ttl * 86400; ttlShow = `${ttl} ${intl.get('trade.day')}`; break;
-        case 'week': ttlInSecond = ttl * 7 * 86400; ttlShow = `${ttl} ${intl.get('trade.week')}`; break;
-        case 'month': ttlInSecond = ttl * 30 * 86400; ttlShow = `${ttl} ${intl.get('trade.month')}`; break;
+        case 'minute': ttlInSecond = ttl * 60 ; ttlShow = `${ttl} ${intl.get('minute')}`; break;
+        case 'hour': ttlInSecond = ttl * 3600 ; ttlShow = `${ttl} ${intl.get('hour')}`; break;
+        case 'day': ttlInSecond = ttl * 86400; ttlShow = `${ttl} ${intl.get('day')}`; break;
+        case 'week': ttlInSecond = ttl * 7 * 86400; ttlShow = `${ttl} ${intl.get('week')}`; break;
+        case 'month': ttlInSecond = ttl * 30 * 86400; ttlShow = `${ttl} ${intl.get('month')}`; break;
       }
     } else {
       if(placeOrder.timeToLiveStart && placeOrder.timeToLiveEnd) {
@@ -572,7 +572,7 @@ class PlaceOrderForm extends React.Component {
                   }]
                 })(
                   <Input placeholder="" size="large"
-                         prefix={`Price`}
+                         prefix={intl.get('price')}
                          suffix={<span className="fs14 color-black-3">{right.symbol}</span>}
                          onChange={inputChange.bind(this, 'price')}
                          onFocus={() => {
@@ -602,7 +602,7 @@ class PlaceOrderForm extends React.Component {
                   }]
                 })(
                   <Input placeholder="" size="large"
-                         prefix={`Amount`}
+                         prefix={intl.get('amount')}
                          suffix={<span className="fs14 color-black-3">{left.symbol}</span>}
                          onChange={inputChange.bind(this, 'amount')}
                          onFocus={() => {
