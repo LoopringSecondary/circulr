@@ -44,23 +44,23 @@ const types = {
 }
 
 const validation_messages = {
-  invalid_number: "Please input a valid number value"
+  invalid_number: "请输入合法的数字"
 }
 
 const notifications = {
   title:{
-    place_order_failed: "Whoops, order submission somehow failed!",
+    place_order_failed: "订单提交失败 !",
   },
   message:{
-    wallet_locked: 'Your wallet seems unlocked yet, please unlock first',
-    failed_fetch_data_from_server: 'Failed fetch data from server, you could wait a moment and come back later',
-    eth_is_required_when_place_order: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
-    lrcfee_is_required_when_place_order: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
+    wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
+    failed_fetch_data_from_server: '从服务器获取数据失败, 请稍后在尝试',
+    eth_is_required_when_place_order: '由于需要支付ETH油费, 根据您当前订单需要发送的以太坊交易计算，还需要 {required} ETH',
+    lrcfee_is_required_when_place_order: '由于需要支付LRC油费, 汇总您历史订单所需LRC，还需要 {required} LRC',
   }
 }
 
 const actions = {
-  receive: "Receive",
+  receive: "接收",
 }
 
 const time_unit = {
@@ -71,6 +71,7 @@ const time_unit = {
   week: "周",
   month: "月",
 }
+
 export default {
   ...words,
   ...validation_messages,

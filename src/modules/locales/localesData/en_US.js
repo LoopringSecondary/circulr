@@ -49,11 +49,18 @@ const validation_messages = {
 
 const notifications = {
   title:{
-
+    place_order_failed: "Whoops, order submission somehow failed!",
   },
   message:{
-
+    wallet_locked: 'Your wallet seems unlocked yet, please unlock first',
+    failed_fetch_data_from_server: 'Failed fetch data from server, you could wait a moment and come back later',
+    eth_is_required_when_place_order: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
+    lrcfee_is_required_when_place_order: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
   }
+}
+
+const actions = {
+  receive: "Receive",
 }
 
 const time_unit = {
