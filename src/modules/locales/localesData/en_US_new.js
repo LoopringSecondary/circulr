@@ -6,21 +6,21 @@ const words = {
   sides: '方向',
   market: '市场',
   markets: '市场',
-  amount: '数量',
+  amount: 'Amount',
   type: '类型',
   types: '类型',
   gas: '油费',
-  price: '价格',
+  price: 'Price',
   total: '总计',
   lrc_fee: 'LRC 撮合费',
   lrc_fee_tips: 'xxxxx',
   lrc_reward: 'LRC 撮合奖励',
   lrc_reward_tips: 'xxxxx',
-  ttl:'订单有效期',
+  ttl:'Time To Live',
   block: '区块',
   nonce: '随机数',
-  sell: '卖出',
-  buy: '买入',
+  sell: 'Sell',
+  buy: 'Buy',
   actions: '操作',
   options: '选项',
   balance: '余额',
@@ -43,18 +43,9 @@ const types = {
 const error_messages = {
   invalid_number: "Please input a valid number value"
 }
-const time_unit = {
-  second: "Second",
-  minute: "Minute",
-  hour: "Hour",
-  day: "Day",
-  week: "Week",
-  month: "Month",
-}
 export default {
   ...words,
   ...error_messages,
-  ...time_unit,
   // -----------
   // order
   // -----------
