@@ -277,19 +277,9 @@ function TransferForm(props) {
                          }}/>
                 )}
               </Form.Item>
-              {transfer.token === "ETH" && !transfer.advance &&
-              <div className="row mt5">
-                <div className="col"></div>
-                <div className="col-auto">
-                  <Form.Item className="mb0 text-right d-flex align-items-center" label={intl.get('token.advanced')} colon={false}>
-                    <Switch onChange={setAdvance.bind(this)}/>
-                  </Form.Item>
-                </div>
-              </div>
-              }
+
               {transfer.token === "ETH" && transfer.advance &&
-              <div>
-                <Form.Item className="mb0 pb10" label={intl.get('token.data')} colon={false}>
+                <Form.Item className="mb0" label={intl.get('token.data')} colon={false}>
                   {form.getFieldDecorator('data', {
                     initialValue: '',
                     rules: [
@@ -301,22 +291,19 @@ function TransferForm(props) {
                     <TextArea rows={4} />
                   )}
                 </Form.Item>
-                <div className="row mt5">
-                  <div className="col"></div>
-                  <div className="col-auto">
-                    <Form.Item className="mb0 text-right d-flex align-items-center" label={intl.get('token.advanced')} colon={false}>
-                      <Switch defaultChecked onChange={setAdvance.bind(this)}/>
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
               }
             </Form>
-            <div className="form-control-static d-flex justify-content-between mr-0 mt20 mb5 align-items-center">
+            <div className="form-control-static d-flex justify-content-between mr-0 mt20 mb15 align-items-center">
               <span className="fs14 color-white-2">Gas Fee</span>
               <span className="font-bold cursor-pointer" onClick={setGas}>
                   {totalGas.toString(10)} ETH {gasWorth}
                   <Icon type="right" />
+              </span>
+            </div>
+            <div className="form-control-static d-flex justify-content-between mr-0 mt15 mb15 align-items-center">
+              <span className="fs14 color-white-2">{intl.get('token.advanced')}</span>
+              <span className="font-bold cursor-pointer">
+                  <Switch size="small" onChange={setAdvance.bind(this)}/>
               </span>
             </div>
             <div className="blk"></div>

@@ -149,7 +149,7 @@ function ConvertForm(props) {
         }
         <div className="form-control-static d-flex justify-content-between mr-0 mt15 mb15 align-items-center">
           <span className="fs14 color-white-2">Balance</span>
-          <span className="font-bold cursor-pointer fs12">
+          <span className="font-bold fs12">
             {assets.balance.toString()} {token}
             <Icon hidden type="right" className="ml5" />
           </span>
