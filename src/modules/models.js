@@ -3,6 +3,7 @@ export default [
   require('./sockets/SocketsModel').default,
   require('./orders/ListModel').default,
   require('./orders/PlaceOrderModel').default,
+  require('./orders/P2POrderModel').default,
   require('./fills/ListModel').default,
   require('./tokens/ListModel').default,
   require('./tokens/TransferModel').default,

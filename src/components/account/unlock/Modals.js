@@ -6,7 +6,7 @@ function Modals(props) {
   return (
     <div>
       <Containers.Layers id="unlock">
-        <UiContianers.Modals id="unlock">
+        <UiContianers.Modals id="unlock" width="750px" className="rs">
           <UnlockWallet />
         </UiContianers.Modals>
       </Containers.Layers>

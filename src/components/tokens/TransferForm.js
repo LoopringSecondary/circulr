@@ -194,7 +194,9 @@ function TransferForm(props) {
     const gas = fm.toBig(value).times(fm.toNumber(gasLimit)).div(1e9).toString()
     return gas + " ETH";
   }
-
+  const setGas = ()=>{
+    dispatch({type:"layers/showLayer",payload:{id:'gasFee'}})
+  }
   return (
     <div className="form-dark pd-lg">
         <div className="sidebar-header">
@@ -310,12 +312,11 @@ function TransferForm(props) {
               </div>
               }
             </Form>
-            <div className="form-control-static d-flex justify-content-between mr-0">
-              <span>Gas Fee</span>
-              <span className="font-bold">
-                <Containers.Gas initState={{gasLimit}}>
-                  <GasFee  advanced={transfer.token.toLowerCase() === 'eth'}/><span className="offset-md">{totalGas.toString(10)} ETH {gasWorth}</span>
-                </Containers.Gas>
+            <div className="form-control-static d-flex justify-content-between mr-0 mt20 mb5 align-items-center">
+              <span className="fs14 color-white-2">Gas Fee</span>
+              <span className="font-bold cursor-pointer" onClick={setGas}>
+                  {totalGas.toString(10)} ETH {gasWorth}
+                  <Icon type="right" />
               </span>
             </div>
             <div className="blk"></div>

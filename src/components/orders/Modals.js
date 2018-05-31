@@ -19,7 +19,7 @@ function Modals(props) {
         </UiContianers.Panels>
       </Containers.Layers>
       <Containers.Layers id="placeOrderConfirm">
-        <UiContianers.Panels id="placeOrderConfirm" position="left" width="450px">
+        <UiContianers.Modals id="placeOrderConfirm" position="left" width="600px"  className="rs" wrapClassName="theme-blue">
           <Containers.Settings>
             <Containers.Wallet>
               <Containers.Layers>
@@ -35,7 +35,7 @@ function Modals(props) {
               </Containers.Layers>
             </Containers.Wallet>
           </Containers.Settings>
-        </UiContianers.Panels>
+        </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="placeOrderSteps">
         <UiContianers.Modals id="placeOrderSteps" width="650px">
@@ -53,12 +53,12 @@ function Modals(props) {
         </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="placeOrderLRCFee">
-        <UiContianers.Modals id="placeOrderLRCFee">
+        <UiContianers.Modals id="placeOrderLRCFee" className="rs">
           <PlaceOrderLRCFee />
         </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="placeOrderTTL">
-        <UiContianers.Modals id="placeOrderTTL">
+        <UiContianers.Modals id="placeOrderTTL" className="rs">
           <PlaceOrderTTL />
         </UiContianers.Modals>
       </Containers.Layers>

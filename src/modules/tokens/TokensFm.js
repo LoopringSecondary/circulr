@@ -25,6 +25,26 @@ export default class TokensFm{
   }
 }
 
+export const sorterByBalance = (tokenA, tokenB) => {
+  const pa = toBig(tokenA.balance);
+  const pb = toBig(tokenB.balance);
+  if (pa.eq(pb)) {
+    return tokenA.symbol.toUpperCase() < tokenB.symbol.toUpperCase() ? -1 : 1;
+  } else {
+    return pb.gt(pa);
+  }
+};
+
+export const sorterBySymbol = (tokenA, tokenB) => {
+  if(tokenA.symbol > tokenB.symbol){
+    return 1;
+  } else if (tokenA.symbol < tokenB.symbol){
+    return -1;
+  } else {
+    return 0;
+  }
+};
+
 export const sortTokens = (tokens)=>{
   // let customs = window.STORAGE.tokens.getCustomTokens()
   let customs = []
@@ -45,12 +65,14 @@ export const sortTokens = (tokens)=>{
     return token
   })
   const sorter = (tokenA, tokenB) => {
-    const pa = Number(tokenA.sortByBalance);
-    const pb = Number(tokenB.sortByBalance);
-    if (pa === pb) {
-      return tokenA.symbol.toUpperCase() < tokenB.symbol.toUpperCase() ? -1 : 1;
-    } else {
-      return pb - pa;
+    if(tokenA !== undefined && tokenB !== undefined && tokenA.sortByBalance !== undefined && tokenB.sortByBalance !== undefined) {
+      const pa = toBig(tokenA.sortByBalance);
+      const pb = toBig(tokenB.sortByBalance);
+      if (pa.eq(pb)) {
+        return tokenA.symbol.toUpperCase() < tokenB.symbol.toUpperCase() ? -1 : 1;
+      } else {
+        return pb.gt(pa);
+      }
     }
   };
   otherTokens.sort(sorter);
