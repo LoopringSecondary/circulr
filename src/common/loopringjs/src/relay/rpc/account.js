@@ -290,6 +290,8 @@ export async function getGasPrice(host) {
   let body = {};
   body.method = 'loopring_getEstimateGasPrice';
   body.params = [{}];
+  body.id = id();
+  body.jsonrpc = '2.0';
   return request(host,{
     method:'post',
     body,
