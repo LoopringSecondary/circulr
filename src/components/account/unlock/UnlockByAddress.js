@@ -7,14 +7,12 @@ import routeActions from 'common/utils/routeActions';
 import {connect} from 'dva';
 
 function UnlockByAddress(props) {
-
   const {form} = props
-
-  function validateAddress(address) {
+  const  validateAddress = (address) => {
     return tokenFormatter.validateEthAddress(address)
-  }
+  };
 
-  function unlocked() {
+  const unlocked = () => {
     form.validateFields((err, values) => {
       if (!err) {
         const address = form.getFieldValue('address')
@@ -24,11 +22,10 @@ function UnlockByAddress(props) {
         routeActions.gotoPath('/wallet');
       }
     })
-  }
-
+  };
   return (
     <div className="text-left">
-      <h2 className="text-center text-primary">Paste Your Address Here</h2>
+      <h2 className="text-center text-primary">{intl.get('wallet.paste_address_title')}</h2>
       <div className="blk-md"></div>
       <Form layout="horizontal">
         <Form.Item colon={false}>

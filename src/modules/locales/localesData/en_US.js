@@ -191,6 +191,7 @@ export default {
     backup_title: 'Backup Wallet',
     backup_tip: 'Circular doesn\'t keep a copy of your privatekey, keystore file, or mnemonic words. Make sure you back up these information immediately.',
     default_address: 'Default Address',
+    paste_address_title:'Paste Your Address Here',
     actions_backup_json: 'I understand，download the wallet file',
     actions_backup_mnemonic: 'I understand, copy mnemonic',
     actions_backup_private: 'I understand, copy private key',
