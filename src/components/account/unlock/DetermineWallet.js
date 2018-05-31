@@ -5,6 +5,7 @@ import routeActions from 'common/utils/routeActions'
 import {getXPubKey as getTrezorPublicKey} from "LoopringJS/ethereum/trezor";
 import {getXPubKey as getLedgerPublicKey,connect} from "../../../common/loopringjs/src/ethereum/ledger";
 import intl from 'react-intl-universal'
+import Notification from '../../../common/loopringui/components/Notification'
 
 const ledgerPaths = ["m/44'/60'/0'/0", "m/44'/60'/0'", "m/44'/61'/0'/0", "m/44'/60'/160720'/0'", "m/44'/1'/0'/0"];
 
@@ -73,15 +74,21 @@ export default class DetermineWallet extends React.Component {
     switch (walletType) {
       case 'mnemonic':
         dispatch({type: 'wallet/unlockMnemonicWallet', payload: {mnemonic, dpath: `${dpath}/${pageNum * pageSize + index}`}});
+        Notification.open({type:'success',message:intl.get('wallet.notification_unlock_suc')});
         break;
       case 'trezor':
         dispatch({type: 'wallet/unlockTrezorWallet', payload: {dpath: `${dpath}/${pageNum * pageSize + index}`,address}});
+        Notification.open({type:'success',message:intl.get('wallet.notification_unlock_suc')});
+
         break;
       case 'ledger':
         connect().then(res => {
           if(!res.error){
             const ledger = res.result;
             dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger,dpath: `${dpath}/${pageNum * pageSize + index}`}});
+            Notification.open({type:'success',message:intl.get('wallet.notification_unlock_suc')});
+          }else{
+            Notification.open({type:'error',message:intl.get('wallet.notification_unlock_fail'),description:intl.get('wallet.connect_ledger_tip')});
           }
         });
         break;
@@ -89,7 +96,7 @@ export default class DetermineWallet extends React.Component {
     }
     dispatch({type:'sockets/unlocked'});
     determineWallet.reset();
-    routeActions.gotoPath('/wallet')
+    routeActions.gotoPath('/wallet');
   };
 
   render() {
