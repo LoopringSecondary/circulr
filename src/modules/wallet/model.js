@@ -163,7 +163,7 @@ export default {
       const account = fromPrivateKey(privateKey);
       const address = account.getAddress();
       const unlockType = 'privateKey';
-      yield put({type: "unlockWallet", payload: {address, unlockType, account,password}});
+     // yield put({type: "unlockWallet", payload: {address, unlockType, account,password}});
       cb({mnemonic, privateKey, keystore: account.toV3Keystore(password),address});
     }
   }

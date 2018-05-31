@@ -2,6 +2,9 @@ import React from 'react';
 import {Input, Progress} from 'antd';
 import routeActions from 'common/utils/routeActions'
 import Notification from '../../common/loopringui/components/Notification'
+import intl from 'react-intl-universal'
+
+
 
 class  GenerateWallet extends React.Component {
 
@@ -23,7 +26,6 @@ class  GenerateWallet extends React.Component {
 
   generate =  () => {
     const {pass} = this.state;
-
     if(pass.length >6){
       const {wallet,dispatch} = this.props;
       const _this = this;
@@ -32,13 +34,11 @@ class  GenerateWallet extends React.Component {
           const {address,mnemonic,keystore,privateKey} = res;
           dispatch({type:'backup/set',payload:{address,mnemonic,keystore,privateKey}});
           routeActions.gotoPath(`/unlock/backup`);
-          _this.setState({    visible:false,
-            pass:'',
-            strength:'weak'})
+          _this.setState({visible:false, pass:'', strength:'weak'})
         }
       }});
     }else{
-      Notification.open({type:'warning',message:'password is too weak'})
+      Notification.open({type:'warning',message:intl.get('wallet.password_tips_weak')})
     }
   };
 
@@ -70,19 +70,19 @@ class  GenerateWallet extends React.Component {
     return (
       <div>
         <div className="form-dark">
-          <h2 className="text-center text-primary">Generate Wallet</h2>
-          <div className="blk-lg"></div>
+          <h2 className="text-center text-primary">{intl.get('wallet.title_generate')}</h2>
+          <div className="blk-lg"/>
           <div className="eye-switch">
             <Input type={visible ? 'text':'password'} addonAfter={visibleIcon} onChange={this.passChange} value={pass} />
           </div>
           <div className="d-flex justify-content-start align-items-center password-strong" style={{width:"300px"}}>
-            <b className="password-label">Password Strength</b>
+            <b className="password-label">{intl.get('wallet.password_strength_title')}</b>
             {strength === 'weak' && <Progress percent={30}  />}
             {strength === 'average' && <Progress percent={50}  />}
             {strength === 'strong' && <Progress percent={90}  />}
-            <div><span className="offset-md text-up">{strength}</span></div>
+            <div><span className="offset-md text-up">{intl.get(`wallet.password_strength.${strength}`)}</span></div>
           </div>
-          <button className="btn btn-primary btn-block btn-xxlg" onClick={this.generate}>Generate Now</button>
+          <button className="btn btn-primary btn-block btn-xxlg" onClick={this.generate}>{intl.get('wallet.actions_generate')}</button>
         </div>
       </div>
     )

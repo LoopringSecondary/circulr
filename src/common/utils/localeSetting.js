@@ -5,11 +5,11 @@ import moment from 'moment';
 const locales = {
   "en-US": locale.en_US,
   "zh-CN": locale.zh_CN,
-  "fr-FR":locale.fr_FR
+  "fr-FR": locale.fr_FR
 };
 
 export function setLocale(value) {
-
+  console.log('locales:',value);
   switch (value) {
     case "zh-CN" :
       moment.locale('zh-cn');
@@ -25,9 +25,8 @@ export function setLocale(value) {
     currentLocale: value || 'en-US',
     locales,
   });
-
+  console.log('locales:',intl);
   window.locale = value || 'en-US'
-
 }
 
 

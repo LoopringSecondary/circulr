@@ -1,18 +1,20 @@
 import React from 'react';
 import {Select} from 'antd'
-
+import {connect} from "dva";
+import {locales} from '../common/config/data'
 
 function LayoutHome(props) {
 
+  const {locale,dispatch} = props;
   const localeChange = (value)=>{
-    props.dispatch({
+    dispatch({
       type:'locales/setLocale',
       payload:{
         locale:value
       }
     });
     let currency = value.startsWith('en' ) ? 'USD' : 'CNY';
-    props.dispatch({
+    dispatch({
       type:'settings/preferenceChange',
       payload:{
         language: value,
@@ -29,9 +31,12 @@ function LayoutHome(props) {
     	            <div className="col-auto">
     	                <div className="brand"><a href="index.html"><img src={require('../assets/images/logo.png')} /></a></div>
     	            </div>
-                <Select className="col-auto language dropdown"  showArrow={false} dropdownMatchSelectWidth={false} defaultValue="cn" onChange={localeChange}>
-                  <Select.Option value='en'> <i className="icon en"/> English </Select.Option>
-                  <Select.Option value='cn'> <i className="icon cn"/> 简体中文 </Select.Option>
+                <Select className="col-auto language dropdown"  showArrow={false} dropdownMatchSelectWidth={false} defaultValue={locale} onChange={localeChange}>
+                  {locales.map(item => {
+                  return (
+                    <Select.Option value={item.value} key={item.value}> <i className="icon en"/> {item.name}</Select.Option>
+                  )
+                  })}
                 </Select>
     	        </div>
     	    </div>
@@ -40,4 +45,11 @@ function LayoutHome(props) {
     </div>
   )
 }
-export default LayoutHome
+
+function mapStateToProps(state) {
+  return {
+    locale:state.locales.locale
+  }
+}
+
+export default connect(mapStateToProps)(LayoutHome)

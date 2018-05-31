@@ -183,5 +183,6 @@ export default {
   getMarkets,
   getWalletAddress,
   getDelegateAddress,
-  getWallets
+  getWallets,
+  getCustomTokens
 }
