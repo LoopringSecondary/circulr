@@ -76,11 +76,14 @@ const time_unit = {
 }
 
 export default {
-  ...words,
-  ...validation_messages,
-  ...time_unit,
+  common:{
+    ...words,
+    ...validation_messages,
+    ...time_unit,
+  },
   notifications,
   actions,
+
   // -----------
   // order
   // -----------
@@ -223,6 +226,8 @@ export default {
     backup_title: 'Backup Wallet',
     backup_tip: 'Circular doesn\'t keep a copy of your privatekey, keystore file, or mnemonic words. Make sure you back up these information immediately.',
     default_address: 'Default Address',
+    paste_address_title:'Paste Your Address Here',
+    title_json:'Select JSON File',
     actions_backup_json: 'I understand，download the wallet file',
     actions_backup_mnemonic: 'I understand, copy mnemonic',
     actions_backup_private: 'I understand, copy private key',
@@ -238,8 +243,8 @@ export default {
     error_mnemonic_tip: "无效的助记词",
     error_password_tip: "请输入密码",
     error_address_tip: "Invalid Address",
-    notifications_unlock_suc: '解锁成功',
-    notification_unlock_fail: "解锁失败",
+    notification_unlock_suc: 'Unlock Successfully',
+    notification_unlock_fail: "Unlock Failed",
   },
   token: {
     action_options: '{token} 选项',

@@ -36,7 +36,7 @@ const transfromers = {
     },
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
-      console.log(id,'res',res)
+      // console.log(id,'res',res)
       let items = []
       if (!res.error && res.data && isArray(res.data.data)) {
         items =[ ...res.data.data ]
@@ -53,7 +53,7 @@ const transfromers = {
     },
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
-      console.log(id,'res',res)
+     // console.log(id,'res',res)
       let items = []
       if (!res.error && res.data && isArray(res.data.tokens)) {
         items =[ ...res.data.tokens ]
@@ -70,7 +70,7 @@ const transfromers = {
     },
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
-      console.log(id,'res',res)
+    //  console.log(id,'res',res)
       let items =[]
       if (!res.error && res.data && isArray(res.data.tokens)) {
         items =[ ...res.data.tokens ]
@@ -88,7 +88,7 @@ const transfromers = {
     },
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
-      console.log(id,'res',res)
+   // console.log(id,'res',res)
       let item ={}
       if(!res.error && res.data && res.data.depth){
         item ={ ...res.data.depth }
@@ -106,7 +106,7 @@ const transfromers = {
     },
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
-      console.log(id,'res',res)
+      //console.log(id,'res',res)
       let items =[]
       if(!res.error && isArray(res.data)){
         items =[ ...res.data ]
@@ -124,7 +124,7 @@ const transfromers = {
     },
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
-      console.log(id,'res',res)
+      //console.log(id,'res',res)
       let item = {}
       if(!res.error && res.data){
         item ={...res.data}
@@ -142,7 +142,7 @@ const transfromers = {
     },
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
-      console.log(id,'res',res)
+      //console.log(id,'res',res)
       let items =[]
       if(!res.error && isArray(res.data)){
         const supportMarket = res.data.filter(item=>config.isSupportedMarket(item.market)) // filter support market
@@ -159,7 +159,7 @@ const transfromers = {
     },
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
-      console.log(id,'res',res)
+      //console.log(id,'res',res)
       let items =[]
       if(!res.error && isArray(res.data)){
         items =[ ...res.data ]

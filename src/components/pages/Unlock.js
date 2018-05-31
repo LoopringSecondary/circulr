@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import Account from '../account';
 import Layout from '../../layout';
 import {Link, Redirect, Route, Switch} from 'dva/router'
@@ -11,7 +11,6 @@ import {wallets} from "../../common/config/data";
 import {trimAll} from "LoopringJS/common/utils";
 import intl from 'react-intl-universal'
 
-import Notification from '../../common/loopringui/components/Notification'
 
 class Unlock extends React.Component {
 

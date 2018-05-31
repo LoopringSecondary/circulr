@@ -7,28 +7,27 @@ import routeActions from 'common/utils/routeActions';
 import {connect} from 'dva';
 
 function UnlockByAddress(props) {
-
   const {form} = props
-
-  function validateAddress(address) {
+  const  validateAddress = (address) => {
     return tokenFormatter.validateEthAddress(address)
-  }
+  };
 
-  function unlocked() {
+  const unlocked = () => {
     form.validateFields((err, values) => {
       if (!err) {
         const address = form.getFieldValue('address')
         props.dispatch({type:"wallet/unlockAddressWallet",payload:{address}});
-        Notification.open({type:'success',message:'解锁成功',description:'unlock'});
-        props.dispatch({type: 'sockets/unlocked'})
+        Notification.open({type:'success',message:intl.get('wallet.notification_unlock_suc')});
+        props.dispatch({type: 'sockets/unlocked'});
         routeActions.gotoPath('/wallet');
+      }else {
+        Notification.open({type:'error',message:intl.get('wallet.notification_unlock_fail'),description:intl.get('wallet.error_address_tip')});
       }
     })
-  }
-
+  };
   return (
     <div className="text-left">
-      <h2 className="text-center text-primary">Paste Your Address Here</h2>
+      <h2 className="text-center text-primary">{intl.get('wallet.paste_address_title')}</h2>
       <div className="blk-md"></div>
       <Form layout="horizontal">
         <Form.Item colon={false}>
