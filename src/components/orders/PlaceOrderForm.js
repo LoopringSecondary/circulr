@@ -573,7 +573,7 @@ class PlaceOrderForm extends React.Component {
                 })(
                   <Input placeholder="" size="large"
                          prefix={`Price`}
-                         suffix={<span className="fs14 color-black-4">{right.symbol}</span>}
+                         suffix={<span className="fs14 color-black-3">{right.symbol}</span>}
                          onChange={inputChange.bind(this, 'price')}
                          onFocus={() => {
                            const price = form.getFieldValue("price")
@@ -603,7 +603,7 @@ class PlaceOrderForm extends React.Component {
                 })(
                   <Input placeholder="" size="large"
                          prefix={`Amount`}
-                         suffix={<span className="fs14 color-black-4">{left.symbol}</span>}
+                         suffix={<span className="fs14 color-black-3">{left.symbol}</span>}
                          onChange={inputChange.bind(this, 'amount')}
                          onFocus={() => {
                             const amount = form.getFieldValue("amount")
