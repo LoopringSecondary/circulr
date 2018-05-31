@@ -113,7 +113,7 @@ class Keystore extends React.Component {
                 initialValue: '',
                 rules: [{
                   required: true,
-                  message: 'invalid keystore',
+                  message: intl.get('wallet.error_json_tip'),
                   validator: (rule, value, cb) => this.isValidKeystore(value) ? cb() : cb(true)
                 }]
               })(
@@ -121,7 +121,7 @@ class Keystore extends React.Component {
               )}
             </Form.Item>
           {isPasswordRequired &&
-          <Input type={visible ? 'text' : 'password'} placeHolder={intl.get('common.password')} addonAfter={visibleIcon} value={password} onChange={this.handlePassChange}/>}
+          <Input type={visible ? 'text' : 'password'} placeholder={intl.get('common.password')} addonAfter={visibleIcon} value={password} onChange={this.handlePassChange}/>}
         </Form>
         <div className="blk"/>
         <Button type="primary" className="btn btn-primary btn-block btn-xxlg" onClick={this.unlock}>{intl.get('wallet.actions_unlock')}</Button>
