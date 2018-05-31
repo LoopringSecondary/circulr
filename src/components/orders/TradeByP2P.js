@@ -67,10 +67,12 @@ const TradeByP2P = (props) => {
   }
 
   function amountChange(side, e) {
-    if(side === 'buy') {
-      dispatch({type:'p2pOrder/amountChange', payload:{'amountB':fm.toBig(e.target.value)}})
-    } else {
-      dispatch({type:'p2pOrder/amountChange', payload:{'amountS':fm.toBig(e.target.value)}})
+    if(validateAmountS(e.target.value)) {
+      if(side === 'buy') {
+        dispatch({type:'p2pOrder/amountChange', payload:{'amountB':fm.toBig(e.target.value)}})
+      } else {
+        dispatch({type:'p2pOrder/amountChange', payload:{'amountS':fm.toBig(e.target.value)}})
+      }
     }
   }
 
@@ -252,6 +254,18 @@ const TradeByP2P = (props) => {
                        }
                      </Select>
                    }
+                   onFocus={() => {
+                     const amount = form.getFieldValue("amountS")
+                     if (amount === '0') {
+                       form.setFieldsValue({"amountS": ''})
+                     }
+                   }}
+                   onBlur={() => {
+                     const amount = form.getFieldValue("amountS")
+                     if (amount === '') {
+                       form.setFieldsValue({"amountS": '0'})
+                     }
+                   }}
                    onChange={amountChange.bind(this, 'sell')}
             />
           )}
@@ -288,6 +302,18 @@ const TradeByP2P = (props) => {
                          }
                        </Select>
                      }
+                     onFocus={() => {
+                       const amount = form.getFieldValue("amountB")
+                       if (amount === '0') {
+                         form.setFieldsValue({"amountB": ''})
+                       }
+                     }}
+                     onBlur={() => {
+                       const amount = form.getFieldValue("amountB")
+                       if (amount === '') {
+                         form.setFieldsValue({"amountB": '0'})
+                       }
+                     }}
                      onChange={amountChange.bind(this, 'buy')}
               />
             )}
