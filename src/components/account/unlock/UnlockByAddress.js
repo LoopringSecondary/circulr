@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link } from 'dva/router';
-import { Modal, Button,Icon,Alert, Input, Form } from 'antd';
+import {Button, Form, Input} from 'antd';
 import intl from 'react-intl-universal';
 import Notification from 'LoopringUI/components/Notification'
 import * as tokenFormatter from 'modules/tokens/TokenFm'
@@ -35,15 +34,15 @@ function UnlockByAddress(props) {
         <Form.Item colon={false}>
           {form.getFieldDecorator('address', {
             rules: [{
-              message: intl.get('wallet.invalid_eth_address'),
+              message: intl.get('wallet.error_address_tip'),
               validator: (rule, value, cb) => validateAddress(value) ? cb() : cb(true)
             }]
           })(
-            <Input className="d-block w-100" placeholder={intl.get('wallet.address_input_placeholder')} size="large" />
+            <Input className="d-block w-100" size="large" />
           )}
         </Form.Item>
       </Form>
-      <Button className="btn btn-primary btn-block btn-xxlg" onClick={unlocked}>Unlock</Button>
+      <Button className="btn btn-primary btn-block btn-xxlg" onClick={unlocked}>{intl.get('wallet.actions_unlock')}</Button>
     </div>
   )
 }
