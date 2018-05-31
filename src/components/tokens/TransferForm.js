@@ -300,13 +300,19 @@ function TransferForm(props) {
                   <Icon type="right" />
               </span>
             </div>
-            <div className="form-control-static d-flex justify-content-between mr-0 mt15 mb15 align-items-center">
-              <span className="fs14 color-white-2">{intl.get('token.advanced')}</span>
-              <span className="font-bold cursor-pointer">
-                  <Switch size="small" onChange={setAdvance.bind(this)}/>
-              </span>
-            </div>
-            <div className="blk"></div>
+            {transfer.token === "ETH" &&
+              <div className="form-control-static d-flex justify-content-between mr-0 mt15 mb15 align-items-center">
+                <span className="fs14 color-white-2">{intl.get('token.advanced')}</span>
+                <span className="font-bold cursor-pointer">
+                    {!transfer.advance &&
+                      <Switch size="small" onChange={setAdvance.bind(this)}/>
+                    }
+                    {transfer.advance &&
+                      <Switch size="small" defaultChecked onChange={setAdvance.bind(this)}/>
+                    }
+                </span>
+              </div>
+            }
             <Button className="btn btn-o-dark btn-block btn-xlg" onClick={handleSubmit}>Continue</Button>
         </div>
 
