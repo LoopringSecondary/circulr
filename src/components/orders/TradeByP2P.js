@@ -223,7 +223,7 @@ const TradeByP2P = (props) => {
     <div>
       <div className="pb10 fs18 color-black-1 zb-b-b mb15">{intl.get('p2p_order.order_title')}</div>
       <div className="row pl0 pr0 pt10 pb10">
-        p2p订单介绍...
+        您可以生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息发给relay，同时将生成的订单hash和鉴权信息生成二维码。您可以线下私密的传播这个二维码，对方需要下一个与您卖出量完全匹配的
       </div>
       <div className="row pl0 pr0 pt10 pb10">
         <div className="col pl0 pr0">
