@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Input, Button} from 'antd';
+import {Form, Input, Button,Icon} from 'antd';
 import {getBalanceBySymbol, getWorthBySymbol,isValidNumber} from "../../modules/tokens/TokenFm";
 import TokenFormatter from '../../modules/tokens/TokenFm';
 import Contracts from 'LoopringJS/ethereum/contracts/Contracts'
@@ -13,10 +13,8 @@ import Notification from '../../common/loopringui/components/Notification'
 import intl from 'react-intl-universal';
 
 const WETH = Contracts.WETH;
-
 function ConvertForm(props) {
-
-  const {wallet, convert,convertToken, balances, prices,form,gasPrice} = props;
+  const {wallet, convert,convertToken, balances, prices,form,gasPrice,dispatch} = props;
   const {amount,isMax} = convert;
   const {token} = convertToken;
   if(!token){console.error('token is required');return null}
@@ -83,11 +81,12 @@ function ConvertForm(props) {
     });
 
   };
-
   const getGas = () =>{
     return tf.toPricisionFixed(toBig(gasPrice).times(gasLimit).div(1e9))
-  };
-
+  }
+  const setGas = ()=>{
+    dispatch({type:"layers/showLayer",payload:{id:'gasFee'}})
+  }
   const onGasChange = ({gasPrice}) => {
     let amount  = amount;
     if (isMax && token.toLowerCase() === 'eth') {
@@ -120,39 +119,45 @@ function ConvertForm(props) {
               validator: (rule, value, cb) => isValidNumber(value) && toBig(value).lt(assets.balance)  ? cb() : cb(true)
             }]
           })(
-            <Input  suffix={token.toLowerCase() === 'eth' ? 'WETH' : 'ETH'} onChange={handleAmountChange}/>
+            <Input  suffix={<div>
+              <a onClick={setMax} className="text-primary mr5">
+                <small>最大数量</small>
+              </a>
+              <span className="color-black-2">{token.toLowerCase() === 'eth' ? 'WETH' : 'ETH'}</span>
+            </div>} onChange={handleAmountChange}/>
           )}
         </Form.Item>
       </Form>
-
-      <div className="d-flex justify-content-between text-color-dark-2">
-        <small>
-          {amount && prices && isValidNumber(amount) &&
-            <span>
-              <Currency/>
-              {getWorthBySymbol({prices, symbol: 'ETH', amount})}
+      <div  className="text-color-dark-1">
+        {
+          false &&
+          <div className="form-control-static d-flex justify-content-between mr-0">
+            <span>Gas Fee</span>
+            <span className="font-bold">
+              <Containers.Gas initState={{gasLimit}}>
+                <GasFee onGasChange={onGasChange}/><span className="offset-md"> {getGas()} ETH ≈ <Currency/> {getWorthBySymbol({prices, symbol: 'ETH', amount:getGas()})}</span>
+              </Containers.Gas>
             </span>
-          }
-        </small>
-        <a onClick={setMax} className="text-dark">
-          <small>最大数量</small>
-        </a>
-      </div>
-      <div className="blk"/>
-      {token.toLowerCase() === 'eth' && <p className="text-color-dark-1">我们为您保留0.1 ETH作为油费以保证后续可以发送交易</p>}
-      <div className="text-color-dark-1">
-        <div className="form-control-static d-flex justify-content-between mr-0">
-          <span>Gas Fee</span>
-          <span className="font-bold">
-                  <Containers.Gas initState={{gasLimit}}>
-                    <GasFee onGasChange={onGasChange}/><span className="offset-md"> ETH ≈ <Currency/> {getWorthBySymbol({prices, symbol: 'ETH', amount:getGas()})}</span>
-                  </Containers.Gas>
-            <span>{getGas()}</span>
-
-                  </span>
+          </div>
+        }
+        <div className="form-control-static d-flex justify-content-between mr-0 mt15 mb15 align-items-center">
+          <span className="fs14 color-white-2">Balance</span>
+          <span className="font-bold cursor-pointer fs12">
+            {assets.balance.toString()} {token}
+            <Icon hidden type="right" className="ml5" />
+          </span>
         </div>
+        <div className="form-control-static d-flex justify-content-between mr-0 mt15 mb15 align-items-center">
+          <span className="fs14 color-white-2">Gas Fee</span>
+          <span className="font-bold cursor-pointer fs12" onClick={setGas}>
+              <Currency/> {getWorthBySymbol({prices, symbol: 'ETH', amount:getGas()})} ≈ {getGas()} ETH
+              <Icon type="right" className="ml5" />
+          </span>
+        </div>
+
       </div>
-      <Button className="btn-block btn-xlg btn-o-dark" onClick={toConvert}>是的，马上转换</Button>
+      <Button className="btn-block btn-xlg btn-o-dark" onClick={toConvert}>转换</Button>
+      {token.toLowerCase() === 'eth' && <p className="text-color-dark-1 mt15">我们为您保留0.1 ETH作为油费以保证后续可以发送交易</p>}
     </div>
   )
 }

@@ -79,7 +79,7 @@ export default class Receive extends React.Component {
     return (
       <div className="pd-lg">
           <div className="sidebar-header">
-            <h3>My Ethereum Address</h3>
+            <h3 className="text-center">My Ethereum Address</h3>
           </div>
         <div className="Receive-qrcode"><QRCode value={address} size={240} level='H'/></div>
         {symbol && toBig(amount).gt(0) && toBig(this.getNeeded()).gt(0) && <div className='fs3 color-black-1 mt10'>
