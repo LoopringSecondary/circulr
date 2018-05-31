@@ -12,8 +12,16 @@ function Preference(props) {
 
   const handleChange = (type, value) => {
     console.log(type+" changed to:"+value);
+    if(type === 'language'){
+      props.dispatch({
+        type:'locales/setLocale',
+        payload:{
+          locale:value
+        }
+      });
+    }
     settings.preferenceChange({[type]: value})
-  }
+  };
 
   const handleReset = () => {
     form.setFieldsValue({language:'en-US', currency:'USD', timezone:'UTC+00:00'})
