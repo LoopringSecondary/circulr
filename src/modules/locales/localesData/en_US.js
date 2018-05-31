@@ -225,8 +225,8 @@ export default {
     error_mnemonic_tip: "无效的助记词",
     error_password_tip: "请输入密码",
     error_address_tip: "Invalid Address",
-    notifications_unlock_suc: '解锁成功',
-    notification_unlock_fail: "解锁失败",
+    notification_unlock_suc: 'Unlock Successfully',
+    notification_unlock_fail: "Unlock Failed",
   },
   token: {
     action_options: '{token} 选项',
