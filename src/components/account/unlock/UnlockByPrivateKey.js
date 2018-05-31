@@ -4,6 +4,8 @@ import {connect} from 'dva';
 import routeActions from 'common/utils/routeActions';
 import Notification from '../../../common/loopringui/components/Notification'
 import validator from 'LoopringJS/ethereum/validator'
+import intl from 'react-intl-universal'
+
 
 class PrivateKey extends React.Component {
 
@@ -59,14 +61,14 @@ class PrivateKey extends React.Component {
       <div>
         <div id="privateKey">
           <h2 className="text-center text-primary">Paste Your PrivateKey Here</h2>
-          <div className="blk-md"></div>
+          <div className="blk-md" />
           <Form>
             <Form.Item className="eye-switch form-dark">
               {form.getFieldDecorator('privateKey', {
                 initialValue: privateKey,
                 rules: [{
                   required: true,
-                  message: 'invalid privateKey',
+                  message: intl.get('wallet.error_private_tip'),
                   validator: (rule, value, cb) => this.isValidPrivateKey(value) ? cb() : cb(true)
                 }]
               })(
@@ -75,7 +77,7 @@ class PrivateKey extends React.Component {
             </Form.Item>
           </Form>
           <div className="blk-md"/>
-          <Button className="btn btn-primary btn-block btn-xxlg" onClick={this.unlock}>Unlock</Button>
+          <Button className="btn btn-primary btn-block btn-xxlg" onClick={this.unlock}>{intl.get('wallet.actions_unlock')}</Button>
         </div>
       </div>
     )
