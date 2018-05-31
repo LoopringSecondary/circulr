@@ -90,19 +90,18 @@ const TradeByP2P = (props) => {
   function handleSubmit() {
     form.validateFields(async (err,values) => {
       if(!err){
-        if(!wallet.address) { // locked, do not verify
-          //TODO notification to user, order verification in confirm page(unlocked)
+        if(!wallet.address) {
           Notification.open({
-            message: intl.get('trade.place_order_failed'),
+            message: intl.get('notifications.title.place_order_failed'),
             type: "error",
-            description: 'to unlock'
+            description: intl.get('notifications.message.wallet_locked')
           });
           return
         }
         if(!balance || !marketcap) {
           Notification.open({
-            message:intl.get('trade.send_failed'),
-            description:intl.get('trade.failed_fetch_data'),
+            message: intl.get('notifications.title.place_order_failed'),
+            description: intl.get('notifications.message.failed_fetch_data_from_server'),
             type:'error'
           })
           return
@@ -132,8 +131,8 @@ const TradeByP2P = (props) => {
         } catch(e) {
           console.log(e)
           Notification.open({
-            message:intl.get('trade.send_failed'),
-            description:e.message,
+            message: intl.get('notifications.title.place_order_failed'),
+            description: e.message,
             type:'error'
           })
           dispatch({type:'p2pOrder/loadingChange', payload:{loading:false}})
@@ -143,26 +142,26 @@ const TradeByP2P = (props) => {
           tradeInfo.error.map(item=>{
             if(item.value.symbol === 'ETH') {
               Notification.open({
-                message: intl.get('trade.send_failed'),
-                description: intl.get('trade.eth_is_required', {required:item.value.required}),
+                message: intl.get('notifications.title.place_order_failed'),
+                description: intl.get('notifications.message.eth_is_required_when_place_order', {required:item.value.required}),
                 type:'error',
                 actions:(
                   <div>
                     <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'ETH'}})}>
-                      {`${intl.get('tokens.options_receive')} ETH`}
+                      {`${intl.get('actions.receive')} ETH`}
                     </Button>
                   </div>
                 )
               })
             } else if (item.value.symbol === 'LRC') {
               Notification.open({
-                message: intl.get('trade.send_failed'),
-                description: intl.get('trade.lrcfee_is_required', {required:item.value.required}),
+                message: intl.get('notifications.title.place_order_failed'),
+                description: intl.get('notifications.message.lrcfee_is_required_when_place_order', {required:item.value.required}),
                 type:'error',
                 actions:(
                   <div>
                     <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'LRC'}})}>
-                      {`${intl.get('tokens.options_receive')} LRC`}
+                      {`${intl.get('actions.receive')} LRC`}
                     </Button>
                   </div>
                 )
@@ -178,7 +177,7 @@ const TradeByP2P = (props) => {
         } catch (e) {
           console.log(e)
           Notification.open({
-            message:intl.get('trade.send_failed'),
+            message: intl.get('notifications.title.place_order_failed'),
             description:e.message,
             type:'error'
           })

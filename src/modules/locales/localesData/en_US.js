@@ -47,6 +47,15 @@ const validation_messages = {
   invalid_number: "Please input a valid number value"
 }
 
+const notifications = {
+  title:{
+
+  },
+  message:{
+
+  }
+}
+
 const time_unit = {
   second: "Second",
   minute: "Minute",
@@ -104,10 +113,6 @@ export default {
   lrc_setting: {
     // TODO
   },
-  place_order_notification: {
-    title: {},
-    message: {}
-  },
   place_order_confirm: {
     // TODO
   },
@@ -120,10 +125,6 @@ export default {
     generate_order: 'Generate Order',
     instruction:'1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
     notice: '* P2P订单不需要支付LRC手续费</br>'
-  },
-  p2p_order_notification: {
-    title: {},
-    message: {}
   },
   // -----------
   // transaction

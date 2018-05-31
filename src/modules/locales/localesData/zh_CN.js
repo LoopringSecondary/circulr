@@ -46,6 +46,23 @@ const types = {
 const validation_messages = {
   invalid_number: "Please input a valid number value"
 }
+
+const notifications = {
+  title:{
+    place_order_failed: "Whoops, order submission somehow failed!",
+  },
+  message:{
+    wallet_locked: 'Your wallet seems unlocked yet, please unlock first',
+    failed_fetch_data_from_server: 'Failed fetch data from server, you could wait a moment and come back later',
+    eth_is_required_when_place_order: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
+    lrcfee_is_required_when_place_order: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
+  }
+}
+
+const actions = {
+  receive: "Receive",
+}
+
 const time_unit = {
   second: "秒",
   minute: "分钟",
@@ -58,6 +75,8 @@ export default {
   ...words,
   ...validation_messages,
   ...time_unit,
+  notifications,
+  actions,
   // -----------
   // order
   // -----------
@@ -104,14 +123,6 @@ export default {
   lrc_setting: {
     // TODO
   },
-  place_order_notification:{
-    title:{
-
-    },
-    message:{
-
-    }
-  },
   place_order_confirm: {
     // TODO
   },
@@ -124,14 +135,6 @@ export default {
     generate_order: '生成订单',
     instruction:'1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
     notice: '* P2P订单不需要支付LRC手续费</br>'
-  },
-  p2p_order_notification:{
-    title:{
-
-    },
-    message:{
-
-    }
   },
   // -----------
   // transaction
