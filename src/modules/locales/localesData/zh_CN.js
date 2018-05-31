@@ -237,7 +237,7 @@ export default {
     actions_connect: "连接您的{walletType}钱包",
     actions_select_json: '选择JSON文件',
     actions_paste_mnemonic: '请粘贴您的助记词',
-    error_json_tip: '无效的keystore Json ',
+    error_json_tip: '无效的Keystore Json',
     error_mnemonic_tip: "无效的助记词",
     error_address_tip:'不合法的地址',
     error_password_tip: "请输入密码",
