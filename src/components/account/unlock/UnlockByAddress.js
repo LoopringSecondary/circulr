@@ -18,7 +18,7 @@ function UnlockByAddress(props) {
         const address = form.getFieldValue('address')
         props.dispatch({type:"wallet/unlockAddressWallet",payload:{address}});
         Notification.open({type:'success',message:intl.get('wallet.notification_unlock_suc')});
-        props.dispatch({type: 'sockets/unlocked'})
+        props.dispatch({type: 'sockets/unlocked'});
         routeActions.gotoPath('/wallet');
       }else {
         Notification.open({type:'error',message:intl.get('wallet.notification_unlock_fail'),description:intl.get('wallet.error_address_tip')});

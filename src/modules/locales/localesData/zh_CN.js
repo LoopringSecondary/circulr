@@ -73,9 +73,11 @@ const time_unit = {
 }
 
 export default {
-  ...words,
-  ...validation_messages,
-  ...time_unit,
+  common:{
+    ...words,
+    ...validation_messages,
+    ...time_unit,
+  },
   notifications,
   actions,
   // -----------
@@ -223,6 +225,7 @@ export default {
     backup_tip: 'Circular钱包不会保存用户的私钥、Keystore、助记词，强烈建议您在线下备份这些信息（不联网的USB硬盘或纸质存储）。一旦私钥、Keystore、助记词丢失将无法恢复!',
     default_address: '默认地址',
     paste_address_title:'请粘贴您的地址',
+    title_json:'选择JSON文件',
     actions_backup_json:'我已经明白，下载钱包文件',
     actions_backup_mnemonic:'我已经明白，复制助记词',
     actions_backup_private:'我已经明白，复制私钥',

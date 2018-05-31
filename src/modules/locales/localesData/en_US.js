@@ -73,9 +73,12 @@ const time_unit = {
 }
 
 export default {
-  ...words,
-  ...validation_messages,
-  ...time_unit,
+  common:{
+    ...words,
+    ...validation_messages,
+    ...time_unit,
+  },
+
   // -----------
   // order
   // -----------
@@ -219,6 +222,7 @@ export default {
     backup_tip: 'Circular doesn\'t keep a copy of your privatekey, keystore file, or mnemonic words. Make sure you back up these information immediately.',
     default_address: 'Default Address',
     paste_address_title:'Paste Your Address Here',
+    title_json:'Select JSON File',
     actions_backup_json: 'I understand，download the wallet file',
     actions_backup_mnemonic: 'I understand, copy mnemonic',
     actions_backup_private: 'I understand, copy private key',
