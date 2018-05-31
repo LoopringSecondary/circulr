@@ -22,6 +22,8 @@ const words = {
   nonce: '随机数',
   sell: '卖出',
   buy: '买入',
+  buying: "您正在购买",
+  selling: "您正在出售",
   actions: '操作',
   options: '选项',
   balance: '余额',
@@ -34,7 +36,12 @@ const words = {
   copy: "复制",
   copy_suc: '复制成功',
   copy_fail: "复制失败",
-  token:'代币'
+  token:'代币',
+  order_type:'订单类型',
+  margin_split: "分润",
+  order_since: "订单生效时间",
+  order_until: "订单失效时间",
+  format_amount: "{amount,number}",
 }
 const types = {
   trade_side: {
@@ -44,8 +51,32 @@ const types = {
 }
 
 const validation_messages = {
-  invalid_number: "Please input a valid number value"
+  invalid_number: "请输入合法的数字"
 }
+
+const notifications = {
+  title:{
+    place_order_failed: "订单提交失败 !",
+    place_order_success: "下单成功!",
+    place_order_warn: '您的订单只能被部分撮合',
+  },
+  message:{
+    wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
+    failed_fetch_data_from_server: '从服务器获取数据失败, 请稍后在尝试',
+    eth_is_required_when_place_order: '由于需要支付ETH油费, 根据您当前订单需要发送的以太坊交易计算，还需要 {required} ETH',
+    lrcfee_is_required_when_place_order: '由于需要支付LRC油费, 汇总您历史订单所需LRC，还需要 {required} LRC',
+    some_items_not_signed:"您可能还有一些数据还未签名，请把所有未签名项签名后再继续操作",
+    place_order_success: '恭喜, 您的订单已经可以等待交易',
+    place_order_balance_not_enough: '为使订单全部成交, 至少还需要{amount} {token}',
+  }
+}
+
+const actions = {
+  receive: "接收",
+  submit_order: '提交订单',
+  generate_qrcode: '生成二维码'
+}
+
 const time_unit = {
   second: "秒",
   minute: "分钟",
@@ -54,10 +85,15 @@ const time_unit = {
   week: "周",
   month: "月",
 }
+
 export default {
-  ...words,
-  ...validation_messages,
-  ...time_unit,
+  common:{
+    ...words,
+    ...validation_messages,
+    ...time_unit,
+  },
+  notifications,
+  actions,
   // -----------
   // order
   // -----------
@@ -73,6 +109,10 @@ export default {
     created: '提交时间',
     expired: '过期时间',
     status: words.total,
+  },
+  order_type:{
+    market_order : '公开市场订单',
+    p2p_order : '私密点对点订单'
   },
   order_status: {
     open: '撮合中',
@@ -104,34 +144,22 @@ export default {
   lrc_setting: {
     // TODO
   },
-  place_order_notification:{
-    title:{
-
-    },
-    message:{
-
-    }
-  },
   place_order_confirm: {
-    // TODO
+    qrcode_security:'*为了您订单的安全，二维码只会生成一次并且不会保存在任何地方。请确认妥善保存二维码，任何收到您二维码的人都有可能吃掉您的订单。'
   },
   p2p_order: {
-    order_title: '线下点对点交易',
+    order_title: '私密点对点交易',
     amounts_placeholder: '卖出数量',
     amountb_placeholder: '买入数量',
     token_balance: '代币余额',
     order_detail: '订单详情',
     generate_order: '生成订单',
-    instruction:'1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
-    notice: '* P2P订单不需要支付LRC手续费</br>'
+    instruction:'1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方使用Circulr移动端扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
+    notice: '* P2P订单双方都不需要支付LRC手续费</br>'
   },
-  p2p_order_notification:{
-    title:{
-
-    },
-    message:{
-
-    }
+  sign: {
+    not_signed : "您还未完成签名",
+    to_sign: "去签名"
   },
   // -----------
   // transaction
@@ -197,6 +225,10 @@ export default {
   },
   transfer: {},
   convert: {},
+  unlock:{
+    has_not_unlocked: '您的钱包还未解锁',
+    to_unlock:'解锁钱包'
+  },
   wallet: {
     types: {
       generate: '生成钱包',
@@ -215,25 +247,32 @@ export default {
       strong: '强'
     },
     password_tips_weak:'密码强度不足,至少需要7个字符。',
+    password_tips_lack:"请输入密码",
     backup_title:'备份钱包',
     backup_tip: 'Circular钱包不会保存用户的私钥、Keystore、助记词，强烈建议您在线下备份这些信息（不联网的USB硬盘或纸质存储）。一旦私钥、Keystore、助记词丢失将无法恢复!',
+    default_address: '默认地址',
+    paste_address_title:'请粘贴您的地址',
+    paste_private_title:"请粘贴您的私钥",
+    title_json:'选择JSON文件',
     actions_backup_json:'我已经明白，下载钱包文件',
     actions_backup_mnemonic:'我已经明白，复制助记词',
     actions_backup_private:'我已经明白，复制私钥',
-    default_address: '默认地址',
     actions_unlock: '解锁',
     actions_generate: '生成钱包',
-    actions_more_address: '选择其他地址',
+    actions_other_address: '选择其他地址',
     actions_get_metamask: "下载MetaMask插件",
     actions_visit_metaMask: "访问MetaMask官网",
     actions_connect: "连接您的{walletType}钱包",
     actions_select_json: '选择JSON文件',
     actions_paste_mnemonic: '请粘贴您的助记词',
-    error_json_tip: '无效的keystore Json ',
+    error_json_tip: '无效的Keystore Json',
     error_mnemonic_tip: "无效的助记词",
     error_address_tip:'不合法的地址',
+    error_private_tip:'不合法的私钥',
+    error_invalid_tip:"信息不合法",
+    mnemonic_tip_lack:"请输入您的助记词",
     error_password_tip: "请输入密码",
-    notifications_unlock_suc: '解锁成功',
+    notification_unlock_suc: '解锁成功',
     notification_unlock_fail: "解锁失败",
   },
   token: {

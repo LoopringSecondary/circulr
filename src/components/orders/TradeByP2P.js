@@ -90,19 +90,18 @@ const TradeByP2P = (props) => {
   function handleSubmit() {
     form.validateFields(async (err,values) => {
       if(!err){
-        if(!wallet.address) { // locked, do not verify
-          //TODO notification to user, order verification in confirm page(unlocked)
+        if(!wallet.address) {
           Notification.open({
-            message: intl.get('trade.place_order_failed'),
+            message: intl.get('notifications.title.place_order_failed'),
             type: "error",
-            description: 'to unlock'
+            description: intl.get('notifications.message.wallet_locked')
           });
           return
         }
         if(!balance || !marketcap) {
           Notification.open({
-            message:intl.get('trade.send_failed'),
-            description:intl.get('trade.failed_fetch_data'),
+            message: intl.get('notifications.title.place_order_failed'),
+            description: intl.get('notifications.message.failed_fetch_data_from_server'),
             type:'error'
           })
           return
@@ -113,14 +112,11 @@ const TradeByP2P = (props) => {
         tradeInfo.amountS = amountS
         tradeInfo.tokenB = tokenB
         tradeInfo.tokenS = tokenS
+        //TODO mock datas
         tradeInfo.validSince = moment().unix()
         tradeInfo.validUntil = moment().add(3600, 'seconds').unix()
-        tradeInfo.marginSplit = settings.trading.marginSplit
-        if (values.marginSplit) {
-          tradeInfo.marginSplit = Number(values.marginSplit)
-        }
-        //TODO mock datas
-        tradeInfo.milliLrcFee = 2
+        tradeInfo.marginSplit = 0
+        tradeInfo.milliLrcFee = 0
         tradeInfo.lrcFee = 0
         tradeInfo.delegateAddress = config.getDelegateAddress();
         tradeInfo.protocol = settings.trading.contract.address;
@@ -132,8 +128,8 @@ const TradeByP2P = (props) => {
         } catch(e) {
           console.log(e)
           Notification.open({
-            message:intl.get('trade.send_failed'),
-            description:e.message,
+            message: intl.get('notifications.title.place_order_failed'),
+            description: e.message,
             type:'error'
           })
           dispatch({type:'p2pOrder/loadingChange', payload:{loading:false}})
@@ -143,26 +139,26 @@ const TradeByP2P = (props) => {
           tradeInfo.error.map(item=>{
             if(item.value.symbol === 'ETH') {
               Notification.open({
-                message: intl.get('trade.send_failed'),
-                description: intl.get('trade.eth_is_required', {required:item.value.required}),
+                message: intl.get('notifications.title.place_order_failed'),
+                description: intl.get('notifications.message.eth_is_required_when_place_order', {required:item.value.required}),
                 type:'error',
                 actions:(
                   <div>
                     <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'ETH'}})}>
-                      {`${intl.get('tokens.options_receive')} ETH`}
+                      {`${intl.get('actions.receive')} ETH`}
                     </Button>
                   </div>
                 )
               })
             } else if (item.value.symbol === 'LRC') {
               Notification.open({
-                message: intl.get('trade.send_failed'),
-                description: intl.get('trade.lrcfee_is_required', {required:item.value.required}),
+                message: intl.get('notifications.title.place_order_failed'),
+                description: intl.get('notifications.message.lrcfee_is_required_when_place_order', {required:item.value.required}),
                 type:'error',
                 actions:(
                   <div>
                     <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'LRC'}})}>
-                      {`${intl.get('tokens.options_receive')} LRC`}
+                      {`${intl.get('actions.receive')} LRC`}
                     </Button>
                   </div>
                 )
@@ -178,7 +174,7 @@ const TradeByP2P = (props) => {
         } catch (e) {
           console.log(e)
           Notification.open({
-            message:intl.get('trade.send_failed'),
+            message: intl.get('notifications.title.place_order_failed'),
             description:e.message,
             type:'error'
           })
@@ -227,13 +223,13 @@ const TradeByP2P = (props) => {
             {form.getFieldDecorator('amountS', {
               initialValue: amountS.toString(10),
               rules: [{
-                message: intl.get('invalid_number'),
+                message: intl.get('common.invalid_number'),
                 validator: (rule, value, cb) => validateAmountS(value) ? cb() : cb(true)
               }]
           })(
             <Input size="large"
                    placeholder={intl.get('p2p_order.amounts_placeholder')}
-                   addonBefore={intl.get('sell')}
+                   addonBefore={intl.get('common.sell')}
                    addonAfter={
                      <Select
                        showSearch
@@ -276,13 +272,13 @@ const TradeByP2P = (props) => {
             {form.getFieldDecorator('amountB', {
               initialValue: amountB.toString(10),
               rules: [{
-                message: intl.get('invalid_number'),
+                message: intl.get('common.invalid_number'),
                 validator: (rule, value, cb) => tokenFormatter.isValidNumber(value) ? cb() : cb(true)
               }]
             })(
               <Input size="large"
                      placeholder={intl.get('p2p_order.amountb_placeholder')}
-                     addonBefore={intl.get('buy')}
+                     addonBefore={intl.get('common.buy')}
                      addonAfter={
                        <Select
                          showSearch
@@ -332,13 +328,13 @@ const TradeByP2P = (props) => {
         <div>{intl.get('p2p_order.order_detail')}</div>
         <div className="zb-b">
           {false && <MenuItem label={intl.get('price')} value={`${price.toString(10)} ${tokenB}`} />}
-          <MenuItem label={intl.get('worth')} value={
+          <MenuItem label={intl.get('common.worth')} value={
             <div>
-              <div>{worthDisplay(intl.get('sell'), tokenS, amountS)}</div>
-              <div>{worthDisplay(intl.get('buy'), tokenB, amountB)}</div>
+              <div>{worthDisplay(intl.get('common.sell'), tokenS, amountS)}</div>
+              <div>{worthDisplay(intl.get('common.buy'), tokenB, amountB)}</div>
             </div>
           } />
-          <MenuItem label={intl.get('ttl')} action={<span onClick={()=>{}} className="cursor-pointer">06-10 10:00 ~ 06-15 24:00<Icon type="right" className="ml5" /></span>} />
+          <MenuItem label={intl.get('common.ttl')} action={<span onClick={()=>{}} className="cursor-pointer">06-10 10:00 ~ 06-15 24:00<Icon type="right" className="ml5" /></span>} />
         </div>
       </div>
       <div className="mb15"></div>

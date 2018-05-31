@@ -4,37 +4,44 @@ const words = {
   statuses: '状态',
   side: 'Side',
   sides: '方向',
-  market: '市场',
+  market: 'Market',
   markets: '市场',
   amount: 'Amount',
   type: 'Type',
   types: '类型',
-  gas: '油费',
+  gas: 'Gas',
   price: 'Price',
   total: 'Total',
   worth: "Worth",
-  lrc_fee: 'LRC 撮合费',
+  lrc_fee: 'LRC fee',
   lrc_fee_tips: 'xxxxx',
-  lrc_reward: 'LRC 撮合奖励',
+  lrc_reward: 'LRC reward',
   lrc_reward_tips: 'xxxxx',
   ttl: 'Time to Live',
-  block: '区块',
-  nonce: '随机数',
+  block: 'Block',
+  nonce: 'Nonce',
   sell: 'Sell',
   buy: 'Buy',
+  buying: "You are buying",
+  selling: "You are selling",
   actions: '操作',
   options: '选项',
   balance: 'Balance',
   balances: '余额',
-  send: '转出',
-  receive: '转入',
-  convert: '转换',
-  trade: '买卖',
-  password: '密码',
+  send: 'Send',
+  receive: 'Receive',
+  convert: 'Convert',
+  trade: 'Trade',
+  password: 'Password',
   copy: "Copy",
   copy_suc: 'Copy Successfully',
   copy_fail: "Copy Failed",
-  token:'Token'
+  token:'Token',
+  order_type:'Order Type',
+  margin_split: "Margin Split",
+  order_since: "Valid Since",
+  order_until: "Valid Until",
+  format_amount: "{amount,number}",
 }
 const types = {
   trade_side: {
@@ -47,6 +54,29 @@ const validation_messages = {
   invalid_number: "Please input a valid number value"
 }
 
+const notifications = {
+  title:{
+    place_order_failed: "Whoops, order submission somehow failed!",
+    place_order_success: "Order placed successfully.",
+    place_order_warn: "Your order can not be fully filled.",
+  },
+  message:{
+    wallet_locked: 'Your wallet seems unlocked yet, please unlock first',
+    failed_fetch_data_from_server: 'Failed fetch data from server, you could wait a moment and come back later',
+    eth_is_required_when_place_order: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
+    lrcfee_is_required_when_place_order: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
+    some_items_not_signed:"You may have some items not signed, please signed all items then continue",
+    place_order_success: 'Good job. Your order has been submitted for ring-matching.',
+    place_order_balance_not_enough: 'In order for your order to be fully filled, {amount} more {token} is required.',
+  }
+}
+
+const actions = {
+  receive: "Receive",
+  submit_order: 'Submit Order',
+  generate_qrcode: 'Generate QR Code'
+}
+
 const time_unit = {
   second: "Second",
   minute: "Minute",
@@ -57,9 +87,14 @@ const time_unit = {
 }
 
 export default {
-  ...words,
-  ...validation_messages,
-  ...time_unit,
+  common:{
+    ...words,
+    ...validation_messages,
+    ...time_unit,
+  },
+  notifications,
+  actions,
+
   // -----------
   // order
   // -----------
@@ -75,6 +110,10 @@ export default {
     created: '提交时间',
     expired: '过期时间',
     status: words.total,
+  },
+  order_type:{
+    market_order : 'Open Market Order',
+    p2p_order : 'Privacy P2P Order'
   },
   order_status: {
     open: '撮合中',
@@ -104,12 +143,8 @@ export default {
   lrc_setting: {
     // TODO
   },
-  place_order_notification: {
-    title: {},
-    message: {}
-  },
   place_order_confirm: {
-    // TODO
+    qrcode_security:'*For your order\'s security, your QR code will only generated once and not be stored locally. Make sure to save it properly, any one who received your QR code could take your order',
   },
   p2p_order: {
     order_title: 'Privacy P2P Trade',
@@ -118,12 +153,12 @@ export default {
     token_balance: 'Token Balance',
     order_detail: 'Order Detail',
     generate_order: 'Generate Order',
-    instruction:'1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
+    instruction:'1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方使用Circulr移动端扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
     notice: '* P2P订单不需要支付LRC手续费</br>'
   },
-  p2p_order_notification: {
-    title: {},
-    message: {}
+  sign: {
+    not_signed : "You may have some items not signed",
+    to_sign: "To Sign"
   },
   // -----------
   // transaction
@@ -189,6 +224,13 @@ export default {
   },
   transfer: {},
   convert: {},
+  // -----------
+  // wallet
+  // -----------
+  unlock:{
+    has_not_unlocked: 'Your wallet hasn\'t unlocked yet',
+    to_unlock:'To Unlock'
+  },
   wallet: {
     types: {
       generate: 'Generate',
@@ -207,26 +249,32 @@ export default {
       strong: 'strong'
     },
     password_tips_weak: 'Password is too weak, at least 7 characters',
+    password_tips_lack:'Please input your password',
     backup_title: 'Backup Wallet',
     backup_tip: 'Circular doesn\'t keep a copy of your privatekey, keystore file, or mnemonic words. Make sure you back up these information immediately.',
     default_address: 'Default Address',
+    paste_address_title:'Paste Your Address Here',
+    paste_private_title:'Paste Your Private Key Here',
+    title_json:'Select JSON File',
     actions_backup_json: 'I understand，download the wallet file',
     actions_backup_mnemonic: 'I understand, copy mnemonic',
     actions_backup_private: 'I understand, copy private key',
     actions_unlock: 'Unlock',
     actions_generate: 'Generate Now',
-    actions_more_address: 'More Addresses',
+    actions_other_address: 'Select Other Address',
     actions_get_metamask: "下载MetaMask插件",
     actions_visit_metaMask: "访问MetaMask官网",
     actions_connect: "连接您的{walletType}钱包",
-    actions_select_json: '选择JSON文件',
-    actions_paste_mnemonic: '请粘贴您的助记词',
-    error_json_tip: '无效的keystore Json ',
-    error_mnemonic_tip: "无效的助记词",
+    actions_paste_mnemonic: 'Paste Mnemonic Here',
+    error_json_tip: 'Invalid keystore Json',
+    error_mnemonic_tip: "Invalid Mnemonic",
+    error_invalid_tip:'Invalid Information',
+    mnemonic_tip_lack:'Please Input your mnemonic',
     error_password_tip: "请输入密码",
     error_address_tip: "Invalid Address",
-    notifications_unlock_suc: '解锁成功',
-    notification_unlock_fail: "解锁失败",
+    error_private_tip:'Invalid Private Key',
+    notification_unlock_suc: 'Unlock Successfully',
+    notification_unlock_fail: "Unlock Failed",
   },
   token: {
     action_options: '{token} 选项',

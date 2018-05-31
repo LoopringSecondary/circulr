@@ -3,6 +3,7 @@ import {Upload, Button, Input, Icon, Form} from 'antd';
 import routeActions from 'common/utils/routeActions'
 import Notification from '../../../common/loopringui/components/Notification'
 import {isKeystorePassRequired} from "LoopringJS/ethereum/keystore";
+import intl from 'react-intl-universal'
 
 
 class Keystore extends React.Component {
@@ -41,12 +42,12 @@ class Keystore extends React.Component {
           type: 'wallet/unlockKeyStoreWallet', payload: {
             keystore, password, cb: (e) => {
               if (!e) {
-                Notification.open({type: 'success', message: '解锁成功', description: 'unlock'});
+                Notification.open({type: 'success', message: intl.get('wallet.notification_unlock_suc')});
                 keyStoreModel.reset();
                 this.props.dispatch({type: 'sockets/unlocked'});
                 routeActions.gotoPath('/wallet');
               } else {
-                Notification.open({type: 'error', message: '解锁失败', description: e.message});
+                Notification.open({type: 'error', message: intl.get('wallet.notification_unlock_fail'), description: e.message});
               }
             }
           }
@@ -99,12 +100,12 @@ class Keystore extends React.Component {
 
     return (
       <div>
-        <h2 className="text-center text-primary">Select JSON File</h2>
+        <h2 className="text-center text-primary">{intl.get('wallet.title_json')}</h2>
         <div className="blk-md"></div>
          <Form className="form-dark eye-switch">
            <Form.Item>
               <Upload className='btn btn-block btn-upload' {...uploadProps}>
-              <Button className="d-block"><Icon type="folder" />Select JSON File</Button>
+              <Button className="d-block"><Icon type="folder" />{intl.get('wallet.title_json')}</Button>
               </Upload>
             </Form.Item>
             <Form.Item>
@@ -112,7 +113,7 @@ class Keystore extends React.Component {
                 initialValue: '',
                 rules: [{
                   required: true,
-                  message: 'invalid keystore',
+                  message: intl.get('wallet.error_json_tip'),
                   validator: (rule, value, cb) => this.isValidKeystore(value) ? cb() : cb(true)
                 }]
               })(
@@ -120,10 +121,10 @@ class Keystore extends React.Component {
               )}
             </Form.Item>
           {isPasswordRequired &&
-          <Input type={visible ? 'text' : 'password'} addonAfter={visibleIcon} value={password} onChange={this.handlePassChange}/>}
+          <Input type={visible ? 'text' : 'password'} placeholder={intl.get('common.password')} addonAfter={visibleIcon} value={password} onChange={this.handlePassChange}/>}
         </Form>
         <div className="blk"/>
-        <Button type="primary" className="btn btn-primary btn-block btn-xxlg" onClick={this.unlock}>Unlock</Button>
+        <Button type="primary" className="btn btn-primary btn-block btn-xxlg" onClick={this.unlock}>{intl.get('wallet.actions_unlock')}</Button>
       </div>
     )
   }

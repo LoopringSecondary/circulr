@@ -4,6 +4,7 @@ import {wallets} from "../../../common/config/data";
 import routeActions from 'common/utils/routeActions'
 import Notification from '../../../common/loopringui/components/Notification'
 import {isValidateMnemonic} from "LoopringJS/ethereum/mnemonic";
+import intl from 'react-intl-universal'
 
 const Option = Select.Option;
 
@@ -27,15 +28,19 @@ function Mnemonic(props) {
   const unlock = () => {
     if (address) {
       props.dispatch({type: 'wallet/unlockMnemonicWallet', payload: {mnemonic, dpath: `${dpath}/0`, password}});
-      Notification.open({type: 'success', message: '解锁成功', description: 'unlock'});
+      Notification.open({type: 'success', message: intl.get('wallet.notification_unlock_suc')});
       mnemonicModel.reset();
-      props.dispatch({type: 'sockets/unlocked'})
+      props.dispatch({type: 'sockets/unlocked'});
       routeActions.gotoPath('/wallet');
     } else {
       if (!(mnemonic && isValidateMnemonic(mnemonic))) {
-        Notification.open({type: 'error', message: 'incomplete formation', description: 'please input valid mnemonic'})
+        if(!mnemonic){
+          Notification.open({type: 'error', message: intl.get('wallet.notification_unlock_fail'), description: intl.get('wallet.mnemonic_tip_lack')})
+        }else{
+          Notification.open({type: 'error', message: intl.get('wallet.notification_unlock_fail'), description: intl.get('wallet.error_mnemonic_tip')})
+        }
       } else if (passRequired && !password) {
-        Notification.open({type: 'error', message: 'incomplete formation', description: 'please input valid password'})
+        Notification.open({type: 'error', message:intl.get('wallet.notification_unlock_fail'), description: intl.get('wallet.password_tips_lack')})
       }
     }
   };
@@ -46,14 +51,18 @@ function Mnemonic(props) {
       mnemonicModel.reset();
       routeActions.gotoPath('/unlock/determineWallet');
     } else {
-      Notification.open({type: 'error', message: 'invalid information', description: 'please input valid mnemonic'})
+      if(!mnemonic){
+        Notification.open({type: 'error', message: intl.get('wallet.error_invalid_tip'), description: intl.get('wallet.mnemonic_tip_lack')})
+      }else{
+        Notification.open({type: 'error', message: intl.get('wallet.error_invalid_tip'), description: intl.get('wallet.error_mnemonic_tip')})
+      }
     }
   };
 
   return (
     <div>
       <div id="mnemonic" className="form-dark">
-        <h2 className="text-center text-primary">Paste Your Mnemonic Here</h2>
+        <h2 className="text-center text-primary">{intl.get('wallet.actions_paste_mnemonic')}</h2>
         <div className="blk-md"/>
         <Form.Item>
           <Select defaultValue='0' dropdownMatchSelectWidth={false} size="large" onChange={handleWalletType}
@@ -68,27 +77,27 @@ function Mnemonic(props) {
             initialValue: '',
             rules: [{
               required: true,
-              message: 'invalid mnemonic',
+              message: intl.get('wallet.error_mnemonic_tip'),
               validator: (rule, value, cb) => isValidateMnemonic(value) ? cb() : cb(true)
             }]
           })(
-            <Input.TextArea placeholder="Paste Your Mnemonic Here" size="large" autosize={{minRows: 4, maxRows: 6}}
-                            value={mnemonic} onChange={handleMnemonic} className="mnemonic"/>
+            <Input.TextArea placeholder={intl.get('wallet.actions_paste_mnemonic')} size="large" autosize={{minRows: 4, maxRows: 6}}
+                            onChange={handleMnemonic} className="mnemonic"/>
           )}
         </Form.Item>
-        {passRequired && <Form.Item colon={false} label="Password:">
+        {passRequired && <Form.Item colon={false} label={`${intl.get('common.password')}:`}>
            <div className="text-muted">
             <Input value={password} onChange={handlePass}/>
           </div>
         </Form.Item>}
-        <Form.Item label="Default Address:">
+        <Form.Item label={`${intl.get('wallet.default_address')}:`}>
           <Input value={address} disabled/>
         </Form.Item>
         <div className="blk"/>
-        <Button className="btn btn-primary btn-block btn-xxlg" onClick={unlock}>Unlock</Button>
+        <Button className="btn btn-primary btn-block btn-xxlg" onClick={unlock}>{intl.get('wallet.actions_unlock')}</Button>
         <div className="blk"/>
         <div className="text-center">
-          <a className="text-link" onClick={moreAddress}>Select Other Address</a>
+          <a className="text-link" onClick={moreAddress}>{intl.get('wallet.actions_other_address')}</a>
         </div>
       </div>
     </div>
