@@ -268,7 +268,7 @@ const TradeByP2P = (props) => {
                 validator: (rule, value, cb) => tokenFormatter.isValidNumber(value) ? cb() : cb(true)
               }]
             })(
-              <Input placeholder="1.00" size="large"
+              <Input size="large"
                      addonAfter={<div style={{width:'50px'}}>{tokenB}</div>}
                      onChange={amountChange.bind(this, 'buy')}
               />
