@@ -279,11 +279,11 @@ class PlaceOrderForm extends React.Component {
                          <Form.Item className="ttl mb0" colon={false} label={null}>
                            {form.getFieldDecorator('timeToLivePopularSetting')(
                              <Radio.Group onChange={timeToLiveValueChange.bind(this, 'popular')}>
-                               <Radio className="mb5" value="1hour">1 {intl.get('trade.hour')}</Radio>
-                               <Radio className="mb5" value="1day">1 {intl.get('trade.day')}</Radio>
-                               <Radio className="mb5" value="1week">1 {intl.get('trade.week')}</Radio>
-                               <Radio className="mb5" value="1month">1 {intl.get('trade.month')}</Radio>
-                               <Radio className="mb5" value="more">{intl.get('trade.more')}</Radio>
+                               <Radio className="mb5" value="1hour">1 {intl.get('hour')}</Radio>
+                               <Radio className="mb5" value="1day">1 {intl.get('day')}</Radio>
+                               <Radio className="mb5" value="1week">1 {intl.get('week')}</Radio>
+                               <Radio className="mb5" value="1month">1 {intl.get('month')}</Radio>
+                               <Radio className="mb5" value="more">{intl.get('more')}</Radio>
                              </Radio.Group>
                            )}
                          </Form.Item>
@@ -333,11 +333,11 @@ class PlaceOrderForm extends React.Component {
       const ttl = Number(ttlValue)
       const unit = ttlUnit
       switch(unit){
-        case 'minute': ttlInSecond = ttl * 60 ; ttlShow = `${ttl} ${intl.get('trade.minute')}`; break;
-        case 'hour': ttlInSecond = ttl * 3600 ; ttlShow = `${ttl} ${intl.get('trade.hour')}`; break;
-        case 'day': ttlInSecond = ttl * 86400; ttlShow = `${ttl} ${intl.get('trade.day')}`; break;
-        case 'week': ttlInSecond = ttl * 7 * 86400; ttlShow = `${ttl} ${intl.get('trade.week')}`; break;
-        case 'month': ttlInSecond = ttl * 30 * 86400; ttlShow = `${ttl} ${intl.get('trade.month')}`; break;
+        case 'minute': ttlInSecond = ttl * 60 ; ttlShow = `${ttl} ${intl.get('minute')}`; break;
+        case 'hour': ttlInSecond = ttl * 3600 ; ttlShow = `${ttl} ${intl.get('hour')}`; break;
+        case 'day': ttlInSecond = ttl * 86400; ttlShow = `${ttl} ${intl.get('day')}`; break;
+        case 'week': ttlInSecond = ttl * 7 * 86400; ttlShow = `${ttl} ${intl.get('week')}`; break;
+        case 'month': ttlInSecond = ttl * 30 * 86400; ttlShow = `${ttl} ${intl.get('month')}`; break;
       }
     } else {
       if(placeOrder.timeToLiveStart && placeOrder.timeToLiveEnd) {
@@ -548,31 +548,31 @@ class PlaceOrderForm extends React.Component {
           </div>
           {placeOrder.side === 'buy' &&
           <ul className="token-tab">
-            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>Buy {left.symbol}</a></li>
-            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>Sell {left.symbol}</a></li>
+            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('buy')} {left.symbol}</a></li>
+            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('sell')} {left.symbol}</a></li>
           </ul>
           }
           {placeOrder.side === 'sell' &&
           <ul className="token-tab">
-            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>Buy {left.symbol}</a></li>
-            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>Sell {left.symbol}</a></li>
+            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('buy')} {left.symbol}</a></li>
+            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('sell')} {left.symbol}</a></li>
           </ul>
           }
           <div className="tab-content">
             <div className="blk-sm"></div>
             <div className="" id="b1">
-              {false && sell && <small className="balance">{sell.token.symbol} Balance: <span>{FormatAmount({value:sell.token.balance.toString(10), precision:marketConfig.pricePrecision})}</span></small>}
+              {false && sell && <small className="balance">{sell.token.symbol} {intl.get('balance')}: <span>{FormatAmount({value:sell.token.balance.toString(10), precision:marketConfig.pricePrecision})}</span></small>}
               <div className="blk-sm"></div>
               <Form.Item label={null} colon={false}>
                 {form.getFieldDecorator('price', {
                   initialValue: placeOrder.priceInput,
                   rules: [{
-                    message: intl.get('trade.price_verification_message'),
+                    message: intl.get('invalid_number'),
                     validator: (rule, value, cb) => validatePirce(value) ? cb() : cb(true)
                   }]
                 })(
                   <Input placeholder="" size="large"
-                         prefix={`Price`}
+                         prefix={intl.get('price')}
                          suffix={<span className="fs14 color-black-3">{right.symbol}</span>}
                          onChange={inputChange.bind(this, 'price')}
                          onFocus={() => {
@@ -597,12 +597,12 @@ class PlaceOrderForm extends React.Component {
                 {form.getFieldDecorator('amount', {
                   initialValue: '0',
                   rules: [{
-                    message: intl.get('trade.amount_verification_message'),
+                    message: intl.get('invalid_number'),
                     validator: (rule, value, cb) => validateAmount(value) ? cb() : cb(true)
                   }]
                 })(
                   <Input placeholder="" size="large"
-                         prefix={`Amount`}
+                         prefix={intl.get('amount')}
                          suffix={<span className="fs14 color-black-3">{left.symbol}</span>}
                          onChange={inputChange.bind(this, 'amount')}
                          onFocus={() => {
@@ -620,9 +620,9 @@ class PlaceOrderForm extends React.Component {
                 )}
               </Form.Item>
               <div className="pl10 pr10 pt5 pb5" style={{border:'1px solid rgba(255,255,255,0.07)',margin:'0px 0px'}}>
-                <MenuItem label="Total" value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>}  />
-                <MenuItem label="LRC Fee" action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFee} LRC <Icon type="right" className="" /></div>}  />
-                <MenuItem label="Time To Live" action={<div onClick={setTTL} className="cursor-pointer">{ttlShow} <Icon type="right" className="" /></div>}  />
+                <MenuItem label={intl.get('total')} value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>}  />
+                <MenuItem label={intl.get('lrc_fee')} action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFee} LRC <Icon type="right" className="" /></div>}  />
+                <MenuItem label={intl.get('ttl')} action={<div onClick={setTTL} className="cursor-pointer">{ttlShow} <Icon type="right" className="" /></div>}  />
                 <div hidden className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
                     <span className="font-bold">LRC Fee <i className="icon-info tradingfeetip"></i></span>

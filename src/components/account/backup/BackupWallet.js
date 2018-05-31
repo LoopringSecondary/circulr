@@ -2,9 +2,10 @@ import React from 'react'
 import {Tabs,Button,Input} from 'antd'
 import copy from 'copy-to-clipboard';
 import {getFileName} from "LoopringJS/ethereum/keystore";
+import intl from 'react-intl-universal'
+import Notification from '../../../common/loopringui/components/Notification'
 
 const TabPane = Tabs.TabPane;
-
 
 export  default class BackupWallet extends React.Component {
 
@@ -25,7 +26,7 @@ export  default class BackupWallet extends React.Component {
   }
 
   handleCopy = (value) => {
-    copy(value)
+    copy(value) ? Notification.open({type:'success',message:intl.get('copy_suc')}) : Notification.open({type:'error',message:intl.get('wallet.copy_fail')})
   };
 
   togglePassword = () => {
@@ -34,7 +35,7 @@ export  default class BackupWallet extends React.Component {
   };
   render(){
     const {visible,url,fileName} = this.state;
-    const {mnemonic,keystore,privateKey} = this.props.backup;
+    const {mnemonic,privateKey} = this.props.backup;
     const visibleIcon = (
       <div className="fs14 pl5 pr5">
         {visible &&
@@ -47,43 +48,42 @@ export  default class BackupWallet extends React.Component {
     );
     return(
       <div>
-        <h2 className="text-center text-primary" style={{marginBottom: "20px" }}>Backup Wallet</h2>
+        <h2 className="text-center text-primary" style={{marginBottom: "20px" }}>{intl.get('wallet.backup_title')}</h2>
         <Tabs defaultActiveKey="1" className="tabs-dark">
           <TabPane tab="Keystore" key="1" style={{textAlign:"tect-center"}}>
               <div className="notice text-warning">
                 <div><i className="icon-warning"/></div>
                 <div>
-                  <p>Loopring wallet never keeps your private key/keystore file/ mnemonic words, It is strongly recommended that you back up these information offline (with USB or physical paper). Once your private key/keystore file/mnemonic words get lost, it can never be recovered.</p>
+                  <p>{intl.get('wallet.backup_tip')}</p>
                 </div>
             </div>
-
             <a href={url}
                download={fileName}
                className="btn btn-block btn-primary btn-xxlg">
-              I Understand,Download Keystore</a>
+              {intl.get('wallet.actions_backup_json')}</a>
           </TabPane>
-          <TabPane tab="MMnemonick" key="2">
+          <TabPane tab={intl.get('wallet.types.mnemonic')} key="2">
               <div className="notice text-warning">
                 <div><i className="icon-warning"/></div>
                 <div>
-                  <p>Secure it like the millions of dollars it may one day be worth..</p>
+                  <p>{intl.get('wallet.backup_tip')}</p>
                 </div>
               </div>
             <div className="mnemonic-content text-primary">{mnemonic}</div>
-            <Button className="btn btn-block btn-primary btn-xxlg" onClick={() => this.handleCopy(mnemonic)}>I Understand, Copy Mnemonic</Button>
+            <Button className="btn btn-block btn-primary btn-xxlg" onClick={() => this.handleCopy(mnemonic)}>{intl.get('wallet.actions_backup_mnemonic')}</Button>
           </TabPane>
-          <TabPane tab="Private Key" key="3">
+          <TabPane tab={intl.get('wallet.types.private_key')} key="3">
               <div className="notice text-warning">
                 <div><i className="icon-warning"/></div>
                 <div>
-                  <p>Secure it like the millions of dollars it may one day be worth..</p>
+                  <p>{intl.get('wallet.backup_tip')}</p>
                 </div>
               </div>
             <div className="form-group form-group-lg iconic-input iconic-input-lg right eye-switch">
               <Input type={visible ? 'text':'password'} addonAfter={visibleIcon} disabled value={privateKey}/>
             </div>
             <div className="blk"></div>
-            <Button className="btn btn-block btn-primary btn-xxlg" onClick={() => this.handleCopy(privateKey)}>I Understand, Copy Private Key</Button>
+            <Button className="btn btn-block btn-primary btn-xxlg" onClick={() => this.handleCopy(privateKey)}>{intl.get('wallet.actions_backup_private')}</Button>
           </TabPane>
         </Tabs>
       </div>

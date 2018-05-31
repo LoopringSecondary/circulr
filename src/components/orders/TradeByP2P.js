@@ -89,7 +89,6 @@ const TradeByP2P = (props) => {
 
   function handleSubmit() {
     form.validateFields(async (err,values) => {
-      console.log('values',values);
       if(!err){
         if(!wallet.address) { // locked, do not verify
           //TODO notification to user, order verification in confirm page(unlocked)
@@ -221,27 +220,24 @@ const TradeByP2P = (props) => {
   }
   return (
     <div>
-      <div className="pb10 fs18 color-black-1 zb-b-b mb15">Privacy P2P Trade</div>
-      <div className="row pl0 pr0 pt10 pb10">
-        p2p订单介绍...
-      </div>
+      <div className="pb10 fs18 color-black-1 zb-b-b mb15">{intl.get('p2p_order.order_title')}</div>
       <div className="row pl0 pr0 pt10 pb10">
         <div className="col pl0 pr0">
           <Form.Item label={null} colon={false}>
             {form.getFieldDecorator('amountS', {
               initialValue: amountS.toString(10),
               rules: [{
-                message: 'invalid amountS',
+                message: intl.get('invalid_number'),
                 validator: (rule, value, cb) => validateAmountS(value) ? cb() : cb(true)
               }]
           })(
             <Input size="large"
-                   placeholder="Amount to sell"
-                   addonBefore='Sell'
+                   placeholder={intl.get('p2p_order.amounts_placeholder')}
+                   addonBefore={intl.get('sell')}
                    addonAfter={
                      <Select
                        showSearch
-                       placeholder={tokenS || 'Sell'}
+                       placeholder={tokenS}
                        dropdownMatchSelectWidth={false}
                        size="small"
                        defaultValue={tokenS}
@@ -280,17 +276,17 @@ const TradeByP2P = (props) => {
             {form.getFieldDecorator('amountB', {
               initialValue: amountB.toString(10),
               rules: [{
-                message: 'invalid amountB',
+                message: intl.get('invalid_number'),
                 validator: (rule, value, cb) => tokenFormatter.isValidNumber(value) ? cb() : cb(true)
               }]
             })(
               <Input size="large"
-                     placeholder="Amount to buy"
-                     addonBefore='Buy'
+                     placeholder={intl.get('p2p_order.amountb_placeholder')}
+                     addonBefore={intl.get('buy')}
                      addonAfter={
                        <Select
                          showSearch
-                         placeholder={tokenB || 'Buy'}
+                         placeholder={tokenB}
                          dropdownMatchSelectWidth={false}
                          size="small"
                          defaultValue={tokenB}
@@ -325,7 +321,7 @@ const TradeByP2P = (props) => {
       {
         tokenB && tokenS &&
         <div className="mt10">
-          <div>Token Balance</div>
+          <div>{intl.get('p2p_order.token_balance')}</div>
           <div className="zb-b">
             <MenuItem label={`${tokenS}`} value={balanceS.toString()} />
             <MenuItem label={`${tokenB}`} value={balanceB.toString()} />
@@ -333,21 +329,25 @@ const TradeByP2P = (props) => {
         </div>
       }
       <div className="mt10">
-        <div>Order Detail</div>
+        <div>{intl.get('p2p_order.order_detail')}</div>
         <div className="zb-b">
-          <MenuItem label="Price" value={`${price.toString(10)} ${tokenB}`} />
-          <MenuItem label="Worth" value={
+          {false && <MenuItem label={intl.get('price')} value={`${price.toString(10)} ${tokenB}`} />}
+          <MenuItem label={intl.get('worth')} value={
             <div>
-              <div>{worthDisplay('Sell', tokenS, amountS)}</div>
-              <div>{worthDisplay('Buy', tokenB, amountB)}</div>
+              <div>{worthDisplay(intl.get('sell'), tokenS, amountS)}</div>
+              <div>{worthDisplay(intl.get('buy'), tokenB, amountB)}</div>
             </div>
           } />
-          <MenuItem label="Time to Live" action={<span onClick={()=>{}} className="cursor-pointer">06-10 10:00 ~ 06-15 24:00<Icon type="right" className="ml5" /></span>} />
+          <MenuItem label={intl.get('ttl')} action={<span onClick={()=>{}} className="cursor-pointer">06-10 10:00 ~ 06-15 24:00<Icon type="right" className="ml5" /></span>} />
         </div>
       </div>
       <div className="mb15"></div>
-      <Button type="primary" size="large" className="d-block w-100" onClick={handleSubmit} loading={p2pOrder.loading}>Generate Order</Button>
+      <Button type="primary" size="large" className="d-block w-100" onClick={handleSubmit} loading={p2pOrder.loading}>{intl.get('p2p_order.generate_order')}</Button>
       { false && <Alert type="info" title={<div className="color-black-1">分享给指定的人</div>} theme="light" size="small"/> }
+      <div className="row pt10 pl0 pr0 pb10">
+        {intl.getHTML('p2p_order.instruction')}
+        <div className="pt5">{intl.getHTML('p2p_order.notice')}</div>
+      </div>
     </div>
   );
 };
