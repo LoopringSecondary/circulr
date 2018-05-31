@@ -113,7 +113,7 @@ class Keystore extends React.Component {
                 initialValue: '',
                 rules: [{
                   required: true,
-                  message: 'invalid keystore',
+                  message: intl.get('wallet.error_json_tip'),
                   validator: (rule, value, cb) => this.isValidKeystore(value) ? cb() : cb(true)
                 }]
               })(
