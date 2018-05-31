@@ -226,13 +226,13 @@ const TradeByP2P = (props) => {
             {form.getFieldDecorator('amountS', {
               initialValue: amountS.toString(10),
               rules: [{
-                message: intl.get('invalid_number'),
+                message: intl.get('common.invalid_number'),
                 validator: (rule, value, cb) => validateAmountS(value) ? cb() : cb(true)
               }]
           })(
             <Input size="large"
                    placeholder={intl.get('p2p_order.amounts_placeholder')}
-                   addonBefore={intl.get('sell')}
+                   addonBefore={intl.get('common.sell')}
                    addonAfter={
                      <Select
                        showSearch
@@ -275,13 +275,13 @@ const TradeByP2P = (props) => {
             {form.getFieldDecorator('amountB', {
               initialValue: amountB.toString(10),
               rules: [{
-                message: intl.get('invalid_number'),
+                message: intl.get('common.invalid_number'),
                 validator: (rule, value, cb) => tokenFormatter.isValidNumber(value) ? cb() : cb(true)
               }]
             })(
               <Input size="large"
                      placeholder={intl.get('p2p_order.amountb_placeholder')}
-                     addonBefore={intl.get('buy')}
+                     addonBefore={intl.get('common.buy')}
                      addonAfter={
                        <Select
                          showSearch
@@ -331,13 +331,13 @@ const TradeByP2P = (props) => {
         <div>{intl.get('p2p_order.order_detail')}</div>
         <div className="zb-b">
           {false && <MenuItem label={intl.get('price')} value={`${price.toString(10)} ${tokenB}`} />}
-          <MenuItem label={intl.get('worth')} value={
+          <MenuItem label={intl.get('common.worth')} value={
             <div>
-              <div>{worthDisplay(intl.get('sell'), tokenS, amountS)}</div>
-              <div>{worthDisplay(intl.get('buy'), tokenB, amountB)}</div>
+              <div>{worthDisplay(intl.get('common.sell'), tokenS, amountS)}</div>
+              <div>{worthDisplay(intl.get('common.buy'), tokenB, amountB)}</div>
             </div>
           } />
-          <MenuItem label={intl.get('ttl')} action={<span onClick={()=>{}} className="cursor-pointer">06-10 10:00 ~ 06-15 24:00<Icon type="right" className="ml5" /></span>} />
+          <MenuItem label={intl.get('common.ttl')} action={<span onClick={()=>{}} className="cursor-pointer">06-10 10:00 ~ 06-15 24:00<Icon type="right" className="ml5" /></span>} />
         </div>
       </div>
       <div className="mb15"></div>
