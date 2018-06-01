@@ -59,7 +59,9 @@ function Modals(props) {
       </Containers.Layers>
       <Containers.Layers id="placeOrderTTL">
         <UiContianers.Modals id="placeOrderTTL" className="rs">
-          <PlaceOrderTTL />
+          <Containers.Ttl>
+            <PlaceOrderTTL />
+          </Containers.Ttl>
         </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="cancelOrderConfirm">

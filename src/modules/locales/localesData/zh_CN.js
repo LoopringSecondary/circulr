@@ -142,8 +142,11 @@ export default {
   gas_setting: {
     // TODO
   },
-  ttl_setting: {
-    // TODO
+  setting_ttl: {
+    title:'Set Time To Live Of Order',
+    tabs_basic:'Basic',
+    tabs_advanced:'Advanced',
+    more:'More',
   },
   lrc_setting: {
     // TODO

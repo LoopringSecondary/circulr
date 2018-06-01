@@ -23,6 +23,7 @@ export default [
   require('./wallet/determineWalletModel').default,
   require('./wallet/metaMaskModel').default,
   require('./settings/gasModel').default,
+  require('./settings/ttlModel').default,
 ]
 
 
