@@ -44,7 +44,8 @@ const words = {
   cancel: "取消",
   previous_page: '前一页',
   next_page: '后一页',
-  import: "导入"
+  import: "导入",
+  recipient: '接收者',
 }
 
 const types = {
@@ -56,7 +57,9 @@ const types = {
 
 const validation_messages = {
   invalid_number: "请输入合法的数字",
-  invalid_integer: '请输入合法的整数'
+  invalid_integer: '请输入合法的整数',
+  token_not_select: "请选择代币",
+  invalid_eth_address: "不合法的以太坊地址",
 }
 
 const notifications = {
@@ -83,7 +86,8 @@ const actions = {
   receive: "接收",
   submit_order: '提交订单',
   generate_qrcode: '生成二维码',
-  reset: '重置'
+  reset: '重置',
+  continue: '继续'
 }
 
 const time_unit = {
@@ -298,7 +302,15 @@ export default {
     actions_convert_eth_to_weth: '转换 ETH 为 WETH',
     actions_convert_weth_to_eth: '转换 WETH 为 ETH',
   },
-  transfer: {},
+  // -----------
+  // transfer
+  // -----------
+  transfer: {
+    token_selector_placeholder: '选择币种',
+    data: "数据",
+    advanced: "高级",
+    send_max: "最大数量",
+  },
   convert: {},
   unlock: {
     has_not_unlocked: '您的钱包还未解锁',

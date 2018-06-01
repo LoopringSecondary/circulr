@@ -43,7 +43,8 @@ const words = {
   cancel: 'Cancel',
   previous_page: 'Previous Page',
   next_page: 'Next Page',
-  import: "Import"
+  import: "Import",
+  recipient: 'Recipient',
 }
 const types = {
   trade_side: {
@@ -54,7 +55,9 @@ const types = {
 
 const validation_messages = {
   invalid_number: "Please provide a valid number value",
-  invalid_integer: 'Please provide an integer value'
+  invalid_integer: 'Please provide an integer value',
+  token_not_select: "Please select token",
+  invalid_eth_address: "Invalid Ethereum address",
 }
 
 const notifications = {
@@ -81,7 +84,8 @@ const actions = {
   receive: "Receive",
   submit_order: 'Submit Order',
   generate_qrcode: 'Generate QR Code',
-  reset: 'Reset'
+  reset: 'Reset',
+  continue: 'Continue'
 }
 
 const time_unit = {
@@ -299,7 +303,15 @@ export default {
     actions_convert_eth_to_weth: '转换 ETH 为 WETH',
     actions_convert_weth_to_eth: '转换 WETH 为 ETH',
   },
-  transfer: {},
+  // -----------
+  // transfer
+  // -----------
+  transfer: {
+    token_selector_placeholder: 'Select Token',
+    data: "Data",
+    advanced: "Advanced",
+    send_max: "Send Max",
+  },
   convert: {},
   // -----------
   // wallet
