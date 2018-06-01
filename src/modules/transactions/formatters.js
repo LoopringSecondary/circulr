@@ -4,20 +4,20 @@ import {toNumber,toBig,toHex,toFixed} from "LoopringJS/common/formatter";
 import TokenFm from "modules/tokens/TokenFm";
 export const getTypes = (token)=>{
   let types = [
-    {label:intl.get(`global.all`)+ ' ' +intl.get('txs.type'),value:''},
-    {label:intl.get(`txs.type_transfer`),value:'send'},
-    {label:intl.get(`txs.type_receive`),value:'receive'},
-    {label:intl.get(`txs.type_enable`),value:'approve'},
+    {label:intl.get('tx_type.all'),value:''},
+    {label:intl.get(`tx_type.transfer`),value:'send'},
+    {label:intl.get(`tx_type.receive`),value:'receive'},
+    {label:intl.get(`tx_type.approve`),value:'approve'},
   ]
 
   const tradeTypes = [
-    {label:intl.get(`txs.type_sell`),value:'sell'},
-    {label:intl.get(`txs.type_buy`),value:'buy'},
+    {label:intl.get(`tx_type.sell`),value:'sell'},
+    {label:intl.get(`tx_type.buy`),value:'buy'},
   ];
-  let convertTypes = [{label:intl.get(`txs.type_convert`),value:'convert'}]
+  let convertTypes = [{label:intl.get(`tx_type.convert`),value:'convert'}]
   let lrcTypes = [
-     {label:intl.get(`txs.type_lrc_fee`),value:'lrc_fee'},
-     {label:intl.get(`txs.type_lrc_reward`),value:'lrc_reward'},
+     {label:intl.get(`tx_type.lrc_fee`),value:'lrc_fee'},
+     {label:intl.get(`tx_type.lrc_reward`),value:'lrc_reward'},
   ]
   let othersTypes = [
      // {label:intl.get(`txs.type_others`),value:'others'},
@@ -29,7 +29,6 @@ export const getTypes = (token)=>{
   if(token.toUpperCase() !== 'ETH'){
     types = [...types,...tradeTypes]
   }
-
 
   if(token.toUpperCase() === 'LRC'){
     types = [...types,...lrcTypes]
@@ -45,31 +44,31 @@ export class TxFm{
   getType(value){
     switch (this.tx.type) {
       case 'approve':
-        return intl.get('txs.type_enable_title', {symbol: this.tx.symbol});
+        return intl.get('tx_schema_type.approve', {symbol: this.tx.symbol});
       case 'send':
-        return intl.get('txs.type_transfer_title', {symbol: this.tx.symbol,value});
+        return intl.get('tx_schema_type.transfer', {symbol: this.tx.symbol,value});
       case 'receive':
-        return intl.get('txs.type_receive_title', {symbol: this.tx.symbol,value});
+        return intl.get('tx_schema_type.receive', {symbol: this.tx.symbol,value});
       case 'sell':
-        return intl.get('txs.type_sell_title', {symbol: this.tx.symbol,value});
+        return intl.get('tx_schema_type.sell', {symbol: this.tx.symbol,value});
       case 'buy':
-        return intl.get('txs.type_buy_title', {symbol: this.tx.symbol,value});
+        return intl.get('tx_schema_type.buy', {symbol: this.tx.symbol,value});
       case 'lrc_fee':
-        return  intl.get('orders.LrcFee',{value});
+        return  intl.get('tx_schema_type.lrc_fee',{value});
       case 'lrc_reward':
-        return intl.get('orders.LrcReward',{value});
+        return intl.get('tx_schema_type.lrc_reward',{value});
       case 'convert_outcome':
-        return this.tx.symbol === 'ETH' ? intl.get('txs.type_convert_title_eth',{value}) : intl.get('txs.type_convert_title_weth',{value});
+        return this.tx.symbol === 'ETH' ? intl.get('tx_schema_type.convert_eth',{value}) : intl.get('tx_schema_type.convert_weth',{value});
       case 'convert_income':
-        return this.tx.symbol === 'WETH' ? intl.get('txs.type_convert_title_eth',{value}) : intl.get('txs.type_convert_title_weth',{value});
+        return this.tx.symbol === 'WETH' ? intl.get('tx_schema_type.convert_eth',{value}) : intl.get('tx_schema_type.convert_weth',{value});
       case 'cancel_order':
-        return intl.get('txs.cancel_order');
+        return intl.get('tx_schema_type.cancel_order');
       case 'cutoff':
-        return intl.get('txs.cancel_all');
+        return intl.get('tx_schema_type.cancel_all');
       case 'cutoff_trading_pair':
-        return intl.get('txs.cancel_pair_order', {pair: this.tx.content.market});
+        return intl.get('tx_schema_type.cancel_pair_order', {pair: this.tx.content.market});
       default:
-        return intl.get('txs.others')
+        return intl.get('tx_schema_type.others')
     }
   }
   getSide(){

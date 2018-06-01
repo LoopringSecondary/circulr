@@ -77,6 +77,7 @@ const notifications = {
 }
 
 const actions = {
+  resend:'Resend',
   receive: "Receive",
   submit_order: 'Submit Order',
   generate_qrcode: 'Generate QR Code',
@@ -197,19 +198,41 @@ export default {
     status: words.status,
   },
   tx_status: {
-    pending: '处理中',
-    success: '成功',
-    failed: '失败',
+    all:'All status',
+    pending: 'Pending',
+    success: 'Succeed',
+    failed: 'Failed',
   },
-  tx_type: {
+
+  tx_type:{
+    all:'All types',
     sell: words.sell,
     buy: words.buy,
-    transfer: '转出',
-    receice: '转入',
-    approve: '授权',
+    transfer: 'Transfer',
+    receive: 'Receive',
+    approve: 'Approve',
     lrc_fee: words.lrc_fee,
     lrc_reward: words.lrc_reward,
-    convert: '转换',
+    convert: 'Convert',
+    cancel_order:'Cancel order',
+    cancel_all:'Cancel all orders',
+    cancel_pair_order:'Cancel Orders ',
+    others:'Others'
+  },
+  tx_schema_type: {
+    sell: 'Sold {value} {symbol}',
+    buy: 'Bought {value} {symbol}',
+    transfer: 'Sent {value} {symbol}',
+    receive: 'Received {value} {symbol}',
+    approve: 'Enabled trading {symbol} ',
+    lrc_fee: 'Payed {value} Trading Fee',
+    lrc_reward: 'Received {value} Trading Reward',
+    convert_eth: 'Convert {value} ETH to WETH',
+    convert_weth:'Convert {value} WETH to ETH',
+    cancel_order:'Cancel Order',
+    cancel_all:'Cancel All Orders',
+    cancel_pair_order:'Cancel {pair} Orders ',
+    others:'Others'
   },
   tx_detail: {
     detail_title: '交易详情',

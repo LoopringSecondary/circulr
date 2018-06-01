@@ -82,14 +82,14 @@ const Option = Select.Option;
                   <Select
                     defaultValue=""
                     onChange={statusChange}
-                    placeholder={intl.get('txs.status')}
+                    placeholder={intl.get('tx.status')}
                     dropdownMatchSelectWidth={false}
                     className="form-inline form-inverse"
                   >
-                    <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('txs.status')}</Select.Option>
-                    <Select.Option value="pending">{intl.get('txs.status_pending')}</Select.Option>
-                    <Select.Option value="success">{intl.get('txs.status_success')}</Select.Option>
-                    <Select.Option value="failed">{intl.get('txs.status_failed')}</Select.Option>
+                    <Select.Option value="">{intl.get('tx_status.all')}</Select.Option>
+                    <Select.Option value="pending">{intl.get('tx_status.pending')}</Select.Option>
+                    <Select.Option value="success">{intl.get('tx_status.success')}</Select.Option>
+                    <Select.Option value="failed">{intl.get('tx_status.failed')}</Select.Option>
                   </Select>
                 </span>
           <span>
@@ -208,7 +208,7 @@ export const renders = {
         {
           (fm.tx.status === 'pending') &&
           <div>
-            <span className="text-primary" onClick={(e) => {e.stopPropagation();actions.toResend()}}>Resend</span> <span> | </span> <span className="text-primary" onClick={(e) => {e.stopPropagation();actions.toCancel()}}>Cancel</span>
+            <span className="text-primary" onClick={(e) => {e.stopPropagation();actions.toResend()}}>{intl.get('actions.resend')}</span> <span> | </span> <span className="text-primary" onClick={(e) => {e.stopPropagation();actions.toCancel()}}>{intl.get('common.cancel')}</span>
           </div>
         }
       </div>
