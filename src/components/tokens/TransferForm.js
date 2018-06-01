@@ -72,6 +72,7 @@ function TransferForm(props) {
   function handleChange(v) {
     if(v) {
       transfer.tokenChange({token:v})
+      dispatch({type:"gas/fixedGasLimitChange",payload:{fixedGasLimit:fm.toNumber(gasLimit)}})
     }
   }
 
