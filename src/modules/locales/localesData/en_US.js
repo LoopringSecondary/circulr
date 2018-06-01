@@ -43,7 +43,8 @@ const words = {
   cancel: 'Cancel',
   previous_page: 'Previous Page',
   next_page: 'Next Page',
-  import: "Import"
+  import: "Import",
+  recipient: 'Recipient',
 }
 const types = {
   trade_side: {
@@ -54,7 +55,9 @@ const types = {
 
 const validation_messages = {
   invalid_number: "Please provide a valid number value",
-  invalid_integer: 'Please provide an integer value'
+  invalid_integer: 'Please provide an integer value',
+  token_not_select: "Please select token",
+  invalid_eth_address: "Invalid Ethereum address",
 }
 
 const notifications = {
@@ -64,15 +67,25 @@ const notifications = {
     place_order_warn: "Your order can not be fully filled.",
     unlock_suc: 'Unlock Successfully',
     unlock_fail: "Unlock Failed",
+    to_confirm: "Waiting For Your Confirmation",
+    send_failed: 'Send Failed !',
+    send_succ: 'Transfer Succeeded!',
+    copy_suc: 'Copy Successfully',
+    copy_fail: 'Copy Failed',
   },
   message: {
-    wallet_locked: 'Your wallet seems unlocked yet, please unlock first',
+    wallet_locked: 'Your wallet seems locked yet, please unlock first',
     failed_fetch_data_from_server: 'Failed fetch data from server, you could wait a moment and come back later',
     eth_is_required_when_place_order: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
     lrcfee_is_required_when_place_order: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
     some_items_not_signed: "You may have some items not signed, please signed all items then continue",
     place_order_success: 'Good job. Your order has been submitted for ring-matching.',
     place_order_balance_not_enough: 'In order for your order to be fully filled, {amount} more {token} is required.',
+    confirm_warn_ledger: "Please confirm transaction on your Ledger device, then come back to continue",
+    confirm_warn_trezor: "Please confirm transaction on your Trezor device , then come back to continue",
+    confirm_warn_metamask: "Please confirm transaction on your MetaMask browser extension, then come back to continue",
+    send_failed: "Your have failed {do} {amount} {token} - {reason}",
+    send_succ: "You have successfully send {amount} {token}",
   }
 }
 
@@ -81,7 +94,13 @@ const actions = {
   receive: "Receive",
   submit_order: 'Submit Order',
   generate_qrcode: 'Generate QR Code',
-  reset: 'Reset'
+  reset: 'Reset',
+  continue: 'Continue',
+  to_unlock: 'To Unlock',
+  transfer_cancel: "No, Cancel It",
+  transfer_send: "Yes, Send Now",
+  place_buy_order: "Place Buy Order",
+  place_sell_order: "Place Sell Order",
 }
 
 const time_unit = {
@@ -173,15 +192,16 @@ export default {
     none: 'None'
   },
   setting_ttl: {
-    title:'Set Time To Live Of Order',
-    tabs_basic:'Basic',
-    tabs_advanced:'Advanced',
-    more:'More',
+    title: 'Set Time To Live Of Order',
+    tabs_basic: 'Basic',
+    tabs_advanced: 'Advanced',
+    more: 'More',
+    input_place_holder: 'We recommend to set it between 1 hour and 1 day.',
   },
   setting_lrcfee: {
-    title:'Set LRC Fee Of Order',
-    tabs_basic:'Basic',
-    tabs_advanced:'Advanced',
+    title: 'Set LRC Fee Of Order',
+    tabs_basic: 'Basic',
+    tabs_advanced: 'Advanced',
   },
   place_order_confirm: {
     qrcode_security: '*For your order\'s security, your QR code will only generated once and not be stored locally. Make sure to save it properly, any one who received your QR code could take your order',
@@ -204,7 +224,7 @@ export default {
   // transaction
   // -----------
   tx: {
-    title:'Transactions',
+    title: 'Transactions',
     type: words.type,
     direction: 'In & Out',
     gas: words.gas,
@@ -240,7 +260,7 @@ export default {
     others: 'Others'
   },
   tx_list: {
-    type:{
+    type: {
       sell: 'Sold {value} {symbol}',
       buy: 'Bought {value} {symbol}',
       transfer: 'Sent {value} {symbol}',
@@ -268,7 +288,7 @@ export default {
     sell: words.sell,
     lrc_fee: words.lrc_fee,
     lrc_reward: words.lrc_reward,
-    margin_split:words.margin_split
+    margin_split: words.margin_split
   },
   // -----------
   // ticker
@@ -301,8 +321,37 @@ export default {
     actions_convert_eth_to_weth: '转换 ETH 为 WETH',
     actions_convert_weth_to_eth: '转换 WETH 为 ETH',
   },
-  transfer: {},
-  convert: {},
+  // -----------
+  // transfer
+  // -----------
+  transfer: {
+    token_selector_placeholder: 'Select Token',
+    data: "Data",
+    advanced: "Advanced",
+    send_max: "Send Max",
+    transfer_result_etherscan: "View transaction on Etherscan.io",
+    from: "From",
+    to: "To",
+    gas: "Gas",
+  },
+  token: {
+    action_options: '{token} Options',
+    action_types: {
+      receive: "Receive {token}",
+      send: " Send {token}",
+      trade: "Trade {token}",
+      convert: 'Convert to {token}'
+    },
+    assets_title: 'Total Value',
+  },
+  convert: {
+    convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
+    actions_confirm_convert: '确认转换'
+  },
+  receive: {
+    receive_title: 'My Ethereum Address',
+    receive_value_tip: 'Recommended value',
+  },
   // -----------
   // wallet
   // -----------
@@ -397,24 +446,5 @@ export default {
     actions_paste_mnemonic: 'Paste Mnemonic Here',
     error_mnemonic_tip: "Invalid Mnemonic",
     mnemonic_tip_lack: 'Please Input your mnemonic',
-  },
-  token: {
-    action_options: '{token} 选项',
-    action_types: {
-      receive: "接收{token}",
-      send: "转账{token}",
-      trade: "交易{token}",
-      convert: '转换成{token}'
-    },
-    receive_title: '我的以太坊地址',
-    receive_value_tip: '推荐值',
-    recipient: '接受者',
-    continue: '继续',
-    convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
-    actions_max: "最大数量",
-    actions_cancel_send: "取消转账",
-    actions_confirm_send: "确认转账",
-    actions_confirm_convert: '确认转换'
-  },
-  transaction: {}
+  }
 }

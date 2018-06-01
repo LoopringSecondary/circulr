@@ -44,7 +44,8 @@ const words = {
   cancel: "取消",
   previous_page: '前一页',
   next_page: '后一页',
-  import: "导入"
+  import: "导入",
+  recipient: '接收者',
 }
 
 const types = {
@@ -56,7 +57,9 @@ const types = {
 
 const validation_messages = {
   invalid_number: "请输入合法的数字",
-  invalid_integer: '请输入合法的整数'
+  invalid_integer: '请输入合法的整数',
+  token_not_select: "请选择代币",
+  invalid_eth_address: "不合法的以太坊地址",
 }
 
 const notifications = {
@@ -66,6 +69,11 @@ const notifications = {
     place_order_warn: '您的订单只能被部分撮合',
     unlock_suc: '解锁成功',
     unlock_fail: "解锁失败",
+    to_confirm: "等待您的确认",
+    send_failed: '转账失败 !',
+    send_succ: '转账成功',
+    copy_suc:'复制成功',
+    copy_fail:'复制失败',
   },
   message: {
     wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
@@ -75,6 +83,11 @@ const notifications = {
     some_items_not_signed: "您可能还有一些数据还未签名，请把所有未签名项签名后再继续操作",
     place_order_success: '恭喜, 您的订单已经可以等待交易',
     place_order_balance_not_enough: '为使订单全部成交, 至少还需要{amount} {token}',
+    confirm_warn_ledger: "请在您的Ledger设备上确认签名信息, 之后再回来提交订单",
+    confirm_warn_trezor: "请在您的Trezor设备上确认签名信息, 之后再回来提交订单",
+    confirm_warn_metamask: "您的MetaMask浏览器插件上会提示您签名, 请确认后再回来提交订单",
+    send_failed: "您{do} {amount} {token} 失败, 原因:{reason}",
+    send_succ: "您转账 {amount} {token} 成功",
   }
 }
 
@@ -83,7 +96,13 @@ const actions = {
   receive: "接收",
   submit_order: '提交订单',
   generate_qrcode: '生成二维码',
-  reset: '重置'
+  reset: '重置',
+  continue: '继续',
+  to_unlock: '去解锁',
+  transfer_cancel: "不，取消发送",
+  transfer_send: "是的，马上发送",
+  place_buy_order: "提交买单",
+  place_sell_order: "提交卖单",
 }
 
 const time_unit = {
@@ -179,6 +198,7 @@ export default {
     tabs_easy:'快速设置',
     tabs_advanced:'高级设置',
     more:'更多',
+    input_place_holder: '订单有效时间是多久？',
   },
   setting_lrcfee: {
     title:'设置订单的矿工撮合费',
@@ -300,8 +320,38 @@ export default {
     actions_convert_eth_to_weth: '转换 ETH 为 WETH',
     actions_convert_weth_to_eth: '转换 WETH 为 ETH',
   },
-  transfer: {},
-  convert: {},
+  // -----------
+  // transfer
+  // -----------
+  transfer: {
+    token_selector_placeholder: '选择币种',
+    data: "数据",
+    advanced: "高级",
+    send_max: "最大数量",
+    transfer_result_etherscan: "在EtherScan查看结果",
+    from: "发送方",
+    to: "发送到",
+    gas: "油费",
+  },
+  token: {
+    action_options: '{token} 选项',
+    action_types: {
+      receive: "接收{token}",
+      send: "转账{token}",
+      trade: "交易{token}",
+      convert: '转换成{token}'
+    },
+    assets_title: '总资产',
+  },
+  receive:{
+    receive_title: '我的以太坊地址',
+    receive_value_tip: '推荐值',
+  },
+  convert:{
+    convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
+    actions_confirm_convert: '确认转换'
+  },
+
   unlock: {
     has_not_unlocked: '您的钱包还未解锁',
     to_unlock: '解锁钱包',
@@ -395,26 +445,6 @@ export default {
     paste_private_title: "请粘贴您的私钥",
     error_private_tip: '不合法的私钥',
     lack_private_tip: '请输入您的私钥'
-  },
-
-  token: {
-    action_options: '{token} 选项',
-    action_types: {
-      receive: "接收{token}",
-      send: "转账{token}",
-      trade: "交易{token}",
-      convert: '转换成{token}'
-    },
-    receive_title: '我的以太坊地址',
-    receive_value_tip: '推荐值',
-    recipient: '接受者',
-    continue: '继续',
-    convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
-    actions_max: "最大数量",
-    actions_cancel_send: "取消转账",
-    actions_confirm_send: "确认转账",
-    actions_confirm_convert: '确认转换'
-  },
-  transaction: {}
+  }
 }
 

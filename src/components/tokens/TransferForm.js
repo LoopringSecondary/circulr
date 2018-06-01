@@ -182,7 +182,7 @@ function TransferForm(props) {
   })
   assetsSorted.sort(tokenFormatter.sorter);
 
-  const amountAfter = (<a href="" onClick={selectMax.bind(this)}>send_max</a>)
+  const amountAfter = (<a href="" onClick={selectMax.bind(this)}>{intl.get('transfer.send_max')}</a>)
 
   const formatGas = (value) => {
     const gas = fm.toBig(value).times(fm.toNumber(gasLimit)).div(1e9).toString()
@@ -195,17 +195,17 @@ function TransferForm(props) {
   return (
     <div className="form-dark pd-lg">
         <div className="sidebar-header">
-          <h3>Send {tokenSelected && tokenSelected.symbol}</h3>
+          <h3>{intl.get('common.send')} {tokenSelected && tokenSelected.symbol}</h3>
         </div>
         <div className="">
             <Form>
               {
                 !transfer.assignedToken &&
-                <Form.Item colon={false} label="Token">
+                <Form.Item colon={false} label={intl.get('common.token')}>
                   {form.getFieldDecorator('token', {
                     initialValue: '',
                     rules: [
-                      {message: intl.get("token.token_select_verification_message"),
+                      {message: intl.get("common.token_not_select"),
                         validator: (rule, value, cb) => validateTokenSelect(value) ? cb() : cb(true)
                       }
                     ]
@@ -214,7 +214,7 @@ function TransferForm(props) {
                       size="large"
                       showSearch={false}
                       allowClear
-                      placeholder={intl.get('token.token_selector_placeholder')}
+                      placeholder={intl.get('transfer.token_selector_placeholder')}
                       optionFilterProp="children"
                       onChange={handleChange.bind(this)}
                       onFocus={()=>{}}
@@ -233,11 +233,11 @@ function TransferForm(props) {
                   )}
                 </Form.Item>
               }
-              <Form.Item label='Recipient' colon={false}>
+              <Form.Item label={intl.get('common.recipient')} colon={false}>
                 {form.getFieldDecorator('to', {
                   initialValue: '',
                   rules: [
-                    {message: intl.get("token.eth_address_verification_message"),
+                    {message: intl.get("common.invalid_eth_address"),
                       validator: (rule, value, cb) => tokenFormatter.validateEthAddress(value) ? cb() : cb(true)
                     }
                   ]
@@ -245,12 +245,12 @@ function TransferForm(props) {
                   <Input placeholder="" size="large" onKeyDown={toContinue.bind(this)}/>
                 )}
               </Form.Item>
-              <Form.Item label='Amount' colon={false} className="prefix">
+              <Form.Item label={intl.get('common.amount')} colon={false} className="prefix">
                 {form.getFieldDecorator('amount', {
                   initialValue: 0,
                   rules: [
                     {
-                      message: intl.get('token.amount_verification_message'),
+                      message: intl.get('common.invalid_number'),
                       validator: (rule, value, cb) => validateAmount.call(this, value) ? cb() : cb(true)
                     }
                   ]
@@ -274,11 +274,11 @@ function TransferForm(props) {
               </Form.Item>
 
               {transfer.token === "ETH" && transfer.advance &&
-                <Form.Item className="mb0" label={intl.get('token.data')} colon={false}>
+                <Form.Item className="mb0" label={intl.get('transfer.data')} colon={false}>
                   {form.getFieldDecorator('data', {
                     initialValue: '',
                     rules: [
-                      {message: intl.get("token.token_select_verification_message"),
+                      {message: intl.get("common.token_not_select"),
                         validator: (rule, value, cb) => validateHex(value) ? cb() : cb(true)
                       }
                     ]
@@ -289,7 +289,7 @@ function TransferForm(props) {
               }
             </Form>
             <div className="form-control-static d-flex justify-content-between mr-0 mt20 mb15 align-items-center">
-              <span className="fs14 color-white-2">Gas Fee</span>
+              <span className="fs14 color-white-2">{intl.get('gas_setting.gas_fee')}</span>
               <span className="font-bold cursor-pointer" onClick={setGas}>
                   {totalGas.toString(10)} ETH {gasWorth}
                   <Icon type="right" />
@@ -297,7 +297,7 @@ function TransferForm(props) {
             </div>
             {transfer.token === "ETH" &&
               <div className="form-control-static d-flex justify-content-between mr-0 mt15 mb15 align-items-center">
-                <span className="fs14 color-white-2">{intl.get('token.advanced')}</span>
+                <span className="fs14 color-white-2">{intl.get('transfer.advanced')}</span>
                 <span className="font-bold cursor-pointer">
                     {!transfer.advance &&
                       <Switch size="small" onChange={setAdvance.bind(this)}/>
@@ -308,7 +308,7 @@ function TransferForm(props) {
                 </span>
               </div>
             }
-            <Button className="btn btn-o-dark btn-block btn-xlg" onClick={handleSubmit}>Continue</Button>
+            <Button className="btn btn-o-dark btn-block btn-xlg" onClick={handleSubmit}>{intl.get('actions.continue')}</Button>
         </div>
 
     </div>

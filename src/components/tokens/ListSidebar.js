@@ -141,7 +141,7 @@ function ListTokensSidebar(props) {
   return (
     <div>
     	<div className="token-total">
-          <h3 className="text-success">{totalWorthDisplay}</h3><small>Total Value</small>
+          <h3 className="text-success">{totalWorthDisplay}</h3><small>{intl.get('token.assets_title')}</small>
       </div>
       <div className="tool-bar d-flex justify-content-between">
         <div className="search">
@@ -190,8 +190,8 @@ function ListTokensSidebar(props) {
                 formatedTokens.map((item,index)=>
                   <div className={`item ${item.symbol===selected ? 'active' : ''}`} key={index} onClick={selectToken.bind(this,item)}>
                       <div className="sub">
-                          <div hidden className="favorites"><i className="icon-star"></i></div>
-                          <div className="icon"><i className={`icon-${item.symbol} icon-token`}></i></div>
+                          <div hidden className="favorites"><i className="icon-star"/></div>
+                          <div className="icon"><i className={`icon-${item.symbol} icon-token`}/></div>
                           <div className="token-name">
                               <h3>{item.symbol}</h3>
                               <p>{item.name}</p>
@@ -225,23 +225,23 @@ class TokenActions extends React.Component {
     const {item,actions} = this.props
     const btns = (
       <div style={{width:'180px'}}>
-        <Button onClick={actions.gotoTransfer.bind(this,item)} className="d-block w-100 text-left mb5">Send {item.symbol}</Button>
-        <Button onClick={actions.gotoReceive.bind(this,{symbol:item.symbol})} className="d-block w-100 text-left mb5">Receive {item.symbol}</Button>
+        <Button onClick={actions.gotoTransfer.bind(this,item)} className="d-block w-100 text-left mb5">{intl.get('token.action_types.send',{token:item.symbol})}</Button>
+        <Button onClick={actions.gotoReceive.bind(this,{symbol:item.symbol})} className="d-block w-100 text-left mb5">{intl.get('token.action_types.receive',{token:item.symbol})}</Button>
         {
           item.symbol === 'WETH' &&
-          <Button onClick={actions.gotoConvert.bind(this,item)} className="d-block w-100 text-left mb5">Convert WETH To ETH</Button>
+          <Button onClick={actions.gotoConvert.bind(this,item)} className="d-block w-100 text-left mb5">{intl.get('token.action_types.convert',{token:"ETH"})}</Button>
         }
         {
           item.symbol === 'ETH' &&
-          <Button onClick={actions.gotoConvert.bind(this,item)} className="d-block w-100 text-left mb5">Convert ETH To WETH</Button>
+          <Button onClick={actions.gotoConvert.bind(this,item)} className="d-block w-100 text-left mb5">{intl.get('token.action_types.convert',{token:"WETH"})}</Button>
         }
-        {false && <Button onClick={actions.gotoTrade.bind(this,item)} className="d-block w-100 text-left">Trade {item.symbol}</Button>}
+        {false && <Button onClick={actions.gotoTrade.bind(this,item)} className="d-block w-100 text-left">{intl.get('token.action_types.trade',{token:item.symbol})}</Button>}
       </div>
     )
     return (
       <div className="more token-action" onClick={e=>{ e.stopPropagation();e.preventDefault()}}>
         <Popover
-          title={<div className="pt5 pb5 fs18">{item.symbol} {intl.get('tokens.options')}</div>}
+          title={<div className="pt5 pb5 fs18">{intl.get('token.action_options',{token:item.symbol})}</div>}
           placement="right"
           arrowPointAtCenter
           content={btns}

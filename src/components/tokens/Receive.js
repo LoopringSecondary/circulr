@@ -64,7 +64,7 @@ export default class Receive extends React.Component {
     const address = window.WALLET && window.WALLET.address;
     const {receiveToken} = this.props;
     if(!address){
-      Notification.open({message: 'please unlock your wallet first', type: "error", size: 'small'});
+      Notification.open({message: intl.get('unlock.has_not_unlocked'), type: "error", size: 'small'});
       receiveToken.hideLayer();
       routeActions.gotoPath('/unlock');
       return null;
@@ -72,23 +72,23 @@ export default class Receive extends React.Component {
     const {symbol,amount} = this.state;
     const copyAddress = () => {
       copy(address) ? Notification.open({
-        message: intl.get('navbar.subs.copy_success'),
+        message: intl.get('notifications.title.copy_suc'),
         type: 'success', size: 'small'
-      }) : Notification.open({message: intl.get('navbar.subs.copy_failed'), type: "error", size: 'small'})
+      }) : Notification.open({message: intl.get('notifications.title.copy_fail'), type: "error", size: 'small'})
     };
     return (
       <div className="pd-lg">
           <div className="sidebar-header">
-            <h3 className="text-center">My Ethereum Address</h3>
+            <h3 className="text-center">{intl.get('receive.receive_title')}</h3>
           </div>
         <div className="Receive-qrcode"><QRCode value={address} size={240} level='H'/></div>
-        {symbol && toBig(amount).gt(0) && toBig(this.getNeeded()).gt(0) && <div className='fs3 color-black-1 mt10'>
-          {intl.get('token.recommended_value')} {this.getNeeded()}  {symbol.toUpperCase()}
+        {symbol && toBig(amount).gt(0) && toBig(this.getNeeded()).gt(0) && <div className='fs3 color-black-1 text-center mt10 mb10'>
+          {intl.get('receive.receive_value_tip')} {this.getNeeded()}  {symbol.toUpperCase()}
         </div>}
         <div className="form-dark">
         <Input.Group compact  className="d-flex">
           <Input style={{ width: '100%' }} defaultValue={address} disabled />
-          <Button onClick={copyAddress}>Copy</Button>
+          <Button onClick={copyAddress}>{intl.get('common.copy')}</Button>
         </Input.Group>
         </div>
       </div>

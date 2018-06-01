@@ -65,13 +65,13 @@ class TTLForm extends React.Component {
         }
       }
     }
-    const timeToLiveTimeSelected = ()=>{
-      function timeToLiveTimeSelected(value) {
-        if(value.length === 2) {
-          ttlModel.timeToLivePatternChangeEffects({timeToLivePatternSelect:'advance', timeToLiveStart: value[0], timeToLiveEnd: value[1]})
-        }
+
+    function timeToLiveTimeSelected(value) {
+      if(value.length === 2) {
+        ttlModel.timeToLivePatternChangeEffects({timeToLivePatternSelect:'advance', timeToLiveStart: value[0], timeToLiveEnd: value[1]})
       }
     }
+
     const placeOrder = {}
     const timeToLiveSelectAfter = form.getFieldDecorator('timeToLiveUnit', {
       initialValue: "minute",
@@ -103,11 +103,11 @@ class TTLForm extends React.Component {
                             <Form.Item className="mb0 mt5 d-block ttl" colon={false} label={null}>
                               {form.getFieldDecorator('timeToLive', {
                                 rules: [{
-                                  message: intl.get('trade.integer_verification_message'),
+                                  message: intl.get('common.invalid_integer'),
                                   // validator: (rule, value, cb) => orderFormatter.validateOptionInteger(value) ? cb() : cb(true)
                                 }]
                               })(
-                                <Input className="d-block w-100" placeholder={intl.get('trade.time_to_live_input_place_holder')} size="large" addonAfter={timeToLiveSelectAfter}
+                                <Input className="d-block w-100" placeholder={intl.get('setting_ttl.input_place_holder')} size="large" addonAfter={timeToLiveSelectAfter}
                                        onChange={timeToLiveValueChange.bind(this, 'moreValue')}/>
                               )}
                               </Form.Item>}
