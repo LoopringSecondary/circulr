@@ -72,6 +72,7 @@ const notifications = {
     send_succ: 'Transfer Succeeded!',
     copy_suc: 'Copy Successfully',
     copy_fail: 'Copy Failed',
+    not_allowed_place_order_worth: 'Order Amount Is Too Small',
   },
   message: {
     wallet_locked: 'Your wallet seems locked yet, please unlock first',
@@ -86,6 +87,9 @@ const notifications = {
     confirm_warn_metamask: "Please confirm transaction on your MetaMask browser extension, then come back to continue",
     send_failed: "Your have failed {do} {amount} {token} - {reason}",
     send_succ: "You have successfully send {amount} {token}",
+    not_allowed_place_order_worth: 'Due to your total worth less than {worth}, you could not place this order',
+    eth_is_required: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
+    lrcfee_is_required: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
   }
 }
 

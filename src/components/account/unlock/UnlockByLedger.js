@@ -21,6 +21,7 @@ function Ledgers(props) {
           hardwareWallet.reset();
           dispatch({type: 'sockets/unlocked'})
           routeActions.gotoPath('/wallet')
+          dispatch({type:'layers/hideLayer', payload:{id:'unlock'}})
         }
       });
     } else {
