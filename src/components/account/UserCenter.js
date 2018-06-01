@@ -12,11 +12,11 @@ function UserCenter(props) {
   const copyAddress = () => {
     if(window.WALLET && window.WALLET.address){
       copy(window.WALLET.address) ? Notification.open({
-        message: intl.get('navbar.subs.copy_success'),
+        message: intl.get('notifications.title.copy_suc'),
         type: 'success', size: 'small'
-      }) : Notification.open({message: intl.get('navbar.subs.copy_failed'), type: "error", size: 'small'})
+      }) : Notification.open({message: intl.get('notifications.title.copy_fail'), type: "error", size: 'small'})
     }else {
-      Notification.open({message: 'please unlock your wallet first', type: "error", size: 'small'})
+      Notification.open({message: intl.get('unlock.has_not_unlocked'), type: "error", size: 'small'});
     }
   };
 
@@ -41,33 +41,33 @@ function UserCenter(props) {
     	    <div className="account-side">
             {window.WALLET && window.WALLET.address && <div>
     	        <div className="poweroff text-color-dark" id="powerOff" onClick={quit}>
-    	            <div className="icon-unlock text-color-dark-1"><i className="icon-poweroff"></i></div>
-    	            <h5>Quit</h5>
+    	            <div className="icon-unlock text-color-dark-1"><i className="icon-poweroff"/></div>
+    	            <h5>{intl.get('common.quit')}</h5>
     	        </div>
-              <div className="blk-lg"></div>
+              <div className="blk-lg"/>
     	        <div className="address">
     	            <div className="text text-color-dark-1">{window.WALLET && window.WALLET.address}</div>
-    	            <div className="blk"></div>
-    	            <button className="btn btn-block btn-o-dark" onClick={copyAddress}>Copy</button>
+    	            <div className="blk"/>
+    	            <button className="btn btn-block btn-o-dark" onClick={copyAddress}>{intl.get('common.copy')}</button>
     	        </div>
             </div>}
             {
               !(window.WALLET && window.WALLET.address) &&  <div className="poweroff text-color-dark" id="powerOff" onClick={() => routeActions.gotoPath('/unlock')}>
                 <div className="icon-unlock text-color-dark-1"><i className="icon-lock"/></div>
-                <h5>Unlock</h5>
+                <h5>{intl.get('unlock.actions_unlock')}</h5>
               </div>
             }
-    	        <div className="blk-lg"></div>
+    	        <div className="blk-lg"/>
     	        <div className="menu">
     	            <ul>
-                    {window.WALLET && window.WALLET.address && <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'receiveToken',symbol:null}) }} className="side-receive" ><i className="icon-receive"></i><span>Receive</span></a></li>}
-                    {window.WALLET && window.WALLET.address &&  <li><a onClick={transfer} className="side-send"><i className="icon-send"></i><span>Send</span></a></li>}
-                    {window.WALLET && window.WALLET.address &&  <li><Link to="/trade"><i className="icon-trade"/><span>Market</span></Link></li>}
-                    {window.WALLET && window.WALLET.address &&  <li><a onClick={() => dispatch({type:'layers/showLayer',payload:{id:'tradeByP2P'}})}><i className="icon-trade"/><span>P2P Trade</span></a></li>}
-    	                <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'setting',symbol:null}) }} className="side-settings"><i className="icon-cog-o"></i><span>Settings</span></a></li>
-    	                 <li hidden><a className="side-airdrop"><i className="icon-gift-o"></i><span>Airdrop</span></a></li>
-    	                <li><a className="side-help"><i className="icon-question-o"></i><span>Help</span></a></li>
-    	                <li><a className="side-feedback"><i className="icon-pencil"></i><span>Feedbak</span></a></li>
+                    {window.WALLET && window.WALLET.address && <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'receiveToken',symbol:null}) }} className="side-receive" ><i className="icon-receive"/><span>{intl.get('user_center.receive')}</span></a></li>}
+                    {window.WALLET && window.WALLET.address &&  <li><a onClick={transfer} className="side-send"><i className="icon-send"/><span>{intl.get('user_center.send')}</span></a></li>}
+                    {window.WALLET && window.WALLET.address &&  <li><Link to="/trade"><i className="icon-trade"/><span>{intl.get('common.market')}</span></Link></li>}
+                    {window.WALLET && window.WALLET.address &&  <li><a onClick={() => dispatch({type:'layers/showLayer',payload:{id:'tradeByP2P'}})}><i className="icon-trade"/><span>{intl.get('p2p_order.user_center_p2p')}</span></a></li>}
+    	                <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'setting',symbol:null}) }} className="side-settings"><i className="icon-cog-o"/><span>{intl.get('settings.title')}</span></a></li>
+    	                 <li hidden><a className="side-airdrop"><i className="icon-gift-o"/><span>Airdrop</span></a></li>
+    	                <li><a className="side-help"><i className="icon-question-o"/><span>{intl.get('common.help')}</span></a></li>
+    	                <li><a className="side-feedback"><i className="icon-pencil"/><span>{intl.get('common.feedback')}</span></a></li>
     	            </ul>
     	        </div>
     	    </div>
