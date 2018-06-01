@@ -76,6 +76,8 @@ const notifications = {
     copy_suc: 'Copy Successfully',
     copy_fail: 'Copy Failed',
     not_allowed_place_order_worth: 'Order Amount Is Too Small',
+    in_watch_only_mode:'Switched to Watch-only Mode',
+    using_watch_only_mode:'You Are Now using Watch-only Mode',
   },
   message: {
     wallet_locked: 'Your wallet seems locked yet, please unlock first',
@@ -93,6 +95,7 @@ const notifications = {
     not_allowed_place_order_worth: 'Due to your total worth less than {worth}, you could not place this order',
     eth_is_required: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
     lrcfee_is_required: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
+    unlock_by_cookie_address:'Loopr has switched your account to the watch-only mode, and your private-key is no longer available to the browser.  You\'ll need to unlock your wallet again to perform some operations.',
   }
 }
 
