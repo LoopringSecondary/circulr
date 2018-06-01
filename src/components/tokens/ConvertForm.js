@@ -100,7 +100,7 @@ function ConvertForm(props) {
   return (
     <div className="pd-lg">
       <div className="sidebar-header">
-        <h3>转换{token}</h3>
+        <h3>{token} 转换为 {token.toLowerCase() === 'eth' ? 'WETH' : 'ETH'}</h3>
       </div>
       <div className="divider solid"/>
       <div className="row align-items-center justify-content-center mt25 mb25">

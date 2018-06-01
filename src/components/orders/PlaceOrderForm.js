@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'dva'
 import {Form,InputNumber,Button,Icon,Modal,Input,Radio,Select,Checkbox,Slider,Collapse,Tooltip,Popconfirm,Popover,DatePicker} from 'antd';
 import intl from 'react-intl-universal';
 import config from 'common/config'
@@ -12,6 +13,7 @@ import Notification from 'LoopringUI/components/Notification'
 import {createWallet} from 'LoopringJS/ethereum/account';
 import {getLastGas, getEstimateGas} from 'modules/settings/formatters'
 import {FormatAmount} from 'modules/formatter/FormatNumber'
+
 var _ = require('lodash');
 
 const MenuItem = (prop)=>{
@@ -548,14 +550,14 @@ class PlaceOrderForm extends React.Component {
           </div>
           {placeOrder.side === 'buy' &&
           <ul className="token-tab">
-            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('buy')} {left.symbol}</a></li>
-            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('sell')} {left.symbol}</a></li>
+            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')} {left.symbol}</a></li>
+            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')} {left.symbol}</a></li>
           </ul>
           }
           {placeOrder.side === 'sell' &&
           <ul className="token-tab">
-            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('buy')} {left.symbol}</a></li>
-            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('sell')} {left.symbol}</a></li>
+            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')} {left.symbol}</a></li>
+            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')} {left.symbol}</a></li>
           </ul>
           }
           <div className="tab-content">
@@ -572,7 +574,7 @@ class PlaceOrderForm extends React.Component {
                   }]
                 })(
                   <Input placeholder="" size="large"
-                         prefix={intl.get('price')}
+                         prefix={intl.get('common.price')}
                          suffix={<span className="fs14 color-black-3">{right.symbol}</span>}
                          onChange={inputChange.bind(this, 'price')}
                          onFocus={() => {
@@ -602,7 +604,7 @@ class PlaceOrderForm extends React.Component {
                   }]
                 })(
                   <Input placeholder="" size="large"
-                         prefix={intl.get('amount')}
+                         prefix={intl.get('common.amount')}
                          suffix={<span className="fs14 color-black-3">{left.symbol}</span>}
                          onChange={inputChange.bind(this, 'amount')}
                          onFocus={() => {
@@ -620,9 +622,9 @@ class PlaceOrderForm extends React.Component {
                 )}
               </Form.Item>
               <div className="pt5 pb5" style={{border:'0px solid rgba(255,255,255,0.07)',margin:'0px 0px'}}>
-                <MenuItem label={intl.get('total')} value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>}  />
-                <MenuItem label={intl.get('lrc_fee')} action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFee} LRC <Icon type="right" className="" /></div>}  />
-                <MenuItem label={intl.get('ttl')} action={<div onClick={setTTL} className="cursor-pointer">{ttlShow} <Icon type="right" className="" /></div>}  />
+                <MenuItem label={intl.get('common.total')} value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>}  />
+                <MenuItem label={intl.get('common.lrc_fee')} action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFee} LRC <Icon type="right" className="" /></div>}  />
+                <MenuItem label={intl.get('common.ttl')} action={<div onClick={setTTL} className="cursor-pointer">{ttlShow} <Icon type="right" className="" /></div>}  />
                 <div hidden className="form-group mr-0">
                   <div className="form-control-static d-flex justify-content-between">
                     <span className="font-bold">LRC Fee <i className="icon-info tradingfeetip"></i></span>
@@ -657,6 +659,7 @@ class PlaceOrderForm extends React.Component {
     )
   }
 }
+@connect()
 class TokenActions extends React.Component {
       constructor(props) {
         super(props);
@@ -664,20 +667,45 @@ class TokenActions extends React.Component {
 
       render() {
         const {item} = this.props
-        const gotoTransfer = ()=>{}
-        const gotoConvert = ()=>{}
-        const gotoReceive = ()=>{}
+        const gotoTransfer = (item)=>{
+          this.props.dispatch({
+            type:'layers/showLayer',
+            payload:{id:'transferToken'},
+          })
+          this.props.dispatch({
+            type: 'transfer/assignedtokenChange',
+            payload: {
+              assignedToken:item.symbol
+            }
+          })
+        }
+        const gotoConvert = (item)=>{
+          this.props.dispatch({
+            type:'layers/showLayer',
+            payload:{
+              id:'convertToken',
+              token:item.symbol,
+              showFrozenAmount: false,
+            },
+          })
+        }
+        const gotoReceive = (item)=>{
+          this.props.dispatch({
+            type:'layers/showLayer',
+            payload:{id:'receiveToken',item},
+          })
+        }
         const btns = (
           <div style={{width:'180px'}}>
             <Button onClick={gotoTransfer.bind(this,item)} className="d-block w-100 text-left mb5">Send {item.symbol}</Button>
             <Button onClick={gotoReceive.bind(this,{symbol:item.symbol})} className="d-block w-100 text-left mb5">Receive {item.symbol}</Button>
             {
               item.symbol === 'WETH' &&
-              <Button onClick={gotoConvert.bind(this,item)} className="d-block w-100 text-left mb5">Convert WETH To ETH</Button>
+              <Button onClick={gotoConvert.bind(this,{symbol:"WETH"})} className="d-block w-100 text-left mb5">Convert WETH To ETH</Button>
             }
             {
-              item.symbol === 'ETH' &&
-              <Button onClick={gotoConvert.bind(this,item)} className="d-block w-100 text-left mb5">Convert ETH To WETH</Button>
+              item.symbol === 'WETH' &&
+              <Button onClick={gotoConvert.bind(this,{symbol:"ETH"})} className="d-block w-100 text-left mb5">Convert ETH To WETH</Button>
             }
           </div>
         )
@@ -688,6 +716,7 @@ class TokenActions extends React.Component {
               placement="right"
               arrowPointAtCenter
               content={btns}
+              overlayClassName=""
             >
               {FormatAmount({value:item.balance.toString(10), precision:item.precision})}
               <Icon type="right" className="ml5" />
@@ -695,7 +724,7 @@ class TokenActions extends React.Component {
           </div>
         );
       }
-    }
+}
 
 export default Form.create({
   // mapPropsToFields(props) {

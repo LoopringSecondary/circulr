@@ -36,11 +36,9 @@ const words = {
   copy: "复制",
   copy_suc: '复制成功',
   copy_fail: "复制失败",
-  token: '代币',
+  token:'代币',
   order_type: '订单类型',
   margin_split: "分润",
-  order_since: "订单生效时间",
-  order_until: "订单失效时间",
   format_amount: "{amount,number}",
   back: '返回',
   cancel:"取消",
@@ -48,6 +46,7 @@ const words = {
   next_page: '后一页',
   import: "导入"
 }
+
 const types = {
   trade_side: {
     sell: words.sell,
@@ -56,7 +55,8 @@ const types = {
 }
 
 const validation_messages = {
-  invalid_number: "请输入合法的数字"
+  invalid_number: "请输入合法的数字",
+  invalid_integer:'请输入合法的整数'
 }
 
 const notifications = {
@@ -81,7 +81,8 @@ const notifications = {
 const actions = {
   receive: "接收",
   submit_order: '提交订单',
-  generate_qrcode: '生成二维码'
+  generate_qrcode: '生成二维码',
+  reset:'重置'
 }
 
 const time_unit = {
@@ -139,7 +140,26 @@ export default {
     tabs_basic: '基础信息',
     tabs_fill: '成交信息',
   },
-  place_order: {},
+  place_order: {
+    order_type:'订单类型',
+    order_since: "订单生效时间",
+    order_until: "订单失效时间",
+  },
+  settings:{
+    title:'设置',
+    preferences:'偏好',
+    tradings:'交易',
+    relays:'中继',
+    language:'语言',
+    currency:'货币',
+    timezone:'时区',
+    select_placeholder: '搜索/选择',
+    time_to_live:'订单有效时间',
+    trading_fee:'交易费(LRC)',
+    margin_split:'默认分润',
+    gas_price:'默认Gas价格',
+    choose_relay: '切换Relay'
+  },
   gas_setting: {
     // TODO
   },
