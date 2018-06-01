@@ -11,12 +11,12 @@ export function isValidInteger(int) {
   return int && integerReg.test(int)
 }
 
-export function getLastGas(gasStore, gasLimit){
+export function getLastGas(gasStore){
   const gasPriceStore = gasStore.gasPrice
-  const gasLimitStore = gasStore.gasLimit || gasStore.fixedGasLimit
+  const gasLimitStore = gasStore.fixedGasLimit || gasStore.gasLimit
   const gasPrice = gasPriceStore.last || gasPriceStore.estimate
-  const totalGas = calculateGas(gasPrice, gasLimit || gasLimitStore)
-  return {gasPrice, gasLimit:gasLimit || gasLimitStore, gas:totalGas}
+  const totalGas = calculateGas(gasPrice, gasLimitStore)
+  return {gasPrice, gasLimit:gasLimitStore, gas:totalGas}
 }
 
 export function getEstimateGas(gasStore, gasLimit){

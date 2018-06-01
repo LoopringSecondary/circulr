@@ -192,11 +192,11 @@ function PlaceOrderConfirm(props) {
 
         <div className="divider solid"></div>
         <ul className="list list-label list-dark list-justify-space-between divided">
-            <li><span>{intl.get('common.order_type')}</span><span>{tradeInfo.orderType === 'p2p_order' ? intl.get('order_type.p2p_order') : intl.get('order_type.market_order')}</span></li>
+            <li><span>{intl.get('place_order.order_type')}</span><span>{tradeInfo.orderType === 'p2p_order' ? intl.get('order_type.p2p_order') : intl.get('order_type.market_order')}</span></li>
             <li><span>{intl.get('common.lrc_fee')}</span><span>{`${uiFormatter.getFormatNum(lrcFee)} LRC`}</span></li>
             <li><span>{intl.get('common.margin_split')}</span><span>{`${marginSplit} %`}</span></li>
-            <li><span>{intl.get('common.order_since')}</span><span>{uiFormatter.getFormatTime(validSince * 1e3)}</span></li>
-            <li><span>{intl.get('common.order_until')}</span><span>{uiFormatter.getFormatTime(validUntil * 1e3)}</span></li>
+            <li><span>{intl.get('place_order.order_since')}</span><span>{uiFormatter.getFormatTime(validSince * 1e3)}</span></li>
+            <li><span>{intl.get('place_order.order_until')}</span><span>{uiFormatter.getFormatTime(validUntil * 1e3)}</span></li>
         </ul>
       {
         qrCodeData &&

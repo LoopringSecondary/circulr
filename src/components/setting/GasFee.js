@@ -8,7 +8,7 @@ import * as fm from 'LoopringJS/common/formatter'
 import {connect} from 'dva'
 
 const GasFeeForm = (props) => {
-  const {gas, form, onGasChange,advanced} = props
+  const {gas, form, onGasChange, advanced, dispatch} = props
   const gasPriceStore = gas.gasPrice
   const gasLimitStore = fm.toNumber(gas.gasLimit)
   const fixedGasLimit = gas.fixedGasLimit ? fm.toNumber(gas.fixedGasLimit) : 0
@@ -45,7 +45,6 @@ const GasFeeForm = (props) => {
               onGasChange({gasPrice:p})
             }
             gas.gasChange({gasPrice:p, gasLimit:l})
-            gas.visibleChange({visible:false})
           }
           break;
         case 'advance':
@@ -56,10 +55,10 @@ const GasFeeForm = (props) => {
             if(onGasChange) {
               onGasChange({gasPrice:p, gasLimit:l})
             }
-            gas.visibleChange({visible:false})
           }
           break;
       }
+      dispatch({type: 'layers/hideLayer', payload: {id:'gasFee',}})
     });
   }
 
@@ -74,10 +73,6 @@ const GasFeeForm = (props) => {
       )
     }
     return <div>{`${title} 无`}</div>
-  }
-
-  const handleVisibleChange = (visible) => {
-    gas.visibleChange({visible})
   }
 
   return (
