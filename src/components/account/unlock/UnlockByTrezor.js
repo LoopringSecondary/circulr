@@ -17,6 +17,7 @@ function UnlockByTrezor(props) {
       hardwareWallet.reset();
       dispatch({type: 'sockets/unlocked'})
       routeActions.gotoPath('/wallet')
+      dispatch({type:'layers/hideLayer', payload:{id:'unlock'}})
     } else {
       Notification.open({type: 'error', message:intl.get('notifications.title.unlock_fail'), description: intl.get('unlock.connect_trezor_tip')})
     }

@@ -73,6 +73,7 @@ function MetaMask(props) {
         props.dispatch({type: 'sockets/unlocked'});
         routeActions.gotoPath('/wallet');
         metaMask.setLoading({loading:false});
+        props.dispatch({type:'layers/hideLayer', payload:{id:'unlock'}})
 
         let alert = false
         var accountInterval = setInterval(function() {

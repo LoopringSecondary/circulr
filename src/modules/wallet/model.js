@@ -20,23 +20,23 @@ const unlockWithMetaMask = () => {
     window.web3.version.getNetwork((err, netId) => {
       if (netId !== '1') {
         Notification.open({
-          message:intl.get('wallet.failed_connect_metamask_title'),
-          description:intl.get('wallet.content_metamask_mainnet'),
+          message:intl.get('notifications.title.unlock_fail'),
+          description:intl.get('wallet_meta.mainnet_tip'),
           type:'error'
         })
         return
       }
       window.WALLET = {address:window.web3.eth.accounts[0], unlockType:'metaMask'};
       window.account = new MetaMaskAccount(window.web3);
-      Notification.open({type:'success',message:'解锁成功',description:'unlock'});
+      Notification.open({type:'success',message:intl.get('notifications.title.unlock_suc')});
     })
   } else {
-    let content = intl.get('wallet.content_metamask_install')
+    let content = intl.get('wallet_meta.install_tip')
     if(window.web3 && !window.web3.eth.accounts[0]) { // locked
-      content = intl.get('wallet.content_metamask_locked')
+      content = intl.get('wallet_meta.unlock_tip')
     }
     Notification.open({
-      message:intl.get('wallet.failed_connect_metamask_title'),
+      message:intl.get('notifications.title.unlock_fail'),
       description:content,
       type:'error'
     })
@@ -53,8 +53,8 @@ if(unlockedType && unlockedType === 'metaMask' && window.web3 && window.web3.eth
     window.WALLET = {address:unlockedAddress, unlockType:unlockedType};
     Notification.open({
       type:'info',
-      message:intl.get('wallet.in_watch_only_mode_title'),
-      description:intl.get('wallet.unlock_by_cookie_address_notification')
+      message:intl.get('notifications.title.in_watch_only_mode'),
+      description:intl.get('notifications.message.unlock_by_cookie_address')
     });
   } else {
     unlockedType = ''

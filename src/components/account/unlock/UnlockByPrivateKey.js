@@ -30,6 +30,7 @@ class PrivateKey extends React.Component {
       Notification.open({type:'success',message:intl.get('notifications.title.unlock_suc')});
       this.props.dispatch({type: 'sockets/unlocked'})
       routeActions.gotoPath('/wallet');
+      this.props.dispatch({type:'layers/hideLayer', payload:{id:'unlock'}})
     }else if(privateKey){
       Notification.open({type:'error',message:intl.get('notifications.title.unlock_fail'),description:intl.get('key.error_private_tip')})
     }else{

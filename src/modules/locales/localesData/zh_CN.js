@@ -46,6 +46,9 @@ const words = {
   next_page: '后一页',
   import: "导入",
   recipient: '接收者',
+  help:'帮助',
+  feedback:"反馈",
+  quit:'退出'
 }
 
 const types = {
@@ -74,6 +77,9 @@ const notifications = {
     send_succ: '转账成功',
     copy_suc:'复制成功',
     copy_fail:'复制失败',
+    not_allowed_place_order_worth: '订单金额过小',
+    in_watch_only_mode:'已切换至观察模式',
+    using_watch_only_mode:'您正在使用观察模式',
   },
   message: {
     wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
@@ -88,6 +94,10 @@ const notifications = {
     confirm_warn_metamask: "您的MetaMask浏览器插件上会提示您签名, 请确认后再回来提交订单",
     send_failed: "您{do} {amount} {token} 失败, 原因:{reason}",
     send_succ: "您转账 {amount} {token} 成功",
+    not_allowed_place_order_worth: '由于您当前订单总价值小于{worth}, 无法下单',
+    eth_is_required: '由于需要支付ETH油费, 根据您当前订单需要发送的以太坊交易计算，还需要 {required} ETH',
+    lrcfee_is_required: '由于需要支付LRC油费, 汇总您历史订单所需LRC，还需要 {required} LRC',
+    unlock_by_cookie_address:'Loopr切换您的账户至观察模式，您的私钥对当前网页已失效。当您执行一些操作时可能需要再次解锁钱包。',
   }
 }
 
@@ -216,7 +226,8 @@ export default {
     order_detail: '订单详情',
     generate_order: '生成订单',
     instruction: '1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方使用Circulr移动端扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
-    notice: '* P2P订单双方都不需要支付LRC手续费</br>'
+    notice: '* P2P订单双方都不需要支付LRC手续费</br>',
+    user_center_p2p:'P2P 交易'
   },
   sign: {
     not_signed: "您还未完成签名",
@@ -354,8 +365,13 @@ export default {
     receive_value_tip: '推荐值',
   },
   convert:{
+    convert_eth_title:'转换ETH为WETH',
+    convert_weth_title:'转换WETH为ETH',
     convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
-    actions_confirm_convert: '确认转换'
+    actions_confirm_convert: '确认转换',
+    actions_max: "最大数量",
+    notification_suc_title:'转换{value} {token}成功',
+    notification_fail_title:'转换{value} {token}失败'
   },
 
   unlock: {
@@ -451,6 +467,11 @@ export default {
     paste_private_title: "请粘贴您的私钥",
     error_private_tip: '不合法的私钥',
     lack_private_tip: '请输入您的私钥'
+  },
+
+  user_center:{
+    receive:'收款',
+    send:'转账'
   }
 }
 
