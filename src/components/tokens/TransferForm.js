@@ -76,7 +76,6 @@ function TransferForm(props) {
       if(v !== "ETH") {
         gasLimit = config.getGasLimitByType('token_transfer').gasLimit
       }
-      console.log('11111, fixed change', v, fm.toNumber(gasLimit))
       dispatch({type:"gas/fixedGasLimitChange",payload:{fixedGasLimit:gasLimit}})
     }
   }
