@@ -168,7 +168,7 @@ function ConvertForm(props) {
         </div>
       </div>
       <Button className="btn-block btn-xlg btn-o-dark" onClick={toConvert}>{intl.get('convert.actions_confirm_convert')}</Button>
-      {false && token.toLowerCase() === 'eth' && <p className="text-color-dark-1 mt15">我们为您保留0.1 ETH作为油费以保证后续可以发送交易</p>}
+      {false && token.toLowerCase() === 'eth' && <p className="text-color-dark-1 mt15">{intl.get('convert.convert_eth_tip')}</p>}
     </div>
   )
 }
