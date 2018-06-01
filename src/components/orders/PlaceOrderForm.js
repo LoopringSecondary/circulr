@@ -716,6 +716,7 @@ class TokenActions extends React.Component {
               placement="right"
               arrowPointAtCenter
               content={btns}
+              overlayClassName=""
             >
               {FormatAmount({value:item.balance.toString(10), precision:item.precision})}
               <Icon type="right" className="ml5" />

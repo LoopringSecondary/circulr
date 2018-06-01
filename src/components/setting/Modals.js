@@ -13,7 +13,9 @@ function Modals(props) {
       </Containers.Layers>
       <Containers.Layers id="gasFee">
         <UiContianers.Modals id="gasFee" className="rs">
-          <GasFee />
+          <Containers.Gas>
+            <GasFee />
+          </Containers.Gas>
         </UiContianers.Modals>
       </Containers.Layers>
 
