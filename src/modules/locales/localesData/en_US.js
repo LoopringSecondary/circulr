@@ -176,15 +176,15 @@ export default {
     none: 'None'
   },
   setting_ttl: {
-    title:'Set Time To Live Of Order',
-    tabs_basic:'Basic',
-    tabs_advanced:'Advanced',
-    more:'More',
+    title: 'Set Time To Live Of Order',
+    tabs_basic: 'Basic',
+    tabs_advanced: 'Advanced',
+    more: 'More',
   },
   setting_lrcfee: {
-    title:'Set LRC Fee Of Order',
-    tabs_basic:'Basic',
-    tabs_advanced:'Advanced',
+    title: 'Set LRC Fee Of Order',
+    tabs_basic: 'Basic',
+    tabs_advanced: 'Advanced',
   },
   place_order_confirm: {
     qrcode_security: '*For your order\'s security, your QR code will only generated once and not be stored locally. Make sure to save it properly, any one who received your QR code could take your order',
@@ -207,7 +207,7 @@ export default {
   // transaction
   // -----------
   tx: {
-    title:'Transactions',
+    title: 'Transactions',
     type: words.type,
     direction: 'In & Out',
     gas: words.gas,
@@ -243,7 +243,7 @@ export default {
     others: 'Others'
   },
   tx_list: {
-    type:{
+    type: {
       sell: 'Sold {value} {symbol}',
       buy: 'Bought {value} {symbol}',
       transfer: 'Sent {value} {symbol}',
@@ -271,7 +271,7 @@ export default {
     sell: words.sell,
     lrc_fee: words.lrc_fee,
     lrc_reward: words.lrc_reward,
-    margin_split:words.margin_split
+    margin_split: words.margin_split
   },
   // -----------
   // ticker
@@ -312,7 +312,24 @@ export default {
     advanced: "Advanced",
     send_max: "Send Max",
   },
-  convert: {},
+  token: {
+    action_options: '{token} Options',
+    action_types: {
+      receive: "Receive {token}",
+      send: " Send {token}",
+      trade: "Trade {token}",
+      convert: 'Convert to {token}'
+    },
+    assets_title: 'Total Value',
+  },
+  convert: {
+    convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
+    actions_confirm_convert: '确认转换'
+  },
+  receive: {
+    receive_title: 'My Ethereum Address',
+    receive_value_tip: 'Recommended value',
+  },
   // -----------
   // wallet
   // -----------
@@ -407,24 +424,5 @@ export default {
     actions_paste_mnemonic: 'Paste Mnemonic Here',
     error_mnemonic_tip: "Invalid Mnemonic",
     mnemonic_tip_lack: 'Please Input your mnemonic',
-  },
-  token: {
-    action_options: '{token} Options',
-    action_types: {
-      receive: "Receive {token}",
-      send: " Send {token}",
-      trade: "Trade {token}",
-      convert: 'Convert to {token}'
-    },
-    assets_title:'Total Value',
-    convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
-    actions_max: "最大数量",
-    actions_cancel_send: "取消转账",
-    actions_confirm_send: "确认转账",
-    actions_confirm_convert: '确认转换'
-  },
-  receive:{
-    receive_title: '我的以太坊地址',
-    receive_value_tip: '推荐值',
-  },
+  }
 }

@@ -311,7 +311,25 @@ export default {
     advanced: "高级",
     send_max: "最大数量",
   },
-  convert: {},
+  token: {
+    action_options: '{token} 选项',
+    action_types: {
+      receive: "接收{token}",
+      send: "转账{token}",
+      trade: "交易{token}",
+      convert: '转换成{token}'
+    },
+    assets_title: '总资产',
+  },
+  receive:{
+    receive_title: '我的以太坊地址',
+    receive_value_tip: '推荐值',
+  },
+  convert:{
+    convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
+    actions_confirm_convert: '确认转换'
+  },
+
   unlock: {
     has_not_unlocked: '您的钱包还未解锁',
     to_unlock: '解锁钱包',
@@ -405,26 +423,6 @@ export default {
     paste_private_title: "请粘贴您的私钥",
     error_private_tip: '不合法的私钥',
     lack_private_tip: '请输入您的私钥'
-  },
-
-  token: {
-    action_options: '{token} 选项',
-    action_types: {
-      receive: "接收{token}",
-      send: "转账{token}",
-      trade: "交易{token}",
-      convert: '转换成{token}'
-    },
-    receive_title: '我的以太坊地址',
-    receive_value_tip: '推荐值',
-    recipient: '接受者',
-    continue: '继续',
-    convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
-    actions_max: "最大数量",
-    actions_cancel_send: "取消转账",
-    actions_confirm_send: "确认转账",
-    actions_confirm_convert: '确认转换'
-  },
-
+  }
 }
 

@@ -141,7 +141,7 @@ function ListTokensSidebar(props) {
   return (
     <div>
     	<div className="token-total">
-          <h3 className="text-success">{totalWorthDisplay}</h3><small>Total Value</small>
+          <h3 className="text-success">{totalWorthDisplay}</h3><small>{intl.get('token.assets_title')}</small>
       </div>
       <div className="tool-bar d-flex justify-content-between">
         <div className="search">
