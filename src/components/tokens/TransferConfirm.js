@@ -33,9 +33,9 @@ function TransferConfirm(props) {
     const account = wallet.account || window.account
     if(!account || wallet.unlockType === 'address') {
       Notification.open({
-        message: intl.get('trade.place_order_failed'),
+        message: intl.get('notifications.title.place_order_failed'),
         type: "error",
-        description: 'to unlock'
+        description: intl.get('notifications.message.wallet_locked')
       });
       return
     }
@@ -47,17 +47,17 @@ function TransferConfirm(props) {
       tx.nonce = fm.toHex(nonce)
       let toConfirmWarn = '';
       if (wallet.wallet === 'Ledger') {
-        toConfirmWarn = intl.get('trade.confirm_warn_ledger')
+        toConfirmWarn = intl.get('notifications.message.confirm_warn_ledger')
       }
       if (wallet.wallet === 'MetaMask') {
-        toConfirmWarn = intl.get('trade.confirm_warn_metamask')
+        toConfirmWarn = intl.get('notifications.message.confirm_warn_metamask')
       }
       if (wallet.wallet === 'Trezor') {
-        toConfirmWarn = intl.get('trade.confirm_warn_trezor')
+        toConfirmWarn = intl.get('notifications.message.confirm_warn_trezor')
       }
       if (toConfirmWarn) {
         Notification.open({
-          message: intl.get('trade.to_confirm_title'),
+          message: intl.get('notifications.title.to_confirm'),
           description: toConfirmWarn,
           type: 'info'
         })
@@ -69,8 +69,8 @@ function TransferConfirm(props) {
         console.error("Error:", response.error)
         result = {...result, error:response.error.message}
         Notification.open({
-          message:intl.get('token.send_failed'),
-          description:intl.get('token.result_failed', {do:intl.get('token.send_title'), amount:result.extraData.amount, token:result.extraData.tokenSymbol, reason:result.error}),
+          message:intl.get('notifications.title.send_failed'),
+          description:intl.get('notifications.message.send_failed', {do:intl.get('common.send'), amount:result.extraData.amount, token:result.extraData.tokenSymbol, reason:result.error}),
           type:'error'
         })
       } else {
@@ -78,12 +78,12 @@ function TransferConfirm(props) {
         window.STORAGE.wallet.setWallet({address:wallet.address, nonce:tx.nonce})
         window.RELAY.account.notifyTransactionSubmitted({tx,txHash:response.result,from:wallet.address});
         Notification.open({
-          message:intl.get('token.transfer_succ_notification_title'),
-          description:intl.get('token.result_transfer_success', {amount:result.extraData.amount, token:result.extraData.tokenSymbol}),
+          message:intl.get('notifications.title.send_succ'),
+          description:intl.get('notifications.message.send_succ', {amount:result.extraData.amount, token:result.extraData.tokenSymbol}),
           type:'success',
           actions:(
             <div>
-              <Button className="alert-btn mr5" onClick={viewInEtherscan.bind(this, extraData.txHash)}>{intl.get('token.transfer_result_etherscan')}</Button>
+              <Button className="alert-btn mr5" onClick={viewInEtherscan.bind(this, extraData.txHash)}>{intl.get('transfer.transfer_result_etherscan')}</Button>
             </div>
           )
         })
@@ -99,8 +99,8 @@ function TransferConfirm(props) {
       dispatch({type: 'layers/hideLayer', payload: {id:'transfer'}})
       dispatch({type: 'transfer/reset'})
       Notification.open({
-        message:intl.get('token.send_failed'),
-        description:intl.get('token.result_failed', {do:intl.get('token.send_title'), amount:result.extraData.amount, token:result.extraData.tokenSymbol, reason:result.error}),
+        message:intl.get('notifications.title.send_failed'),
+        description:intl.get('notifications.message.send_failed', {do:intl.get('common.send'), amount:result.extraData.amount, token:result.extraData.tokenSymbol, reason:result.error}),
         type:'error'
       })
     })
@@ -117,18 +117,18 @@ function TransferConfirm(props) {
   return (
     <div className="pd-lg">
         <div className="sidebar-header">
-          <h3>发送 {extraData.tokenSymbol}</h3>
+          <h3>{intl.get('common.send')} {extraData.tokenSymbol}</h3>
         </div>
         <div className="text-center pt15 pb15">
 	        <i className={`icon-${extraData.tokenSymbol} icon-token-md`}></i>
         </div>
         <div className="divider solid"></div>
         <ul className="list list-label list-dark list-justify-space-between divided">
-            <li><span>发送数量</span><div className="text-lg-control break-word text-right">{worth} ≈ {`${extraData.amount}${extraData.tokenSymbol}`}</div></li>
-            <li><span>发送方</span><div className="text-lg-control break-word text-right">{extraData.from}</div></li>
-            <li><span>发送到</span><div className="text-lg-control break-word text-right">{extraData.to}</div></li>
+            <li><span>{intl.get('common.amount')}</span><div className="text-lg-control break-word text-right">{worth} ≈ {`${extraData.amount}${extraData.tokenSymbol}`}</div></li>
+            <li><span>{intl.get('transfer.from')}</span><div className="text-lg-control break-word text-right">{extraData.from}</div></li>
+            <li><span>{intl.get('transfer.to')}</span><div className="text-lg-control break-word text-right">{extraData.to}</div></li>
             <li>
-              <span>邮费</span>
+              <span>{intl.get('transfer.gas')}</span>
               <span className="text-right">{extraData.gas} ETH<br/>
                 <small className="text-color-dark-2">{`Gas(${fm.toNumber(tx.gasLimit).toString(10)}) * Gas Price(${fm.toNumber(tx.gasPrice)/(1e9).toString(10)} Gwei)`}</small>
               </span>
@@ -137,13 +137,13 @@ function TransferConfirm(props) {
       {
         !isUnlocked &&
         <div className="mb15 mt15">
-          <Alert type="info" title={<div className="color-black-1">{intl.get('unlock.has_not_unlocked')} <a onClick={toUnlock}>{intl.get('unlock.to_unlock')}<Icon type="right" /></a></div>} theme="light" size="small"/>
+          <Alert type="info" title={<div className="color-black-1">{intl.get('unlock.has_not_unlocked')} <a onClick={toUnlock}>{intl.get('actions.to_unlock')}<Icon type="right" /></a></div>} theme="light" size="small"/>
         </div>
       }
       <div className="col-row mt15">
         <div className="col2-2">
-          <div className="item"><Button className="btn-block btn-o-dark btn-xlg" onClick={cancel}>不，取消发送</Button></div>
-          <div className="item"><Button disabled={!isUnlocked} className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>马上发送</Button></div>
+          <div className="item"><Button className="btn-block btn-o-dark btn-xlg" onClick={cancel}>{intl.get('actions.transfer_cancel')}</Button></div>
+          <div className="item"><Button disabled={!isUnlocked} className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>{intl.get('actions.transfer_send')}</Button></div>
         </div>
       </div>
     </div>
