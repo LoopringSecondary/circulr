@@ -7,8 +7,7 @@ export default {
   state: {
     ...storage.settings.getGas(),
     tabSelected:'easy',
-    fixedGasLimit:0,
-    visible:false
+    fixedGasLimit:0, // component fixed gasLimit
   },
   effects:{
   },
@@ -18,7 +17,7 @@ export default {
       return  {
         ...state,
         fixedGasLimit : gasLimit || state.fixedGasLimit,
-        gasLimit:0,
+        //gasLimit:0,
         tabSelected:'easy'
       };
     },
@@ -35,18 +34,20 @@ export default {
       storage.settings.setGas(newState)
       return newState
     },
+    fixedGasLimitChange(state, { payload }) {
+      const {fixedGasLimit} = payload
+      let newState =  {
+        ...state,
+        fixedGasLimit,
+      };
+      storage.settings.setGas(newState)
+      return newState
+    },
     tabChange(state, { payload }) {
       const {tabSelected} = payload
       return  {
         ...state,
         tabSelected
-      };
-    },
-    visibleChange(state, { payload }) {
-      const {visible} = payload
-      return  {
-        ...state,
-        visible
       };
     },
   }
