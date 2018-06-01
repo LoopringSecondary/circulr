@@ -48,42 +48,42 @@ export  default class BackupWallet extends React.Component {
     );
     return(
       <div>
-        <h2 className="text-center text-primary" style={{marginBottom: "20px" }}>{intl.get('wallet.backup_title')}</h2>
+        <h2 className="text-center text-primary" style={{marginBottom: "20px" }}>{intl.get('wallet_generate.backup_title')}</h2>
         <Tabs defaultActiveKey="1" className="tabs-dark">
           <TabPane tab="Keystore" key="1" style={{textAlign:"tect-center"}}>
               <div className="notice text-warning">
                 <div><i className="icon-warning"/></div>
                 <div>
-                  <p>{intl.get('wallet.backup_tip')}</p>
+                  <p>{intl.get('wallet_generate.backup_tip')}</p>
                 </div>
             </div>
             <a href={url}
                download={fileName}
                className="btn btn-block btn-primary btn-xxlg">
-              {intl.get('wallet.actions_backup_json')}</a>
+              {intl.get('wallet_generate.actions_backup_json')}</a>
           </TabPane>
-          <TabPane tab={intl.get('wallet.types.mnemonic')} key="2">
+          <TabPane tab={intl.get('wallet_type.mnemonic')} key="2">
               <div className="notice text-warning">
                 <div><i className="icon-warning"/></div>
                 <div>
-                  <p>{intl.get('wallet.backup_tip')}</p>
+                  <p>{intl.get('wallet_generate.backup_tip')}</p>
                 </div>
               </div>
             <div className="mnemonic-content text-primary">{mnemonic}</div>
-            <Button className="btn btn-block btn-primary btn-xxlg" onClick={() => this.handleCopy(mnemonic)}>{intl.get('wallet.actions_backup_mnemonic')}</Button>
+            <Button className="btn btn-block btn-primary btn-xxlg" onClick={() => this.handleCopy(mnemonic)}>{intl.get('wallet_generate.actions_backup_mnemonic')}</Button>
           </TabPane>
-          <TabPane tab={intl.get('wallet.types.private_key')} key="3">
+          <TabPane tab={intl.get('wallet_type.private_key')} key="3">
               <div className="notice text-warning">
                 <div><i className="icon-warning"/></div>
                 <div>
-                  <p>{intl.get('wallet.backup_tip')}</p>
+                  <p>{intl.get('wallet_generate.backup_tip')}</p>
                 </div>
               </div>
             <div className="form-group form-group-lg iconic-input iconic-input-lg right eye-switch">
               <Input type={visible ? 'text':'password'} addonAfter={visibleIcon} disabled value={privateKey}/>
             </div>
             <div className="blk"></div>
-            <Button className="btn btn-block btn-primary btn-xxlg" onClick={() => this.handleCopy(privateKey)}>{intl.get('wallet.actions_backup_private')}</Button>
+            <Button className="btn btn-block btn-primary btn-xxlg" onClick={() => this.handleCopy(privateKey)}>{intl.get('wallet_generate.actions_backup_private')}</Button>
           </TabPane>
         </Tabs>
       </div>

@@ -274,6 +274,7 @@ export default {
 
   wallet_type:{
     generate: 'Generate',
+    address:'Address',
     metamask: "MetaMask Wallet",
     json: "Json ",
     mnemonic: 'Mnemonic',
@@ -293,7 +294,7 @@ export default {
 
   wallet_meta:{
     actions_get_metaMask: "Get MetaMask {browser} extension",
-    actions_visit_metaMask: "访问MetaMask官网",
+    actions_visit_metaMask: " Visit MetaMask Website",
     browser_tip:"Your Browser do not support MetaMask, try Chrome instead",
     unlock_steps_title:'Steps You Should Do',
     unlock_metaMask_tip:'Unlock MetaMask',
@@ -306,16 +307,23 @@ export default {
     unlock_step_unlock_content:'To create an account or unlock with MetaMask',
     unlock_step_refresh_title:'Refresh Circular',
     unlock_step_refresh_content:'Refresh Circular wallet to enable MetaMask',
+    mainnet_tip:"We only support Ethereum main net when using MetaMask",
+    logout_title: "Logout From MetaMask",
+    logout_tip: "We detected you have logged out from MetaMask, for your assets safety we have relocked your wallet",
+    account_change_title: "Account changed in MetaMask",
+    account_change_tip: "Circular detected your address in MetaMask has just changed ",
+    install_tip:'Your may need to install MetaMask extension to your browser first, please reload our page after installed',
+    unlock_tip:'Failed to connect with MetaMask, please unlock and use'
   },
-
   address:{
+    placeholder_tip:'Address:',
     paste_address_title:'Paste Your Address Here',
-    error_address_tip: "Invalid Address",
+    invalid_address_tip: "Invalid Address",
   },
   wallet_determine:{
     default_address: 'Default Address',
     title_deter_address:"Select Address",
-    title_select_path:'elect path',
+    title_select_path:'Select Dpath',
     custom_path:'Custom Dpath',
     no_address_tip:'No valid addresses',
     actions_other_address: 'Select Other Address',
@@ -325,8 +333,10 @@ export default {
     error_json_tip: 'Invalid keystore Json',
   },
   key:{
+    placeholder:'Private Key',
     paste_private_title:'Paste Your Private Key Here',
     error_private_tip:'Invalid Private Key',
+    lack_private_tip:'Please input your private key'
   },
   mnemonic: {
     actions_paste_mnemonic: 'Paste Mnemonic Here',

@@ -27,11 +27,13 @@ class PrivateKey extends React.Component {
     const {privateKey} = this.state;
     if(this.isValidPrivateKey(privateKey)){
       this.props.dispatch({type:"wallet/unlockPrivateKeyWallet",payload:{privateKey}});
-      Notification.open({type:'success',message:intl.get('wallet.notification_unlock_suc')});
+      Notification.open({type:'success',message:intl.get('notifications.title.unlock_suc')});
       this.props.dispatch({type: 'sockets/unlocked'})
       routeActions.gotoPath('/wallet');
+    }else if(privateKey){
+      Notification.open({type:'error',message:intl.get('notifications.title.unlock_fail'),description:intl.get('key.error_private_tip')})
     }else{
-      Notification.open({type:'error',message:intl.get('wallet.notification_unlock_fail'),description:intl.get('wallet.error_private_tip')})
+      Notification.open({type:'error',message:intl.get('notifications.title.unlock_fail'),description:intl.get('key.lack_private_tip')})
     }
   };
 
@@ -60,7 +62,7 @@ class PrivateKey extends React.Component {
     return (
       <div>
         <div id="privateKey">
-          <h2 className="text-center text-primary">{intl.get('wallet.paste_private_title')}</h2>
+          <h2 className="text-center text-primary">{intl.get('key.paste_private_title')}</h2>
           <div className="blk-md" />
           <Form>
             <Form.Item className="eye-switch form-dark">
@@ -68,16 +70,16 @@ class PrivateKey extends React.Component {
                 initialValue: privateKey,
                 rules: [{
                   required: true,
-                  message: intl.get('wallet.error_private_tip'),
+                  message: intl.get('key.error_private_tip'),
                   validator: (rule, value, cb) => this.isValidPrivateKey(value) ? cb() : cb(true)
                 }]
               })(
-                  <Input type={visible ? 'text' : 'password'} addonAfter={visibleIcon} onChange={this.keyChange}/>
+                  <Input type={visible ? 'text' : 'password'} placeholder={intl.get('key.placeholder')} addonAfter={visibleIcon} onChange={this.keyChange}/>
               )}
             </Form.Item>
           </Form>
           <div className="blk-md"/>
-          <Button className="btn btn-primary btn-block btn-xxlg" onClick={this.unlock}>{intl.get('wallet.actions_unlock')}</Button>
+          <Button className="btn btn-primary btn-block btn-xxlg" onClick={this.unlock}>{intl.get('unlock.actions_unlock')}</Button>
         </div>
       </div>
     )

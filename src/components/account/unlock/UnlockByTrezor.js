@@ -13,12 +13,12 @@ function UnlockByTrezor(props) {
   const unlock = () => {
     if (address) {
       dispatch({type: 'wallet/unlockTrezorWallet', payload: {dpath: `${dpath}/0`, address}});
-      Notification.open({type: 'success', message: '解锁成功', description: 'unlock'});
+      Notification.open({type: 'success', message:intl.get('notifications.title.unlock_suc')});
       hardwareWallet.reset();
       dispatch({type: 'sockets/unlocked'})
       routeActions.gotoPath('/wallet')
     } else {
-      Notification.open({type: 'error', message: 'unlock failed', description: 'Connect to your TREZOR'})
+      Notification.open({type: 'error', message:intl.get('notifications.title.unlock_fail'), description: intl.get('unlock.connect_trezor_tip')})
     }
 
   };
@@ -29,17 +29,17 @@ function UnlockByTrezor(props) {
       hardwareWallet.reset();
       routeActions.gotoPath('/unlock/determineWallet');
     }else {
-      Notification.open({type: 'error', message: 'unlock failed', description: 'Connect to your TREZOR'})
+      Notification.open({type: 'error',  description: intl.get('unlock.connect_trezor_tip')})
     }
   };
   return (
     <div>
-      <b>{intl.get('wallet.default_address')}：{address}</b>
+      <b>{intl.get('wallet_determine.default_address')}：{address}</b>
       <div className="blk"></div>
       <div>
-        <Button className="btn btn-primary btn-xlg btn-block" onClick={unlock}>{intl.get('wallet.actions_unlock')}</Button>
+        <Button className="btn btn-primary btn-xlg btn-block" onClick={unlock}>{intl.get('unlock.actions_unlock')}</Button>
         <div className="blk"></div>
-        <Button className="btn btn-primary btn-xlg btn-block" onClick={moreAddress}>{intl.get('wallet.actions_other_address')}</Button>
+        <Button className="btn btn-primary btn-xlg btn-block" onClick={moreAddress}>{intl.get('wallet_determine.actions_other_address')}</Button>
       </div>
     </div>
   )

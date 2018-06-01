@@ -262,8 +262,9 @@ export default {
   },
   wallet_type:{
     generate: '生成钱包',
+    address:'地址',
     metamask: "MetaMask 钱包",
-    json: "Json 文件",
+    json: "JSON 文件",
     mnemonic: '助记词',
     private_key: '私钥',
     trezor: 'TREZOR',
@@ -283,16 +284,16 @@ export default {
 
   wallet_generate:{
     title_generate: '生成钱包',
+    actions_generate: '生成钱包',
     backup_title: '备份钱包',
     backup_tip: 'Circular钱包不会保存用户的私钥、Keystore、助记词，强烈建议您在线下备份这些信息（不联网的USB硬盘或纸质存储）。一旦私钥、Keystore、助记词丢失将无法恢复!',
     actions_backup_json: '我已经明白，下载钱包文件',
     actions_backup_mnemonic: '我已经明白，复制助记词',
     actions_backup_private: '我已经明白，复制私钥',
-    actions_generate: '生成钱包',
   },
 
   wallet_meta:{
-    actions_get_metaMask: "下载MetaMask插件",
+    actions_get_metaMask: "下载{browser}浏览器MetaMask插件",
     actions_visit_metaMask: "访问MetaMask官网",
     browser_tip: '您的浏览器不支持MetaMask解锁，推荐您使用Chrome',
     unlock_metaMask_tip: '解锁MetaMask',
@@ -305,8 +306,16 @@ export default {
     unlock_step_unlock_content: '在MetaMask上创建一个账号或解锁已有账号',
     unlock_step_refresh_title: '刷新Circular',
     unlock_step_refresh_content: '刷新Circular钱包使MetaMask生效',
+    mainnet_tip:'在您使用MetaMask解锁时，我们只支持Ethereum main net，请在您的MetaMask切换',
+    logout_title:"您已从MetaMask登出",
+    logout_tip: "我们检测到您已经从MetaMask登出, 为了您资金安全您的钱包重新锁定",
+    account_change_title: "您切换了MetaMask账户",
+    account_change_tip: "我们检测到您刚刚在MetaMask切换了账户, 请注意您账户资产发生了改变",
+    install_tip:'您可能需要在浏览器安装MetaMask插件，安装完成后请刷新页面',
+    unlock_tip:'与MetaMask连接失败, 请解锁后使用'
   },
   address:{
+    placeholder_tip:'地址：',
     paste_address_title: '请粘贴您的地址',
     invalid_address_tip: '不合法的地址',
   },
@@ -330,14 +339,11 @@ export default {
   },
 
   key: {
+    placeholder:'私钥',
     paste_private_title: "请粘贴您的私钥",
     error_private_tip: '不合法的私钥',
+    lack_private_tip:'请输入您的私钥'
   },
-
-
-
-
-
 
   token: {
     action_options: '{token} 选项',
