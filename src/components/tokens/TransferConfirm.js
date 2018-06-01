@@ -1,10 +1,11 @@
 import React from 'react';
-import { Form,Input,Button } from 'antd';
+import { Form,Input,Button,Icon } from 'antd';
 import * as fm from 'LoopringJS/common/formatter'
 import Currency from 'modules/settings/CurrencyContainer'
 import * as tokenFormatter from 'modules/tokens/TokenFm'
 import intl from 'react-intl-universal';
 import Notification from 'LoopringUI/components/Notification'
+import Alert from 'LoopringUI/components/Alert'
 
 function TransferConfirm(props) {
   const {transferConfirm, marketcap, wallet, dispatch} = props
@@ -118,14 +119,12 @@ function TransferConfirm(props) {
         <div className="sidebar-header">
           <h3>发送 {extraData.tokenSymbol}</h3>
         </div>
-        <div>
-	        <i className="icon-ETH icon-token-md"></i>
-          <div className="blk-sm"></div>
-	        <h2>{`${extraData.amount}${extraData.tokenSymbol}`}</h2>
-	        <span>{worth}</span>
+        <div className="text-center pt15 pb15">
+	        <i className={`icon-${extraData.tokenSymbol} icon-token-md`}></i>
         </div>
         <div className="divider solid"></div>
         <ul className="list list-label list-dark list-justify-space-between divided">
+            <li><span>发送数量</span><div className="text-lg-control break-word text-right">{worth} ≈ {`${extraData.amount}${extraData.tokenSymbol}`}</div></li>
             <li><span>发送方</span><div className="text-lg-control break-word text-right">{extraData.from}</div></li>
             <li><span>发送到</span><div className="text-lg-control break-word text-right">{extraData.to}</div></li>
             <li>
@@ -135,22 +134,18 @@ function TransferConfirm(props) {
               </span>
             </li>
         </ul>
-      {isUnlocked &&
-      <div className="col-row">
+      {
+        !isUnlocked &&
+        <div className="mb15 mt15">
+          <Alert type="info" title={<div className="color-black-1">{intl.get('unlock.has_not_unlocked')} <a onClick={toUnlock}>{intl.get('unlock.to_unlock')}<Icon type="right" /></a></div>} theme="light" size="small"/>
+        </div>
+      }
+      <div className="col-row mt15">
         <div className="col2-2">
           <div className="item"><Button className="btn-block btn-o-dark btn-xlg" onClick={cancel}>不，取消发送</Button></div>
-          <div className="item"><Button className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>马上发送</Button></div>
+          <div className="item"><Button disabled={!isUnlocked} className="btn-block btn-o-dark btn-xlg" onClick={handelSubmit}>马上发送</Button></div>
         </div>
       </div>
-      }
-      {!isUnlocked &&
-      <div className="col-row">
-        <div className="col2-2">
-          <Button className="btn-block btn-o-dark btn-xlg" onClick={toUnlock}>Unlock Your Wallet</Button>
-          <div>* You should unlock your wallet first </div>
-        </div>
-      </div>
-      }
     </div>
   )
 }
