@@ -17,31 +17,31 @@ function UnlockByAddress(props) {
       if (!err) {
         const address = form.getFieldValue('address')
         props.dispatch({type:"wallet/unlockAddressWallet",payload:{address}});
-        Notification.open({type:'success',message:intl.get('wallet.notification_unlock_suc')});
+        Notification.open({type:'success',message:intl.get('notifications.title.unlock_suc')});
         props.dispatch({type: 'sockets/unlocked'});
         routeActions.gotoPath('/wallet');
       }else {
-        Notification.open({type:'error',message:intl.get('wallet.notification_unlock_fail'),description:intl.get('wallet.error_address_tip')});
+        Notification.open({type:'error',message:intl.get('notifications.title.unlock_fail'),description:intl.get('wallet.invalid_address_tip')});
       }
     })
   };
   return (
     <div className="text-left">
-      <h2 className="text-center text-primary">{intl.get('wallet.paste_address_title')}</h2>
+      <h2 className="text-center text-primary">{intl.get('address.paste_address_title')}</h2>
       <div className="blk-md"></div>
       <Form layout="horizontal">
         <Form.Item colon={false}>
           {form.getFieldDecorator('address', {
             rules: [{
-              message: intl.get('wallet.error_address_tip'),
+              message: intl.get('address.invalid_address_tip'),
               validator: (rule, value, cb) => validateAddress(value) ? cb() : cb(true)
             }]
           })(
-            <Input className="d-block w-100" size="large" />
+            <Input className="d-block w-100" size="large" placeholder={intl.get('address.placeholder_tip')} />
           )}
         </Form.Item>
       </Form>
-      <Button className="btn btn-primary btn-block btn-xxlg" onClick={unlocked}>{intl.get('wallet.actions_unlock')}</Button>
+      <Button className="btn btn-primary btn-block btn-xxlg" onClick={unlocked}>{intl.get('unlock.actions_unlock')}</Button>
     </div>
   )
 }

@@ -76,20 +76,20 @@ const Option = Select.Option;
   return (
     <div>
       <div className="card-header bordered">
-        <h4>Transactions</h4>
+        <h4>{intl.get('tx.title')}</h4>
         <div className="form-inline form-dark">
                 <span>
                   <Select
                     defaultValue=""
                     onChange={statusChange}
-                    placeholder={intl.get('txs.status')}
+                    placeholder={intl.get('tx.status')}
                     dropdownMatchSelectWidth={false}
                     className="form-inline form-inverse"
                   >
-                    <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('txs.status')}</Select.Option>
-                    <Select.Option value="pending">{intl.get('txs.status_pending')}</Select.Option>
-                    <Select.Option value="success">{intl.get('txs.status_success')}</Select.Option>
-                    <Select.Option value="failed">{intl.get('txs.status_failed')}</Select.Option>
+                    <Select.Option value="">{intl.get('tx_status.all')}</Select.Option>
+                    <Select.Option value="pending">{intl.get('tx_status.pending')}</Select.Option>
+                    <Select.Option value="success">{intl.get('tx_status.success')}</Select.Option>
+                    <Select.Option value="failed">{intl.get('tx_status.failed')}</Select.Option>
                   </Select>
                 </span>
           <span>
@@ -115,15 +115,15 @@ const Option = Select.Option;
             <table className="table table-hover table-striped table-dark text-center">
               <thead>
               <tr>
-                <th className="text-left">Type</th>
-                <th className="text-left">Direction</th>
-                <th className="text-left">Gas</th>
-                <th className="text-left">Block</th>
-                <th className="text-left">Nonce</th>
-                <th className="text-left">TxHash</th>
-                <th className="text-left">Created</th>
-                <th className="text-center">Status</th>
-                <th className="text-center">Options</th>
+                <th className="text-left">{intl.get('tx.type')}</th>
+                <th className="text-left">{intl.get('tx.direction')}</th>
+                <th className="text-left">{intl.get('tx.gas')}</th>
+                <th className="text-left">{intl.get('tx.block')}</th>
+                <th className="text-left">{intl.get('tx.nonce')}</th>
+                <th className="text-left">{intl.get('tx.txHash')}</th>
+                <th className="text-left">{intl.get('tx.created')}</th>
+                <th className="text-center">{intl.get('tx.status')}</th>
+                <th className="text-center">{intl.get('common.options')}</th>
               </tr>
               </thead>
               <tbody>
@@ -208,7 +208,7 @@ export const renders = {
         {
           (fm.tx.status === 'pending') &&
           <div>
-            <span className="text-primary" onClick={(e) => {e.stopPropagation();actions.toResend()}}>Resend</span> <span> | </span> <span className="text-primary" onClick={(e) => {e.stopPropagation();actions.toCancel()}}>Cancel</span>
+            <span className="text-primary" onClick={(e) => {e.stopPropagation();actions.toResend()}}>{intl.get('actions.resend')}</span> <span> | </span> <span className="text-primary" onClick={(e) => {e.stopPropagation();actions.toCancel()}}>{intl.get('common.cancel')}</span>
           </div>
         }
       </div>

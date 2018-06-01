@@ -60,8 +60,8 @@ function MetaMask(props) {
       window.web3.version.getNetwork((err, netId) => {
         if (netId !== '1') {
           Notification.open({
-            message:intl.get('wallet.failed_connect_metamask_title'),
-            description:intl.get('wallet.content_metamask_mainnet'),
+            message:intl.get('notifications.title.unlock_fail'),
+            description:intl.get('wallet_meta.mainnet_tip'),
             type:'error'
           })
           metaMask.setLoading({loading:false})
@@ -69,10 +69,10 @@ function MetaMask(props) {
         }
         let address = window.web3.eth.accounts[0]
         props.dispatch({type:'wallet/unlockMetaMaskWallet',payload:{address}});
-        Notification.open({type:'success',message:'解锁成功',description:'unlock'});
-        props.dispatch({type: 'sockets/unlocked'})
-        routeActions.gotoPath('/wallet')
-        metaMask.setLoading({loading:false})
+        Notification.open({type:'success',message:intl.get('notifications.title.unlock_suc')});
+        props.dispatch({type: 'sockets/unlocked'});
+        routeActions.gotoPath('/wallet');
+        metaMask.setLoading({loading:false});
 
         let alert = false
         var accountInterval = setInterval(function() {
@@ -82,8 +82,8 @@ function MetaMask(props) {
             clearInterval(accountInterval)
             props.dispatch({type:'wallet/lock'});
             Notification.open({
-              message:intl.get('wallet.title_metamask_logout'),
-              description:intl.get('wallet.content_metamask_logout'),
+              message:intl.get('wallet_meta.logout_title'),
+              description:intl.get('wallet_meta.logout_tip'),
               type:'warning'
             })
             return
@@ -91,8 +91,8 @@ function MetaMask(props) {
           if (window.web3.eth.accounts[0] !== address) {
             address = window.web3.eth.accounts[0];
             Notification.open({
-              message:intl.get('wallet.title_metamask_account_change'),
-              description:intl.get('wallet.content_metamask_account_change'),
+              message:intl.get('wallet_meta.account_change_title'),
+              description:intl.get('wallet_meta.account_change_tip'),
               type:'info'
             })
             if(address) {
@@ -103,12 +103,12 @@ function MetaMask(props) {
         }, 100);
       })
     } else {
-      let content = intl.get('wallet.content_metamask_install')
+      let content = intl.get('wallet_meta.install_tip')
       if(window.web3 && !window.web3.eth.accounts[0]) { // locked
-        content = intl.get('wallet.content_metamask_locked')
+        content = intl.get('wallet_meta.unlock_tip')
       }
       Notification.open({
-        message:intl.get('wallet.failed_connect_metamask_title'),
+        message:intl.get('notifications.title.unlock_fail'),
         description:content,
         type:'error'
       })
@@ -119,7 +119,7 @@ function MetaMask(props) {
   return (
     <div>
       <Modal
-        title={intl.get('wallet.metamask_unlock_steps_title')}
+        title={intl.get('wallet_meta.unlock_steps_title')}
         visible={metaMask.refreshModalVisible}
         maskClosable={false}
         onOk={refresh}
@@ -129,13 +129,13 @@ function MetaMask(props) {
         footer={null}
       >
         <Steps direction="vertical">
-          {metamaskState === 'uninstall' && <Steps.Step status="process" title={intl.get('wallet.metamask_unlock_step_install_title')} description={intl.get('wallet.metamask_unlock_step_install_content')} />}
-          <Steps.Step status="process" title={intl.get('wallet.metamask_unlock_step_unlock_title')} description={intl.get('wallet.metamask_unlock_step_unlock_content')} />
-          <Steps.Step status="process" title={intl.get('wallet.metamask_unlock_step_refresh_title')}
+          {metamaskState === 'uninstall' && <Steps.Step status="process" title={intl.get('wallet_meta.unlock_step_install_title')} description={intl.get('wallet_meta.unlock_step_install_content')} />}
+          <Steps.Step status="process" title={intl.get('wallet_meta.unlock_step_unlock_title')} description={intl.get('wallet_meta.unlock_step_unlock_content')} />
+          <Steps.Step status="process" title={intl.get('wallet_meta.unlock_step_refresh_title')}
                       description={
                         <div>
-                          <div>{intl.get('wallet.metamask_unlock_step_refresh_content')}</div>
-                          <Button onClick={refresh} type="primary" className="mt5" loading={false}>{intl.get('wallet.metamask_unlock_refresh_button')}</Button>
+                          <div>{intl.get('wallet_meta.unlock_step_refresh_content')}</div>
+                          <Button onClick={refresh} type="primary" className="mt5" loading={false}>{intl.get('wallet_meta.unlock_refresh_button')}</Button>
                         </div>
                       }
           />
@@ -146,27 +146,27 @@ function MetaMask(props) {
       <ul className="list list-md text-center">
         <li>
           {!browserType || browserType === 'Others' &&
-            <Button size="large" style={{width:"260px"}} disabled>{intl.get('wallet.browser_tip')}</Button>
+            <Button size="large" style={{width:"260px"}} disabled>{intl.get('wallet_meta.browser_tip')}</Button>
           }
           {browserType && browserType !== 'Others' && metamaskState === 'locked' &&
-            <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet.unlock_metaMask_tip')}</Button>
+            <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet_meta.unlock_metaMask_tip')}</Button>
           }
           {browserType && browserType !== 'Others' && metamaskState === 'uninstall' &&
-            <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet.install_metaMask_tip')}</Button>
+            <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet_meta.install_metaMask_tip')}</Button>
           }
           {browserType && browserType !== 'Others' && !metamaskState &&
-            <Button onClick={connectToMetamask} size="large" style={{width:"260px"}}> {intl.get('wallet.actions_connect',{walletType:'MetaMask'})}</Button>
+            <Button onClick={connectToMetamask} size="large" style={{width:"260px"}}> {intl.get('unlock.actions_connect',{walletType:'MetaMask'})}</Button>
           }
         </li>
-        <div className="blk-md"></div>
+        <div className="blk-md"/>
         <li>
           {browserType && browserType !== 'Others' &&
             <a href={chromeExtention[browserType]} target="_blank">
-              <i className="icon-export"></i> {intl.get('wallet.actions_get_metamask')}
+              <i className="icon-export"/> {intl.get('wallet_meta.actions_get_metaMask',{browser:browserType})}
             </a>
           }
         </li>
-        <li><a href="https://metamask.io/" target="_blank"><i className="icon-export"></i>{intl.get('wallet.actions_visit_metaMask')}</a></li>
+        <li><a href="https://metamask.io/" target="_blank"><i className="icon-export"/>{intl.get('wallet_meta.actions_visit_metaMask')}</a></li>
       </ul>
     </div>
   )
