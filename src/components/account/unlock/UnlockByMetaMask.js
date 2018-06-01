@@ -141,32 +141,32 @@ function MetaMask(props) {
           />
         </Steps>
       </Modal>
-      <h2 className="text-center text-primary">Connect to  MetaMask</h2>
+      <h2 className="text-center text-primary">{intl.get('wallet.title_connect',{walletType:'MetaMask'})}</h2>
       <div className="blk-md"></div>
       <ul className="list list-md text-center">
         <li>
           {!browserType || browserType === 'Others' &&
-            <Button size="large" style={{width:"260px"}} disabled>{intl.get('wallet.connect_to_metamask_not_supported_browser')}</Button>
+            <Button size="large" style={{width:"260px"}} disabled>{intl.get('wallet.browser_tip')}</Button>
           }
           {browserType && browserType !== 'Others' && metamaskState === 'locked' &&
-            <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet.metamask_to_unlock')}</Button>
+            <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet.unlock_metaMask_tip')}</Button>
           }
           {browserType && browserType !== 'Others' && metamaskState === 'uninstall' &&
-            <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet.metamask_to_install')}</Button>
+            <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet.install_metaMask_tip')}</Button>
           }
           {browserType && browserType !== 'Others' && !metamaskState &&
-            <Button onClick={connectToMetamask} size="large" style={{width:"260px"}}> {intl.get('wallet.connect_to_metamask')}</Button>
+            <Button onClick={connectToMetamask} size="large" style={{width:"260px"}}> {intl.get('wallet.actions_connect',{walletType:'MetaMask'})}</Button>
           }
         </li>
         <div className="blk-md"></div>
         <li>
           {browserType && browserType !== 'Others' &&
             <a href={chromeExtention[browserType]} target="_blank">
-              <i className="icon-export"></i> Get MetaMask for your browser
+              <i className="icon-export"></i> {intl.get('wallet.actions_get_metamask')}
             </a>
           }
         </li>
-        <li><a href="https://metamask.io/" target="_blank"><i className="icon-export"></i> Visit MetaMask website</a></li>
+        <li><a href="https://metamask.io/" target="_blank"><i className="icon-export"></i>{intl.get('wallet.actions_visit_metaMask')}</a></li>
       </ul>
     </div>
   )
