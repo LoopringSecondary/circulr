@@ -115,15 +115,15 @@ const Option = Select.Option;
             <table className="table table-hover table-striped table-dark text-center">
               <thead>
               <tr>
-                <th className="text-left">Type</th>
-                <th className="text-left">Direction</th>
-                <th className="text-left">Gas</th>
-                <th className="text-left">Block</th>
-                <th className="text-left">Nonce</th>
-                <th className="text-left">TxHash</th>
-                <th className="text-left">Created</th>
-                <th className="text-center">Status</th>
-                <th className="text-center">Options</th>
+                <th className="text-left">{intl.get('tx.type')}</th>
+                <th className="text-left">{intl.get('tx.direction')}</th>
+                <th className="text-left">{intl.get('tx.gas')}</th>
+                <th className="text-left">{intl.get('tx.block')}</th>
+                <th className="text-left">{intl.get('tx.nonce')}</th>
+                <th className="text-left">{intl.get('tx.txHash')}</th>
+                <th className="text-left">{intl.get('tx.created')}</th>
+                <th className="text-center">{intl.get('tx.status')}</th>
+                <th className="text-center">{intl.get('common.options')}</th>
               </tr>
               </thead>
               <tbody>

@@ -191,6 +191,7 @@ export default {
   // transaction
   // -----------
   tx: {
+    direction:'In & Out',
     type: words.type,
     gas: words.gas,
     block: words.block,
@@ -198,6 +199,9 @@ export default {
     txHash: '交易Hash',
     created: '提交时间',
     status: words.status,
+    confirm_time:'确认时间',
+    value:'金额',
+    to:'目的地址'
   },
   tx_status: {
     all:'全部状态',
@@ -217,7 +221,7 @@ export default {
     convert: '转换',
     cancel_order:'取消订单',
     cancel_all:'取消全部订单',
-    cancel_pair_order:'取消订单',
+    cancel_pair_order:'取消市场对订单',
     others:'其他'
   },
   tx_schema_type: {
@@ -239,6 +243,13 @@ export default {
     detail_title: '交易详情',
     tabs_basic: '基础信息',
     tabs_fill: '成交信息',
+  },
+  fill: {
+    buy: words.buy,
+    sell: words.sell,
+    lrc_fee: words.lrc_fee,
+    lrc_reward: words.lrc_reward,
+    margin_split:words.margin_split
   },
   // -----------
   // ticker

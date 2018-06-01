@@ -6,8 +6,10 @@ export const getTypes = (token)=>{
   let types = [
     {label:intl.get('tx_type.all'),value:''},
     {label:intl.get(`tx_type.transfer`),value:'send'},
-    {label:intl.get(`tx_type.receive`),value:'receive'},
-    {label:intl.get(`tx_type.approve`),value:'approve'},
+    {label:intl.get(`tx_type.receive`),value:'receive'}
+  ]
+  let approveTypes = [
+    {label:intl.get(`tx_type.approve`),value:'approve'}
   ]
 
   const tradeTypes = [
@@ -20,14 +22,25 @@ export const getTypes = (token)=>{
      {label:intl.get(`tx_type.lrc_reward`),value:'lrc_reward'},
   ]
   let othersTypes = [
-     // {label:intl.get(`txs.type_others`),value:'others'},
+      {label:intl.get(`tx_type.others`),value:'others'},
   ]
+
+  let cancelTypes = [
+    {label:intl.get(`tx_type.cancel_order`),value:'cancel_order'},
+    {label:intl.get(`tx_type.cancel_all`),value:'cutoff'},
+    {label:intl.get(`tx_type.cancel_pair_order`),value:'cutoff_trading_pair'},
+  ]
+
   if(token.toUpperCase() === 'WETH' || token.toUpperCase() === 'ETH'){
     types = [...types,...convertTypes]
   }
 
+  if(token.toUpperCase() === 'ETH'){
+    types = [...types, ...cancelTypes]
+  }
+
   if(token.toUpperCase() !== 'ETH'){
-    types = [...types,...tradeTypes]
+    types = [...types,...approveTypes,...tradeTypes]
   }
 
   if(token.toUpperCase() === 'LRC'){
@@ -108,10 +121,11 @@ export class TxFm{
    }
   }
   getGasPrice(){
-    return this.tx.gasPrice && toNumber(this.tx.gasPrice)/(1e9).toString(10)
+    return this.tx.gas_price && toFixed(toNumber(this.tx.gas_price)/(1e9),4,true).toString(10)
   }
   getGasLimit(){
-    return this.tx.gas && toNumber(this.tx.gas).toString(10)
+    console.log('formatter:',this.tx);
+    return this.tx.gas_limit && toNumber(this.tx.gas_limit).toString(10)
   }
   getNonce(){
    return this.tx.nonce && toNumber(this.tx.nonce)
