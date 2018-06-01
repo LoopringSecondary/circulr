@@ -67,15 +67,23 @@ const notifications = {
     place_order_warn: "Your order can not be fully filled.",
     unlock_suc: 'Unlock Successfully',
     unlock_fail: "Unlock Failed",
+    to_confirm: "Waiting For Your Confirmation",
+    send_failed: 'Send Failed !',
+    send_succ: 'Transfer Succeeded!',
   },
   message: {
-    wallet_locked: 'Your wallet seems unlocked yet, please unlock first',
+    wallet_locked: 'Your wallet seems locked yet, please unlock first',
     failed_fetch_data_from_server: 'Failed fetch data from server, you could wait a moment and come back later',
     eth_is_required_when_place_order: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
     lrcfee_is_required_when_place_order: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
     some_items_not_signed: "You may have some items not signed, please signed all items then continue",
     place_order_success: 'Good job. Your order has been submitted for ring-matching.',
     place_order_balance_not_enough: 'In order for your order to be fully filled, {amount} more {token} is required.',
+    confirm_warn_ledger: "Please confirm transaction on your Ledger device, then come back to continue",
+    confirm_warn_trezor: "Please confirm transaction on your Trezor device , then come back to continue",
+    confirm_warn_metamask: "Please confirm transaction on your MetaMask browser extension, then come back to continue",
+    send_failed: "Your have failed {do} {amount} {token} - {reason}",
+    send_succ: "You have successfully send {amount} {token}",
   }
 }
 
@@ -85,7 +93,10 @@ const actions = {
   submit_order: 'Submit Order',
   generate_qrcode: 'Generate QR Code',
   reset: 'Reset',
-  continue: 'Continue'
+  continue: 'Continue',
+  to_unlock: 'To Unlock',
+  transfer_cancel: "No, Cancel It",
+  transfer_send: "Yes, Send Now",
 }
 
 const time_unit = {
@@ -311,6 +322,10 @@ export default {
     data: "Data",
     advanced: "Advanced",
     send_max: "Send Max",
+    transfer_result_etherscan: "View transaction on Etherscan.io",
+    from: "From",
+    to: "To",
+    gas: "Gas",
   },
   convert: {},
   // -----------
