@@ -1,4 +1,5 @@
 import storage from 'modules/storage'
+import {configs} from 'common/config/data'
 
 const namespace = 'gas'
 
@@ -7,27 +8,54 @@ export default {
   state: {
     ...storage.settings.getGas(),
     tabSelected:'easy',
-    fixedGasLimit:0, // component fixed gasLimit
   },
   effects:{
   },
   reducers: {
     init(state, { payload }) {
-      const {gasLimit} = payload
       return  {
         ...state,
-        fixedGasLimit : gasLimit || state.fixedGasLimit,
-        //gasLimit:0,
+        gasPrice:{
+          ...state.gasPrice,
+          current:state.gasPrice.last
+        },
+        gasLimit:0,
         tabSelected:'easy'
       };
     },
-    gasChange(state, { payload }) {
-      const {gasPrice, gasLimit, estimate} = payload
+    estimateGasChange(state, { payload }) {
+      const {gasPrice} = payload
       let newState =  {
         ...state,
         gasPrice: {
+          ...state.gasPrice,
+          estimate : gasPrice || state.gasPrice.estimate,
+        },
+      };
+      //do not need to store in localStorage
+      return newState
+    },
+    currentGasChange(state, { payload }) {
+      const {gasPrice, gasLimit} = payload
+      let newState =  {
+        ...state,
+        gasPrice: {
+          ...state.gasPrice,
+          current : gasPrice ? gasPrice : state.gasPrice.current,
+        },
+        gasLimit: gasLimit || state.gasLimit,
+      };
+      //do not need to store in localStorage
+      return newState
+    },
+    selectedGasChange(state, { payload }) {
+      const {gasPrice, gasLimit} = payload
+      let newState =  {
+        ...state,
+        gasPrice: {
+          ...state.gasPrice,
           last : gasPrice ? gasPrice : state.gasPrice.last,
-          estimate : estimate || state.gasPrice.estimate,
+          current : 0,
         },
         gasLimit: gasLimit || state.gasLimit,
       };
@@ -39,6 +67,15 @@ export default {
       let newState =  {
         ...state,
         fixedGasLimit,
+      };
+      storage.settings.setGas(newState)
+      return newState
+    },
+    gasLimitChange(state, { payload }) {
+      const {gasLimit} = payload
+      let newState =  {
+        ...state,
+        gasLimit,
       };
       storage.settings.setGas(newState)
       return newState
