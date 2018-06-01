@@ -413,6 +413,6 @@ export default {
     actions_confirm_send: "确认转账",
     actions_confirm_convert: '确认转换'
   },
-  transaction: {}
+
 }
 

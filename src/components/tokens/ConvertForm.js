@@ -109,7 +109,7 @@ function ConvertForm(props) {
           <div className="fs16">{token}</div>
         </div>
         <div className="col-auto">
-          <i className="loopring-icon loopring-icon-convert fs32"></i>
+          <i className="loopring-icon loopring-icon-convert fs32"/>
         </div>
         <div className="col-auto text-center pl30">
           <div className="fs18">{amount.toString() ? amount.toString() : 0}</div>

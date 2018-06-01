@@ -397,22 +397,22 @@ export default {
     mnemonic_tip_lack: 'Please Input your mnemonic',
   },
   token: {
-    action_options: '{token} 选项',
+    action_options: '{token} Options',
     action_types: {
-      receive: "接收{token}",
-      send: "转账{token}",
-      trade: "交易{token}",
-      convert: '转换成{token}'
+      receive: "Receive {token}",
+      send: " Send {token}",
+      trade: "Trade {token}",
+      convert: 'Convert to {token}'
     },
-    receive_title: '我的以太坊地址',
-    receive_value_tip: '推荐值',
-    recipient: '接受者',
-    continue: '继续',
+    assets_title:'Total Value',
     convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
     actions_max: "最大数量",
     actions_cancel_send: "取消转账",
     actions_confirm_send: "确认转账",
     actions_confirm_convert: '确认转换'
   },
-  transaction: {}
+  receive:{
+    receive_title: '我的以太坊地址',
+    receive_value_tip: '推荐值',
+  },
 }
