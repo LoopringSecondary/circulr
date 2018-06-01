@@ -69,6 +69,9 @@ const notifications = {
     place_order_warn: '您的订单只能被部分撮合',
     unlock_suc: '解锁成功',
     unlock_fail: "解锁失败",
+    to_confirm: "等待您的确认",
+    send_failed: '转账失败 !',
+    send_succ: '转账成功',
     copy_suc:'复制成功',
     copy_fail:'复制失败',
   },
@@ -80,6 +83,11 @@ const notifications = {
     some_items_not_signed: "您可能还有一些数据还未签名，请把所有未签名项签名后再继续操作",
     place_order_success: '恭喜, 您的订单已经可以等待交易',
     place_order_balance_not_enough: '为使订单全部成交, 至少还需要{amount} {token}',
+    confirm_warn_ledger: "请在您的Ledger设备上确认签名信息, 之后再回来提交订单",
+    confirm_warn_trezor: "请在您的Trezor设备上确认签名信息, 之后再回来提交订单",
+    confirm_warn_metamask: "您的MetaMask浏览器插件上会提示您签名, 请确认后再回来提交订单",
+    send_failed: "您{do} {amount} {token} 失败, 原因:{reason}",
+    send_succ: "您转账 {amount} {token} 成功",
   }
 }
 
@@ -89,7 +97,10 @@ const actions = {
   submit_order: '提交订单',
   generate_qrcode: '生成二维码',
   reset: '重置',
-  continue: '继续'
+  continue: '继续',
+  to_unlock: '去解锁',
+  transfer_cancel: "不，取消发送",
+  transfer_send: "是的，马上发送",
 }
 
 const time_unit = {
@@ -312,6 +323,10 @@ export default {
     data: "数据",
     advanced: "高级",
     send_max: "最大数量",
+    transfer_result_etherscan: "在EtherScan查看结果",
+    from: "发送方",
+    to: "发送到",
+    gas: "油费",
   },
   token: {
     action_options: '{token} 选项',
