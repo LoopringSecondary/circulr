@@ -325,6 +325,8 @@ export default {
     assets_title: 'Total Value',
   },
   convert: {
+    convert_eth_title:'Convert ETH to WETH',
+    convert_weth_title:'Convert WETH to ETH',
     convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
     actions_confirm_convert: '确认转换'
   },
