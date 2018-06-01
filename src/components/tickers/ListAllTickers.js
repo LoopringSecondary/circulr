@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'dva'
 import {TickersFm,TickerFm} from 'modules/tickers/formatters'
 import storage from '../../modules/storage'
+import intl from 'react-intl-universal'
 
 const TickItem = ({item,actions})=>{
     const tickerFm = new TickerFm(item)
@@ -130,19 +131,19 @@ function ListAllTickers(props) {
 	                {
 	                  recentTickers.length >0 && !keywords &&
                     <div className="item">
-                        <div className="title">Recent</div>
+                        <div className="title">{intl.get('ticker_list.title_recent')}</div>
                         <ul>{recentTickers.map((item,index)=><TickItem item={item} actions={actions} />)}</ul>
                     </div>
                   }
                   {
                     favoredTickers.length >0 &&
                     <div className="item">
-                        <div className="title">Favorites</div>
+                        <div className="title">{intl.get('ticker_list.title_favorites')}</div>
                         <ul>{favoredTickers.map((item,index)=><TickItem item={item} actions={actions} />)}</ul>
                     </div>
                   }
 	                <div className="item">
-	                    <div className="title">All Markets</div>
+	                    <div className="title">{intl.get('common.all')} {intl.get('common.markets')}</div>
 	                    <ul>{allTickers.map((item,index)=><TickItem key={index} item={item} actions={actions} />)}</ul>
 	                </div>
 	            </div>

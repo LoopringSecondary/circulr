@@ -281,9 +281,10 @@ export default {
     vol: '24H 交易量',
   },
   ticker_list: {
-    loopring_tickers_title: 'Loopring DEX Markets',
-    reference_tickers_title: 'Reference Markets',
-    actions_go_to_trade: '前往交易',
+    title_loopring_tickers: '路印 DEX 交易所行情',
+    title_reference_tickers: '第三方交易所行情',
+    title_recent: '最近',
+    title_favorites: '收藏',
   },
   // -----------
   // token
