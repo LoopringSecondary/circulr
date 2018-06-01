@@ -17,14 +17,14 @@ function Ledgers(props) {
         if (!res.error) {
           const ledger = res.result;
           dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger, dpath: `${dpath}/0`}});
-          Notification.open({type: 'success', message: '解锁成功', description: 'unlock'});
+          Notification.open({type: 'success', message: intl.get('notifications.title.unlock_suc'),});
           hardwareWallet.reset();
           dispatch({type: 'sockets/unlocked'})
           routeActions.gotoPath('/wallet')
         }
       });
     } else {
-      Notification.open({type: 'error', message: 'unlock failed', description: 'Connect to your ledger wallet '})
+      Notification.open({type: 'error', message: intl.get('notifications.title.unlock_fail'), description: intl.get('unlock.connect_ledger_tip')})
     }
   };
 
@@ -34,17 +34,17 @@ function Ledgers(props) {
       hardwareWallet.reset();
       routeActions.gotoPath('/unlock/determineWallet');
     } else {
-      Notification.open({type: 'error', message: 'unlock failed', description: 'Connect to your ledger wallet '})
+      Notification.open({type: 'error',  description:intl.get('unlock.connect_ledger_tip')})
     }
   };
   return (
     <div className="form-dark">
-      <span className="label">{intl.get('wallet.default_address')}:{address}</span>
-      <div className="blk"></div>
+      <span className="label">{intl.get('wallet_determine.default_address')}:{address}</span>
+      <div className="blk"/>
       <div>
-        <Button className="btn btn-primary btn-xlg btn-block" onClick={unlock}>{intl.get('wallet.actions_unlock')}</Button>
-        <div className="blk"></div>
-        <Button className="btn btn-primary btn-xlg btn-block" onClick={moreAddress}>{intl.get('wallet.actions_other_address')}</Button>
+        <Button className="btn btn-primary btn-xlg btn-block" onClick={unlock}>{intl.get('unlock.actions_unlock')}</Button>
+        <div className="blk"/>
+        <Button className="btn btn-primary btn-xlg btn-block" onClick={moreAddress}>{intl.get('wallet_determine.actions_other_address')}</Button>
       </div>
     </div>
   )

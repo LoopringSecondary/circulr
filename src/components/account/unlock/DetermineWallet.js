@@ -114,7 +114,7 @@ export default class DetermineWallet extends React.Component {
        <div className="">
         <div className="dpath">
           <div className="">
-            <h4 className="dpath-header">1. {intl.get('wallet.title_select_path')}</h4>
+            <h4 className="dpath-header">1. {intl.get('wallet_determine.title_select_path')}</h4>
             <div className="dpath-body">
             <Radio.Group className="" onChange={this.handlePathChange} value={dpath}>
               {paths.filter(path => this.isSupported(path.path)).map((item, index) =>
@@ -125,7 +125,7 @@ export default class DetermineWallet extends React.Component {
               )}
               <Radio className="d-block" value={customPath}>
               <div className="d-flex justify-content-between align-items-center">
-                <div className="text-color-2">{intl.get('wallet.custom_path')}: </div>
+                <div className="text-color-2">{intl.get('wallet_determine.custom_path')}: </div>
                 <Input value={customPath} onChange={this.onCustomPathChange}  />
                 </div>
               </Radio>
@@ -134,7 +134,7 @@ export default class DetermineWallet extends React.Component {
         </div>
         </div>
         <div className="account-addresses">
-          <h4 className="account-addresses-header">2. {intl.get('wallet.title_deter_address')}</h4>
+          <h4 className="account-addresses-header">2. {intl.get('wallet_determine.title_deter_address')}</h4>
           <ul className="account-addresses-body">
             {addresses.length > 0 && addresses.map((address, index) => {
               return (
@@ -145,7 +145,7 @@ export default class DetermineWallet extends React.Component {
                 </li>)
             })}
             {
-              addresses.length <= 0 && <li className="account-addresses-tip">{intl.get('wallet.no_address_tip')}</li>
+              addresses.length <= 0 && <li className="account-addresses-tip">{intl.get('wallet_determine.no_address_tip')}</li>
             }
           </ul>
           <div className="d-flex justify-content-between account-addresses-pagenav">

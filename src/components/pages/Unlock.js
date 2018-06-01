@@ -65,34 +65,31 @@ class Unlock extends React.Component {
               <ul className="tab tab-card d-flex justify-content-center inup">
                 <li className={`item ${pathname==='/unlock/generateWallet' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('generateWallet')}><i className="icon-plus"/>
-                    <h4>{intl.get('wallet.title_generate')}</h4></a>
+                    <h4>{intl.get('wallet_type.generate')}</h4></a>
                 </li>
                 <li className={`item ${pathname==='/unlock/address' ? 'active':''}`}>
-                  <a data-toggle="tab" onClick={() => this.changeTab('address')}><i className="icon-view"/><h4>
-                    Address</h4>
+                  <a data-toggle="tab" onClick={() => this.changeTab('address')}><i className="icon-view"/><h4>{intl.get('wallet_type.address')}</h4>
                   </a>
                 </li>
                 <li className={`item ${pathname==='/unlock/metamask' ? 'active':''}`}>
-                  <a data-toggle="tab"  onClick={() => this.changeTab('metamask')}><i className="icon-metamaskwallet"/><h4>MetaMask</h4></a>
+                  <a data-toggle="tab"  onClick={() => this.changeTab('metamask')}><i className="icon-metamaskwallet"/><h4>{intl.get('wallet_type.metamask')}</h4></a>
                 </li>
                 <li className={`item ${pathname==='/unlock/trezor' ? 'active':''}`}>
-                  <a onClick={() => this.unlock('trezor','trezor')}><i className="icon-trezorwallet"/><h4>Trezor</h4></a>
+                  <a onClick={() => this.unlock('trezor','trezor')}><i className="icon-trezorwallet"/><h4>{intl.get('wallet_type.trezor')}</h4></a>
                 </li>
                 <li className={`item ${pathname==='/unlock/ledger' ? 'active':''}`}>
-                  <a  data-toggle="tab" onClick={() => this.unlock('ledger','ledger')}><i className="icon-ledgerwallet"/><h4>Ledger</h4></a>
+                  <a  data-toggle="tab" onClick={() => this.unlock('ledger','ledger')}><i className="icon-ledgerwallet"/><h4>{intl.get('wallet_type.ledger')}</h4></a>
                 </li>
                 <li className={`item ${pathname==='/unlock/json' ? 'active':''}`}>
-                  <a data-toggle="tab" onClick={() => this.changeTab('json')}><i className="icon-json"/><h4>JSON</h4>
+                  <a data-toggle="tab" onClick={() => this.changeTab('json')}><i className="icon-json"/><h4>{intl.get('wallet_type.json')}</h4>
                   </a>
                 </li>
                 <li className={`item ${pathname==='/unlock/mnemonic' ? 'active':''}`}>
-                  <a data-toggle="tab" onClick={() => this.changeTab('mnemonic')}><i className="icon-mnemonic"/><h4>
-                    Mnemonic</h4>
+                  <a data-toggle="tab" onClick={() => this.changeTab('mnemonic')}><i className="icon-mnemonic"/><h4>{intl.get('wallet_type.mnemonic')}</h4>
                   </a>
                 </li>
                 <li className={`item ${pathname==='/unlock/privateKey' ? 'active':''}`}>
-                  <a data-toggle="tab" onClick={() => this.changeTab('privateKey')}><i className="icon-key"/><h4>
-                    Private Key</h4>
+                  <a data-toggle="tab" onClick={() => this.changeTab('privateKey')}><i className="icon-key"/><h4>{intl.get('wallet_type.private_key')}</h4>
                   </a>
                 </li>
                 <li className="item remove" id="inupRemove">

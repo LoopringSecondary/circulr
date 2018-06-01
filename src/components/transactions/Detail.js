@@ -1,9 +1,7 @@
 import React from 'react'
-import {Card, Spin, Button,Tabs} from 'antd'
+import {Tabs} from 'antd'
 import intl from 'react-intl-universal'
-import Notification from 'LoopringUI/components/Notification';
-import Alert from 'LoopringUI/components/Alert'
-import {DetailHeader,MetaList,MetaItem} from 'LoopringUI/components/DetailPage'
+import {DetailHeader, MetaItem, MetaList} from 'LoopringUI/components/DetailPage'
 import {copyToPasteboard} from 'modules/formatter/common'
 import {TxFm} from 'modules/transactions/formatters'
 import {getTransactionByhash} from 'LoopringJS/ethereum/eth'
@@ -14,37 +12,34 @@ export default class Detail extends React.Component {
     const item = txDetail.tx;
     const fill = item && item.content && item.content.fill ? JSON.parse(item.content.fill): null;
     const txFm = new TxFm({...item,fill});
-
-    const reSendTx = (txHash) => {
-    }
     return (
       <div className="pd-lg">
           <div className="sidebar-header">
-              <h3>Transaction Details</h3>
+              <h3>{intl.get('tx_detail.detail_title')}</h3>
           </div>
           {
             item && fill &&
             <Tabs defaultActiveKey="basic" tabPosition="" animated={true}  className="tabs-dark">
-              <Tabs.TabPane className="text-color-dark"  tab={intl.get('txs.tx_detail')} key="basic">
+              <Tabs.TabPane className="text-color-dark"  tab={intl.get('tx_detail.tabs_basic')} key="basic">
                   <MetaList>
-                      <MetaItem label={intl.get('txs.tx_hash')} value={item.txHash} render={renders.txHash}/>
-                      <MetaItem label={intl.get('txs.to')} value={txFm.getTo()} render={renders.address}/>
-                      <MetaItem label={intl.get('txs.block_num')} value={txFm.getBlockNum()} render={renders.blockNumber}/>
-                      <MetaItem label={intl.get('txs.status')} value={intl.get('txs.' + item.status)}/>
-                      <MetaItem label={intl.get('txs.confirm_time')} value={txFm.getConfirmTime()}/>
-                      <MetaItem label={intl.get('txs.type')} value={txFm.getType()}/>
-                      <MetaItem label={"Gas"} value={renders.gas(txFm)}/>
-                      <MetaItem label={intl.get('wallet.nonce')} value={txFm.getNonce()}/>
-                      <MetaItem label={intl.get('txs.value')} value={txFm.getValue() + ' ETH'}/>
+                      <MetaItem label={intl.get('tx.txHash')} value={item.txHash} render={renders.txHash}/>
+                      <MetaItem label={intl.get('tx.to')} value={txFm.getTo()} render={renders.address}/>
+                      <MetaItem label={intl.get('tx.block')} value={txFm.getBlockNum()} render={renders.blockNumber}/>
+                      <MetaItem label={intl.get('tx.status')} value={intl.get('tx_status.' + item.status)}/>
+                      <MetaItem label={intl.get('tx.confirm_time')} value={txFm.getConfirmTime()}/>
+                      <MetaItem label={intl.get('tx.type')} value={txFm.getType()}/>
+                      <MetaItem label={intl.get('tx.gas')} value={renders.gas(txFm)}/>
+                      <MetaItem label={intl.get('tx.nonce')} value={txFm.getNonce()}/>
+                      <MetaItem label={intl.get('tx.value')} value={txFm.getValue() + ' ETH'}/>
                   </MetaList>
               </Tabs.TabPane>
-              <Tabs.TabPane  tab={intl.get('orders.fill_detail')} key="fill">
+              <Tabs.TabPane  tab={intl.get('tx_detail.tabs_fill')} key="fill">
                 <MetaList>
-                  <MetaItem label={intl.get('txs.fill_buy')} value={txFm.getFilledAmountOfBuy()}/>
-                  <MetaItem label={intl.get('txs.fill_sell')} value={txFm.getFilledAmountOfSell()}/>
-                  <MetaItem label={intl.get('orders.LrcFee')} value={txFm.getLrcFee()}/>
-                  <MetaItem label={intl.get('orders.LrcReward')} value={txFm.getLrcReward()}/>
-                  <MetaItem label={intl.get('txs.margin_split')} value={txFm.getMarginSplit()} />
+                  <MetaItem label={intl.get('fill.buy')} value={txFm.getFilledAmountOfBuy()}/>
+                  <MetaItem label={intl.get('fill.sell')} value={txFm.getFilledAmountOfSell()}/>
+                  <MetaItem label={intl.get('fill.lrc_fee')} value={txFm.getLrcFee()}/>
+                  <MetaItem label={intl.get('fill.lrc_reward')} value={txFm.getLrcReward()}/>
+                  <MetaItem label={intl.get('fill.margin_split')} value={txFm.getMarginSplit()} />
                 </MetaList>
               </Tabs.TabPane>
             </Tabs>
@@ -52,15 +47,15 @@ export default class Detail extends React.Component {
           {
             item && !fill &&
               <MetaList>
-                  <MetaItem label={intl.get('txs.tx_hash')} value={item.txHash} render={renders.txHash}/>
-                  <MetaItem label={intl.get('txs.to')} value={txFm.getTo()} render={renders.address}/>
-                  <MetaItem label={intl.get('txs.block_num')} value={txFm.getBlockNum()} render={renders.blockNumber}/>
-                  <MetaItem label={intl.get('txs.status')} value={intl.get('txs.' + item.status)}/>
-                  <MetaItem label={intl.get('txs.confirm_time')} value={txFm.getConfirmTime()}/>
-                  <MetaItem label={intl.get('txs.type')} value={txFm.getType()}/>
-                  <MetaItem label={"Gas"} value={renders.gas(txFm)}/>
-                  <MetaItem label={intl.get('wallet.nonce')} value={txFm.getNonce()}/>
-                  <MetaItem label={intl.get('txs.value')} value={txFm.getValue() + ' ETH'}/>
+                  <MetaItem label={intl.get('tx.txHash')} value={item.txHash} render={renders.txHash}/>
+                  <MetaItem label={intl.get('tx.to')} value={txFm.getTo()} render={renders.address}/>
+                  <MetaItem label={intl.get('tx.block')} value={txFm.getBlockNum()} render={renders.blockNumber}/>
+                  <MetaItem label={intl.get('tx.status')} value={intl.get('tx_status.' + item.status)}/>
+                  <MetaItem label={intl.get('tx.confirm_time')} value={txFm.getConfirmTime()}/>
+                  <MetaItem label={intl.get('tx.type')} value={txFm.getType()}/>
+                  <MetaItem label={intl.get('tx.gas')} value={renders.gas(txFm)}/>
+                  <MetaItem label={intl.get('tx.nonce')} value={txFm.getNonce()}/>
+                  <MetaItem label={intl.get('tx.value')} value={txFm.getValue() + ' ETH'}/>
               </MetaList>
           }
       </div>

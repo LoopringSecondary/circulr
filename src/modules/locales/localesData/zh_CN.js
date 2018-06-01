@@ -36,12 +36,12 @@ const words = {
   copy: "复制",
   copy_suc: '复制成功',
   copy_fail: "复制失败",
-  token:'代币',
+  token: '代币',
   order_type: '订单类型',
   margin_split: "分润",
   format_amount: "{amount,number}",
   back: '返回',
-  cancel:"取消",
+  cancel: "取消",
   previous_page: '前一页',
   next_page: '后一页',
   import: "导入"
@@ -56,7 +56,7 @@ const types = {
 
 const validation_messages = {
   invalid_number: "请输入合法的数字",
-  invalid_integer:'请输入合法的整数'
+  invalid_integer: '请输入合法的整数'
 }
 
 const notifications = {
@@ -79,10 +79,11 @@ const notifications = {
 }
 
 const actions = {
+  resend:'重发',
   receive: "接收",
   submit_order: '提交订单',
   generate_qrcode: '生成二维码',
-  reset:'重置'
+  reset: '重置'
 }
 
 const time_unit = {
@@ -141,23 +142,23 @@ export default {
     tabs_fill: '成交信息',
   },
   place_order: {
-    order_type:'订单类型',
+    order_type: '订单类型',
     order_since: "订单生效时间",
     order_until: "订单失效时间",
   },
-  settings:{
-    title:'设置',
-    preferences:'偏好',
-    tradings:'交易',
-    relays:'中继',
-    language:'语言',
-    currency:'货币',
-    timezone:'时区',
+  settings: {
+    title: '设置',
+    preferences: '偏好',
+    tradings: '交易',
+    relays: '中继',
+    language: '语言',
+    currency: '货币',
+    timezone: '时区',
     select_placeholder: '搜索/选择',
-    time_to_live:'订单有效时间',
-    trading_fee:'交易费(LRC)',
-    margin_split:'默认分润',
-    gas_price:'默认Gas价格',
+    time_to_live: '订单有效时间',
+    trading_fee: '交易费(LRC)',
+    margin_split: '默认分润',
+    gas_price: '默认Gas价格',
     choose_relay: '切换Relay'
   },
   gas_setting: {
@@ -204,6 +205,8 @@ export default {
   // transaction
   // -----------
   tx: {
+    title:'交易',
+    direction:'In & Out',
     type: words.type,
     gas: words.gas,
     block: words.block,
@@ -211,26 +214,59 @@ export default {
     txHash: '交易Hash',
     created: '提交时间',
     status: words.status,
+    confirm_time:'确认时间',
+    value:'金额',
+    to:'目的地址'
   },
   tx_status: {
+    all:'全部状态',
     pending: '处理中',
     success: '成功',
     failed: '失败',
   },
   tx_type: {
+    all:'全部类型',
     sell: words.sell,
     buy: words.buy,
     transfer: '转出',
-    receice: '转入',
+    receive: '转入',
     approve: '授权',
     lrc_fee: words.lrc_fee,
     lrc_reward: words.lrc_reward,
     convert: '转换',
+    cancel_order:'取消订单',
+    cancel_all:'取消全部订单',
+    cancel_pair_order:'取消市场对订单',
+    others:'其他'
+  },
+  tx_list: {
+    type:{
+      sell: '卖出 {value} {symbol}',
+      buy: '买入 {value} {symbol}',
+      transfer: '转出 {value} {symbol}',
+      receive: '收到 {value} {symbol}',
+      approve: '授权{symbol}进行撮合交易',
+      lrc_fee: '支付{value} LRC撮合费',
+      lrc_reward: '收到{value}LRC撮合奖励',
+      convert_eth: '转换{value} ETH 为 WETH',
+      convert_weth:'转换{value} WETH 为 ETH',
+      cancel_order:'取消订单',
+      cancel_all:'取消全部订单',
+      cancel_pair_order:'取消{pair}订单',
+      others:'其他'
+    }
   },
   tx_detail: {
     detail_title: '交易详情',
     tabs_basic: '基础信息',
     tabs_fill: '成交信息',
+  },
+  fill: {
+    buy: words.buy,
+    sell: words.sell,
+    lrc_fee: words.lrc_fee,
+    lrc_reward: words.lrc_reward,
+    margin_split:words.margin_split
   },
   // -----------
   // ticker
@@ -274,17 +310,18 @@ export default {
     connect_trezor_tip: "请连接您的TREZOR",
     error_invalid_tip: "信息不合法",
   },
-  wallet_type:{
+  wallet_type: {
     generate: '生成钱包',
+    address: '地址',
     metamask: "MetaMask 钱包",
-    json: "Json 文件",
+    json: "JSON 文件",
     mnemonic: '助记词',
     private_key: '私钥',
     trezor: 'TREZOR',
     ledger: 'Ledger 钱包'
   },
 
-  password:{
+  password: {
     password_strength_title: '密码强度',
     password_strength: {
       weak: '弱',
@@ -295,18 +332,18 @@ export default {
     password_tips_lack: "请输入密码"
   },
 
-  wallet_generate:{
+  wallet_generate: {
     title_generate: '生成钱包',
+    actions_generate: '生成钱包',
     backup_title: '备份钱包',
     backup_tip: 'Circular钱包不会保存用户的私钥、Keystore、助记词，强烈建议您在线下备份这些信息（不联网的USB硬盘或纸质存储）。一旦私钥、Keystore、助记词丢失将无法恢复!',
     actions_backup_json: '我已经明白，下载钱包文件',
     actions_backup_mnemonic: '我已经明白，复制助记词',
     actions_backup_private: '我已经明白，复制私钥',
-    actions_generate: '生成钱包',
   },
 
-  wallet_meta:{
-    actions_get_metaMask: "下载MetaMask插件",
+  wallet_meta: {
+    actions_get_metaMask: "下载{browser}浏览器MetaMask插件",
     actions_visit_metaMask: "访问MetaMask官网",
     browser_tip: '您的浏览器不支持MetaMask解锁，推荐您使用Chrome',
     unlock_metaMask_tip: '解锁MetaMask',
@@ -319,12 +356,20 @@ export default {
     unlock_step_unlock_content: '在MetaMask上创建一个账号或解锁已有账号',
     unlock_step_refresh_title: '刷新Circular',
     unlock_step_refresh_content: '刷新Circular钱包使MetaMask生效',
+    mainnet_tip: '在您使用MetaMask解锁时，我们只支持Ethereum main net，请在您的MetaMask切换',
+    logout_title: "您已从MetaMask登出",
+    logout_tip: "我们检测到您已经从MetaMask登出, 为了您资金安全您的钱包重新锁定",
+    account_change_title: "您切换了MetaMask账户",
+    account_change_tip: "我们检测到您刚刚在MetaMask切换了账户, 请注意您账户资产发生了改变",
+    install_tip: '您可能需要在浏览器安装MetaMask插件，安装完成后请刷新页面',
+    unlock_tip: '与MetaMask连接失败, 请解锁后使用'
   },
-  address:{
+  address: {
+    placeholder_tip: '地址：',
     paste_address_title: '请粘贴您的地址',
     invalid_address_tip: '不合法的地址',
   },
-  wallet_determine:{
+  wallet_determine: {
     default_address: '默认地址',
     title_deter_address: "选择地址",
     actions_other_address: '选择其他地址',
@@ -332,26 +377,23 @@ export default {
     custom_path: '自定义dpath',
     no_address_tip: '没有合法的地址',
   },
-  json:{
+  json: {
     error_json_tip: '无效的Keystore Json',
     title_json: '选择JSON文件',
   },
 
-  mnemonic:{
+  mnemonic: {
     actions_paste_mnemonic: '请粘贴您的助记词',
     error_mnemonic_tip: "无效的助记词",
     mnemonic_tip_lack: "请输入您的助记词"
   },
 
   key: {
+    placeholder: '私钥',
     paste_private_title: "请粘贴您的私钥",
     error_private_tip: '不合法的私钥',
+    lack_private_tip: '请输入您的私钥'
   },
-
-
-
-
-
 
   token: {
     action_options: '{token} 选项',

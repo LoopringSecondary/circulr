@@ -70,19 +70,19 @@ class  GenerateWallet extends React.Component {
     return (
       <div>
         <div className="form-dark">
-          <h2 className="text-center text-primary">{intl.get('wallet.title_generate')}</h2>
+          <h2 className="text-center text-primary">{intl.get('wallet_generate.title_generate')}</h2>
           <div className="blk-lg"/>
           <div className="eye-switch">
-            <Input type={visible ? 'text':'password'} addonAfter={visibleIcon} onChange={this.passChange} value={pass} />
+            <Input type={visible ? 'text':'password'} placeholder={intl.get('common.password')} addonAfter={visibleIcon} onChange={this.passChange} value={pass} />
           </div>
           <div className="d-flex justify-content-start align-items-center password-strong" style={{width:"300px"}}>
-            <b className="password-label">{intl.get('wallet.password_strength_title')}</b>
+            <b className="password-label">{intl.get('password.password_strength_title')}</b>
             {strength === 'weak' && <Progress percent={30}  />}
             {strength === 'average' && <Progress percent={50}  />}
             {strength === 'strong' && <Progress percent={90}  />}
-            <div><span className="offset-md text-up">{intl.get(`wallet.password_strength.${strength}`)}</span></div>
+            <div><span className="offset-md text-up">{intl.get(`password.password_strength.${strength}`)}</span></div>
           </div>
-          <button className="btn btn-primary btn-block btn-xxlg" onClick={this.generate}>{intl.get('wallet.actions_generate')}</button>
+          <button className="btn btn-primary btn-block btn-xxlg" onClick={this.generate}>{intl.get('wallet_generate.actions_generate')}</button>
         </div>
       </div>
     )
