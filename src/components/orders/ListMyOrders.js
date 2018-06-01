@@ -30,64 +30,64 @@ const ListHeader = (props) => {
     <div className="form-inline form-dark">
       <div className="block-dark-filter">
         <div>
-                <span>
-                  <SelectContainer
-                    loadOptions={getSupportedMarket.bind(this, window.config.rpc_host)}
-                    transform={(res) => {
-                      if (res && !res.error) {
-                        let pairs = config.getMarkets().map(item => `${item.tokenx}-${item.tokeny}`)
-                        let options = res.result.filter(item => pairs.includes(item)).map(item => ({
-                          label: item,
-                          value: item
-                        }))
-                        return [
-                          {label: `${intl.get('global.all')} ${intl.get('orders.market')}`, value: ""},
-                          ...options,
-                        ]
-                      } else {
-                        return []
-                      }
-                    }}
-                    onChange={marketChange}
-                    placeholder={intl.get('orders.market')}
-                    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                    dropdownMatchSelectWidth={false}
-                    value={orders.filters.market || ""}
-                    size="small"
-                  >
-                  </SelectContainer>
-                </span>
           <span>
-                  <Select
-                    placeholder={intl.get('orders.status')}
-                    onChange={statusChange}
-                    dropdownMatchSelectWidth={false}
-                    value={orders.filters.status || ""}
-                    size="small"
-                  >
-                    <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.status')} </Select.Option>
-                    <Select.Option value="ORDER_OPENED">{intl.get('orders.status_opened')}</Select.Option>
-                    <Select.Option value="ORDER_FINISHED">{intl.get('orders.status_completed')}</Select.Option>
-                    <Select.Option value="ORDER_CANCELLED">{intl.get('orders.status_canceled')}</Select.Option>
-                    <Select.Option value="ORDER_EXPIRE">{intl.get('orders.status_expired')}</Select.Option>
-                  </Select>
-                </span>
+            <SelectContainer
+              loadOptions={getSupportedMarket.bind(this, window.config.rpc_host)}
+              transform={(res) => {
+                if (res && !res.error) {
+                  let pairs = config.getMarkets().map(item => `${item.tokenx}-${item.tokeny}`)
+                  let options = res.result.filter(item => pairs.includes(item)).map(item => ({
+                    label: item,
+                    value: item
+                  }))
+                  return [
+                    {label: `${intl.get('common.all')} ${intl.get('order.market')}`, value: ""},
+                    ...options,
+                  ]
+                } else {
+                  return []
+                }
+              }}
+              onChange={marketChange}
+              placeholder={intl.get('order.market')}
+              filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              dropdownMatchSelectWidth={false}
+              value={orders.filters.market || ""}
+              size="small"
+            >
+            </SelectContainer>
+          </span>
           <span>
-                   <Select
-                     placeholder={intl.get('orders.side')}
-                     onChange={sideChange}
-                     dropdownMatchSelectWidth={false}
-                     value={orders.filters.side || ""}
-                     size="small"
-                   >
-                     <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.side')}</Select.Option>
-                     <Select.Option value="sell">{intl.get('orders.side_sell')}</Select.Option>
-                     <Select.Option value="buy">{intl.get('orders.side_buy')}</Select.Option>
-                   </Select>
-                </span>
+            <Select
+              placeholder={intl.get('order.status')}
+              onChange={statusChange}
+              dropdownMatchSelectWidth={false}
+              value={orders.filters.status || ""}
+              size="small"
+            >
+              <Select.Option value="">{intl.get('common.all')}&nbsp;{intl.get('order.status')} </Select.Option>
+              <Select.Option value="ORDER_OPENED">{intl.get('order_status.opened')}</Select.Option>
+              <Select.Option value="ORDER_FINISHED">{intl.get('order_status.completed')}</Select.Option>
+              <Select.Option value="ORDER_CANCELLED">{intl.get('order_status.canceled')}</Select.Option>
+              <Select.Option value="ORDER_EXPIRE">{intl.get('order_status.expired')}</Select.Option>
+            </Select>
+          </span>
+          <span>
+             <Select
+               placeholder={intl.get('order.side')}
+               onChange={sideChange}
+               dropdownMatchSelectWidth={false}
+               value={orders.filters.side || ""}
+               size="small"
+             >
+               <Select.Option value="">{intl.get('common.all')}&nbsp;{intl.get('order.side')}</Select.Option>
+               <Select.Option value="sell">{intl.get('order_side.sell')}</Select.Option>
+               <Select.Option value="buy">{intl.get('order_side.buy')}</Select.Option>
+             </Select>
+          </span>
         </div>
         <div>
-          <span><button className="btn btn-primary" onClick={cancelAll}>Cancel All</button></span>
+          <span><button className="btn btn-primary" onClick={cancelAll}>{intl.get('order_list.actions_cancel_all')}</button></span>
         </div>
       </div>
     </div>
@@ -107,17 +107,17 @@ export default function ListMyOrders(props) {
                className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2">
           <thead>
           <tr>
-            <th>Order</th>
-            <th>Market</th>
-            <th>Side</th>
-            <th>Amount</th>
-            <th>Price</th>
-            <th>Total</th>
-            <th>LRC Fee</th>
-            <th>Filled</th>
-            <th>Created</th>
-            <th>Expired</th>
-            <th>Status</th>
+            <th>{intl.get('order.hash')}</th>
+            <th>{intl.get('order.market')}</th>
+            <th>{intl.get('order.side')}</th>
+            <th>{intl.get('order.amount')}</th>
+            <th>{intl.get('order.price')}</th>
+            <th>{intl.get('order.total')}</th>
+            <th>{intl.get('order.LRCFee')}</th>
+            <th>{intl.get('order.filled')}</th>
+            <th>{intl.get('order.validSince')}</th>
+            <th>{intl.get('order.validUntil')}</th>
+            <th>{intl.get('order.status')}</th>
           </tr>
           </thead>
           <tbody>
@@ -164,10 +164,10 @@ export const renders = {
   side: (fm) => (
     <div>
       {fm.getSide() === 'buy' &&
-      <span className="text-success">{fm.getSide()}</span>
+      <span className="text-success">{intl.get(`common.${fm.getSide()}`)}</span>
       }
       {fm.getSide() === 'sell' &&
-      <span className="text-error">{fm.getSide()}</span>
+      <span className="text-error">{intl.get(`common.${fm.getSide()}`)}</span>
       }
     </div>
   ),
@@ -181,19 +181,19 @@ export const renders = {
     )
     let statusNode
     if (status === 'ORDER_OPENED') {
-      statusNode = <Badge className="text-color-dark-1" status="processing" text={intl.get('orders.status_opened')}/>
+      statusNode = <Badge className="text-color-dark-1" status="processing" text={<div className="color-white-1">{intl.get('order_status.opened')}</div>}/>
     }
     if (status === 'ORDER_FINISHED') {
-      statusNode = <Badge className="text-color-dark-1" status="success" text={intl.get('orders.status_completed')}/>
+      statusNode = <Badge className="text-color-dark-1" status="success" text={<div className="color-white-1">{intl.get('order_status.completed')}</div>}/>
     }
     if (status === 'ORDER_CANCELLED') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
+      statusNode = <Badge className="text-color-dark-1" status="default" text={<div className="color-white-1">{intl.get('order_status.canceled')}</div>}/>
     }
     if (status === 'ORDER_CUTOFF') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
+      statusNode = <Badge className="text-color-dark-1" status="default" text={<div className="color-white-1">{intl.get('order_status.canceled')}</div>}/>
     }
     if (status === 'ORDER_EXPIRE') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_expired')}/>
+      statusNode = <Badge className="text-color-dark-1" status="default" text={<div className="color-white-1">{intl.get('order_status.expired')}</div>}/>
     }
     return (
       <span>

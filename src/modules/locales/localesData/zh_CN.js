@@ -136,18 +136,19 @@ export default {
     amount: words.amount,
     price: words.price,
     total: words.total,
-    lrc_fee: words.lrc_fee,
-    filled: '成交',
-    created: '提交时间',
-    expired: '过期时间',
-    status: words.total,
+    LRCFee: words.lrc_fee,
+    marginSplit: words.margin_split,
+    filled: '成交数量',
+    validSince: '订单生效时间',
+    validUntil: '订单失效时间',
+    status: words.status,
   },
   order_type: {
     market_order: '公开市场订单',
     p2p_order: '私密点对点订单'
   },
   order_status: {
-    open: '撮合中',
+    opened: '撮合中',
     completed: '已完成',
     canceled: '已取消',
     expired: '以过期',
@@ -157,12 +158,12 @@ export default {
     buy: words.buy,
   },
   order_list: {
-    actions_cancel_all: 'Cancel All',
+    actions_cancel_all: '取消全部',
   },
   order_detail: {
-    detail_title: '订单详情',
+    title: '订单详情',
     tabs_basic: '基础信息',
-    tabs_fill: '成交信息',
+    tabs_fills: '成交信息',
   },
   place_order: {
     order_type: '订单类型',
@@ -305,9 +306,10 @@ export default {
     vol: '24H 交易量',
   },
   ticker_list: {
-    loopring_tickers_title: 'Loopring DEX Markets',
-    reference_tickers_title: 'Reference Markets',
-    actions_go_to_trade: '前往交易',
+    title_loopring_tickers: '路印 DEX 交易所行情',
+    title_reference_tickers: '第三方交易所行情',
+    title_recent: '最近',
+    title_favorites: '收藏',
   },
   // -----------
   // token
