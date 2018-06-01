@@ -116,8 +116,8 @@ export default {
     LRCFee: words.lrc_fee,
     marginSplit: words.margin_split,
     filled: '成交数量',
-    validSince: '提交时间',
-    validUntil: '过期时间',
+    validSince: '订单生效时间',
+    validUntil: '订单失效时间',
     status: words.status,
   },
   order_type: {
@@ -125,7 +125,7 @@ export default {
     p2p_order: '私密点对点订单'
   },
   order_status: {
-    open: '撮合中',
+    opened: '撮合中',
     completed: '已完成',
     canceled: '已取消',
     expired: '以过期',
@@ -135,7 +135,7 @@ export default {
     buy: words.buy,
   },
   order_list: {
-    actions_cancel_all: 'Cancel All',
+    actions_cancel_all: '取消全部',
   },
   order_detail: {
     title: '订单详情',

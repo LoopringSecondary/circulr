@@ -8,10 +8,10 @@ const MetaItem = (props) => {
   const {label, value, render} = props
   return (
     <div className="row pt5 pb5 align-items-center zb-b-b" style={{minWidth:'150px',maxWidth:'250px'}}>
-      <div className="col-auto fs12 color-black-2" style={{fontWeight:'bold'}}>
+      <div className="col-auto fs12 color-black-2">
         {label}
       </div>
-      <div className="col text-right fs14 color-black-1 text-wrap pl15">
+      <div className="col text-right fs14 color-black-1 text-wrap pl20">
         {render ? render(value) : value}
       </div>
     </div>
@@ -21,9 +21,10 @@ const MetaItem = (props) => {
 const ItemMore=({item})=>{
   return (
     <div>
-      <MetaItem label="LRC Fee" value="25.5LRC" />
-      <MetaItem label="Expired" value="2018-08-01 10:22" />
-      <MetaItem label="Status" value="匹配中/打块中" />
+      <MetaItem label={intl.get('order.status')} value="TODO" />
+      <MetaItem label={intl.get('order.total')} value="1.1 WETH" />
+      <MetaItem label={intl.get('order.validSince')} value="2018-08-01 10:22" />
+      <MetaItem label={intl.get('order.validUntil')} value="2018-08-01 10:22" />
     </div>
   )
 }
@@ -56,9 +57,9 @@ function ListOrderBook(props) {
 	    	    	</div>
     	        <ul className="mr-0">
 	    	            <li className="trade-list-header">
-			    	        <span>Price({tokens.right})</span>
-			    	        <span style={{textAlign:'right'}}>Amount({tokens.left})</span>
-			    	        <span style={{textAlign:'right'}}>Total({tokens.right})</span>
+			    	        <span>{intl.get('order.price')} / {tokens.right}</span>
+			    	        <span style={{textAlign:'right'}}>{intl.get('order.amount')} / {tokens.left} </span>
+			    	        <span style={{textAlign:'right'}}>{intl.get('order.LRCFee')}</span>
 		    	        </li>
 		    	    </ul>
 	    	    <div style={{height: "-webkit-calc(50% - 85px)",marginTop:"5px",marginBottom:"0",paddiongBottom:"10" }}>

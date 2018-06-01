@@ -123,7 +123,7 @@ export default {
     p2p_order: 'Privacy P2P Order'
   },
   order_status: {
-    open: 'Open',
+    opened: 'Open',
     completed: 'Completed',
     canceled: 'Canceled',
     expired: 'Expired',
