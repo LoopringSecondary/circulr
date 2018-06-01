@@ -143,10 +143,10 @@ export default {
     // TODO
   },
   setting_ttl: {
-    title:'Set Time To Live Of Order',
-    tabs_basic:'Basic',
-    tabs_advanced:'Advanced',
-    more:'More',
+    title:'设置订单有效期',
+    tabs_easy:'基础',
+    tabs_advanced:'高级',
+    more:'更多',
   },
   lrc_setting: {
     // TODO
