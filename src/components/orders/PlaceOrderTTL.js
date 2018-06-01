@@ -87,7 +87,7 @@ class TTLForm extends React.Component {
       <Card title={<div className="pl15 pr15 ">{intl.get('setting_ttl.title')}</div>} className="rs" ref="root">
         <div className="zb-b-t">
             <Tabs defaultActiveKey={'easy'} onChange={timeToLivePatternChanged} tabBarStyle={{marginBottom:"0px"}}>
-              <Tabs.TabPane tab={intl.get('setting_ttl.tabs_easy')} key="easy">
+              <Tabs.TabPane tab={intl.get('setting_ttl.tabs_basic')} key="easy">
                 <div className="">
                   <Form.Item className="ttl mb0" colon={false} label={null}>
                     {form.getFieldDecorator('timeToLivePopularSetting')(
