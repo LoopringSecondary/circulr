@@ -8,12 +8,15 @@ import * as fm from 'LoopringJS/common/formatter'
 import {connect} from 'dva'
 
 const GasFeeForm = (props) => {
-  const {gas, form, onGasChange, advanced, dispatch} = props
+  const {gas, gasFee, form, dispatch} = props
+  const {onGasChange, advanced} = gasFee
   const gasPriceStore = gas.gasPrice
-  const gasLimitStore = fm.toNumber(gas.gasLimit)
-  const fixedGasLimit = gas.fixedGasLimit ? fm.toNumber(gas.fixedGasLimit) : 0
-  const gasLimit = fixedGasLimit || gasLimitStore
-
+  let gasLimit = 0
+  if(gas.tabSelected === 'easy') {
+    gasLimit = fm.toNumber(gas.fixedGasLimit)
+  } else {
+    gasLimit = fm.toNumber(gas.gasLimit)
+  }
   if(gasPriceStore.last === 0 && form.getFieldValue('gasSelector') === 'last') {
     form.setFieldsValue({'gasSelector':'estimate'})
   }
@@ -23,43 +26,56 @@ const GasFeeForm = (props) => {
     form.setFieldsValue({'gasSelector' : 'last'})
   }
 
-  function handleSubmit() {
-    form.validateFields((err,values) => {
-      let p = 0, l = 0
-      switch(gas.tabSelected){
-        case 'easy':
-          if(!err || (!err.gasSelector && !err.gasPriceSlider)){
-            l = gasLimit
-            switch(form.getFieldValue('gasSelector')) {
-              case 'last':
-                p = gasPriceStore.last
-                break;
-              case 'estimate':
-                p = gasPriceStore.estimate
-                break;
-              case 'custom':
-                p = form.getFieldValue('gasPriceSlider')
-                break;
-            }
-            if(onGasChange) {
-              onGasChange({gasPrice:p})
-            }
-            gas.gasChange({gasPrice:p, gasLimit:l})
-          }
+  function radioChanged(v) {
+    if(gas.tabSelected === 'easy') {
+      let p = 0
+      switch(v.target.value) {
+        case 'last':
+          p = gasPriceStore.last
           break;
-        case 'advance':
-          if(!err || (!err.gasPrice && !err.gasLimit)){
-            p = form.getFieldValue('gasPrice')
-            l = form.getFieldValue('gasLimit')
-            gas.gasChange({gasPrice:p, gasLimit:l})
-            if(onGasChange) {
-              onGasChange({gasPrice:p, gasLimit:l})
-            }
-          }
+        case 'estimate':
+          p = gasPriceStore.estimate
           break;
+        case 'custom':
+          p = form.getFieldValue('gasPriceSlider')
+          break;
+        default:
+          throw new Error('Data Error')
       }
-      dispatch({type: 'layers/hideLayer', payload: {id:'gasFee',}})
-    });
+      if(onGasChange) {
+        onGasChange({gasPrice:p})
+      }
+      gas.currentGasChange({gasPrice:p})
+    } else {
+      throw new Error('Data Error')
+    }
+  }
+
+  function gasPriceChanged(v) {
+    if(gas.tabSelected === 'easy') {
+      if(onGasChange) {
+        onGasChange({gasPrice:v})
+      }
+      gas.currentGasChange({gasPrice:v})
+    } else {
+      throw new Error('Data Error')
+    }
+  }
+
+  function inputChange(type, e) {
+    if(type === 'gasLimit') {
+      gas.gasLimitChange({gasLimit:e.target.value})
+      if(onGasChange) {
+        onGasChange({gasLimit:e.target.value})
+      }
+    } else if(type === 'gasPrice'){
+      gas.currentGasChange({gasPrice: e})
+      if(onGasChange) {
+        onGasChange({gasPrice:e})
+      }
+    } else {
+      throw new Error('Data Error')
+    }
   }
 
   const gasShow = (gasPrice, gasLimit, title) => {
@@ -75,57 +91,58 @@ const GasFeeForm = (props) => {
     return <div>{`${title} 无`}</div>
   }
 
+  const recommended = (
+    <Form.Item label={null} colon={false} className="mb0">
+      {form.getFieldDecorator('gasSelector', {
+        initialValue:'last',
+        rules:[]
+      })(
+        <Radio.Group className="d-block w-100" onChange={radioChanged}>
+          <Radio value='last' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15" disabled={gasPriceStore.last === 0}>
+            <div className="ml5 pt10 pb10">
+              <div className="fs14 color-black-1">
+                {gasShow(gasPriceStore.last, gasLimit, '上一次')}
+              </div>
+            </div>
+          </Radio>
+          <Radio value='estimate' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
+            <div className="ml5 pt10 pb10">
+              <div className="fs14 color-black-1">
+                {gasShow(gasPriceStore.estimate, gasLimit, '推荐')}
+              </div>
+            </div>
+          </Radio>
+          <Radio value='custom' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
+            <div className="ml5 pt10 pb10">
+              <div className="fs14 color-black-1">
+                {gasShow(form.getFieldValue('gasPriceSlider'), gasLimit, '自定义')}
+              </div>
+              {form.getFieldDecorator('gasPriceSlider', {
+                initialValue:configs.defaultGasPrice,
+                rules:[]
+              })(
+                <Slider min={1} max={99} step={1}
+                        marks={{
+                          1: intl.get('settings.slow') ,
+                          99: intl.get('settings.fast') ,
+                        }}
+                        onChange={gasPriceChanged}
+                />
+              )}
+            </div>
+          </Radio>
+        </Radio.Group>
+      )}
+    </Form.Item>
+  )
+
   return (
     <Card title={<div className="pl15">Set Gas Fee</div>} className="rs">
       <div className="zb-b">
         {advanced &&
           <Tabs defaultActiveKey="easy" onChange={tabChange}>
             <Tabs.TabPane tab={<div className="pb5">Recommended</div>} key="easy">
-              <Form.Item label={null} colon={false} className="mb0">
-                {form.getFieldDecorator('gasSelector', {
-                  initialValue:'last',
-                  rules:[]
-                })(
-                  <Radio.Group className="d-block w-100">
-                    <Radio value='last' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15" disabled={gasPriceStore.last === 0}>
-                      <div className="ml5 pt10 pb10">
-                        <div className="fs14 color-black-1">
-                          {gasShow(gasPriceStore.last, gasLimit, '上一次')}
-                        </div>
-                      </div>
-                    </Radio>
-                    <Radio value='estimate' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
-                      <div className="ml5 pt10 pb10">
-                        <div className="fs14 color-black-1">
-                          {gasShow(gasPriceStore.estimate, gasLimit, '推荐')}
-                        </div>
-                      </div>
-                    </Radio>
-                    <Radio value='custom' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
-                      <div className="ml5 pt10 pb10">
-                        <div className="fs14 color-black-1">
-                          {gasShow(form.getFieldValue('gasPriceSlider'), gasLimit, '自定义')}
-                        </div>
-                        { form.getFieldValue('gasSelector') === 'custom'  &&
-                          <Form.Item label={null} colon={false} className="mb0">
-                            {form.getFieldDecorator('gasPriceSlider', {
-                              initialValue:configs.defaultGasPrice,
-                              rules:[]
-                            })(
-                              <Slider min={1} max={99} step={1}
-                                      marks={{
-                                        1: intl.get('settings.slow') ,
-                                        99: intl.get('settings.fast') ,
-                                      }}
-                              />
-                            )}
-                          </Form.Item>
-                        }
-                      </div>
-                    </Radio>
-                  </Radio.Group>
-                )}
-              </Form.Item>
+              {recommended}
             </Tabs.TabPane>
             <Tabs.TabPane tab={<div className="pb5">Advanced</div>} key="advance">
               <div className="fs12 color-black-3" hidden>
@@ -141,7 +158,7 @@ const GasFeeForm = (props) => {
                         validator: (rule, value, cb) => isValidInteger(value) ? cb() : cb(true)
                       }]
                     })(
-                       <Input className="" />
+                       <Input className="" onChange={inputChange.bind(this, 'gasLimit')}/>
                     )}
                   </Form.Item>
                 </div>
@@ -156,6 +173,7 @@ const GasFeeForm = (props) => {
                                 1: intl.get('token.slow'),
                                 99: intl.get('token.fast')
                               }}
+                              onChange={inputChange.bind(this, 'gasPrice')}
                       />
                     )}
                 </Form.Item>
@@ -172,58 +190,8 @@ const GasFeeForm = (props) => {
             </Tabs.TabPane>
           </Tabs>
         }
-        {!advanced &&
-          <Form.Item label={null} colon={false} className="mb0">
-            {form.getFieldDecorator('gasSelector', {
-              initialValue:'last',
-              rules:[]
-            })(
-              <Radio.Group className="d-block w-100">
-                {!!gasPriceStore.last &&
-                  <Radio value='last' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15" disabled={gasPriceStore.last === 0}>
-                    <div className="ml5 pt10 pb10">
-                      <div className="fs14 color-black-1">
-                        {gasShow(gasPriceStore.last, gasLimit, '上一次')}
-                      </div>
-                    </div>
-                  </Radio>
-                }
-                <Radio value='estimate' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
-                  <div className="ml5 pt10 pb10">
-                    <div className="fs14 color-black-1">
-                      {gasShow(gasPriceStore.estimate, gasLimit, '推荐')}
-                    </div>
-                  </div>
-                </Radio>
-                <Radio value='custom' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
-                  <div className="ml5 pt10 pb10">
-                    <div className="fs14 color-black-1">
-                      {gasShow(form.getFieldValue('gasPriceSlider'), gasLimit, '自定义')}
-                    </div>
-                    { form.getFieldValue('gasSelector') === 'custom'  &&
-                      <Form.Item label={null} colon={false} className="mb0">
-                        {form.getFieldDecorator('gasPriceSlider', {
-                          initialValue:configs.defaultGasPrice,
-                          rules:[]
-                        })(
-                          <Slider min={1} max={99} step={1}
-                                  marks={{
-                                    1: intl.get('settings.slow') ,
-                                    99: intl.get('settings.fast') ,
-                                  }}
-                          />
-                        )}
-                      </Form.Item>
-                    }
-                  </div>
-                </Radio>
-              </Radio.Group>
-            )}
-          </Form.Item>
+        {!advanced && recommended
         }
-      </div>
-      <div className="p15 text-right d-block w-100">
-        <Button onClick={handleSubmit} type="primary" size="large" className="d-block w-100">确认</Button>
       </div>
     </Card>
   )
