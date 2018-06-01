@@ -1,6 +1,7 @@
 import React from 'react'
 import FillFormater from '../../modules/fills/formatters'
 import {Spin,Pagination} from 'antd'
+import intl from 'react-intl-universal'
 
 export default class Fills extends React.Component {
 
@@ -46,13 +47,13 @@ export default class Fills extends React.Component {
       <table style={{overflow:'auto'}} className="table table-dark table-striped table-hover table-compact text-left">
         <thead>
         <tr>
-          <th>环路</th>
-          <th>数量</th>
-          <th>价格</th>
-          <th>金额</th>
-          <th>LRC撮合费</th>
-          <th>LRC撮合奖励</th>
-          <th>时间</th>
+          <th>{intl.get('fill.ringIndex')}</th>
+          <th>{intl.get('fill.amount')}</th>
+          <th>{intl.get('fill.price')}</th>
+          <th>{intl.get('fill.total')}</th>
+          <th>{intl.get('fill.lrc_fee')}</th>
+          <th>{intl.get('fill.lrc_reward')}</th>
+          <th>{intl.get('fill.created')}</th>
         </tr>
         </thead>
         <tbody>

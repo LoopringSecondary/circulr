@@ -282,12 +282,18 @@ export default {
     tabs_basic: '基础信息',
     tabs_fill: '成交信息',
   },
+  // -----------
+  // fill
+  // -----------
   fill: {
-    buy: words.buy,
-    sell: words.sell,
+    ringIndex: "ID",
+    price: words.price,
+    amount: words.amount,
+    total: words.total,
     lrc_fee: words.lrc_fee,
     lrc_reward: words.lrc_reward,
-    margin_split:words.margin_split
+    margin_split: words.margin_split,
+    created:'成交',
   },
   // -----------
   // ticker

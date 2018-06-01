@@ -32,7 +32,7 @@ export default class RingDetail extends React.Component{
         <DetailHeader title="环路详情"/>
         {ring && <Spin spinning={loading}>
           <MetaList>
-            <MetaItem label="环路" value={ringFm.getRingIndex()}/>
+            <MetaItem label={intl.get('ring.ringHash')} value={ringFm.getRingIndex()}/>
             <MetaItem label="环路哈希" value={ringFm.getRingHash()}/>
             <MetaItem label="矿工" value={ringFm.getMiner()}/>
             <MetaItem label="交易Hash" value={ringFm.getTxHash()}/>

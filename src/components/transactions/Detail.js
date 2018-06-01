@@ -35,8 +35,8 @@ export default class Detail extends React.Component {
               </Tabs.TabPane>
               <Tabs.TabPane  tab={intl.get('tx_detail.tabs_fill')} key="fill">
                 <MetaList>
-                  <MetaItem label={intl.get('fill.buy')} value={txFm.getFilledAmountOfBuy()}/>
-                  <MetaItem label={intl.get('fill.sell')} value={txFm.getFilledAmountOfSell()}/>
+                  <MetaItem label={intl.get('common.buy')} value={txFm.getFilledAmountOfBuy()}/>
+                  <MetaItem label={intl.get('common.sell')} value={txFm.getFilledAmountOfSell()}/>
                   <MetaItem label={intl.get('fill.lrc_fee')} value={txFm.getLrcFee()}/>
                   <MetaItem label={intl.get('fill.lrc_reward')} value={txFm.getLrcReward()}/>
                   <MetaItem label={intl.get('fill.margin_split')} value={txFm.getMarginSplit()} />
