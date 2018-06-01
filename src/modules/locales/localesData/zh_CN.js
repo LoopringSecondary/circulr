@@ -101,6 +101,8 @@ const actions = {
   to_unlock: '去解锁',
   transfer_cancel: "不，取消发送",
   transfer_send: "是的，马上发送",
+  place_buy_order: "提交买单",
+  place_sell_order: "提交卖单",
 }
 
 const time_unit = {
@@ -195,6 +197,7 @@ export default {
     tabs_easy:'快速设置',
     tabs_advanced:'高级设置',
     more:'更多',
+    input_place_holder: '订单有效时间是多久？',
   },
   setting_lrcfee: {
     title:'设置订单的矿工撮合费',

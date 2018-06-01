@@ -38,12 +38,12 @@ const MenuItem = (prop)=>{
 class PlaceOrderForm extends React.Component {
 
   render() {
-    const {form, placeOrder, settings, balance, wallet, marketcap, pendingTx, gas, dispatch} = this.props
+    const {form, placeOrder, settings, balance, wallet, marketcap, pendingTx, gas, ttl, dispatch} = this.props
     const gasResult = getLastGas(gas)
     const gasPrice = gasResult.gasPrice
     const milliLrcFee = placeOrder.sliderMilliLrcFee >0 ? placeOrder.sliderMilliLrcFee : settings.trading.lrcFee
-    const ttlValue = placeOrder.timeToLive >0 ? placeOrder.timeToLive : settings.trading.timeToLive
-    const ttlUnit = placeOrder.timeToLiveUnit || settings.trading.timeToLiveUnit
+    const ttlValue = placeOrder.timeToLive >0 ? ttl.timeToLive : settings.trading.timeToLive
+    const ttlUnit = ttl.timeToLiveUnit || settings.trading.timeToLiveUnit
     const {pair, side, priceInput, amountInput} = placeOrder
     const amount = orderFormatter.isValidAmount(amountInput) ? fm.toBig(amountInput) : fm.toBig(0)
     const price = orderFormatter.isValidAmount(amountInput) ? fm.toBig(priceInput) : fm.toBig(0)
@@ -56,7 +56,6 @@ class PlaceOrderForm extends React.Component {
         const r = config.getTokenBySymbol(pair.split('-')[1].toUpperCase())
         marketConfig = config.getMarketBySymbol(l.symbol, r.symbol)
         if(!marketConfig || !(l && r)) {
-          //TODO notification
           throw new Error('Not supported market:'+pair)
         }
         const formAmount = form.getFieldValue('amount')
@@ -137,63 +136,6 @@ class PlaceOrderForm extends React.Component {
       placeOrder.milliLrcFeeChange({milliLrcFee:v})
     }
 
-    function timeToLivePatternChanged(value) {
-      if(value === 'advance') {
-        const timeToLiveTimeSelector = form.getFieldValue('timeToLiveTimeSelector')
-        if(timeToLiveTimeSelector.length === 2) {
-          placeOrder.timeToLivePatternChangeEffects({timeToLivePatternSelect:value, timeToLiveStart: timeToLiveTimeSelector[0], timeToLiveEnd: timeToLiveTimeSelector[1]})
-        }
-      } else {
-        placeOrder.timeToLivePatternChangeEffects({timeToLivePatternSelect:value})
-      }
-    }
-
-    function timeToLiveValueChange(type, e) {
-      if(type === 'popular') {
-        const ttl = e.target.value
-        let timeToLivePopularSetting = true, timeToLive = 1, timeToLiveUnit = ''
-        switch (ttl) {
-          case '1hour':
-            timeToLivePopularSetting = true
-            timeToLiveUnit = 'hour'
-            break;
-          case '1day':
-            timeToLivePopularSetting = true
-            timeToLiveUnit = 'day'
-            break;
-          case '1week':
-            timeToLivePopularSetting = true
-            timeToLiveUnit = 'week'
-            break;
-          case '1month':
-            timeToLivePopularSetting = true
-            timeToLiveUnit = 'month'
-            break;
-          case 'more':
-            timeToLivePopularSetting = false
-            break;
-        }
-        placeOrder.timeToLiveEasyTypeChangeEffects({type, timeToLivePopularSetting, timeToLive, timeToLiveUnit})
-      } else {
-        if (type === 'moreUnit') {
-          const ttl = form.getFieldValue('timeToLive')
-          const unit = e
-          placeOrder.timeToLiveEasyTypeChangeEffects({type, timeToLive: ttl, timeToLiveUnit: unit})
-        }
-        if (type === 'moreValue') {
-          const ttl = e.target.value
-          const unit = form.getFieldValue('timeToLiveUnit')
-          placeOrder.timeToLiveEasyTypeChangeEffects({type, timeToLive: ttl, timeToLiveUnit: unit})
-        }
-      }
-    }
-
-    function timeToLiveTimeSelected(value) {
-      if(value.length === 2) {
-        placeOrder.timeToLivePatternChangeEffects({timeToLivePatternSelect:'advance', timeToLiveStart: value[0], timeToLiveEnd: value[1]})
-      }
-    }
-
     const marks = {
       0: '0',
       25: '25％',
@@ -259,96 +201,25 @@ class PlaceOrderForm extends React.Component {
       overflow: 'hidden',
     };
 
-    const timeToLiveSelectAfter = form.getFieldDecorator('timeToLiveUnit', {
-      initialValue: "minute",
-      rules: []
-    })(
-      <Select style={{width: 90}} getPopupContainer={triggerNode => triggerNode.parentNode} onChange={timeToLiveValueChange.bind(this, 'moreUnit')}>
-        <Select.Option value="minute">{intl.get('trade.minute')}</Select.Option>
-        <Select.Option value="hour">{intl.get('trade.hour')}</Select.Option>
-        <Select.Option value="day">{intl.get('trade.day')}</Select.Option>
-      </Select>
-    )
-
-    const editOrderTTLPattern = (
-      <Popover overlayClassName="place-order-form-popover" ref="popover"
-               title={null &&<div className="pt5 pb5">{intl.get('trade.custom_time_to_live_title')}</div>}
-               content={
-                 <div style={{width:'382px'}}>
-                   <Collapse accordion style={customPanelStyle} defaultActiveKey={['easy']} onChange={timeToLivePatternChanged}>
-                     <Collapse.Panel header={intl.get('trade.order_ttl_expire_in')} key="easy">
-                       <div className="pt5 pb5">
-                         <Form.Item className="ttl mb0" colon={false} label={null}>
-                           {form.getFieldDecorator('timeToLivePopularSetting')(
-                             <Radio.Group onChange={timeToLiveValueChange.bind(this, 'popular')}>
-                               <Radio className="mb5" value="1hour">1 {intl.get('hour')}</Radio>
-                               <Radio className="mb5" value="1day">1 {intl.get('day')}</Radio>
-                               <Radio className="mb5" value="1week">1 {intl.get('week')}</Radio>
-                               <Radio className="mb5" value="1month">1 {intl.get('month')}</Radio>
-                               <Radio className="mb5" value="more">{intl.get('more')}</Radio>
-                             </Radio.Group>
-                           )}
-                         </Form.Item>
-                         {!placeOrder.timeToLivePopularSetting &&
-                         <Form.Item className="mb0 d-block ttl" colon={false} label={null}>
-                           {form.getFieldDecorator('timeToLive', {
-                             rules: [{
-                               message: intl.get('trade.integer_verification_message'),
-                               validator: (rule, value, cb) => orderFormatter.validateOptionInteger(value) ? cb() : cb(true)
-                             }]
-                           })(
-                             <Input className="d-block w-100" placeholder={intl.get('trade.time_to_live_input_place_holder')} size="large" addonAfter={timeToLiveSelectAfter}
-                                    onChange={timeToLiveValueChange.bind(this, 'moreValue')}/>
-                           )}
-                         </Form.Item>}
-                       </div>
-                     </Collapse.Panel>
-                     <Collapse.Panel header={intl.get('trade.order_ttl_from_to')} key="advance">
-                       <Form.Item className="mb5 ttl" colon={false} label={null}>
-                         {form.getFieldDecorator('timeToLiveTimeSelector', {
-                           initialValue:[moment(), moment().add(1, 'days')]
-                         })(
-                           <DatePicker.RangePicker
-                             locale={'en-US'}
-                             getCalendarContainer={trigger =>
-                             {
-                               return ReactDOM.findDOMNode(this.refs.popover);
-                             }
-                             }
-                             showTime={{ format: 'HH:mm' }}
-                             format="YYYY-MM-DD HH:mm"
-                             placeholder={['Start Time', 'End Time']}
-                             onChange={timeToLiveTimeSelected}
-                           />
-                         )}
-                       </Form.Item>
-                     </Collapse.Panel>
-                   </Collapse>
-                 </div>
-               } trigger="click">
-        <a className="fs12 pointer  text-dark"><i className="icon-pencil tradingFee"></i></a>
-      </Popover>
-    )
-
     let ttlInSecond = 0, ttlShow = ''
-    if(placeOrder.timeToLivePatternSelect === 'easy') {
+    if(ttl.timeToLivePatternSelect === 'easy') {
       const ttl = Number(ttlValue)
       const unit = ttlUnit
       switch(unit){
-        case 'minute': ttlInSecond = ttl * 60 ; ttlShow = `${ttl} ${intl.get('minute')}`; break;
-        case 'hour': ttlInSecond = ttl * 3600 ; ttlShow = `${ttl} ${intl.get('hour')}`; break;
-        case 'day': ttlInSecond = ttl * 86400; ttlShow = `${ttl} ${intl.get('day')}`; break;
-        case 'week': ttlInSecond = ttl * 7 * 86400; ttlShow = `${ttl} ${intl.get('week')}`; break;
-        case 'month': ttlInSecond = ttl * 30 * 86400; ttlShow = `${ttl} ${intl.get('month')}`; break;
+        case 'minute': ttlInSecond = ttl * 60 ; ttlShow = `${ttl} ${intl.get('common.minute')}`; break;
+        case 'hour': ttlInSecond = ttl * 3600 ; ttlShow = `${ttl} ${intl.get('common.hour')}`; break;
+        case 'day': ttlInSecond = ttl * 86400; ttlShow = `${ttl} ${intl.get('common.day')}`; break;
+        case 'week': ttlInSecond = ttl * 7 * 86400; ttlShow = `${ttl} ${intl.get('common.week')}`; break;
+        case 'month': ttlInSecond = ttl * 30 * 86400; ttlShow = `${ttl} ${intl.get('common.month')}`; break;
       }
     } else {
-      if(placeOrder.timeToLiveStart && placeOrder.timeToLiveEnd) {
-        ttlShow = `${placeOrder.timeToLiveStart.format("lll")} ~ ${placeOrder.timeToLiveEnd.format("lll")}`
+      if(ttl.timeToLiveStart && ttl.timeToLiveEnd) {
+        ttlShow = `${ttl.timeToLiveStart.format("lll")} ~ ${ttl.timeToLiveEnd.format("lll")}`
       }
     }
 
     async function handleSubmit(orderType, e) {
-      if(orderType !== 'p2p_order' && orderType !== 'market_order') {
+      if(orderType !== 'market_order') {
         Notification.open({
           message: intl.get('trade.place_order_failed'),
           type: "error",
@@ -529,8 +400,6 @@ class PlaceOrderForm extends React.Component {
       dispatch({type:'layers/showLayer', payload: {id: 'placeOrderTTL', side, pair}})
     }
 
-
-
     return (
       <div>
         <div className="card-body form-dark">
@@ -635,22 +504,13 @@ class PlaceOrderForm extends React.Component {
                     </span>
                   </div>
                 </div>
-                <div hidden className="form-group mr-0">
-                  <div className="form-control-static d-flex justify-content-between">
-                    <span className="font-bold">Time to live <i className="icon-info"></i></span>
-                    <span>
-                      <span>{editOrderTTLPattern}</span>
-                      <span className="offset-md">{ttlShow}</span>
-                    </span>
-                  </div>
-                </div>
               </div>
               <div className="mb15"></div>
               {
-                  side === 'buy' && <Button className="btn btn-block btn-success btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>Place Buy Order</Button>
+                  side === 'buy' && <Button className="btn btn-block btn-success btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>{intl.get('actions.place_buy_order')}</Button>
                 }
                 {
-                  side === 'sell' && <Button className="btn btn-block btn-danger btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>Place Sell Order</Button>
+                  side === 'sell' && <Button className="btn btn-block btn-danger btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>{intl.get('actions.place_sell_order')}</Button>
                 }
             </div>
           </div>
@@ -726,18 +586,4 @@ class TokenActions extends React.Component {
       }
 }
 
-export default Form.create({
-  // mapPropsToFields(props) {
-  //   return {
-  //     amount: Form.createFormField(
-  //       props.placeOrder.amountInput
-  //     ),
-  //     amountSlider: Form.createFormField(
-  //       props.placeOrder.amountSlider
-  //     ),
-  //     price: Form.createFormField(
-  //       props.placeOrder.priceInput
-  //     ),
-  //   }
-  // }
-})(PlaceOrderForm)
+export default Form.create()(connect()(PlaceOrderForm));

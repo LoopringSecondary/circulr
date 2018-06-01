@@ -99,6 +99,8 @@ const actions = {
   to_unlock: 'To Unlock',
   transfer_cancel: "No, Cancel It",
   transfer_send: "Yes, Send Now",
+  place_buy_order: "Place Buy Order",
+  place_sell_order: "Place Sell Order",
 }
 
 const time_unit = {
@@ -193,6 +195,7 @@ export default {
     tabs_basic: 'Basic',
     tabs_advanced: 'Advanced',
     more: 'More',
+    input_place_holder: 'We recommend to set it between 1 hour and 1 day.',
   },
   setting_lrcfee: {
     title: 'Set LRC Fee Of Order',
