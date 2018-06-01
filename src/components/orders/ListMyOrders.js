@@ -181,19 +181,19 @@ export const renders = {
     )
     let statusNode
     if (status === 'ORDER_OPENED') {
-      statusNode = <Badge className="text-color-dark-1" status="processing" text={intl.get('orders.status_opened')}/>
+      statusNode = <Badge className="text-color-dark-1" status="processing" text={intl.get('order_status.open')}/>
     }
     if (status === 'ORDER_FINISHED') {
-      statusNode = <Badge className="text-color-dark-1" status="success" text={intl.get('orders.status_completed')}/>
+      statusNode = <Badge className="text-color-dark-1" status="success" text={intl.get('order_status.completed')}/>
     }
     if (status === 'ORDER_CANCELLED') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
+      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('order_status.canceled')}/>
     }
     if (status === 'ORDER_CUTOFF') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_canceled')}/>
+      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('order_status.canceled')}/>
     }
     if (status === 'ORDER_EXPIRE') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('orders.status_expired')}/>
+      statusNode = <Badge className="text-color-dark-1" status="default" text={intl.get('order_status.expired')}/>
     }
     return (
       <span>

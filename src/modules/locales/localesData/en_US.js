@@ -105,17 +105,18 @@ export default {
   // order
   // -----------
   order: {
-    hash: '订单',
+    hash: 'Order Hash',
     market: words.market,
     side: words.side,
     amount: words.amount,
     price: words.price,
     total: words.total,
-    lrc_fee: words.lrc_fee,
-    filled: '成交',
-    created: '提交时间',
-    expired: '过期时间',
-    status: words.total,
+    LRCFee: words.lrc_fee,
+    marginSplit: words.margin_split,
+    filled: 'Filled',
+    validSince: 'Valid Since',
+    validUntil: 'Valid Until',
+    status: words.status,
   },
   order_type: {
     market_order: 'Open Market Order',
@@ -135,9 +136,9 @@ export default {
     actions_cancel_all: 'Cancel All',
   },
   order_detail: {
-    detail_title: 'Order Detail',
+    title: 'Order Detail',
     tabs_basic: 'Basic Detail',
-    tabs_fill: 'Fill Detail',
+    tabs_fills: 'Fill Detail',
   },
   place_order: {
     order_type: 'Order Type',
