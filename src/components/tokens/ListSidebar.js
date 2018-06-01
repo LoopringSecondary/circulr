@@ -190,8 +190,8 @@ function ListTokensSidebar(props) {
                 formatedTokens.map((item,index)=>
                   <div className={`item ${item.symbol===selected ? 'active' : ''}`} key={index} onClick={selectToken.bind(this,item)}>
                       <div className="sub">
-                          <div hidden className="favorites"><i className="icon-star"></i></div>
-                          <div className="icon"><i className={`icon-${item.symbol} icon-token`}></i></div>
+                          <div hidden className="favorites"><i className="icon-star"/></div>
+                          <div className="icon"><i className={`icon-${item.symbol} icon-token`}/></div>
                           <div className="token-name">
                               <h3>{item.symbol}</h3>
                               <p>{item.name}</p>

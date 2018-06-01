@@ -69,6 +69,8 @@ const notifications = {
     place_order_warn: '您的订单只能被部分撮合',
     unlock_suc: '解锁成功',
     unlock_fail: "解锁失败",
+    copy_suc:'复制成功',
+    copy_fail:'复制失败',
   },
   message: {
     wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',

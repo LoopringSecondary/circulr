@@ -67,6 +67,8 @@ const notifications = {
     place_order_warn: "Your order can not be fully filled.",
     unlock_suc: 'Unlock Successfully',
     unlock_fail: "Unlock Failed",
+    copy_suc:'Copy Successfully',
+    copy_fail:'Copy Failed',
   },
   message: {
     wallet_locked: 'Your wallet seems unlocked yet, please unlock first',
