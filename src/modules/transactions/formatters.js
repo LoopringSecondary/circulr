@@ -57,31 +57,31 @@ export class TxFm{
   getType(value){
     switch (this.tx.type) {
       case 'approve':
-        return intl.get('tx_schema_type.approve', {symbol: this.tx.symbol});
+        return intl.get('tx_list.type.approve', {symbol: this.tx.symbol});
       case 'send':
-        return intl.get('tx_schema_type.transfer', {symbol: this.tx.symbol,value});
+        return intl.get('tx_list.type.transfer', {symbol: this.tx.symbol,value});
       case 'receive':
-        return intl.get('tx_schema_type.receive', {symbol: this.tx.symbol,value});
+        return intl.get('tx_list.type.receive', {symbol: this.tx.symbol,value});
       case 'sell':
-        return intl.get('tx_schema_type.sell', {symbol: this.tx.symbol,value});
+        return intl.get('tx_list.type.sell', {symbol: this.tx.symbol,value});
       case 'buy':
-        return intl.get('tx_schema_type.buy', {symbol: this.tx.symbol,value});
+        return intl.get('tx_list.type.buy', {symbol: this.tx.symbol,value});
       case 'lrc_fee':
-        return  intl.get('tx_schema_type.lrc_fee',{value});
+        return  intl.get('tx_list.type.lrc_fee',{value});
       case 'lrc_reward':
-        return intl.get('tx_schema_type.lrc_reward',{value});
+        return intl.get('tx_list.type.lrc_reward',{value});
       case 'convert_outcome':
-        return this.tx.symbol === 'ETH' ? intl.get('tx_schema_type.convert_eth',{value}) : intl.get('tx_schema_type.convert_weth',{value});
+        return this.tx.symbol === 'ETH' ? intl.get('tx_list.type.convert_eth',{value}) : intl.get('tx_list.type.convert_weth',{value});
       case 'convert_income':
-        return this.tx.symbol === 'WETH' ? intl.get('tx_schema_type.convert_eth',{value}) : intl.get('tx_schema_type.convert_weth',{value});
+        return this.tx.symbol === 'WETH' ? intl.get('tx_list.type.convert_eth',{value}) : intl.get('tx_list.type.convert_weth',{value});
       case 'cancel_order':
-        return intl.get('tx_schema_type.cancel_order');
+        return intl.get('tx_list.type.cancel_order');
       case 'cutoff':
-        return intl.get('tx_schema_type.cancel_all');
+        return intl.get('tx_list.type.cancel_all');
       case 'cutoff_trading_pair':
-        return intl.get('tx_schema_type.cancel_pair_order', {pair: this.tx.content.market});
+        return intl.get('tx_list.type.cancel_pair_order', {pair: this.tx.content.market});
       default:
-        return intl.get('tx_schema_type.others')
+        return intl.get('tx_list.type.others')
     }
   }
   getSide(){

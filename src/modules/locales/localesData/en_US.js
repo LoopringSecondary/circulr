@@ -224,20 +224,23 @@ export default {
     cancel_pair_order: 'Cancel market pair orders ',
     others: 'Others'
   },
-  tx_schema_type: {
-    sell: 'Sold {value} {symbol}',
-    buy: 'Bought {value} {symbol}',
-    transfer: 'Sent {value} {symbol}',
-    receive: 'Received {value} {symbol}',
-    approve: 'Enabled trading {symbol} ',
-    lrc_fee: 'Payed {value} Trading Fee',
-    lrc_reward: 'Received {value} Trading Reward',
-    convert_eth: 'Convert {value} ETH to WETH',
-    convert_weth: 'Convert {value} WETH to ETH',
-    cancel_order: 'Cancel Order',
-    cancel_all: 'Cancel All Orders',
-    cancel_pair_order: 'Cancel {pair} Orders ',
-    others: 'Others'
+  tx_list: {
+    type:{
+      sell: 'Sold {value} {symbol}',
+      buy: 'Bought {value} {symbol}',
+      transfer: 'Sent {value} {symbol}',
+      receive: 'Received {value} {symbol}',
+      approve: 'Enabled trading {symbol} ',
+      lrc_fee: 'Payed {value} Trading Fee',
+      lrc_reward: 'Received {value} Trading Reward',
+      convert_eth: 'Convert {value} ETH to WETH',
+      convert_weth: 'Convert {value} WETH to ETH',
+      cancel_order: 'Cancel Order',
+      cancel_all: 'Cancel All Orders',
+      cancel_pair_order: 'Cancel {pair} Orders ',
+      others: 'Others'
+    }
+
   },
   tx_detail: {
     detail_title: 'Transaction Detail',

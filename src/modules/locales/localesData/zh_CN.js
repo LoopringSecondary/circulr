@@ -225,20 +225,22 @@ export default {
     cancel_pair_order:'取消市场对订单',
     others:'其他'
   },
-  tx_schema_type: {
-    sell: '卖出 {value} {symbol}',
-    buy: '买入 {value} {symbol}',
-    transfer: '转出 {value} {symbol}',
-    receive: '收到 {value} {symbol}',
-    approve: '授权{symbol}进行撮合交易',
-    lrc_fee: '支付{value} LRC撮合费',
-    lrc_reward: '收到{value}LRC撮合奖励',
-    convert_eth: '转换{value} ETH 为 WETH',
-    convert_weth:'转换{value} WETH 为 ETH',
-    cancel_order:'取消订单',
-    cancel_all:'取消全部订单',
-    cancel_pair_order:'取消{pair}订单',
-    others:'其他'
+  tx_list: {
+    type:{
+      sell: '卖出 {value} {symbol}',
+      buy: '买入 {value} {symbol}',
+      transfer: '转出 {value} {symbol}',
+      receive: '收到 {value} {symbol}',
+      approve: '授权{symbol}进行撮合交易',
+      lrc_fee: '支付{value} LRC撮合费',
+      lrc_reward: '收到{value}LRC撮合奖励',
+      convert_eth: '转换{value} ETH 为 WETH',
+      convert_weth:'转换{value} WETH 为 ETH',
+      cancel_order:'取消订单',
+      cancel_all:'取消全部订单',
+      cancel_pair_order:'取消{pair}订单',
+      others:'其他'
+    }
   },
   tx_detail: {
     detail_title: '交易详情',
