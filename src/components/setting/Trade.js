@@ -2,6 +2,7 @@ import React from 'react';
 import { Input,Button,Form,Select,Slider } from 'antd';
 import * as settingsFormatter from 'modules/settings/formatters'
 import {configs} from 'common/config/data'
+import intl from 'react-intl-universal';
 
 function Trade(props) {
   const {form, settings} = props
@@ -59,22 +60,22 @@ function Trade(props) {
     rules:[]
   })(
     <Select style={{ width: 90 }} onChange={handleChange.bind(this, "timeToLiveUnit")}>
-      <Option value="minute">minute</Option>
-      <Option value="hour">hour</Option>
-      <Option value="day">day</Option>
-      <Option value="week">week</Option>
-      <Option value="month">month</Option>
+      <Option value="minute">{intl.get('common.minute')}</Option>
+      <Option value="hour">{intl.get('common.hour')}</Option>
+      <Option value="day">{intl.get('common.day')}</Option>
+      <Option value="week">{intl.get('common.week')}</Option>
+      <Option value="month">{intl.get('common.month')}</Option>
     </Select>
   )
 
   return (
     <div className="form-dark">
-      <Form.Item label='Order Time-To-Live' colon={false}>
+      <Form.Item label={intl.get('settings.time_to_live')} colon={false}>
         {form.getFieldDecorator('timeToLive', {
           initialValue:settings.trading.timeToLive,
           rules:[
             {
-              message:"settings.ttl_tip",
+              message:intl.get('common.invalid_integer'),
               validator: (rule, value, cb) => settingsFormatter.isValidInteger(value) ? cb() : cb(true)
             }
           ]
@@ -82,11 +83,11 @@ function Trade(props) {
           <Input size="large" addonAfter={timeToLiveSelectAfter} onChange={handleChange.bind(this, "timeToLive")}/>
         )}
       </Form.Item>
-      <Form.Item label='Trading Fee (LRC)' colon={false}>
+      <Form.Item label={intl.get('settings.trading_fee')} colon={false}>
         {form.getFieldDecorator('lrcFee', {
           initialValue:settings.trading.lrcFee,
           rules:[
-            {message: "settings.ttl_tip".concat('(0~50)') ,
+            {message: `${intl.get('common.invalid_integer')}(0~50)`,
               validator: (rule, value, cb) => validateLrcFee(value) ? cb() : cb(true)
             }
           ]
@@ -94,11 +95,11 @@ function Trade(props) {
           <Input size="large" addonAfter="‰" onChange={handleChange.bind(this, "lrcFee")}/>
         )}
       </Form.Item>
-      <Form.Item label='Default Margin Split' colon={false}>
+      <Form.Item label={intl.get('settings.margin_split')} colon={false}>
         {form.getFieldDecorator('marginSplit', {
           initialValue:settings.trading.marginSplit,
           rules:[
-            {message: "settings.ttl_tip".concat('(0~100)'),
+            {message: `${intl.get('common.invalid_integer')}(0~100)`,
               validator: (rule, value, cb) => validateMarginSplit(value) ? cb() : cb(true)
             }
           ]
@@ -106,7 +107,7 @@ function Trade(props) {
           <Input size="large" addonAfter="％" onChange={handleChange.bind(this, "marginSplit")}/>
         )}
       </Form.Item>
-      <Form.Item label={'Default Gas Price:  '+ settings.trading.gasPrice+" Gwei"} colon={false} className="mb5">
+      {false && <Form.Item label={intl.get('settings.gas_price')+ settings.trading.gasPrice+" Gwei"} colon={false} className="mb5">
         {form.getFieldDecorator('gasPrice', {
           initialValue:Number([settings.trading.gasPrice]),
           rules:[]
@@ -118,8 +119,8 @@ function Trade(props) {
                   }}
           />
         )}
-      </Form.Item>
-      <Button className="btn-o-dark btn-block btn-xlg" onClick={handleReset}>Reset</Button>
+      </Form.Item>}
+      <Button className="btn-o-dark btn-block btn-xlg" onClick={handleReset}>{intl.get('actions.reset')}</Button>
   </div>
   )
 }

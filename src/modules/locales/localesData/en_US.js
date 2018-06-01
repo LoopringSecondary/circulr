@@ -37,10 +37,7 @@ const words = {
   copy_suc: 'Copy Successfully',
   copy_fail: "Copy Failed",
   token:'Token',
-  order_type:'Order Type',
   margin_split: "Margin Split",
-  order_since: "Valid Since",
-  order_until: "Valid Until",
   format_amount: "{amount,number}",
   back:'Return',
   previous_page:'Previous Page',
@@ -55,7 +52,8 @@ const types = {
 };
 
 const validation_messages = {
-  invalid_number: "Please input a valid number value"
+  invalid_number: "Please provide a valid number value",
+  invalid_integer:'Please provide an integer value'
 }
 
 const notifications = {
@@ -78,7 +76,8 @@ const notifications = {
 const actions = {
   receive: "Receive",
   submit_order: 'Submit Order',
-  generate_qrcode: 'Generate QR Code'
+  generate_qrcode: 'Generate QR Code',
+  reset:'Reset'
 }
 
 const time_unit = {
@@ -98,7 +97,6 @@ export default {
   },
   notifications,
   actions,
-
   // -----------
   // order
   // -----------
@@ -137,7 +135,26 @@ export default {
     tabs_basic: '基础信息',
     tabs_fill: '成交信息',
   },
-  place_order: {},
+  place_order: {
+    order_type:'Order Type',
+    order_since: "Valid Since",
+    order_until: "Valid Until",
+  },
+  settings:{
+    title:'Settings',
+    preferences:'Preferences',
+    tradings:'Tradings',
+    relays:'Relays',
+    language:'Language',
+    currency:'Currency',
+    timezone:'Timezone',
+    select_placeholder: 'Search/Select',
+    time_to_live:'Order Time-To-Live',
+    trading_fee:'Trading Fee (LRC)',
+    margin_split:'Default Margin Split',
+    gas_price:'Default Gas Price',
+    choose_relay: 'Choose Relay'
+  },
   gas_setting: {
     // TODO
   },
