@@ -159,7 +159,16 @@ export default {
     choose_relay: 'Choose Relay'
   },
   gas_setting: {
-    // TODO
+    title: 'Set Gas Fee',
+    gas_selector_last: 'Last use',
+    gas_selector_estimate: 'Estimate',
+    gas_selector_custom: 'Custom setting',
+    mode_easy_title: 'Recommended',
+    mode_advanced_title: 'Advanced',
+    gas_limit: 'Gas Limit',
+    gas_price: 'Gas Price',
+    gas_fee: 'Gas Fee',
+    none: 'None'
   },
   setting_ttl: {
     title:'Set Time To Live Of Order',

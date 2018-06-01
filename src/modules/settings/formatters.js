@@ -13,8 +13,13 @@ export function isValidInteger(int) {
 
 export function getLastGas(gasStore){
   const gasPriceStore = gasStore.gasPrice
-  const gasLimitStore = gasStore.fixedGasLimit || gasStore.gasLimit
-  const gasPrice = gasPriceStore.last || gasPriceStore.estimate
+  let gasLimitStore = 0
+  if(gasStore.tabSelected === 'easy') {
+    gasLimitStore = gasStore.fixedGasLimit
+  } else {
+    gasLimitStore = gasStore.gasLimit
+  }
+  const gasPrice = gasPriceStore.current || gasPriceStore.last || gasPriceStore.estimate
   const totalGas = calculateGas(gasPrice, gasLimitStore)
   return {gasPrice, gasLimit:gasLimitStore, gas:totalGas}
 }

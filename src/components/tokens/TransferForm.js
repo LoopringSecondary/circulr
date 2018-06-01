@@ -72,7 +72,11 @@ function TransferForm(props) {
   function handleChange(v) {
     if(v) {
       transfer.tokenChange({token:v})
-      dispatch({type:"gas/fixedGasLimitChange",payload:{fixedGasLimit:fm.toNumber(gasLimit)}})
+      let gasLimit = config.getGasLimitByType('eth_transfer').gasLimit
+      if(v !== "ETH") {
+        gasLimit = config.getGasLimitByType('token_transfer').gasLimit
+      }
+      dispatch({type:"gas/fixedGasLimitChange",payload:{fixedGasLimit:gasLimit}})
     }
   }
 
@@ -110,22 +114,11 @@ function TransferForm(props) {
             tx.data = contracts.ERC20Token.encodeInputs('transfer', {_to:values.to, _value:amount});
           }
           const extraData = {from:wallet.address, to:values.to, tokenSymbol:tokenSelected.symbol, amount:values.amount, gas:totalGas.toString(10)}
-          dispatch({
-            type: 'layers/showLayer',
-            payload: {
-              id:'transferConfirm',
-              tx,
-              extraData
-            }
-          })
+          dispatch({type: 'layers/showLayer', payload: {id:'transferConfirm', tx, extraData}})
+          dispatch({type:'gas/selectedGasChange', payload:{gasPrice}})
         } else {
           //TODO show unlock modal
-          dispatch({
-            type: 'layers/hideLayer',
-            payload: {
-              id:'transfer',
-            }
-          })
+          dispatch({type: 'layers/hideLayer', payload: {id:'transfer',}})
         }
       }
     });
@@ -196,7 +189,8 @@ function TransferForm(props) {
     return gas + " ETH";
   }
   const setGas = ()=>{
-    dispatch({type:"layers/showLayer",payload:{id:'gasFee'}})
+    dispatch({type:"gas/fixedGasLimitChange",payload:{fixedGasLimit:gasLimit}})
+    dispatch({type:"layers/showLayer",payload:{id:'gasFee', advanced:true}})
   }
   return (
     <div className="form-dark pd-lg">

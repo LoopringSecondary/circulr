@@ -161,7 +161,16 @@ export default {
     choose_relay: '切换Relay'
   },
   gas_setting: {
-    // TODO
+    title: '设置矿工费',
+    gas_selector_last: '上一次',
+    gas_selector_estimate: '推荐',
+    gas_selector_custom: '自定义',
+    mode_easy_title: '推荐',
+    mode_advanced_title: '高级',
+    gas_limit: 'Gas数量',
+    gas_price: 'Gas价格',
+    gas_fee: '矿工费',
+    none: '无'
   },
   setting_ttl: {
     title:'设置订单有效期',
