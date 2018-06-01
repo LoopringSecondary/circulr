@@ -32,6 +32,7 @@ function Mnemonic(props) {
       mnemonicModel.reset();
       props.dispatch({type: 'sockets/unlocked'});
       routeActions.gotoPath('/wallet');
+      props.dispatch({type:'layers/hideLayer', payload:{id:'unlock'}})
     } else {
       if (!(mnemonic && isValidateMnemonic(mnemonic))) {
         if(!mnemonic){

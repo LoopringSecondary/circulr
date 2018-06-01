@@ -74,6 +74,7 @@ const notifications = {
     send_succ: '转账成功',
     copy_suc:'复制成功',
     copy_fail:'复制失败',
+    not_allowed_place_order_worth: '订单金额过小',
   },
   message: {
     wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
@@ -88,6 +89,9 @@ const notifications = {
     confirm_warn_metamask: "您的MetaMask浏览器插件上会提示您签名, 请确认后再回来提交订单",
     send_failed: "您{do} {amount} {token} 失败, 原因:{reason}",
     send_succ: "您转账 {amount} {token} 成功",
+    not_allowed_place_order_worth: '由于您当前订单总价值小于{worth}, 无法下单',
+    eth_is_required: '由于需要支付ETH油费, 根据您当前订单需要发送的以太坊交易计算，还需要 {required} ETH',
+    lrcfee_is_required: '由于需要支付LRC油费, 汇总您历史订单所需LRC，还需要 {required} LRC',
   }
 }
 

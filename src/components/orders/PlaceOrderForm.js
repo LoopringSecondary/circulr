@@ -257,16 +257,16 @@ class PlaceOrderForm extends React.Component {
           if(!wallet.address) { // locked, do not verify
             //TODO notification to user, order verification in confirm page(unlocked)
             Notification.open({
-              message: intl.get('trade.place_order_failed'),
+              message: intl.get('notifications.title.place_order_failed'),
               type: "error",
-              description: 'to unlock'
+              description: intl.get('notifications.message.wallet_locked')
             });
             return
           }
           if(!balance.items || !marketcap.items) {
             Notification.open({
-              message:intl.get('trade.send_failed'),
-              description:intl.get('trade.failed_fetch_data'),
+              message:intl.get('notifications.title.place_order_failed'),
+              description:intl.get('notifications.message.failed_fetch_data_from_server'),
               type:'error'
             })
             return
@@ -290,8 +290,8 @@ class PlaceOrderForm extends React.Component {
           const totalWorth = orderFormatter.calculateWorthInLegalCurrency(marketcap.items, right.symbol, tradeInfo.total)
           if(!totalWorth.gt(0)) {
             Notification.open({
-              message:intl.get('trade.send_failed'),
-              description:intl.get('trade.failed_fetch_data'),
+              message:intl.get('notifications.title.place_order_failed'),
+              description:intl.get('notifications.message.failed_fetch_data_from_server'),
               type:'error'
             })
             placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
@@ -313,8 +313,8 @@ class PlaceOrderForm extends React.Component {
           }
           if(!allowed) {
             Notification.open({
-              message:intl.get('trade.not_allowed_place_order_worth_title'),
-              description:intl.get('trade.not_allowed_place_order_worth_content', {worth: priceSymbol}),
+              message:intl.get('notifications.title.not_allowed_place_order_worth'),
+              description:intl.get('notifications.message.not_allowed_place_order_worth', {worth: priceSymbol}),
               type:'error'
             })
             placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
@@ -325,7 +325,7 @@ class PlaceOrderForm extends React.Component {
           } catch(e) {
             console.log(e)
             Notification.open({
-              message:intl.get('trade.send_failed'),
+              message:intl.get('notifications.title.place_order_failed'),
               description:e.message,
               type:'error'
             })
@@ -337,26 +337,26 @@ class PlaceOrderForm extends React.Component {
             tradeInfo.error.map(item=>{
               if(item.value.symbol === 'ETH') {
                 Notification.open({
-                  message: intl.get('trade.send_failed'),
-                  description: intl.get('trade.eth_is_required', {required:item.value.required}),
+                  message: intl.get('notifications.title.place_order_failed'),
+                  description: intl.get('notifications.message.eth_is_required', {required:item.value.required}),
                   type:'error',
                   actions:(
                     <div>
                       <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'ETH'}})}>
-                        {`${intl.get('tokens.options_receive')} ETH`}
+                        {`${intl.get('actions.receive')} ETH`}
                       </Button>
                     </div>
                   )
                 })
               } else if (item.value.symbol === 'LRC') {
                 Notification.open({
-                  message: intl.get('trade.send_failed'),
-                  description: intl.get('trade.lrcfee_is_required', {required:item.value.required}),
+                  message: intl.get('notifications.title.place_order_failed'),
+                  description: intl.get('notifications.message.lrcfee_is_required', {required:item.value.required}),
                   type:'error',
                   actions:(
                     <div>
                       <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'LRC'}})}>
-                        {`${intl.get('tokens.options_receive')} LRC`}
+                        {`${intl.get('actions.receive')} LRC`}
                       </Button>
                     </div>
                   )
@@ -379,7 +379,7 @@ class PlaceOrderForm extends React.Component {
           } catch (e) {
             console.log(e)
             Notification.open({
-              message:intl.get('trade.send_failed'),
+              message:intl.get('notifications.title.place_order_failed'),
               description:e.message,
               type:'error'
             })
@@ -438,7 +438,7 @@ class PlaceOrderForm extends React.Component {
                 {form.getFieldDecorator('price', {
                   initialValue: placeOrder.priceInput,
                   rules: [{
-                    message: intl.get('invalid_number'),
+                    message: intl.get('common.invalid_number'),
                     validator: (rule, value, cb) => validatePirce(value) ? cb() : cb(true)
                   }]
                 })(
@@ -468,7 +468,7 @@ class PlaceOrderForm extends React.Component {
                 {form.getFieldDecorator('amount', {
                   initialValue: '0',
                   rules: [{
-                    message: intl.get('invalid_number'),
+                    message: intl.get('common.invalid_number'),
                     validator: (rule, value, cb) => validateAmount(value) ? cb() : cb(true)
                   }]
                 })(

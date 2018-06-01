@@ -46,6 +46,7 @@ class Keystore extends React.Component {
                 keyStoreModel.reset();
                 this.props.dispatch({type: 'sockets/unlocked'});
                 routeActions.gotoPath('/wallet');
+                this.props.dispatch({type:'layers/hideLayer', payload:{id:'unlock'}})
               } else {
                 Notification.open({type: 'error', message: intl.get('notifications.title.unlock_fail'), description: e.message});
               }
