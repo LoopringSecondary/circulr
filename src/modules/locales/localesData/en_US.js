@@ -189,6 +189,7 @@ export default {
   // transaction
   // -----------
   tx: {
+    title:'Transactions',
     type: words.type,
     direction: 'In & Out',
     gas: words.gas,

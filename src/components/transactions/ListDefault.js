@@ -76,7 +76,7 @@ const Option = Select.Option;
   return (
     <div>
       <div className="card-header bordered">
-        <h4>Transactions</h4>
+        <h4>{intl.get('tx.title')}</h4>
         <div className="form-inline form-dark">
                 <span>
                   <Select

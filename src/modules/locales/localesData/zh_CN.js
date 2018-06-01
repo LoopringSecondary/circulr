@@ -191,6 +191,7 @@ export default {
   // transaction
   // -----------
   tx: {
+    title:'交易',
     direction:'In & Out',
     type: words.type,
     gas: words.gas,
