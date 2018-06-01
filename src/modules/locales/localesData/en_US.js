@@ -342,8 +342,11 @@ export default {
   convert: {
     convert_eth_title:'Convert ETH to WETH',
     convert_weth_title:'Convert WETH to ETH',
-    convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
-    actions_confirm_convert: '确认转换'
+    convert_eth_tip: '0.1 ETH is reserved as gas so that you can send additional transactions.',
+    actions_confirm_convert: 'Convert Now',
+    actions_max: "Convert Max",
+    notification_suc_title:'Succeed to Convert {value} {token}',
+    notification_fail_title:'Failed to Convert {value} {token}'
   },
   receive: {
     receive_title: 'My Ethereum Address',

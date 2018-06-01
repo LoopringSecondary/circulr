@@ -58,14 +58,12 @@ function ConvertForm(props) {
           value,
           nonce: toHex(await window.STORAGE.wallet.getNonce(address))
       };
-
         const signTx = await account.signEthereumTx(tx);
         window.ETH.sendRawTransaction(signTx).then(res => {
           convert.reset();
           if(!res.error){
             Notification.open({
-              message:intl.get('token.convert_succ_notification_title'),
-              description:`${intl.get('token.result_convert_success', {amount, token})}`,
+              message:intl.get('convert.notification_suc_title',{value:amount,token}),
               type:'success',
               actions:(
                 <div>
@@ -74,7 +72,11 @@ function ConvertForm(props) {
                   </Button>
                 </div>
               )
-            })
+            });
+            window.STORAGE.wallet.setWallet({address: window.WALLET.getAddress(), nonce: tx.nonce});
+            window.RELAY.account.notifyTransactionSubmitted({txHash:res.result,rawTx:tx, from: window.WALLET.getAddress()});
+          }else {
+            Notification.open({type:'error',message:intl.get('convert.notification_fail_title',{value:amount,token}),description:res.error.message})
           }
         });
      }
@@ -128,7 +130,7 @@ function ConvertForm(props) {
           })(
             <Input  suffix={<div>
               <a onClick={setMax} className="text-primary mr5">
-                <small>最大数量</small>
+                <small>{intl.get('convert.actions_max')}</small>
               </a>
               <span className="color-black-2">{token}</span>
             </div>} onChange={handleAmountChange}/>
@@ -158,15 +160,14 @@ function ConvertForm(props) {
           </div>
         }
         <div className="form-control-static d-flex justify-content-between mr-0 mt15 mb15 align-items-center">
-          <span className="fs14 color-white-2">Gas Fee</span>
+          <span className="fs14 color-white-2">{intl.get('common.gas')}</span>
           <span className="font-bold cursor-pointer fs12" onClick={setGas}>
               <Currency/> {getWorthBySymbol({prices, symbol: 'ETH', amount:getGas()})} ≈ {getGas()} ETH
               <Icon type="right" className="ml5" />
           </span>
         </div>
-
       </div>
-      <Button className="btn-block btn-xlg btn-o-dark" onClick={toConvert}>转换</Button>
+      <Button className="btn-block btn-xlg btn-o-dark" onClick={toConvert}>{intl.get('convert.actions_confirm_convert')}</Button>
       {false && token.toLowerCase() === 'eth' && <p className="text-color-dark-1 mt15">我们为您保留0.1 ETH作为油费以保证后续可以发送交易</p>}
     </div>
   )

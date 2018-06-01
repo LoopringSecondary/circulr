@@ -72,7 +72,7 @@ class CancelOrderConfirm extends React.Component {
       if (!response.error) {
         // window.STORAGE.transactions.addTx({hash: response.result, owner: account.address});
         window.STORAGE.wallet.setWallet({address: window.WALLET.getAddress(), nonce: tx.nonce});
-        window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.getAddress()})
+        window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.address})
         Notification.open({
           message: type === 'cancelOrder' ? intl.get('order.cancel_order_success') : intl.get('order.cancel_all_success', {pair: market}),
           type: "success",

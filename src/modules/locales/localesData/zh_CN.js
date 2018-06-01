@@ -346,7 +346,10 @@ export default {
     convert_eth_title:'转换ETH为WETH',
     convert_weth_title:'转换WETH为ETH',
     convert_eth_tip: '我们为您保留0.1 ETH作为油费以保证后续可以发送交易',
-    actions_confirm_convert: '确认转换'
+    actions_confirm_convert: '确认转换',
+    actions_max: "最大数量",
+    notification_suc_title:'转换{value} {token}成功',
+    notification_fail_title:'转换{value} {token}失败'
   },
 
   unlock: {
