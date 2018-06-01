@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input,Button,Form,Select} from 'antd';
 import {locales, timezoneArray} from 'common/config/data'
+import intl from 'react-intl-universal';
 
 function Preference(props) {
   const {form, settings} = props
@@ -11,7 +12,6 @@ function Preference(props) {
   </div></Select.Option>)
 
   const handleChange = (type, value) => {
-    console.log(type+" changed to:"+value);
     if(type === 'language'){
       props.dispatch({
         type:'locales/setLocale',
@@ -32,7 +32,7 @@ function Preference(props) {
 
   return (
   	<div className="form-dark">
-        <Form.Item label="Language" colon={false}>
+        <Form.Item label={intl.get('settings.language')} colon={false}>
           {form.getFieldDecorator('language', {
             initialValue:settings.preference.language,
             rules:[]
@@ -40,7 +40,7 @@ function Preference(props) {
             <Select
               dropdownMatchSelectWidth={false}
               className="d-block"
-              placeholder="Search/Select"
+              placeholder={intl.get('settings.select_placeholder')}
               size="large"
               onChange={handleChange.bind(this, "language")}
             >
@@ -48,7 +48,7 @@ function Preference(props) {
             </Select>
           )}
         </Form.Item>
-        <Form.Item  label="Currency" colon={false}>
+        <Form.Item  label={intl.get('settings.currency')} colon={false}>
           {form.getFieldDecorator('currency', {
             initialValue:settings.preference.currency,
             rules:[]
@@ -56,7 +56,7 @@ function Preference(props) {
             <Select
               dropdownMatchSelectWidth={false}
               className="d-block"
-              placeholder="Search/Select"
+              placeholder={intl.get('settings.select_placeholder')}
               optionFilterProp="children"
               size="large"
               onChange={handleChange.bind(this, "currency")}
@@ -66,7 +66,7 @@ function Preference(props) {
             </Select>
           )}
         </Form.Item>
-        <Form.Item label='Timezone' colon={false}>
+        <Form.Item label={intl.get('settings.timezone')} colon={false}>
           {form.getFieldDecorator('timezone', {
             initialValue:settings.preference.timezone,
             rules:[]
@@ -74,7 +74,7 @@ function Preference(props) {
             <Select
               dropdownMatchSelectWidth={false}
               className="d-block"
-              placeholder="Search/Select"
+              placeholder={intl.get('settings.select_placeholder')}
               optionFilterProp="children"
               size="large"
               onChange={handleChange.bind(this, "timezone")}
@@ -86,7 +86,7 @@ function Preference(props) {
           )}
         </Form.Item>
         <div className="blk"></div>
-        <Button className="btn btn-o-dark btn-block btn-xlg" onClick={handleReset}>Reset</Button>
+        <Button className="btn btn-o-dark btn-block btn-xlg" onClick={handleReset}>{intl.get('actions.reset')}</Button>
     </div>
   )
 }

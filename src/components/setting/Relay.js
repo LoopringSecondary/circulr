@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input,Button,Form,Radio,Select,Col} from 'antd';
+import intl from 'react-intl-universal';
 
 function Relay(props) {
   const {form, settings} = props
@@ -14,7 +15,7 @@ function Relay(props) {
 
   return (
   	<div className="form-dark">
-      <span>Choose Relay</span>
+      <span>{intl.get('settings.choose_relay')}</span>
       <Radio.Group className="d-block" onChange={handleChange} value={relayConfig.value}>
         {
           relay.nodes.map((item,index)=>
