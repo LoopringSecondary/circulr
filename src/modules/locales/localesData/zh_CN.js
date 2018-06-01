@@ -165,12 +165,14 @@ export default {
   },
   setting_ttl: {
     title:'设置订单有效期',
-    tabs_easy:'基础',
-    tabs_advanced:'高级',
+    tabs_easy:'快速设置',
+    tabs_advanced:'高级设置',
     more:'更多',
   },
-  lrc_setting: {
-    // TODO
+  setting_lrcfee: {
+    title:'设置订单的矿工撮合费',
+    tabs_basic:'快速设置',
+    tabs_advanced:'高级设置',
   },
   place_order_confirm: {
     qrcode_security: '*为了您订单的安全，二维码只会生成一次并且不会保存在任何地方。请确认妥善保存二维码，任何收到您二维码的人都有可能吃掉您的订单。'
