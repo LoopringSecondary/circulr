@@ -88,7 +88,7 @@ const GasFeeForm = (props) => {
         </div>
       )
     }
-    return <div>{`${title} 无`}</div>
+    return <div>{`${title} ${intl.get('gas_setting.none')}`}</div>
   }
 
   const recommended = (
@@ -101,21 +101,21 @@ const GasFeeForm = (props) => {
           <Radio value='last' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15" disabled={gasPriceStore.last === 0}>
             <div className="ml5 pt10 pb10">
               <div className="fs14 color-black-1">
-                {gasShow(gasPriceStore.last, gasLimit, '上一次')}
+                {gasShow(gasPriceStore.last, gasLimit, intl.get('gas_setting.gas_selector_last'))}
               </div>
             </div>
           </Radio>
           <Radio value='estimate' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
             <div className="ml5 pt10 pb10">
               <div className="fs14 color-black-1">
-                {gasShow(gasPriceStore.estimate, gasLimit, '推荐')}
+                {gasShow(gasPriceStore.estimate, gasLimit, intl.get('gas_setting.gas_selector_estimate'))}
               </div>
             </div>
           </Radio>
           <Radio value='custom' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
             <div className="ml5 pt10 pb10">
               <div className="fs14 color-black-1">
-                {gasShow(form.getFieldValue('gasPriceSlider'), gasLimit, '自定义')}
+                {gasShow(form.getFieldValue('gasPriceSlider'), gasLimit, intl.get('gas_setting.gas_selector_custom'))}
               </div>
               {form.getFieldDecorator('gasPriceSlider', {
                 initialValue:configs.defaultGasPrice,
@@ -137,20 +137,20 @@ const GasFeeForm = (props) => {
   )
 
   return (
-    <Card title={<div className="pl15">Set Gas Fee</div>} className="rs">
+    <Card title={<div className="pl15">{intl.get('gas_setting.title')}</div>} className="rs">
       <div className="zb-b">
         {advanced &&
           <Tabs defaultActiveKey="easy" onChange={tabChange}>
-            <Tabs.TabPane tab={<div className="pb5">Recommended</div>} key="easy">
+            <Tabs.TabPane tab={<div className="pb5">{intl.get('gas_setting.mode_easy_title')}</div>} key="easy">
               {recommended}
             </Tabs.TabPane>
-            <Tabs.TabPane tab={<div className="pb5">Advanced</div>} key="advance">
+            <Tabs.TabPane tab={<div className="pb5">{intl.get('gas_setting.mode_advanced_title')}</div>} key="advance">
               <div className="fs12 color-black-3" hidden>
                 { intl.get('settings.gasPrice')+':  '+ gasPriceStore.last+" Gwei" }
               </div>
               <div className="fs14 color-black-1 pl10 pr10">
                 <div className="mb15">
-                  <Form.Item label='Gas Limit' colon={false} className="mb0">
+                  <Form.Item label={intl.get('gas_setting.gas_limit')} colon={false} className="mb0">
                     {form.getFieldDecorator('gasLimit', {
                       initialValue:'',
                       rules:[{
@@ -163,7 +163,7 @@ const GasFeeForm = (props) => {
                   </Form.Item>
                 </div>
                 <div className="mb15">
-                  <Form.Item label='Gas Price' colon={false} className="mb0">
+                  <Form.Item label={intl.get('gas_setting.gas_price')} colon={false} className="mb0">
                     {form.getFieldDecorator('gasPrice', {
                       initialValue:1,
                       rules:[]
@@ -182,7 +182,7 @@ const GasFeeForm = (props) => {
                   {
                     form.getFieldValue('gasLimit') && form.getFieldValue('gasPrice') &&
                     <span>
-                      {gasShow(form.getFieldValue('gasPrice'), form.getFieldValue('gasLimit'), 'Gas')}
+                      {gasShow(form.getFieldValue('gasPrice'), form.getFieldValue('gasLimit'), intl.get('gas_setting.gas_fee'))}
                     </span>
                   }
                 </div>
