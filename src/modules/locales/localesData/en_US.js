@@ -37,7 +37,6 @@ const words = {
   copy_suc: 'Copy Successfully',
   copy_fail: "Copy Failed",
   token:'Token',
-  order_type:'Order Type',
   margin_split: "Margin Split",
   format_amount: "{amount,number}",
   back:'Return',
@@ -137,6 +136,7 @@ export default {
     tabs_fill: '成交信息',
   },
   place_order: {
+    order_type:'Order Type',
     order_since: "Valid Since",
     order_until: "Valid Until",
   },
