@@ -2,6 +2,9 @@ import React from 'react';
 import {Input, Button, Select} from 'antd';
 import routeActions from 'common/utils/routeActions'
 import Notification from '../../../common/loopringui/components/Notification'
+import intl from 'react-intl-universal'
+
+
 
 function UnlockByTrezor(props) {
   const {hardwareWallet, dispatch} = props;
@@ -31,12 +34,12 @@ function UnlockByTrezor(props) {
   };
   return (
     <div>
-      <b>Address：{address}</b>
+      <b>{intl.get('wallet.default_address')}：{address}</b>
       <div className="blk"></div>
       <div>
-        <Button className="btn btn-primary btn-xlg btn-block" onClick={unlock}>解锁默认地址</Button>
+        <Button className="btn btn-primary btn-xlg btn-block" onClick={unlock}>{intl.get('wallet.actions_unlock')}</Button>
         <div className="blk"></div>
-        <Button className="btn btn-primary btn-xlg btn-block" onClick={moreAddress}>选择更多地址</Button>
+        <Button className="btn btn-primary btn-xlg btn-block" onClick={moreAddress}>{intl.get('wallet.actions_other_address')}</Button>
       </div>
     </div>
   )

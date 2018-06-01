@@ -4,7 +4,8 @@ import {paths} from '../../../common/config/data'
 import routeActions from 'common/utils/routeActions'
 import {getXPubKey as getTrezorPublicKey} from "LoopringJS/ethereum/trezor";
 import {getXPubKey as getLedgerPublicKey,connect} from "../../../common/loopringjs/src/ethereum/ledger";
-
+import intl from 'react-intl-universal'
+import Notification from '../../../common/loopringui/components/Notification'
 
 const ledgerPaths = ["m/44'/60'/0'/0", "m/44'/60'/0'", "m/44'/61'/0'/0", "m/44'/60'/160720'/0'", "m/44'/1'/0'/0"];
 
@@ -73,15 +74,21 @@ export default class DetermineWallet extends React.Component {
     switch (walletType) {
       case 'mnemonic':
         dispatch({type: 'wallet/unlockMnemonicWallet', payload: {mnemonic, dpath: `${dpath}/${pageNum * pageSize + index}`}});
+        Notification.open({type:'success',message:intl.get('wallet.notification_unlock_suc')});
         break;
       case 'trezor':
         dispatch({type: 'wallet/unlockTrezorWallet', payload: {dpath: `${dpath}/${pageNum * pageSize + index}`,address}});
+        Notification.open({type:'success',message:intl.get('wallet.notification_unlock_suc')});
+
         break;
       case 'ledger':
         connect().then(res => {
           if(!res.error){
             const ledger = res.result;
             dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger,dpath: `${dpath}/${pageNum * pageSize + index}`}});
+            Notification.open({type:'success',message:intl.get('wallet.notification_unlock_suc')});
+          }else{
+            Notification.open({type:'error',message:intl.get('wallet.notification_unlock_fail'),description:intl.get('wallet.connect_ledger_tip')});
           }
         });
         break;
@@ -89,7 +96,7 @@ export default class DetermineWallet extends React.Component {
     }
     dispatch({type:'sockets/unlocked'});
     determineWallet.reset();
-    routeActions.gotoPath('/wallet')
+    routeActions.gotoPath('/wallet');
   };
 
   render() {
@@ -99,15 +106,15 @@ export default class DetermineWallet extends React.Component {
     return (
       <div>
        <div className="d-flex justify-content-between align-items-center">
-           <span><Button className="btn">返回</Button></span>
-           <h3 className="text-color-dark-1">选择账户</h3>
+           <span><Button className="btn">{intl.get('common.back')}</Button></span>
+           <h3 className="text-color-dark-1">{intl.get('wallet.title_deter_address')}</h3>
            <span style={{display:"block",width:"62px"}}>&nbsp;</span>
        </div>
        <div className="blk"></div>
        <div className="">
         <div className="dpath">
           <div className="">
-            <h4 className="dpath-header">1. Select Dpath</h4>
+            <h4 className="dpath-header">1. {intl.get('wallet.title_select_path')}</h4>
             <div className="dpath-body">
             <Radio.Group className="" onChange={this.handlePathChange} value={dpath}>
               {paths.filter(path => this.isSupported(path.path)).map((item, index) =>
@@ -118,7 +125,7 @@ export default class DetermineWallet extends React.Component {
               )}
               <Radio className="d-block" value={customPath}>
               <div className="d-flex justify-content-between align-items-center">
-                <div className="text-color-2">Custom Path: </div>
+                <div className="text-color-2">{intl.get('wallet.custom_path')}: </div>
                 <Input value={customPath} onChange={this.onCustomPathChange}  />
                 </div>
               </Radio>
@@ -127,23 +134,23 @@ export default class DetermineWallet extends React.Component {
         </div>
         </div>
         <div className="account-addresses">
-          <h4 className="account-addresses-header">2. 选择地址</h4>
+          <h4 className="account-addresses-header">2. {intl.get('wallet.title_deter_address')}</h4>
           <ul className="account-addresses-body">
             {addresses.length > 0 && addresses.map((address, index) => {
               return (
                 <li key={index}>
                   <span>{address}</span>
                   <Button size="small" onClick={this.confirm.bind(this, index)}>
-                    Import</Button>
+                    {intl.get('common.import')}</Button>
                 </li>)
             })}
             {
-              addresses.length <= 0 && <li className="account-addresses-tip">没有合法的地址</li>
+              addresses.length <= 0 && <li className="account-addresses-tip">{intl.get('wallet.no_address_tip')}</li>
             }
           </ul>
           <div className="d-flex justify-content-between account-addresses-pagenav">
-            <Button onClick={this.previousPage} disabled={pageNum <= 0}>Previous Page</Button>
-            <Button onClick={this.nextPage}> Next Page</Button>
+            <Button onClick={this.previousPage} disabled={pageNum <= 0}>{intl.get('common.previous_page')}</Button>
+            <Button onClick={this.nextPage}>{intl.get('common.next_page')}</Button>
           </div>
         </div>
       </div>
