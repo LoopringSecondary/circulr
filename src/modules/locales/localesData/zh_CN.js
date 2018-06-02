@@ -311,6 +311,21 @@ export default {
     created:'成交',
   },
   // -----------
+  // ring
+  // -----------
+  ring: {
+    ringIndex: "环路ID",
+    ringHash: "环路哈希",
+    miner: "矿工",
+    txHash: "交易Hash",
+    block: "快高度",
+    recipient: "费用接收地址",
+    total_lrc_fee: words.lrc_fee,
+    total_lrc_reward: words.lrc_reward,
+    total_margin_split: words.margin_split,
+    time: words.time,
+  },
+  // -----------
   // ticker
   // -----------
   ticker: {

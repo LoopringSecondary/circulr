@@ -309,6 +309,18 @@ export default {
     margin_split: words.margin_split,
     created:'Created',
   },
+  ring: {
+    ringIndex: "RingIndex",
+    ringHash: "RingHash",
+    miner: "Miner",
+    txHash: "TxHash",
+    block: "Block",
+    recipient: "Fee Recipient",
+    total_lrc_fee: words.lrc_fee,
+    total_lrc_reward: words.lrc_reward,
+    total_margin_split: words.margin_split,
+    time: words.time,
+  },
   // -----------
   // ticker
   // -----------

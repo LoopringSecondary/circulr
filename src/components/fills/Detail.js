@@ -28,27 +28,28 @@ export default class RingDetail extends React.Component{
     const {ring,loading} = this.state;
     const ringFm = ring ? new RingFm(ring) : null;
     return (
-      <div>
+      <div className="p15">
         <DetailHeader title="环路详情"/>
-        {ring && <Spin spinning={loading}>
-          <MetaList>
-            <MetaItem label={intl.get('ring.ringHash')} value={ringFm.getRingIndex()}/>
-            <MetaItem label="环路哈希" value={ringFm.getRingHash()}/>
-            <MetaItem label="矿工" value={ringFm.getMiner()}/>
-            <MetaItem label="交易Hash" value={ringFm.getTxHash()}/>
-            <MetaItem label="块高度" value={ringFm.getBlockNumber()}/>
-            <MetaItem label="费用接收地址" value={ringFm.getFeeRecipient()}/>
-            <MetaItem label="总共的LRC费用" value={ringFm.getTotalLrcFee()}/>
-            <MetaItem label="总共的分润费用" value={ringFm.getTotalSplitFee()}/>
-            <MetaItem label="时间" value={ringFm.getCreateTime()}/>
-            <MetaItem label="环路中订单个数" value={ringFm.getTradeAmount()}/>
-          </MetaList>
-        </Spin>}
+        <Spin spinning={loading}>
+          {ring &&
+            <MetaList>
+              <MetaItem label={intl.get('ring.ringIndex')} value={ringFm.getRingIndex()}/>
+              <MetaItem label={intl.get('ring.ringHash')} value={ringFm.getRingHash()}/>
+              <MetaItem label={intl.get('ring.miner')} value={ringFm.getMiner()}/>
+              <MetaItem label={intl.get('ring.txHash')} value={ringFm.getTxHash()}/>
+              <MetaItem label={intl.get('ring.block')} value={ringFm.getBlockNumber()}/>
+              <MetaItem label={intl.get('ring.recipient')} value={ringFm.getFeeRecipient()}/>
+              <MetaItem label={intl.get('ring.total_lrc_fee')} value={ringFm.getTotalLrcFee()}/>
+              <MetaItem label={intl.get('ring.total_margin_split')} value={ringFm.getTotalSplitFee()}/>
+              <MetaItem label={intl.get('ring.time')} value={ringFm.getCreateTime()}/>
+            </MetaList>
+          }
+        </Spin>
         {!loading &&  !ring &&
           <div>
-            <h1>No Ring Fund</h1>
+            <h1>{intl.get('common.list.no_data')}</h1>
           </div>
-          }
+        }
       </div>
     )
   }
