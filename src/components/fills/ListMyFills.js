@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form,Select,Badge } from 'antd'
+import { Form,Select,Badge,Spin} from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import SelectContainer from 'LoopringUI/components/SelectContainer'
 import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'
@@ -24,7 +24,7 @@ const ListHeader = ({fills})=>{
                 let pairs = config.getMarkets().map(item=>`${item.tokenx}-${item.tokeny}`)
                 let options = res.result.filter(item=>pairs.includes(item)).map(item=>({label:item,value:item}))
                 return [
-                  {label:`${intl.get('global.all')} ${intl.get('orders.market')}`,value:""},
+                  {label:`${intl.get('common.all')} ${intl.get('common.markets')}`,value:""},
                   ...options,
                 ]
               }else{
@@ -32,7 +32,7 @@ const ListHeader = ({fills})=>{
               }
             }}
             onChange={marketChange}
-            placeholder={intl.get('orders.market')}
+            placeholder={intl.get('common.market')}
             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             dropdownMatchSelectWidth={false}
             value={fills.filters.market  || ""}
@@ -42,15 +42,15 @@ const ListHeader = ({fills})=>{
         </span>
         <span>
            <Select
-             placeholder={intl.get('orders.side')}
+             placeholder={intl.get('common.side')}
              onChange={sideChange}
              dropdownMatchSelectWidth={false}
              value={fills.filters.side || ""}
              size="small"
            >
-             <Select.Option value="">{intl.get('global.all')}&nbsp;{intl.get('orders.side')}</Select.Option>
-             <Select.Option value="sell">{intl.get('orders.side_sell')}</Select.Option>
-             <Select.Option value="buy">{intl.get('orders.side_buy')}</Select.Option>
+             <Select.Option value="">{intl.get('common.all')}&nbsp;{intl.get('common.sides')}</Select.Option>
+             <Select.Option value="sell">{intl.get('common.sell')}</Select.Option>
+             <Select.Option value="buy">{intl.get('common.buy')}</Select.Option>
            </Select>
         </span>
     </div>
@@ -63,46 +63,53 @@ export default function ListMyFills(props) {
   return (
     <div className="">
         <ListHeader fills={fills} />
-        <div style={{height:"160px",overflow:"auto"}}>
-          <table style={{overflow:'auto'}} className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2" >
-            <thead>
-                <tr>
-                    <th>Ring</th>
-                    <th>Market</th>
-                    <th>Side</th>
-                    <th>Amount</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                    <th>Trading Fee</th>
-                    <th>Trading Reward</th>
-                    <th>Time</th>
-                </tr>
-            </thead>
-            <tbody>
-              {
-                fills.items.map((item,index)=>{
-                  const fillFm = new FillFm(item)
-                  const actions = {
-                    gotoDetail:()=>props.dispatch({type:'layers/showLayer',payload:{id:'ringDetail',fill:item}})
-                  }
-                  return (
-                    <tr key={index}>
-                      <td>{renders.ringIndex(fillFm,actions)}</td>
-                      <td>{item.market}</td>
-                      <td>{renders.side(fillFm)}</td>
-                      <td>{fillFm.getAmount()}</td>
-                      <td>{fillFm.getPrice()}</td>
-                      <td>{fillFm.getTotal()}</td>
-                      <td>{fillFm.getLRCFee()}</td>
-                      <td>{fillFm.getLRCReward()}</td>
-                      <td>{fillFm.getCreateTime()}</td>
-                   </tr>
-                  )
-                })
-              }
-            </tbody>
-          </table>
-        </div>
+        <Spin spinning={fills.loading}>
+          <div style={{height:"160px",overflow:"auto"}}>
+            <table style={{overflow:'auto'}} className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2" >
+              <thead>
+                  <tr>
+                      <th>{intl.get('fill.ringIndex')}</th>
+                      <th>{intl.get('common.market')}</th>
+                      <th>{intl.get('common.side')}</th>
+                      <th>{intl.get('common.amount')}</th>
+                      <th>{intl.get('common.price')}</th>
+                      <th>{intl.get('common.total')}</th>
+                      <th>{intl.get('fill.lrc_fee')}</th>
+                      <th>{intl.get('fill.lrc_reward')}</th>
+                      <th>{intl.get('fill.created')}</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {
+                  fills.items.map((item,index)=>{
+                    const fillFm = new FillFm(item)
+                    const actions = {
+                      gotoDetail:()=>props.dispatch({type:'layers/showLayer',payload:{id:'ringDetail',fill:item}})
+                    }
+                    return (
+                      <tr key={index}>
+                        <td>{renders.ringIndex(fillFm,actions)}</td>
+                        <td>{item.market}</td>
+                        <td>{renders.side(fillFm)}</td>
+                        <td>{fillFm.getAmount()}</td>
+                        <td>{fillFm.getPrice()}</td>
+                        <td>{fillFm.getTotal()}</td>
+                        <td>{fillFm.getLRCFee()}</td>
+                        <td>{fillFm.getLRCReward()}</td>
+                        <td>{fillFm.getCreateTime()}</td>
+                     </tr>
+                    )
+                  })
+                }
+                {
+                  fills.items.length == 0 &&
+                  <tr><td colSpan='100'><div className="text-center">{intl.get('common.list.no_data')}</div></td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </Spin>
+
         <ListPagination list={fills}/>
   </div>
   )
@@ -118,10 +125,10 @@ export default function ListMyFills(props) {
     },
     side: (fm) => {
       if (fm.fill.side === 'sell') {
-        return <div className="text-error">{intl.get('orders.side_sell')}</div>
+        return <div className="text-error">{intl.get('common.sell')}</div>
       }
       if (fm.fill.side === 'buy') {
-        return <div className="text-success">{intl.get('orders.side_buy')}</div>
+        return <div className="text-success">{intl.get('common.buy')}</div>
       }
     },
   }

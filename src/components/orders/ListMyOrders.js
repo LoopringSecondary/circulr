@@ -41,7 +41,7 @@ const ListHeader = (props) => {
                     value: item
                   }))
                   return [
-                    {label: `${intl.get('common.all')} ${intl.get('order.market')}`, value: ""},
+                    {label: `${intl.get('common.all')} ${intl.get('common.markets')}`, value: ""},
                     ...options,
                   ]
                 } else {
@@ -65,7 +65,7 @@ const ListHeader = (props) => {
               value={orders.filters.status || ""}
               size="small"
             >
-              <Select.Option value="">{intl.get('common.all')}&nbsp;{intl.get('order.status')} </Select.Option>
+              <Select.Option value="">{intl.get('common.all')}&nbsp;{intl.get('common.statuses')} </Select.Option>
               <Select.Option value="ORDER_OPENED">{intl.get('order_status.opened')}</Select.Option>
               <Select.Option value="ORDER_FINISHED">{intl.get('order_status.completed')}</Select.Option>
               <Select.Option value="ORDER_CANCELLED">{intl.get('order_status.canceled')}</Select.Option>
@@ -80,7 +80,7 @@ const ListHeader = (props) => {
                value={orders.filters.side || ""}
                size="small"
              >
-               <Select.Option value="">{intl.get('common.all')}&nbsp;{intl.get('order.side')}</Select.Option>
+               <Select.Option value="">{intl.get('common.all')}&nbsp;{intl.get('common.sides')}</Select.Option>
                <Select.Option value="sell">{intl.get('order_side.sell')}</Select.Option>
                <Select.Option value="buy">{intl.get('order_side.buy')}</Select.Option>
              </Select>
