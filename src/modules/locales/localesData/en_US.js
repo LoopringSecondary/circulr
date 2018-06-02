@@ -167,8 +167,8 @@ export default {
   },
   order_list: {
     actions_cancel_all: 'Cancel All',
-    my_open_orders:'My Open Orders',
-    my_all_orders:'My All Orders',
+    my_open_orders:'Open Orders',
+    my_all_orders:'All Orders',
     order_book:'Order Book',
   },
   order_detail: {

@@ -146,9 +146,9 @@ const Option = Select.Option;
                   )
                 })
               }
-              {!list.loading && list.items.length === 0 &&
+              {list.items.length === 0 &&
               <tr>
-                <td colSpan="100" className="text-center">{intl.get('txs.no_txs')}</td>
+                <td colSpan="100" className="text-center">{intl.get('common.list.no_data')}</td>
               </tr>
               }
               </tbody>
