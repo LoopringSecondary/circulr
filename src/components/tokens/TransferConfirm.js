@@ -137,7 +137,7 @@ function TransferConfirm(props) {
       {
         !isUnlocked &&
         <div className="mb15 mt15">
-          <Alert type="info" title={<div className="color-black-1">{intl.get('unlock.has_not_unlocked')} <a onClick={toUnlock}>{intl.get('actions.to_unlock')}<Icon type="right" /></a></div>} theme="light" size="small"/>
+          <Alert type="info" title={<div className="color-black-1">{intl.get('unlock.has_not_unlocked')}<a onClick={toUnlock} className="ml5">{intl.get('actions.to_unlock')}<Icon type="right" /></a></div>} theme="light" size="small"/>
         </div>
       }
       <div className="col-row mt15">

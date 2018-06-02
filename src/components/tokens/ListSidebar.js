@@ -241,7 +241,7 @@ class TokenActions extends React.Component {
     return (
       <div className="more token-action" onClick={e=>{ e.stopPropagation();e.preventDefault()}}>
         <Popover
-          title={<div className="pt5 pb5 fs18">{intl.get('token.action_options',{token:item.symbol})}</div>}
+          title={null}
           placement="right"
           arrowPointAtCenter
           content={btns}

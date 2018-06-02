@@ -5,7 +5,7 @@ import './Alert.less';
 const Alert = ({title,description,type='info',theme='dark',actions,size="medium",className="",...rest})=>{
   return (
     <div className={`loopring-alert t-${type} t-${theme} s-${size} ${className}`} {...rest}>
-      <div className="row align-items-center">
+      <div className="row align-items-center no-gutters">
         {
           type &&
           <div className="col-auto alert-gutter">
