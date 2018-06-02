@@ -48,7 +48,7 @@ function ListTradesHistory(props) {
         </div>
         <div className="trade-list trade-history-list h-full">
           <ul>
-            <li className="trade-list-header"><span>Price({tokens.right})</span><span style={{textAlign:'right'}}>Amount({tokens.left})</span><span style={{textAlign:'right'}}>Time</span></li>
+            <li className="trade-list-header"><span>{intl.get('fill.price')}({tokens.right})</span><span style={{textAlign:'right'}}>{intl.get('fill.amount')}({tokens.left})</span><span style={{textAlign:'right'}}>{intl.get('common.time')}</span></li>
           </ul>
           <div style={{height: "100%",paddingBottom:"145px", }}>
             <ul style={{height: "100%", overflow:"auto",paddingBottom:"0" }}>

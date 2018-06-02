@@ -1,5 +1,6 @@
 const words = {
   all: '全部',
+  time: '时间',
   status: '状态',
   statuses: '状态',
   side: '方向',

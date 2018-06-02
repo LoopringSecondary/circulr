@@ -139,7 +139,7 @@ export default function ListMyOrders(props) {
                   <td>{orderFm.getFilledPercent()}%</td>
                   <td>{orderFm.getCreateTime()}</td>
                   <td>{orderFm.getExpiredTime()}</td>
-                  <td>{renders.status(orderFm,item.originalOrder,cancelOrder)}</td>
+                  <td className="text-nowrap">{renders.status(orderFm,item.originalOrder,cancelOrder)}</td>
                 </tr>
               )
             })
@@ -196,10 +196,9 @@ export const renders = {
       statusNode = <Badge className="text-color-dark-1" status="default" text={<div className="color-white-1">{intl.get('order_status.expired')}</div>}/>
     }
     return (
-      <span>
-        {statusNode}
-        {status === 'ORDER_OPENED' && cancleBtn}
-      </span>
+      <div>
+        {statusNode} {status === 'ORDER_OPENED' && cancleBtn}
+      </div>
     )
   },
 }

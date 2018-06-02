@@ -1,5 +1,6 @@
 const words = {
   all: 'All',
+  time: 'Time',
   status: 'Status',
   statuses: 'Statuses',
   side: 'Side',

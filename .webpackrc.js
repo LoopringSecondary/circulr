@@ -24,6 +24,7 @@ export default {
     "template": "./public/index.ejs",
     "favicon": './src/assets/images/favicon.ico'
   },
+  sass:{},
   env: {
     development: {
       extraBabelPlugins: ['dva-hmr'],

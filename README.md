@@ -16,25 +16,26 @@
 #### start
 
 ```
-  ## install circulr's dependencies
-	npm install 
+## install  dependencies
 
-  ## install loopringjs dependencies
-  cd common/loopringjs & npm install 
+1. npm install
+2. cd common/loopringjs & npm install 
 
-  ## run for develop with a https dev server
-  1. cd node_modules/af-webpack/lib/dev.js 
-  2. find serverConfig at 84 line 
-  3. add  `https: true` in serverConfig 
-  4. npm start
-  5. vist https://localhost:8000 (Note: https)
+## run for develop with a https dev server
 
-  ## run for production
-	npm run build 
+1. cd node_modules/af-webpack/lib/dev.js 
+2. find serverConfig at 84 line 
+3. add https: true in serverConfig 
+4. npm start
+5. vist https://localhost:8000 (Note: https)
 
-  ##  deploy
-  todo
+## run for production
 
+npm run build 
+
+##  deploy
+
+todo
 ```
 
 

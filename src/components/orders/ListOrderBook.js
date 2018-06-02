@@ -57,8 +57,8 @@ function ListOrderBook(props) {
 	    	    	</div>
     	        <ul className="mr-0">
 	    	            <li className="trade-list-header">
-			    	        <span>{intl.get('order.price')} / {tokens.right}</span>
-			    	        <span style={{textAlign:'right'}}>{intl.get('order.amount')} / {tokens.left} </span>
+			    	        <span>{intl.get('order.price')} {tokens.right}</span>
+			    	        <span style={{textAlign:'right'}}>{intl.get('order.amount')} {tokens.left} </span>
 			    	        <span style={{textAlign:'right'}}>{intl.get('order.LRCFee')}</span>
 		    	        </li>
 		    	    </ul>
