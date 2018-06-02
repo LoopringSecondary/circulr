@@ -1,7 +1,7 @@
 import { Tabs } from 'antd';
 import { Containers } from 'modules'
 import { Card,Icon,Button } from 'antd'
-import Account from '../index';
+import Account from './index';
 
 const TabPane = Tabs.TabPane;
 
