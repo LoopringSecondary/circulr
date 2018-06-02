@@ -49,7 +49,10 @@ const words = {
   recipient: '接收者',
   help:'帮助',
   feedback:"反馈",
-  quit:'退出'
+  quit:'退出',
+  list:{
+    no_data:'暂无数据',
+  }
 }
 
 const types = {

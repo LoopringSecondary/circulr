@@ -48,7 +48,10 @@ const words = {
   recipient: 'Recipient',
   help:'Help',
   feedback:"Feedback",
-  quit:'Quit'
+  quit:'Quit',
+  list:{
+    no_data:'No Data',
+  }
 }
 const types = {
   trade_side: {

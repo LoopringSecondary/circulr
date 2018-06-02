@@ -1,5 +1,5 @@
 import React from 'react'
-import {Form, Select, Badge} from 'antd'
+import {Form, Select, Badge,Spin} from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import SelectContainer from 'LoopringUI/components/SelectContainer'
 import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'
@@ -103,49 +103,55 @@ export default function ListMyOrders(props) {
     <div className="">
       <ListHeader orders={orders} dispatch={props.dispatch}/>
       <div style={{height: "160px", overflow: "auto"}}>
-        <table style={{overflow: 'auto'}}
-               className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2">
-          <thead>
-          <tr>
-            <th>{intl.get('order.hash')}</th>
-            <th>{intl.get('order.market')}</th>
-            <th>{intl.get('order.side')}</th>
-            <th>{intl.get('order.amount')}</th>
-            <th>{intl.get('order.price')}</th>
-            <th>{intl.get('order.total')}</th>
-            <th>{intl.get('order.LRCFee')}</th>
-            <th>{intl.get('order.filled')}</th>
-            <th>{intl.get('order.validSince')}</th>
-            <th>{intl.get('order.validUntil')}</th>
-            <th>{intl.get('order.status')}</th>
-          </tr>
-          </thead>
-          <tbody>
-          {
-            orders.items.map((item, index) => {
-              const orderFm = new OrderFm(item)
-              const actions = {
-                gotoDetail: () => props.dispatch({type: 'layers/showLayer', payload: {id: 'orderDetail', order: item}})
-              };
-              return (
-                <tr key={index}>
-                  <td>{renders.hash(orderFm, actions)}</td>
-                  <td>{orderFm.getMarket()}</td>
-                  <td>{renders.side(orderFm)}</td>
-                  <td>{orderFm.getAmount()}</td>
-                  <td>{orderFm.getPrice()}</td>
-                  <td>{orderFm.getTotal()}</td>
-                  <td>{orderFm.getLRCFee()}</td>
-                  <td>{orderFm.getFilledPercent()}%</td>
-                  <td>{orderFm.getCreateTime()}</td>
-                  <td>{orderFm.getExpiredTime()}</td>
-                  <td>{renders.status(orderFm,item.originalOrder,cancelOrder)}</td>
-                </tr>
-              )
-            })
-          }
-          </tbody>
-        </table>
+        <Spin spinning={orders.loading}>
+          <table style={{overflow: 'auto'}}
+                 className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2">
+            <thead>
+            <tr>
+              <th>{intl.get('order.hash')}</th>
+              <th>{intl.get('order.market')}</th>
+              <th>{intl.get('order.side')}</th>
+              <th>{intl.get('order.amount')}</th>
+              <th>{intl.get('order.price')}</th>
+              <th>{intl.get('order.total')}</th>
+              <th>{intl.get('order.LRCFee')}</th>
+              <th>{intl.get('order.filled')}</th>
+              <th>{intl.get('order.validSince')}</th>
+              <th>{intl.get('order.validUntil')}</th>
+              <th>{intl.get('order.status')}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {
+              orders.items.map((item, index) => {
+                const orderFm = new OrderFm(item)
+                const actions = {
+                  gotoDetail: () => props.dispatch({type: 'layers/showLayer', payload: {id: 'orderDetail', order: item}})
+                };
+                return (
+                  <tr key={index}>
+                    <td>{renders.hash(orderFm, actions)}</td>
+                    <td>{orderFm.getMarket()}</td>
+                    <td>{renders.side(orderFm)}</td>
+                    <td>{orderFm.getAmount()}</td>
+                    <td>{orderFm.getPrice()}</td>
+                    <td>{orderFm.getTotal()}</td>
+                    <td>{orderFm.getLRCFee()}</td>
+                    <td>{orderFm.getFilledPercent()}%</td>
+                    <td>{orderFm.getCreateTime()}</td>
+                    <td>{orderFm.getExpiredTime()}</td>
+                    <td>{renders.status(orderFm,item.originalOrder,cancelOrder)}</td>
+                  </tr>
+                )
+              })
+            }
+            {
+              orders.items.length == 0 &&
+              <tr><td colSpan='100'><div className="text-center">{intl.get('common.list.no_data')}</div></td></tr>
+            }
+            </tbody>
+          </table>
+        </Spin>
       </div>
       <ListPagination list={orders}/>
     </div>

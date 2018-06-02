@@ -2,7 +2,7 @@ import React from 'react'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'
 import {getTokensByMarket} from 'modules/formatter/common'
-import {Popover} from 'antd'
+import {Popover,Spin} from 'antd'
 
 const MetaItem = (props) => {
   const {label, value, render} = props
@@ -63,7 +63,8 @@ function ListOrderBook(props) {
 		    	        </li>
 		    	    </ul>
 	    	    <div style={{height: "-webkit-calc(50% - 85px)",marginTop:"5px",marginBottom:"0",paddiongBottom:"10" }}>
-	    	        <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0px" }}>
+              <Spin spinning={depth.loading}>
+                <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0px" }}>
                       {
                         depth.item.sell.map((item,index)=>
                           <Popover placement="right" content={<ItemMore item={item} />} title={null} key={index}>
@@ -75,21 +76,32 @@ function ListOrderBook(props) {
                           </Popover>
                         )
                       }
-    	            </ul>
+                      {
+                        depth.item.sell.length == 0 &&
+                        <li className="text-center">{intl.get('common.list.no_data')}</li>
+                      }
+                  </ul>
+              </Spin>
 	    	    </div>
 	    	    <div style={{height: "-webkit-calc(50% - 85px)",paddingTop:"0",paddingBottom:"0",marginTop:"50px",marginBottom:"0"}}>
-    	            <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0" }}>
-    	                {
-                        depth.item.buy.map((item,index)=>
-                          <Popover placement="right" content={<ItemMore item={item} />} title={null} key={index}>
-                            <li key={index}>
-                              <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, Number(item[0]).toFixed(8))}>{Number(item[0]).toFixed(8)}</span>
-                              <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, Number(item[1]).toFixed(4))}>{Number(item[1]).toFixed(4)}</span>
-                              <span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span></li>
-                          </Popover>
-                        )
-                      }
-    	            </ul>
+              <Spin spinning={depth.loading}>
+  	            <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0" }}>
+  	                {
+                      depth.item.buy.map((item,index)=>
+                        <Popover placement="right" content={<ItemMore item={item} />} title={null} key={index}>
+                          <li key={index}>
+                            <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, Number(item[0]).toFixed(8))}>{Number(item[0]).toFixed(8)}</span>
+                            <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, Number(item[1]).toFixed(4))}>{Number(item[1]).toFixed(4)}</span>
+                            <span style={{textAlign:'right'}}>{Number(item[2]).toFixed(8)}</span></li>
+                        </Popover>
+                      )
+                    }
+                    {
+                      depth.item.buy.length == 0 &&
+                          <li className="text-center" >{intl.get('common.list.no_data')}</li>
+                    }
+  	            </ul>
+              </Spin>
 	    	    </div>
 	        </div>
 	    </div>
