@@ -149,7 +149,7 @@ function ListTokensSidebar(props) {
               placeholder=""
               suffix={<Icon type="search" className="text-mute"/>}
               prefix={
-                <div className="row gutter-0 align-items-center">
+                <div className="row no-gutters align-items-center">
                   <div className="col"></div>
                   <div className="col-auto">
                     <Tooltip title={intl.get('tokens.only_show_favorites')}>

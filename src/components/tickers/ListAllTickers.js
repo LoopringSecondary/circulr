@@ -5,6 +5,7 @@ import storage from '../../modules/storage'
 import intl from 'react-intl-universal'
 
 const TickItem = ({item,actions})=>{
+    if(!item){ return null }
     const tickerFm = new TickerFm(item)
     return (
       <li onClick={actions.selectTicker.bind(this,item)}>

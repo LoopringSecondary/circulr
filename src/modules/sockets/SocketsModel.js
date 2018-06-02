@@ -35,12 +35,11 @@ export default {
       history.listen(({pathname,search})=> {
         if (pathname.indexOf('/trade/')>-1) {
           const market = pathname.replace('/trade/','')
-          console.log('market',market)
           dispatch({
             type:'orders/filtersChange',
             payload:{
               id:'MyOpenOrders',
-              filters:{market}
+              filters:{market,status:'ORDER_OPENED'}
             }
           })
           dispatch({
@@ -48,6 +47,12 @@ export default {
             payload:{
               id:'MyFills',
               filters:{market}
+            }
+          })
+          dispatch({
+            type:'placeOrder/pairChangeEffects',
+            payload:{
+              pair:market
             }
           })
           dispatch({
