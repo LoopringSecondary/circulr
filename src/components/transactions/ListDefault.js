@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Select, Spin,Button,Icon} from 'antd';
+import {Form, Select, Spin,Button,Icon,Tooltip} from 'antd';
 import intl from 'react-intl-universal';
 import {TxFm, getTypes} from 'modules/transactions/formatters';
 import {getShortAddress} from 'modules/formatter/common';
@@ -122,7 +122,6 @@ const Option = Select.Option;
                 <th className="text-left">{intl.get('tx.txHash')}</th>
                 <th className="text-left">{intl.get('tx.created')}</th>
                 <th className="text-center">{intl.get('tx.status')}</th>
-                <th className="text-center">{intl.get('common.options')}</th>
               </tr>
               </thead>
               <tbody>
@@ -137,13 +136,12 @@ const Option = Select.Option;
                   return (
                     <tr key={index} className="cursor-pointer" onClick={actions.gotoDetail}>
                       <td className="text-left">{renders.type(txFm)}</td>
-                      <td className="text-left">{txFm.getGas()} ETH</td>
+                      <td className="text-left">{renders.gas(txFm)}</td>
                       <td className="text-left">{item.blockNumber}</td>
                       <td className="text-left">{item.nonce}</td>
                       <td className="text-left">{renders.txHash(txFm, actions)}</td>
                       <td className="text-left">{renders.createTime(txFm)}</td>
                       <td className="text-center">{renders.status(txFm)}</td>
-                      <td className="text-center">{renders.options(txFm, actions)}</td>
                     </tr>
                   )
                 })
@@ -178,11 +176,24 @@ export const renders = {
     return (
       <div>
         {fm.getType((side === 'in' || side === 'out') && fm.getValue())}
-        {side && side.toLowerCase() === 'in' &&
+        {null && side && side.toLowerCase() === 'in' &&
           <span className='text-success ml5 fs12'><Icon type="plus-circle-o"/></span>
         }
-        {side && side.toLowerCase() === 'out' &&
+        {null && side && side.toLowerCase() === 'out' &&
           <span className='text-error ml5 fs12'><Icon type="minus-circle-o"/></span>
+        }
+      </div>
+    )
+  },
+  gas: (fm) => {
+    const type = fm.tx.type
+    return (
+      <div>
+        {fm.getGas()} ETH
+        {(type === 'sell' || type === 'buy' || type === 'lrc_fee' || type === 'lrc_reward') &&
+          <span className={`color-white-3 d-inline-block ml5`}>
+            (Miner Paid)
+          </span>
         }
       </div>
     )
