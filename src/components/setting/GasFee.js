@@ -99,25 +99,25 @@ const GasFeeForm = (props) => {
       })(
         <Radio.Group className="d-block w-100" onChange={radioChanged}>
           <Radio value='last' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15" disabled={gasPriceStore.last === 0}>
-            <div className="ml5 pt10 pb10">
+            <div className="pl15 pt10 pb10">
               <div className="fs14 color-black-1">
                 {gasShow(gasPriceStore.last, gasLimit, intl.get('gas_setting.gas_selector_last'))}
               </div>
             </div>
           </Radio>
           <Radio value='estimate' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
-            <div className="ml5 pt10 pb10">
+            <div className="pl15 pt10 pb10">
               <div className="fs14 color-black-1">
                 {gasShow(gasPriceStore.estimate, gasLimit, intl.get('gas_setting.gas_selector_estimate'))}
               </div>
             </div>
           </Radio>
           <Radio value='custom' className="d-flex align-items-center mb0 w-100 zb-b-b pl15 pr15">
-            <div className="ml5 pt10 pb10">
+            <div className="pt10 pb10">
               <div className="fs14 color-black-1">
                 {gasShow(form.getFieldValue('gasPriceSlider'), gasLimit, intl.get('gas_setting.gas_selector_custom'))}
               </div>
-              {form.getFieldDecorator('gasPriceSlider', {
+              {form.getFieldValue('gasSelector') === 'custom' && form.getFieldDecorator('gasPriceSlider', {
                 initialValue:configs.defaultGasPrice,
                 rules:[]
               })(

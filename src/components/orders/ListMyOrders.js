@@ -139,7 +139,7 @@ export default function ListMyOrders(props) {
                   <td>{orderFm.getFilledPercent()}%</td>
                   <td>{orderFm.getCreateTime()}</td>
                   <td>{orderFm.getExpiredTime()}</td>
-                  <td className="text-nowrap">{renders.status(orderFm,item.originalOrder,cancelOrder)}</td>
+                  <td>{renders.status(orderFm,item.originalOrder,cancelOrder)}</td>
                 </tr>
               )
             })
@@ -181,22 +181,22 @@ export const renders = {
     )
     let statusNode
     if (status === 'ORDER_OPENED') {
-      statusNode = <Badge className="text-color-dark-1" status="processing" text={<div className="color-white-1">{intl.get('order_status.opened')}</div>}/>
+      statusNode = <Badge className="text-color-dark-1" status="processing" text={<span className="color-white-1">{intl.get('order_status.opened')}</span>}/>
     }
     if (status === 'ORDER_FINISHED') {
-      statusNode = <Badge className="text-color-dark-1" status="success" text={<div className="color-white-1">{intl.get('order_status.completed')}</div>}/>
+      statusNode = <Badge className="text-color-dark-1" status="success" text={<span className="color-white-1">{intl.get('order_status.completed')}</span>}/>
     }
     if (status === 'ORDER_CANCELLED') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={<div className="color-white-1">{intl.get('order_status.canceled')}</div>}/>
+      statusNode = <Badge className="text-color-dark-1" status="default" text={<span className="color-white-1">{intl.get('order_status.canceled')}</span>}/>
     }
     if (status === 'ORDER_CUTOFF') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={<div className="color-white-1">{intl.get('order_status.canceled')}</div>}/>
+      statusNode = <Badge className="text-color-dark-1" status="default" text={<span className="color-white-1">{intl.get('order_status.canceled')}</span>}/>
     }
     if (status === 'ORDER_EXPIRE') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={<div className="color-white-1">{intl.get('order_status.expired')}</div>}/>
+      statusNode = <Badge className="text-color-dark-1" status="default" text={<span className="color-white-1">{intl.get('order_status.expired')}</span>}/>
     }
     return (
-      <div>
+      <div className="d-flex text-nowrap">
         {statusNode} {status === 'ORDER_OPENED' && cancleBtn}
       </div>
     )
