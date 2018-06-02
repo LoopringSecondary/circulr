@@ -121,7 +121,7 @@ const Option = Select.Option;
                 <th className="text-left">{intl.get('tx.nonce')}</th>
                 <th className="text-left">{intl.get('tx.txHash')}</th>
                 <th className="text-left">{intl.get('tx.created')}</th>
-                <th className="text-center">{intl.get('tx.status')}</th>
+                <th className="text-left">{intl.get('tx.status')}</th>
               </tr>
               </thead>
               <tbody>
@@ -141,7 +141,7 @@ const Option = Select.Option;
                       <td className="text-left">{item.nonce}</td>
                       <td className="text-left">{renders.txHash(txFm, actions)}</td>
                       <td className="text-left">{renders.createTime(txFm)}</td>
-                      <td className="text-center">{renders.status(txFm)}</td>
+                      <td className="text-left">{renders.status(txFm,actions,index)}</td>
                     </tr>
                   )
                 })
@@ -198,23 +198,17 @@ export const renders = {
       </div>
     )
   },
-  status: (fm) => {
+  status: (fm,actions,index) => {
     return (
       <div>
         {fm.tx.status === 'success' && <i className="icon-success"></i>}
         {fm.tx.status === 'failed' && <i className="icon-warning"></i>}
         {fm.tx.status === 'pending' && <i className="icon-clock"></i>}
-      </div>
-    )
-  },
-  options: (fm, actions) => {
-    return (
-      <div>
-        {
-          (fm.tx.status === 'pending') &&
-          <div>
-            <span className="text-primary" onClick={(e) => {e.stopPropagation();actions.toResend()}}>{intl.get('actions.resend')}</span> <span> | </span> <span className="text-primary" onClick={(e) => {e.stopPropagation();actions.toCancel()}}>{intl.get('common.cancel')}</span>
-          </div>
+        {fm.tx.status === 'pending' &&
+          <span>
+            <span className="text-primary ml10" onClick={(e) => {e.stopPropagation();actions.toResend()}}>{intl.get('actions.resend')}</span>
+            <span className="text-primary ml5" onClick={(e) => {e.stopPropagation();actions.toCancel()}}>{intl.get('common.cancel')}</span>
+          </span>
         }
       </div>
     )
