@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Select, Spin,Button} from 'antd';
+import {Form, Select, Spin,Button,Icon} from 'antd';
 import intl from 'react-intl-universal';
 import {TxFm, getTypes} from 'modules/transactions/formatters';
 import {getShortAddress} from 'modules/formatter/common';
@@ -116,7 +116,6 @@ const Option = Select.Option;
               <thead>
               <tr>
                 <th className="text-left">{intl.get('tx.type')}</th>
-                <th className="text-left">{intl.get('tx.direction')}</th>
                 <th className="text-left">{intl.get('tx.gas')}</th>
                 <th className="text-left">{intl.get('tx.block')}</th>
                 <th className="text-left">{intl.get('tx.nonce')}</th>
@@ -138,7 +137,6 @@ const Option = Select.Option;
                   return (
                     <tr key={index} className="cursor-pointer" onClick={actions.gotoDetail}>
                       <td className="text-left">{renders.type(txFm)}</td>
-                      <td className="text-left">{renders.direction(txFm)}</td>
                       <td className="text-left">{txFm.getGas()} ETH</td>
                       <td className="text-left">{item.blockNumber}</td>
                       <td className="text-left">{item.nonce}</td>
@@ -176,22 +174,18 @@ export const renders = {
     </span>
   ),
   type: (fm) => {
+    const side = fm.getSide()
     return (
       <div>
-        {fm.getType((fm.getSide() === 'in' || fm.getSide() === 'out') && fm.getValue())}
+        {fm.getType((side === 'in' || side === 'out') && fm.getValue())}
+        {side && side.toLowerCase() === 'in' &&
+          <span className='text-success ml5 fs12'><Icon type="plus-circle-o"/></span>
+        }
+        {side && side.toLowerCase() === 'out' &&
+          <span className='text-error ml5 fs12'><Icon type="minus-circle-o"/></span>
+        }
       </div>
     )
-  },
-  direction: (fm) => {
-
-    if (fm.getSide()) {
-      return (
-        <div>
-          {fm.getSide().toLowerCase() === 'in' ? <span className='text-success'>{fm.getSide().toUpperCase()}</span> :
-            <span className='text-error'>{fm.getSide().toUpperCase()}</span>}
-        </div>
-      )
-    }
   },
   status: (fm) => {
     return (
