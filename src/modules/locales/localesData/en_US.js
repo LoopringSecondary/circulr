@@ -167,6 +167,9 @@ export default {
   },
   order_list: {
     actions_cancel_all: 'Cancel All',
+    my_open_orders:'My Open Orders',
+    my_all_orders:'My All Orders',
+    order_book:'Order Book',
   },
   order_detail: {
     title: 'Order Detail',
@@ -309,6 +312,14 @@ export default {
     margin_split: words.margin_split,
     created:'Created',
   },
+  fill_list: {
+    my_recent_fills:'Recent Fills',
+    my_all_fills:'All Fills',
+    trade_history:'Trade History',
+  },
+  fill_detail: {
+    fill_detail:'Fill Detail',
+  },
   ring: {
     ringIndex: "RingIndex",
     ringHash: "RingHash",
@@ -320,6 +331,9 @@ export default {
     total_lrc_reward: words.lrc_reward,
     total_margin_split: words.margin_split,
     time: words.time,
+  },
+  ring_detail:{
+    ring_detail:"Ring Detail",
   },
   // -----------
   // ticker
@@ -486,5 +500,11 @@ export default {
   user_center:{
     receive:'Receive',
     send:'Send'
-  }
+  },
+  kline_chart:{
+    kline_chart:'Kline Chart',
+  },
+  price_chart:{
+    price_chart:'Price Chart',
+  },
 }

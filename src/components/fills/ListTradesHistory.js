@@ -46,11 +46,11 @@ function ListTradesHistory(props) {
     <div>
       <div className="card dark h-full">
         <div className="card-header card-header-dark bordered">
-          <h4>Trade History</h4>
+          <h4>{intl.get('fill_list.trade_history')}</h4>
         </div>
         <div className="trade-list trade-history-list h-full">
           <ul>
-            <li className="trade-list-header"><span>{intl.get('fill.price')}({tokens.right})</span><span style={{textAlign:'right'}}>{intl.get('fill.amount')}({tokens.left})</span><span style={{textAlign:'right'}}>{intl.get('fill.lrc_fee')}</span></li>
+            <li className="trade-list-header"><span>{intl.get('fill.price')} {tokens.right}</span><span style={{textAlign:'right'}}>{intl.get('fill.amount')} {tokens.left}</span><span style={{textAlign:'right'}}>{intl.get('fill.lrc_fee')}</span></li>
           </ul>
           <div style={{height: "100%",paddingBottom:"145px", }}>
             <Spin spinning={trades.loading}>

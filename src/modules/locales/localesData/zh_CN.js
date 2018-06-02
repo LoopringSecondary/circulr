@@ -169,6 +169,9 @@ export default {
   },
   order_list: {
     actions_cancel_all: '取消全部',
+    my_open_orders:'最近订单',
+    my_all_orders:'全部订单',
+    order_book:'最新挂单',
   },
   order_detail: {
     title: '订单详情',
@@ -310,6 +313,14 @@ export default {
     margin_split: words.margin_split,
     created:'成交',
   },
+  fill_list: {
+    my_recent_fills:'最近成交',
+    my_all_fills:'全部成交',
+    trade_history:'最新成交',
+  },
+  fill_detail: {
+    fill_detail:'成交详情',
+  },
   // -----------
   // ring
   // -----------
@@ -324,6 +335,9 @@ export default {
     total_lrc_reward: words.lrc_reward,
     total_margin_split: words.margin_split,
     time: words.time,
+  },
+  ring_detail: {
+    ring_detail:'环路详情',
   },
   // -----------
   // ticker
@@ -491,6 +505,12 @@ export default {
   user_center:{
     receive:'收款',
     send:'转账'
-  }
+  },
+  kline_chart:{
+    kline_chart:'K线图',
+  },
+  price_chart:{
+    price_chart:'价格行情',
+  },
 }
 

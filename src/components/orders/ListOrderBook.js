@@ -44,7 +44,7 @@ function ListOrderBook(props) {
     <div>
 	    <div className="card dark" style={{height:"-webkit-calc(100vh - 40px)"}}>
 	    	<div className="card-header card-header-dark bordered">
-	    	    <h4>Order Book</h4>
+	    	    <h4>{intl.get('order_list.order_book')}</h4>
 	    	</div>
 	    	<div className="trade-list" style={{height:"-webkit-calc(100% - 31px)"}}>
     	    	    <div className="bg" style={{ position: "absolute", top:"50%", marginTop:"-45px", zIndex: "100", width: "100%", height: "40px", lineHeight: "38px", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0", fontSize: "16px"}}>
