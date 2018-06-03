@@ -54,7 +54,9 @@ function Modals(props) {
       </Containers.Layers>
       <Containers.Layers id="placeOrderLRCFee">
         <UiContianers.Modals id="placeOrderLRCFee" className="rs">
-          <PlaceOrderLRCFee />
+          <Containers.LrcFee>
+            <PlaceOrderLRCFee />
+          </Containers.LrcFee>
         </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="placeOrderTTL">
