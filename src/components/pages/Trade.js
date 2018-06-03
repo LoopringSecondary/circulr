@@ -9,7 +9,6 @@ import { connect } from 'dva';
 import {AccountMenu} from './Wallet';
 import intl from 'react-intl-universal';
 
-
 function Trade(props) {
   const { children, match } = props
   // let pair = match.params.pair || window.STORAGE.markets.getCurrent() || 'LRC-WETH'
@@ -33,7 +32,9 @@ function Trade(props) {
                           <Containers.Wallet>
                             <Containers.Gas>
                               <Containers.Ttl>
-                                <Orders.PlaceOrderForm />
+                                <Containers.LrcFee>
+                                  <Orders.PlaceOrderForm />
+                                </Containers.LrcFee>
                               </Containers.Ttl>
                             </Containers.Gas>
                           </Containers.Wallet>
