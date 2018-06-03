@@ -11,6 +11,8 @@
     "@babel/polyfill": "7.0.0-beta.46",
     "antd": "3.2.2",
     "async": "2.6.0",
+    "bizcharts": "^3.1.8",
+    "bizcharts-plugin-slider": "^2.0.3",
     "copy-to-clipboard": "3.0.8",
     "dva": "2.1.0",
     "ledgerco": "1.2.1",
