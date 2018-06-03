@@ -13,6 +13,7 @@ function ListTokenTickers(props) {
     routeActions.gotoPath(`/trade/${item.market}`)
   }
   console.log('ListTokenTickers',tickers);
+  console.log('listedTickers',listedTickers);
   return (
     <div>
         <div className="loopring-dex">
@@ -35,6 +36,12 @@ function ListTokenTickers(props) {
                         </div>
                       )
                     })
+                  }
+                  {
+                    listedTickers.length == 0 &&
+                    <div className="p10 text-center">
+                        {intl.get('common.list.no_data')}
+                    </div>
                   }
               </div>
             </Spin>

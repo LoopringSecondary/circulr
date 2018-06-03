@@ -17,6 +17,7 @@ const updateItem = (item,id)=>{
   })
 }
 
+
 const isArray = (obj)=>{
   return Object.prototype.toString.call(obj) === '[object Array]'
 }
@@ -61,6 +62,37 @@ const transfromers = {
       updateItems(items,id)
     },
   },
+  orders:{
+    queryTransformer:(payload)=>{
+      return JSON.stringify({
+         delegateAddress: config.getDelegateAddress(),
+         owner:window.WALLET.address
+      })
+    },
+    resTransformer:(id,res)=>{
+      res = JSON.parse(res)
+     // console.log(id,'res',res)
+      let items = []
+      if (!res.error && res.data && isArray(res.data.tokens)) {
+        items =[ ...res.data.tokens ]
+      }
+      updateItems(items,id)
+    },
+  },
+  estimatedGasPrice:{
+    queryTransformer:(payload)=>{
+      return ""
+    },
+    resTransformer:(id,res)=>{
+      res = JSON.parse(res)
+      //  console.log(id,'res',res)
+      let item = {}
+      if (!res.error && res.data ) {
+        item.value = res.data
+      }
+      updateItem(item,id)
+    },
+  },
   marketcap:{
     queryTransformer:(payload)=>{
       const {filters} = payload
@@ -92,6 +124,24 @@ const transfromers = {
       let item ={}
       if(!res.error && res.data && res.data.depth){
         item ={ ...res.data.depth }
+      }
+      updateItem(item,id)
+    },
+  },
+  orderBook:{
+    queryTransformer:(payload)=>{
+      const {filters} = payload
+      return JSON.stringify({
+         "delegateAddress" :config.getDelegateAddress(),
+         "market":filters.market,// TODO
+      })
+    },
+    resTransformer:(id,res)=>{
+      res = JSON.parse(res)
+      let item ={}
+      if(!res.error && res.data){
+        if(!res.data.sell){ item.sell = [] }else{ item.sell = res.data.sell }
+        if(!res.data.buy){ item.buy = [] }else{ item.buy = res.data.buy }
       }
       updateItem(item,id)
     },
