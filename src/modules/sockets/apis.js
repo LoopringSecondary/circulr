@@ -45,6 +45,26 @@ const transfromers = {
       updateItems(items,id)
     },
   },
+  latestTransaction:{
+    queryTransformer:(payload)=>{
+      const {filters,page} = payload
+      return JSON.stringify({
+        owner:window.WALLET.address,
+        symbol:filters.token,
+        status:filters.status,
+        txType:filters.type,
+      })
+    },
+    resTransformer:(id,res)=>{
+      res = JSON.parse(res)
+      // console.log(id,'res',res)
+      let items = []
+      if (!res.error && res.data && isArray(res.data)) {
+        items =[ ...res.data ]
+      }
+      updateItems(items,id)
+    },
+  },
   balance:{
     queryTransformer:(payload)=>{
       return JSON.stringify({
@@ -115,7 +135,7 @@ const transfromers = {
       const {filters} = payload
       return JSON.stringify({
          "delegateAddress" :config.getDelegateAddress(),
-         "market":filters.market,// TODO
+         "market":filters.market,
       })
     },
     resTransformer:(id,res)=>{
@@ -128,12 +148,31 @@ const transfromers = {
       updateItem(item,id)
     },
   },
+  trends:{
+    queryTransformer:(payload)=>{
+      const {filters} = payload
+      return JSON.stringify({
+         "delegateAddress" :config.getDelegateAddress(),
+         "market":filters.market,
+         "interval":'1Hr',
+      })
+    },
+    resTransformer:(id,res)=>{
+      res = JSON.parse(res)
+   // console.log(id,'res',res)
+      let items ={}
+      if(!res.error && res.data && isArray(res.data)){
+        items ={ ...res.data }
+      }
+      updateItems(items,id)
+    },
+  },
   orderBook:{
     queryTransformer:(payload)=>{
       const {filters} = payload
       return JSON.stringify({
          "delegateAddress" :config.getDelegateAddress(),
-         "market":filters.market,// TODO
+         "market":filters.market,
       })
     },
     resTransformer:(id,res)=>{
