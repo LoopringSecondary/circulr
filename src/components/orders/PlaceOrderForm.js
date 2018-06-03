@@ -188,6 +188,7 @@ class PlaceOrderForm extends React.Component {
       }
     } else {
       if(ttl.timeToLiveStart && ttl.timeToLiveEnd) {
+        //ttlShow = `${ttl.timeToLiveStart.format("lll")} ~ ${ttl.timeToLiveEnd.format("lll")}`
         ttlShow = `${getFormattedTime(ttl.timeToLiveStart,'MM-DD HH:mm')}~${getFormattedTime(ttl.timeToLiveEnd,'MM-DD HH:mm')}`
       }
     }
