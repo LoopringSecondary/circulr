@@ -22,11 +22,16 @@ export default {
     'url':STORAGE.settings.get().relay.selected,
     'socket':null,
     'transaction':{...initState,filters:{token:'LRC'}},
+    'latestTransaction':{...initState,filters:{token:'LRC'}},
     'balance':{...initState,filters:{currency:'usd'}},
     'marketcap':{...initState},
+    'orderBook':{...initState,filters:{market:'LRC-WETH'},item:{sell:[],buy:[]}},
     'depth':{...initState,filters:{market:'LRC-WETH'},item:{sell:[],buy:[]}},
     'trades':{...initState,filters:{market:'LRC-WETH'}},
     'tickers':{...initState,filters:{market:'LRC-WETH'}},
+    'trends':{...initState,filters:{market:'LRC-WETH'}},
+    'orders':{...initState,filters:{}},
+    'estimatedGasPrice':{...initState,filters:{}},
     'loopringTickers':{...initState},
     'pendingTx':{...initState},
   },
@@ -105,17 +110,22 @@ export default {
       yield put({type:'socketChange',payload:{socket}})
       yield put({type:'fetch',payload:{id:'marketcap'}})
       yield put({type:'fetch',payload:{id:'depth'}})
+      yield put({type:'fetch',payload:{id:'trends'}})
       yield put({type:'fetch',payload:{id:'trades'}})
       yield put({type:'fetch',payload:{id:'tickers'}})
       yield put({type:'fetch',payload:{id:'loopringTickers'}})
+      yield put({type:'fetch',payload:{id:'orderBook'}})
+      yield put({type:'fetch',payload:{id:'estimatedGasPrice'}})
       if(window.WALLET && window.WALLET.address){
         yield put({type:'unlocked'})
       }
     },
     *unlocked({payload},{call,select,put}){
       yield put({type:'fetch',payload:{id:'transaction'}})
+      yield put({type:'fetch',payload:{id:'latestTransaction'}})
       yield put({type:'fetch',payload:{id:'balance'}})
       yield put({type:'fetch',payload:{id:'pendingTx'}})
+      yield put({type:'fetch',payload:{id:'orders'}})
     },
     *fetch({payload},{call,select,put}){
       yield put({type:'onEvent',payload})

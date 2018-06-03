@@ -49,6 +49,7 @@ const words = {
   help:'Help',
   feedback:"Feedback",
   quit:'Quit',
+  canceling:'Canceling',
   list:{
     no_data:'No Data',
   }
@@ -150,6 +151,8 @@ export default {
     validSince: 'Valid Since',
     validUntil: 'Valid Until',
     status: words.status,
+    no:words.cancel,
+    canceling:words.canceling,
   },
   order_type: {
     market_order: 'Open Market Order',
@@ -180,6 +183,19 @@ export default {
     order_type: 'Order Type',
     order_since: "Valid Since",
     order_until: "Valid Until",
+  },
+  order_cancel:{
+    cancel_title: "Do you want to cancel this order?",
+    cancel_all_title: "Are you sure to cancel all  {pair} orders ?",
+    canceling:words.canceling,
+    actions_to_cancel:'Confirm to Cancel Order',
+    manual_cancel_tip:'Cancel order manually shall cost gas',
+    order_expire_title: "This order will be expired automatically in",
+    expire_duration: "{days,plural,=0{} =1{1 day} other {# days}} {hours,plural,=0{} =1{1 hour} other {# hours}} {minutes,plural,=1{1 minute} other {# minutes}} {seconds,plural,=1{1 second} other {# seconds}}",
+    order_validity:'Order Validity',
+    order_expired_tip:"This order is already expired",
+    actions_wait_expire:'Wait for expiring automatically',
+    auto_expire_title:'Order expired costs no gas'
   },
   settings: {
     title: 'Settings',
