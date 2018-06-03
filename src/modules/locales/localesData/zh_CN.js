@@ -50,6 +50,7 @@ const words = {
   help:'帮助',
   feedback:"反馈",
   quit:'退出',
+  canceling:'取消中',
   list:{
     no_data:'暂无数据',
   }
@@ -152,6 +153,8 @@ export default {
     validSince: '订单生效时间',
     validUntil: '订单失效时间',
     status: words.status,
+    no:words.cancel,
+    canceling:words.canceling,
   },
   order_type: {
     market_order: '公开市场订单',
@@ -161,7 +164,7 @@ export default {
     opened: '撮合中',
     completed: '已完成',
     canceled: '已取消',
-    expired: '以过期',
+    expired: '已过期',
   },
   order_side: {
     sell: words.sell,
@@ -182,6 +185,20 @@ export default {
     order_type: '订单类型',
     order_since: "订单生效时间",
     order_until: "订单失效时间",
+  },
+  order_cancel:{
+    cancel_title:'您确定要取消该笔订单',
+    cancel_all_title:"您确定要取消全部{pair}订单？",
+    canceling:words.canceling,
+    actions_to_cancel:'确认取消订单',
+    manual_cancel_tip:'手动取消订单会消耗ETH Gas',
+    order_expire_title: "距离订单自动失效还有",
+    expire_duration: "{days,plural,=0{} other {# 天}} {hours,plural,=0{} other {# 小时}} {minutes,plural,=1{1 分钟} other {# 分钟}} {seconds,plural,=1{1 秒} other {# 秒}}",
+    order_validity:'订单有效期',
+    order_expired_tip:"该订单已经过期",
+    actions_wait_expire:'等待订单自动失效',
+    auto_expire_title:'订单自动失效不会消耗ETH Gas'
+
   },
   settings: {
     title: '设置',

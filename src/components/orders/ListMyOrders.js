@@ -180,7 +180,7 @@ export const renders = {
   status: (fm,order,cancelOrder) => {
     const status = fm.getStatus()
     const cancleBtn = (
-      <a className="ml5 fs12 color-black-2"
+      <a className="ml5 fs12  text-primary"
          onClick={()=> cancelOrder(order)}>
         {intl.get('order.no')}
       </a>
