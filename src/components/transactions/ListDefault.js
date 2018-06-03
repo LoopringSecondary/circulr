@@ -12,7 +12,7 @@ import Notification from '../../common/loopringui/components/Notification'
 const Option = Select.Option;
 
  function ListTransaction(props) {
-  const {transaction: list,gasPrice} = props
+  const {latestTransaction: list,gasPrice} = props
   const statusChange = (value) => {
     list.filtersChange({filters:{status: value}})
   }
@@ -218,7 +218,8 @@ export const renders = {
 function mapStateToProps(state) {
    return {
      gasPrice:state.gas.gasPrice.estimate,
-     account:state.wallet.account
+     account:state.wallet.account,
+     latestTransaction:state.sockets.latestTransaction,
    }
 }
 
