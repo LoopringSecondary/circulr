@@ -88,6 +88,20 @@ export default {
       yield put({
         type:'filtersChange',
         payload:{
+          id:'orderBook',
+          filters:{market:market}
+        }
+      })
+      yield put({
+        type:'filtersChange',
+        payload:{
+          id:'trends',
+          filters:{market:market}
+        }
+      })
+      yield put({
+        type:'filtersChange',
+        payload:{
           id:'trades',
           filters:{market:market}
         }

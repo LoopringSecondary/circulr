@@ -32,8 +32,8 @@ const ItemMore=({item,tokens})=>{
 }
 function ListOrderBook(props) {
   console.log('ListOrderBook render',props)
-  const {depth,trades} = props
-  const tokens = getTokensByMarket(depth.filters.market)
+  const {orderBook:list,trades} = props
+  const tokens = getTokensByMarket(list.filters.market)
   const priceSelected = (value, e) => {
     e.preventDefault()
     props.dispatch({type:'placeOrder/priceChange', payload:{priceInput:value}})
@@ -74,10 +74,10 @@ function ListOrderBook(props) {
 		    	        </li>
 		    	    </ul>
 	    	    <div style={{height: "-webkit-calc(50% - 85px)",marginTop:"5px",marginBottom:"0",paddiongBottom:"10" }}>
-              <Spin spinning={depth.loading}>
+              <Spin spinning={list.loading}>
                 <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0px" }}>
                       {
-                        depth.item.sell.map((item,index)=>
+                        list.item.sell.map((item,index)=>
                           <Popover placement="right" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>
                             <li >
                               <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),8))}>{toFixed(Number(item.price),8)}</span>
@@ -88,17 +88,17 @@ function ListOrderBook(props) {
                         )
                       }
                       {
-                        depth.item.sell.length === 0 &&
+                        list.item.sell.length === 0 &&
                         <li className="text-center">{intl.get('common.list.no_data')}</li>
                       }
                   </ul>
               </Spin>
 	    	    </div>
 	    	    <div style={{height: "-webkit-calc(50% - 85px)",paddingTop:"0",paddingBottom:"0",marginTop:"50px",marginBottom:"0"}}>
-              <Spin spinning={depth.loading}>
+              <Spin spinning={list.loading}>
   	            <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0" }}>
   	                {
-                      depth.item.buy.map((item,index)=>
+                      list.item.buy.map((item,index)=>
                         <Popover placement="right" content={<ItemMore item={item} />} title={null} key={index}>
                           <li key={index}>
                             <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),8))}>{toFixed(Number(item.price),8)}</span>
@@ -108,7 +108,7 @@ function ListOrderBook(props) {
                       )
                     }
                     {
-                      depth.item.buy.length === 0 &&
+                      list.item.buy.length === 0 &&
                           <li className="text-center" >{intl.get('common.list.no_data')}</li>
                     }
   	            </ul>
@@ -122,7 +122,7 @@ function ListOrderBook(props) {
 
 function mapStateToProps(state) {
   return {
-    depth:state.sockets.orderBook,
+    orderBook:state.sockets.orderBook,
     trades:state.sockets.trades.items
   }
 }

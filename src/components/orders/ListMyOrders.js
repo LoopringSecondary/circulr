@@ -1,5 +1,5 @@
 import React from 'react'
-import {Form, Select, Badge,Spin} from 'antd'
+import {Form, Select, Badge,Spin,Popover} from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import SelectContainer from 'LoopringUI/components/SelectContainer'
 import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'
@@ -9,7 +9,6 @@ import config from 'common/config'
 import intl from 'react-intl-universal'
 
 const ListHeader = (props) => {
-
   const {orders,dispatch} = props;
   const sideChange = (side) => {
     orders.filtersChange({filters: {side}})
@@ -94,6 +93,30 @@ const ListHeader = (props) => {
   )
 }
 
+const MetaItem = (props) => {
+  const {label, value, render} = props
+  return (
+    <div className="row pt5 pb5 align-items-center zb-b-b" style={{minWidth:'150px',maxWidth:'250px'}}>
+      <div className="col-auto fs12 color-black-2">
+        {label}
+      </div>
+      <div className="col text-right fs14 color-black-1 text-wrap pl20">
+        {render ? render(value) : value}
+      </div>
+    </div>
+  )
+}
+const ItemMore=({item})=>{
+  return (
+    <div>
+      <MetaItem label={intl.get('order.status')} value="TODO" />
+      <MetaItem label={intl.get('order.total')} value="1.1 WETH" />
+      <MetaItem label={intl.get('order.validSince')} value="2018-08-01 10:22" />
+      <MetaItem label={intl.get('order.validUntil')} value="2018-08-01 10:22" />
+    </div>
+  )
+}
+
 export default function ListMyOrders(props) {
   const {orders = {},dispatch} = props;
   const cancelOrder = (order) => {
@@ -126,16 +149,18 @@ export default function ListMyOrders(props) {
                   gotoDetail: () => props.dispatch({type: 'layers/showLayer', payload: {id: 'orderDetail', order: item}})
                 };
                 return (
-                  <tr key={index}>
-                    <td>{orderFm.getMarket()}</td>
-                    <td>{renders.side(orderFm)}</td>
-                    <td className="text-right">{orderFm.getPrice()}</td>
-                    <td className="text-right">{orderFm.getAmount()}</td>
-                    <td className="text-right">{orderFm.getTotal()}</td>
-                    <td className="text-right">{orderFm.getLRCFee()}</td>
-                    <td>{orderFm.getFilledPercent()}%</td>
-                    <td className="text-left">{renders.status(orderFm,item.originalOrder,cancelOrder)}</td>
-                  </tr>
+                  <Popover title={null} content={<ItemMore item={item}/>} >
+                    <tr key={index} className="cursor-pointer" onClick={actions.gotoDetail}>
+                      <td>{orderFm.getMarket()}</td>
+                      <td>{renders.side(orderFm)}</td>
+                      <td className="text-right">{orderFm.getPrice()}</td>
+                      <td className="text-right">{orderFm.getAmount()}</td>
+                      <td className="text-right">{orderFm.getTotal()}</td>
+                      <td className="text-right">{orderFm.getLRCFee()}</td>
+                      <td>{orderFm.getFilledPercent()}%</td>
+                      <td className="text-left">{renders.status(orderFm,item.originalOrder,cancelOrder)}</td>
+                    </tr>
+                  </Popover>
                 )
               })
             }
