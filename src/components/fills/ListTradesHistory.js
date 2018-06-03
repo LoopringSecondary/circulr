@@ -25,7 +25,6 @@ const ItemMore=({item})=>{
       <MetaItem label={intl.get('fill.total')} value="10ETH" />
       <MetaItem label={intl.get('fill.lrc_fee')} value="3.5LRC" />
       <MetaItem label={intl.get('fill.lrc_reward')} value="3.5LRC" />
-
     </div>
   )
 }
@@ -42,6 +41,14 @@ function ListTradesHistory(props) {
     e.preventDefault()
     props.dispatch({type:'placeOrder/amountChange', payload:{amountInput:value}})
   }
+
+  const isIncresse = (index) => {
+    if(index=== trades.items.length-1){
+      return true
+    }else {
+      return trades.items[index].price >= trades.items[index+1].price
+    }
+  };
   return (
     <div>
       <div className="card dark h-full">
@@ -60,10 +67,10 @@ function ListTradesHistory(props) {
                     <Popover placement="left" content={<ItemMore item={item} />} title={null} key={index}>
                       <li key={index}>
                         {
-                          (index%2 === 0) && <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, item.price.toFixed(8))}>{item.price && item.price.toFixed(8)}</span>
+                          (!isIncresse(index)) && <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, item.price.toFixed(8))}>{item.price && item.price.toFixed(8)}</span>
                         }
                         {
-                          (index%2 === 1) && <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, item.price.toFixed(8))}>{item.price && item.price.toFixed(8)}</span>
+                          (isIncresse(index)) && <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, item.price.toFixed(8))}>{item.price && item.price.toFixed(8)}</span>
                         }
                         <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, item.amount.toFixed(8))}>{item.amount && item.amount.toFixed(8)}</span>
                         <span style={{textAlign:'right'}}>{getFormattedTime(item.createTime,'MM-DD HH:SS')}</span>
@@ -72,7 +79,7 @@ function ListTradesHistory(props) {
                   )
                 }
                 {
-                  trades.items.length == 0 &&
+                  trades.items.length === 0 &&
                   <li className="text-center pt5" >{intl.get('common.list.no_data')}</li>
                 }
               </ul>
