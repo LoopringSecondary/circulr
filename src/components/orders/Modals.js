@@ -1,4 +1,4 @@
-import React from 'react'
+ import React from 'react'
 import {Containers} from 'modules'
 import UiContianers from 'LoopringUI/containers'
 import Detail from './Detail'
