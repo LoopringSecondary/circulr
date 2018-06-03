@@ -54,23 +54,21 @@ function ListTokensSidebar(props) {
     tokens.nodeChange({
       selected: item.symbol
     })
-    updateTransations(item.symbol);
-    // dispatch({
-    //   type: 'sockets/filtersChange',
-    //   payload:{
-    //     id:'tickers',
-    //     filters:{}
-    //   }
-    // })
-  }
-  const updateTransations = (token) => {
     dispatch({
       type: 'sockets/filtersChange',
       payload: {
-        id:'transaction',
-        filters: {token}
+        id:'latestTransaction',
+        filters: {token:item.symbol}
       }
     })
+    // dispatch({
+    //   type: 'sockets/tickers',
+    //   payload: {
+    //     id:'latestTransaction',
+    //     filters: {token:item.symbol}
+    //     // tickers 只接受 market 不接受 token
+    //   }
+    // })
   }
   const gotoTransfer = (item, e) => {
     dispatch({

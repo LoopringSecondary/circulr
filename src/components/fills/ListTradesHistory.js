@@ -71,6 +71,10 @@ function ListTradesHistory(props) {
                     </Popover>
                   )
                 }
+                {
+                  trades.items.length == 0 &&
+                  <li className="text-center pt5" >{intl.get('common.list.no_data')}</li>
+                }
               </ul>
             </Spin>
           </div>
