@@ -33,6 +33,7 @@ const ItemMore=({item,tokens})=>{
 function ListOrderBook(props) {
   console.log('ListOrderBook render',props)
   const {orderBook:list,trades} = props
+  console.log('ListOrderBook,trades',trades)
   const tokens = getTokensByMarket(list.filters.market)
   const priceSelected = (value, e) => {
     e.preventDefault()
@@ -44,7 +45,7 @@ function ListOrderBook(props) {
   }
 
   const isIncresse = () => {
-    if(trades.length ===1){
+    if(trades.length===0 || trades.length ===1){
       return true
     }else {
       return trades[0].price > trades[1].price
