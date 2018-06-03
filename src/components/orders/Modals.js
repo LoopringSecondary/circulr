@@ -1,4 +1,4 @@
-import React from 'react'
+ import React from 'react'
 import {Containers} from 'modules'
 import UiContianers from 'LoopringUI/containers'
 import Detail from './Detail'
@@ -54,7 +54,9 @@ function Modals(props) {
       </Containers.Layers>
       <Containers.Layers id="placeOrderLRCFee">
         <UiContianers.Modals id="placeOrderLRCFee" className="rs">
-          <PlaceOrderLRCFee />
+          <Containers.LrcFee>
+            <PlaceOrderLRCFee />
+          </Containers.LrcFee>
         </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="placeOrderTTL">
