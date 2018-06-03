@@ -71,7 +71,7 @@ export default class Fills extends React.Component {
         })}
         {
           fills.length ===0 && <div>
-            NO Data
+            {intl.get('common.list.no_data')}
           </div>
         }
         </tbody>

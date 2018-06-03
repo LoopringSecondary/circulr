@@ -102,7 +102,7 @@ export default function ListMyFills(props) {
                   })
                 }
                 {
-                  fills.items.length == 0 &&
+                  fills.items.length === 0 &&
                   <tr><td colSpan='100'><div className="text-center">{intl.get('common.list.no_data')}</div></td></tr>
                 }
               </tbody>
