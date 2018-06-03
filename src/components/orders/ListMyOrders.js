@@ -108,16 +108,13 @@ export default function ListMyOrders(props) {
                  className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2">
             <thead>
             <tr>
-              <th>{intl.get('order.hash')}</th>
               <th>{intl.get('order.market')}</th>
               <th>{intl.get('order.side')}</th>
-              <th>{intl.get('order.amount')}</th>
-              <th>{intl.get('order.price')}</th>
-              <th>{intl.get('order.total')}</th>
-              <th>{intl.get('order.LRCFee')}</th>
+              <th className="text-right">{intl.get('order.price')}</th>
+              <th className="text-right">{intl.get('order.amount')}</th>
+              <th className="text-right">{intl.get('order.total')}</th>
+              <th className="text-right">{intl.get('order.LRCFee')}</th>
               <th>{intl.get('order.filled')}</th>
-              <th>{intl.get('order.validSince')}</th>
-              <th>{intl.get('order.validUntil')}</th>
               <th>{intl.get('order.status')}</th>
             </tr>
             </thead>
@@ -130,17 +127,14 @@ export default function ListMyOrders(props) {
                 };
                 return (
                   <tr key={index}>
-                    <td>{renders.hash(orderFm, actions)}</td>
                     <td>{orderFm.getMarket()}</td>
                     <td>{renders.side(orderFm)}</td>
-                    <td>{orderFm.getAmount()}</td>
-                    <td>{orderFm.getPrice()}</td>
-                    <td>{orderFm.getTotal()}</td>
-                    <td>{orderFm.getLRCFee()}</td>
+                    <td className="text-right">{orderFm.getPrice()}</td>
+                    <td className="text-right">{orderFm.getAmount()}</td>
+                    <td className="text-right">{orderFm.getTotal()}</td>
+                    <td className="text-right">{orderFm.getLRCFee()}</td>
                     <td>{orderFm.getFilledPercent()}%</td>
-                    <td>{orderFm.getCreateTime()}</td>
-                    <td>{orderFm.getExpiredTime()}</td>
-                    <td>{renders.status(orderFm,item.originalOrder,cancelOrder)}</td>
+                    <td className="text-left">{renders.status(orderFm,item.originalOrder,cancelOrder)}</td>
                   </tr>
                 )
               })
@@ -190,19 +184,19 @@ export const renders = {
       statusNode = <Badge className="text-color-dark-1" status="processing" text={<span className="color-white-1">{intl.get('order_status.opened')}</span>}/>
     }
     if (status === 'ORDER_FINISHED') {
-      statusNode = <Badge className="text-color-dark-1" status="success" text={<span className="color-white-1">{intl.get('order_status.completed')}</span>}/>
+      statusNode = <Badge className="text-color-dark-1" status="success" text={<span className="text-up">{intl.get('order_status.completed')}</span>}/>
     }
     if (status === 'ORDER_CANCELLED') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={<span className="color-white-1">{intl.get('order_status.canceled')}</span>}/>
+      statusNode = <Badge className="text-color-dark-1" status="default" text={<span className="color-white-3">{intl.get('order_status.canceled')}</span>}/>
     }
     if (status === 'ORDER_CUTOFF') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={<span className="color-white-1">{intl.get('order_status.canceled')}</span>}/>
+      statusNode = <Badge className="text-color-dark-1" status="default" text={<span className="color-white-3">{intl.get('order_status.canceled')}</span>}/>
     }
     if (status === 'ORDER_EXPIRE') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={<span className="color-white-1">{intl.get('order_status.expired')}</span>}/>
+      statusNode = <Badge className="color-white-3" status="default" text={<span className="color-white-3">{intl.get('order_status.expired')}</span>}/>
     }
     return (
-      <div className="d-flex text-nowrap">
+      <div className="d-flex text-nowrap text-left">
         {statusNode} {status === 'ORDER_OPENED' && cancleBtn}
       </div>
     )
