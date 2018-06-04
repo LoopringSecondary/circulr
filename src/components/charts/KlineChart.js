@@ -5,6 +5,7 @@ import G2 from '@antv/g2'
 import {connect} from 'dva'
 import {getFormattedTime} from 'modules/formatter/common'
 import moment from 'moment'
+import mockData from './mock'
 
 console.log('Viser',Viser)
 
@@ -62,15 +63,21 @@ class KlineChart extends React.Component {
     const {start, end} = this.state;
     const {trends} = this.props
 
-    const data = trends ? trends.map(item=>{
-      const time = getFormattedTime(moment.unix(item.start),'YYYY-MM-DD HH:mm')
+    // const data = trends ? trends.map(item=>{
+    //   const time = getFormattedTime(moment.unix(item.start),'YYYY-MM-DD HH:mm')
+    //   return {
+    //     time : time,
+    //     start : item.open,
+    //     max : item.high,
+    //     min : item.low,
+    //     end : item.close,
+    //     volumn : item.vol
+    //   }
+    // }) : []
+
+    const data = mockData ? mockData.map(item=>{
       return {
-        time : time,
-        start : item.open,
-        max : item.high,
-        min : item.high,
-        end : item.close,
-        volumn : item.vol
+        ...item
       }
     }) : []
 
@@ -97,6 +104,7 @@ class KlineChart extends React.Component {
       ds.setState('end', endText);
     }
     const sliderOpts = {
+      container:"kline",
       width: 'auto',
       height: 26,
       padding: [ 20, 40, 20, 40 ],
@@ -115,11 +123,11 @@ class KlineChart extends React.Component {
     };
 
     return (
-      <div>
-        <Chart forceFit height={255} animate={false} padding={[ 10,10,10,10 ]}  data={dv} scale={scale1} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
+      <div id="kline">
+        <Chart forceFit height={255} animate={false} padding={[ 10,10,2,10 ]}  data={dv} scale={scale1} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
           <Tooltip {...tooltipOpts}/>
           <Axis dataKey="range" position="right" grid={null} show={false} />
-          <Axis dataKey="time" line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} label={{formatter:(value)=>moment(value,'YYYY-MM-DD').format('MM-DD')}}/>
+          <Axis dataKey="time" line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} label={{formatter:(value)=>moment(value,'YYYY-MM-DD').format('MM-DD'),offset:10,textStyle:{fontSize:'10px'}}}/>
           <View data={dv} end={{x: 1, y: 0.68}}  guide={()=>null}>
             <Candle
               position='time*range'
