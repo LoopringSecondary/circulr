@@ -1,12 +1,15 @@
 import { Chart, Tooltip, Legend, Axis, Line, Plugin, Slider, View, Candle, Bar } from 'viser-react';
+import * as Viser from 'viser-react';
 import * as React from 'react'
 import G2 from '@antv/g2'
 import {connect} from 'dva'
 import {getFormattedTime} from 'modules/formatter/common'
 import moment from 'moment'
 
+console.log('Viser',Viser)
+
 const { Global } = G2; // 获取 Global 全局对象
-//Global.setTheme('dark');
+Global.setTheme('dark');
 
 const DataSet = require('@antv/data-set');
 
@@ -14,7 +17,9 @@ const scale1 = [{
   dataKey: 'time',
   type: 'timeCat',
   nice: false,
-  range: [ 0, 1 ]
+  range: [ 0, 1 ],
+  tickInterval: 0.1,
+
 }, {
   dataKey: 'trend',
   values: [ '上涨', '下跌' ],
@@ -81,13 +86,6 @@ class KlineChart extends React.Component {
     });
     const dv = ds.createView();
     dv.source(data)
-      // .transform({
-      //   type: 'filter',
-      //   callback: obj => {
-      //     const date = obj.time;
-      //     return date <= end && date >= start;
-      //   }
-      // })
       .transform({
         type: 'map',
         callback: obj => {
@@ -102,7 +100,6 @@ class KlineChart extends React.Component {
       ds.setState('start', startText);
       ds.setState('end', endText);
     }
-
     const sliderOpts = {
       width: 'auto',
       height: 26,
@@ -123,62 +120,52 @@ class KlineChart extends React.Component {
 
     return (
       <div>
-        <Chart forceFit height={255} animate={false} padding={[ 10, 10, 100, 60 ]} data={dv} scale={scale1}>
+        <Chart forceFit height={255} animate={false} padding={[ 10,55,10,0 ]}  data={dv} scale={scale1} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
           <Tooltip {...tooltipOpts}/>
-          { true && <Axis /> }
-          { true && <Legend offset={20}/> }
+          { true && <Axis dataKey="range" position="right" />}
+          { false && <Legend offset={20}/> }
           <View data={dv} end={{x: 1, y: 0.68}}  guide={()=>null}>
-            <Candle position='time*range' color={['trend', val => {
-              if (val === '上涨') {
-                return '#f04864';
-              }
-
-              if (val === '下跌') {
-                return '#2fc25b';
-              }
-            }]}
-            tooltip={['time*start*end*max*min', (time, start, end, max, min) => {
-              return {
-                name: time,
-                value: '<br><span style="padding-left: 16px">开盘价：' + start + '</span><br/>'
-                + '<span style="padding-left: 16px">收盘价：' + end + '</span><br/>'
-                + '<span style="padding-left: 16px">最高价：' + max + '</span><br/>'
-                + '<span style="padding-left: 16px">最低价：' + min + '</span>'
-              };
-            }]}
+            <Candle
+              position='time*range'
+              color={['trend', val => {
+                if (val === '上涨') {return '#f04864';}
+                if (val === '下跌') {return '#2fc25b';}
+              }]}
+              tooltip={['time*start*end*max*min', (time, start, end, max, min) => {
+                return {
+                  name: time,
+                  value: '<br><span style="padding-left: 16px">开盘价：' + start + '</span><br/>'
+                  + '<span style="padding-left: 16px">收盘价：' + end + '</span><br/>'
+                  + '<span style="padding-left: 16px">最高价：' + max + '</span><br/>'
+                  + '<span style="padding-left: 16px">最低价：' + min + '</span>'
+                };
+              }]}
             />
           </View>
           <View data={dv} scale={[{dataKey: 'volumn',tickCount: 2}]} start={{x: 0, y: 0.68}}>
             { true && <Axis dataKey='time' tickLine={null} label={null}/> }
-            { true && <Axis dataKey='volumn' label={{
+            { false &&
+              <Axis dataKey='volumn' label={{
               formatter: function(val) {
                 return parseInt(String(val / 1000), 10) + 'k';
-              }
-            }} />}
-            <Bar position='time*volumn' color={['trend',  val => {
-              if (val === '上涨') {
-                return '#f04864';
-              }
-
-              if (val === '下跌') {
-                return '#2fc25b';
-              }
-            }]} tooltip={['time*volumn', (time, volumn) => {
-              return {
-                name: time,
-                value: '<br/><span style="padding-left: 16px">成交量：' + volumn + '</span><br/>'
-              };
-            }]} />
+              }}}
+            />}
+            <Bar
+              position='time*volumn'
+              color={['trend',  val => {
+                if (val === '上涨') {return '#f04864';}
+                if (val === '下跌') {return '#2fc25b';}
+              }]}
+              tooltip={['time*volumn', (time, volumn) => {
+                return {
+                  name: time,
+                  value: '<br/><span style="padding-left: 16px">成交量：' + volumn + '</span><br/>'
+                };
+              }]}
+            />
           </View>
         </Chart>
-        {
-          false &&
-          <Plugin>
-            <Slider {...sliderOpts} />
-          </Plugin>
-        }
-
-
+        { false &&<Plugin><Slider {...sliderOpts} /></Plugin>}
       </div>
     );
   }

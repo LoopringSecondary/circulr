@@ -19,7 +19,6 @@ class DepthChart extends React.Component {
       sellVol = sellVol + fm.toNumber(item[1])
       return { price:fm.toNumber(item[0]), vol:sellVol }
     })
-
     return (
       <div className="row ml0 mr0">
         <div className="col-6 pl0 pr0">
