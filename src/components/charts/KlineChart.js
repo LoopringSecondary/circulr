@@ -1,8 +1,15 @@
 import { Chart, Tooltip, Legend, Axis, Line, Plugin, Slider, View, Candle, Bar } from 'viser-react';
-import * as React from 'react';
-import sourceData from './stock.js';
+import * as React from 'react'
+import G2 from '@antv/g2'
+import {connect} from 'dva'
+import {getFormattedTime} from 'modules/formatter/common'
+import moment from 'moment'
+
+const { Global } = G2; // 获取 Global 全局对象
+//Global.setTheme('dark');
+
 const DataSet = require('@antv/data-set');
-console.log('sourceData',sourceData)
+
 const scale1 = [{
   dataKey: 'time',
   type: 'timeCat',
@@ -39,22 +46,33 @@ const tooltipOpts = {
   + '{name}{value}</li>',
 };
 
-export default class KlineChart extends React.Component {
+class KlineChart extends React.Component {
 
   state = {
-    data: [],
     start: '2015-07-07',
     end: '2015-10-25',
   }
 
-  slideChange = (opts) => {
-    this.setState({
-      start: opts.startText, end: opts.endText,
-    });
-  }
+  render() {
+    const {start, end} = this.state;
+    const {trends} = this.props
 
-  getData() {
-    const { start, end, data } = this.state;
+    const data = trends ? trends.map(item=>{
+      //TODO MOCK
+      if(item.high === 0.14142136) {
+        item.high = 0.00085929077
+      }
+      const time = getFormattedTime(moment.unix(item.start),'YYYY-MM-DD HH:mm')
+      return {
+        time : time,
+        start : item.open,
+        max : item.high,
+        min : item.high,
+        end : item.close,
+        volumn : item.vol
+      }
+    }) : []
+
     const ds = new DataSet({
       state: {
         start,
@@ -63,13 +81,13 @@ export default class KlineChart extends React.Component {
     });
     const dv = ds.createView();
     dv.source(data)
-      .transform({
-        type: 'filter',
-        callback: obj => {
-          const date = obj.time;
-          return date <= end && date >= start;
-        }
-      })
+      // .transform({
+      //   type: 'filter',
+      //   callback: obj => {
+      //     const date = obj.time;
+      //     return date <= end && date >= start;
+      //   }
+      // })
       .transform({
         type: 'map',
         callback: obj => {
@@ -78,19 +96,11 @@ export default class KlineChart extends React.Component {
           return obj;
         }
       });
-    return dv;
-  }
-  componentDidMount() {
-    this.setState({ data: sourceData });
-    // this.setState({ data: [] });
-  }
 
-  render() {
-    const {start, end, data} = this.state;
-    const dv = this.getData();
-
-    if (!data.length) {
-      return (<div></div>);
+    const slideChange = (opts) => {
+      const {startText, endText} = opts;
+      ds.setState('start', startText);
+      ds.setState('end', endText);
     }
 
     const sliderOpts = {
@@ -108,11 +118,12 @@ export default class KlineChart extends React.Component {
           nice: false,
         }
       },
-      onChange: this.slideChange.bind(this)
+      onChange: slideChange.bind(this)
     };
+
     return (
       <div>
-        <Chart forceFit height={255} animate={false} padding={[ 10, 10, 10, 10 ]} data={dv} scale={scale1}>
+        <Chart forceFit height={255} animate={false} padding={[ 10, 10, 100, 60 ]} data={dv} scale={scale1}>
           <Tooltip {...tooltipOpts}/>
           { true && <Axis /> }
           { true && <Legend offset={20}/> }
@@ -172,3 +183,11 @@ export default class KlineChart extends React.Component {
     );
   }
 }
+
+function mapToProps(state) {
+  return {
+    trends:state.sockets.trends.items,
+  }
+}
+
+export default (connect(mapToProps)(KlineChart));

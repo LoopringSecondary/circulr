@@ -177,14 +177,14 @@ class PlaceOrderForm extends React.Component {
 
     let ttlInSecond = 0, ttlShow = ''
     if(ttl.timeToLivePatternSelect === 'easy') {
-      const ttl = Number(ttlValue)
+      const ttlNumber = Number(ttlValue)
       const unit = ttlUnit
       switch(unit){
-        case 'minute': ttlInSecond = ttl * 60 ; ttlShow = `${ttl} ${intl.get('common.minute')}`; break;
-        case 'hour': ttlInSecond = ttl * 3600 ; ttlShow = `${ttl} ${intl.get('common.hour')}`; break;
-        case 'day': ttlInSecond = ttl * 86400; ttlShow = `${ttl} ${intl.get('common.day')}`; break;
-        case 'week': ttlInSecond = ttl * 7 * 86400; ttlShow = `${ttl} ${intl.get('common.week')}`; break;
-        case 'month': ttlInSecond = ttl * 30 * 86400; ttlShow = `${ttl} ${intl.get('common.month')}`; break;
+        case 'minute': ttlInSecond = ttlNumber * 60 ; ttlShow = `${ttlNumber} ${intl.get('common.minute')}`; break;
+        case 'hour': ttlInSecond = ttlNumber * 3600 ; ttlShow = `${ttlNumber} ${intl.get('common.hour')}`; break;
+        case 'day': ttlInSecond = ttlNumber * 86400; ttlShow = `${ttlNumber} ${intl.get('common.day')}`; break;
+        case 'week': ttlInSecond = ttlNumber * 7 * 86400; ttlShow = `${ttlNumber} ${intl.get('common.week')}`; break;
+        case 'month': ttlInSecond = ttlNumber * 30 * 86400; ttlShow = `${ttlNumber} ${intl.get('common.month')}`; break;
       }
     } else {
       if(ttl.timeToLiveStart && ttl.timeToLiveEnd) {
