@@ -15,7 +15,7 @@ class DepthChart extends React.Component {
     }
 
     let buyVol = fm.toBig(0)
-    const sourceBuy = values1.buy.reverse().map((item) => {
+    const sourceBuy = values1.buy.map((item) => {
       buyVol = buyVol.plus(item[1])
       return { price:item[0], vol:buyVol.toString(10) }
     }).reverse();
