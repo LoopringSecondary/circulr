@@ -58,10 +58,6 @@ class KlineChart extends React.Component {
     const {trends} = this.props
 
     const data = trends ? trends.map(item=>{
-      //TODO MOCK
-      if(item.high === 0.14142136) {
-        item.high = 0.00085929077
-      }
       const time = getFormattedTime(moment.unix(item.start),'YYYY-MM-DD HH:mm')
       return {
         time : time,
