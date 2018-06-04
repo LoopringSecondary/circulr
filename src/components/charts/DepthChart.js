@@ -9,11 +9,6 @@ const DataSet = require('@antv/data-set');
 class DepthChart extends React.Component {
   render() {
     const {depth} = this.props
-    const values1 = {
-      "sell":[["0.9500000000",10],["0.1410000000",20],["0.0100000000",10],["0.0016328200",11],["0.0016328100",12],["0.0008934900",13],["0.0008919300",18],["0.0008750000",2]],
-      "buy":[["0.0008720000",20],["0.0008693400",15],["0.0008679800",19],["0.0008673300",26],["0.0008100000",1],["0.0002000000",20],["0.0000890000",5],["0.0000200000",16]]
-    }
-
     let buyVol = 0
     const sourceBuy = depth.buy.map((item) => {
       buyVol = buyVol + fm.toNumber(item[1])
