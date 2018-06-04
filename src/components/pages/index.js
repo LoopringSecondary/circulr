@@ -4,7 +4,6 @@ import Wallet from './Wallet'
 import Unlock from './Unlock'
 import Test from './Test'
 import WalletTest from './WalletTest'
-import DepthChart from './DepthChart'
 
 export default {
   Home,
@@ -13,5 +12,4 @@ export default {
   Test,
   WalletTest,
   Unlock,
-  DepthChart
 }
