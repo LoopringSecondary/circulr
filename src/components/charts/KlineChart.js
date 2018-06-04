@@ -120,10 +120,10 @@ class KlineChart extends React.Component {
 
     return (
       <div>
-        <Chart forceFit height={255} animate={false} padding={[ 10,55,10,0 ]}  data={dv} scale={scale1} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
+        <Chart forceFit height={255} animate={false} padding={[ 10,10,10,10 ]}  data={dv} scale={scale1} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
           <Tooltip {...tooltipOpts}/>
-          <Axis dataKey="range" position="right" grid={null} />
-          <Axis dataKey="time" line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} />
+          <Axis dataKey="range" position="right" grid={null} show={false} />
+          <Axis dataKey="time" line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} label={{formatter:(value)=>moment(value,'YYYY-MM-DD').format('MM-DD')}}/>
           <View data={dv} end={{x: 1, y: 0.68}}  guide={()=>null}>
             <Candle
               position='time*range'
@@ -143,15 +143,8 @@ class KlineChart extends React.Component {
             />
           </View>
           <View data={dv} scale={[{dataKey: 'volumn',tickCount: 2}]} start={{x: 0, y: 0.68}}>
-            { true && <Axis dataKey='time' tickLine={null} label={null}/> }
             <Axis dataKey="time" grid={null} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} />
             <Axis dataKey="volumn" show={false} />
-            { false &&
-              <Axis dataKey='volumn' label={{
-              formatter: function(val) {
-                return parseInt(String(val / 1000), 10) + 'k';
-              }}}
-            />}
             <Bar
               position='time*volumn'
               color={['trend',  val => {
