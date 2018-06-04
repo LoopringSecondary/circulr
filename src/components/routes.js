@@ -54,6 +54,7 @@ export default class Routes extends React.Component {
             <Route path="/wallet" render={Logged} />
             <Route path="/trade" render={Logged} />
             <Route path="/dev" exact component={Pages.Test} />
+            <Route path="/depth" exact component={Pages.DepthChart} />
           </Switch>
           <Orders.Modals />
           <Fills.Modals />
