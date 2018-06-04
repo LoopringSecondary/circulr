@@ -160,9 +160,9 @@ const transfromers = {
     resTransformer:(id,res)=>{
       res = JSON.parse(res)
    // console.log(id,'res',res)
-      let items ={}
+      let items = []
       if(!res.error && res.data && isArray(res.data)){
-        items ={ ...res.data }
+        items = [ ...res.data ]
       }
       updateItems(items,id)
     },
