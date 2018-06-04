@@ -517,6 +517,20 @@ export default {
     receive:'Receive',
     send:'Send'
   },
+  export_keystore:{
+    title:'Export Keystore',
+    types:{
+      file:'File Keystore',
+      text:'Text Keystore',
+      qr:'Qrcode Keystore'
+    },
+    actions:{
+      download:'Download Keystore',
+      copy:'Copy Keystore',
+      get:"Get Keystore"
+    },
+    tip: 'Circular doesn\'t keep a copy of your private key, keystore file, or mnemonic words. Make sure you back up these information immediately.',
+},
   kline_chart:{
     kline_chart:'Kline Chart',
   },

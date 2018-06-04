@@ -53,7 +53,7 @@ const words = {
   canceling:'取消中',
   list:{
     no_data:'暂无数据',
-  }
+  },
 }
 
 const types = {
@@ -522,6 +522,19 @@ export default {
   user_center:{
     receive:'收款',
     send:'转账'
+  },
+  export_keystore:{
+    title:'导出Keystore',
+    types:{
+      file:'文件下载',
+      text:'文本',
+      qr:'二维码'
+    },
+    actions:{
+      download:'下载Keystore',
+      copy:'复制Keystore',
+      get:"获得 Keystore"
+    }
   },
   kline_chart:{
     kline_chart:'K线图',
