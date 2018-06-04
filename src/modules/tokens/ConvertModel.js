@@ -8,7 +8,8 @@ export default {
     isMax: false,
     gasPrice: 10,
     gasLimit: 200000,
-    outBalance: false
+    outBalance: false,
+    loading:false,
   },
   reducers: {
     reset(state, {payload}) {
@@ -16,7 +17,8 @@ export default {
         ...state,
         amount: toBig(0),
         isMax: false,
-        outBalance: false
+        outBalance: false,
+        loading:false,
       }
     },
     setOutBalance(state, {payload}) {
@@ -52,6 +54,13 @@ export default {
       return {
         ...state,
         token
+      }
+    },
+    setLoading(state,{payload}){
+      const {loading} = payload;
+      return {
+        ...state,
+        loading
       }
     }
   },

@@ -11,11 +11,15 @@ import {Containers} from 'modules'
 import GasFee from '../setting/GasFee1'
 import Notification from '../../common/loopringui/components/Notification'
 import intl from 'react-intl-universal';
+import {getLastGas} from "../../modules/settings/formatters";
+import Alert from 'LoopringUI/components/Alert'
+
 
 const WETH = Contracts.WETH;
 function ConvertForm(props) {
-  const {wallet, convert,convertToken, balances, prices,form,gasPrice,dispatch} = props;
-  const {amount,isMax} = convert;
+  const {wallet, convert,convertToken, balances, prices,form,gas,dispatch} = props;
+  const gasPrice = getLastGas(gas).gasPrice
+  const {amount,isMax,loading} = convert;
   const {token} = convertToken;
   if(!token){console.error('token is required');return null}
   const type = token.toLowerCase() === 'eth' ? 'deposit': 'withdraw';
@@ -24,6 +28,9 @@ function ConvertForm(props) {
   const account = wallet.account || window.account;
   const assets = getBalanceBySymbol({balances, symbol: token, toUnit: true});
   const tf = new TokenFormatter({symbol:token});
+
+  const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
+
   const handleAmountChange = (e) => {
     convert.setAmount({amount: e.target.value});
   };
@@ -36,9 +43,15 @@ function ConvertForm(props) {
     convert.setMax({amount: max});
     form.setFieldsValue({amount:max})
   };
+
+  const toUnlock = () => {
+    dispatch({type:'layers/showLayer',payload:{id:'unlock'}})
+  }
+
   const toConvert =  async () => {
     form.validateFields(async  (err,values) => {
-      if(err){
+      convert.setLoading({loading:true})
+      if(!err){
         let data = '';
         let value = '';
         if (token.toLowerCase() === 'Eth') {
@@ -79,7 +92,9 @@ function ConvertForm(props) {
             Notification.open({type:'error',message:intl.get('convert.notification_fail_title',{value:amount,token}),description:res.error.message})
           }
         });
-     }
+     }else{
+        Notification.open({type:'error',message:intl.get('convert.notification_fail_title',{value:amount,token}),description:err.message})
+      }
     });
 
   };
@@ -102,7 +117,7 @@ function ConvertForm(props) {
   return (
     <div className="pd-lg">
       <div className="sidebar-header">
-        <h3>{token} 转换为 {token.toLowerCase() === 'eth' ? 'WETH' : 'ETH'}</h3>
+        <h3>{token.toLowerCase() === 'eth' ? intl.get('convert.convert_eth_title'):intl.get('convert.convert_weth_title')}</h3>
       </div>
       <div className="divider solid"/>
       <div className="row align-items-center justify-content-center mt25 mb25">
@@ -167,7 +182,13 @@ function ConvertForm(props) {
           </span>
         </div>
       </div>
-      <Button className="btn-block btn-xlg btn-o-dark" onClick={toConvert}>{intl.get('convert.actions_confirm_convert')}</Button>
+      {
+        !isUnlocked &&
+        <div className="mb15 mt15">
+          <Alert type="info" title={<div className="color-black-1">{intl.get('unlock.has_not_unlocked')}<a onClick={toUnlock} className="ml5">{intl.get('actions.to_unlock')}<Icon type="right" /></a></div>} theme="light" size="small"/>
+        </div>
+      }
+      <Button className="btn-block btn-xlg btn-o-dark" onClick={toConvert} disabled={loading || !isUnlocked} loading={loading}>{intl.get('convert.actions_confirm_convert')}</Button>
       {false && token.toLowerCase() === 'eth' && <p className="text-color-dark-1 mt15">{intl.get('convert.convert_eth_tip')}</p>}
     </div>
   )
@@ -177,7 +198,7 @@ function mapToProps(state) {
   return {
     balances:state.sockets.balance.items,
     prices:state.sockets.marketcap.items,
-    gasPrice:state.gas.gasPrice.last
+    gas:state.gas
   }
 
 }
