@@ -136,6 +136,7 @@ export default {
       yield put({type:'emitEvent',payload})
     },
     *filtersChange({payload},{call,select,put}){
+      console.log('filtersChange:',payload)
       yield put({type:'filtersChangeStart',payload})
       yield put({type:'emitEvent',payload})
     },

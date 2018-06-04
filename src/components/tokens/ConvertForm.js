@@ -68,7 +68,7 @@ function ConvertForm(props) {
               actions:(
                 <div>
                   <Button className="alert-btn mr5"
-                          onClick={() => window.open(`https://etherscan.io/tx/${res.result}`, '_blank')}> {intl.get('token.transfer_result_etherscan')}
+                          onClick={() => window.open(`https://etherscan.io/tx/${res.result}`, '_blank')}> {intl.get('actions.view_result_etherscan')}
                   </Button>
                 </div>
               )

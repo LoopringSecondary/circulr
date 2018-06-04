@@ -11,6 +11,8 @@ const words = {
   type: 'Type',
   types: 'Types',
   gas: 'Gas',
+  gas_limit:'Gas Limit',
+  gas_price:'Gas Price',
   price: 'Price',
   total: 'Total',
   worth: "Worth",
@@ -46,12 +48,12 @@ const words = {
   next_page: 'Next Page',
   import: "Import",
   recipient: 'Recipient',
-  help:'Help',
-  feedback:"Feedback",
-  quit:'Quit',
-  canceling:'Canceling',
-  list:{
-    no_data:'No Data',
+  help: 'Help',
+  feedback: "Feedback",
+  quit: 'Quit',
+  canceling: 'Canceling',
+  list: {
+    no_data: 'No Data',
   }
 }
 const types = {
@@ -81,8 +83,12 @@ const notifications = {
     copy_suc: 'Copy Successfully',
     copy_fail: 'Copy Failed',
     not_allowed_place_order_worth: 'Order Amount Is Too Small',
-    in_watch_only_mode:'Switched to Watch-only Mode',
-    using_watch_only_mode:'You Are Now using Watch-only Mode',
+    in_watch_only_mode: 'Switched to Watch-only Mode',
+    using_watch_only_mode: 'You Are Now using Watch-only Mode',
+    resend_suc:'Resend transaction successfully',
+    resend_fail:'Resend transaction failed',
+    cancel_suc:'Cancel transaction  sent successfully',
+    cancel_fail:'Cancel transaction failed',
   },
   message: {
     wallet_locked: 'Your wallet seems locked yet, please unlock first',
@@ -100,7 +106,7 @@ const notifications = {
     not_allowed_place_order_worth: 'Due to your total worth less than {worth}, you could not place this order',
     eth_is_required: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
     lrcfee_is_required: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
-    unlock_by_cookie_address:'Loopr has switched your account to the watch-only mode, and your private-key is no longer available to the browser.  You\'ll need to unlock your wallet again to perform some operations.',
+    unlock_by_cookie_address: 'Loopr has switched your account to the watch-only mode, and your private-key is no longer available to the browser.  You\'ll need to unlock your wallet again to perform some operations.',
   }
 }
 
@@ -116,6 +122,7 @@ const actions = {
   transfer_send: "Yes, Send Now",
   place_buy_order: "Place Buy Order",
   place_sell_order: "Place Sell Order",
+  view_result_etherscan: "View transaction on Etherscan.io",
 }
 
 const time_unit = {
@@ -151,8 +158,8 @@ export default {
     validSince: 'Valid Since',
     validUntil: 'Valid Until',
     status: words.status,
-    no:words.cancel,
-    canceling:words.canceling,
+    no: words.cancel,
+    canceling: words.canceling,
   },
   order_type: {
     market_order: 'Open Market Order',
@@ -170,9 +177,9 @@ export default {
   },
   order_list: {
     actions_cancel_all: 'Cancel All',
-    my_open_orders:'Open Orders',
-    my_all_orders:'All Orders',
-    order_book:'Order Book',
+    my_open_orders: 'Open Orders',
+    my_all_orders: 'All Orders',
+    order_book: 'Order Book',
   },
   order_detail: {
     title: 'Order Detail',
@@ -184,18 +191,18 @@ export default {
     order_since: "Valid Since",
     order_until: "Valid Until",
   },
-  order_cancel:{
+  order_cancel: {
     cancel_title: "Do you want to cancel this order?",
     cancel_all_title: "Are you sure to cancel all  {pair} orders ?",
-    canceling:words.canceling,
-    actions_to_cancel:'Confirm to Cancel Order',
-    manual_cancel_tip:'Cancel order manually shall cost gas',
+    canceling: words.canceling,
+    actions_to_cancel: 'Confirm to Cancel Order',
+    manual_cancel_tip: 'Cancel order manually shall cost gas',
     order_expire_title: "This order will be expired automatically in",
     expire_duration: "{days,plural,=0{} =1{1 day} other {# days}} {hours,plural,=0{} =1{1 hour} other {# hours}} {minutes,plural,=1{1 minute} other {# minutes}} {seconds,plural,=1{1 second} other {# seconds}}",
-    order_validity:'Order Validity',
-    order_expired_tip:"This order is already expired",
-    actions_wait_expire:'Wait for expiring automatically',
-    auto_expire_title:'Order expired costs no gas'
+    order_validity: 'Order Validity',
+    order_expired_tip: "This order is already expired",
+    actions_wait_expire: 'Wait for expiring automatically',
+    auto_expire_title: 'Order expired costs no gas'
   },
   settings: {
     title: 'Settings',
@@ -248,7 +255,7 @@ export default {
     generate_order: 'Generate Order',
     instruction: '1. 以您希望的兑换率生成一个订单，把不包含鉴权数据（没有这部分数据任何人都无法撮合您的订单）的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方使用Circulr移动端扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗油费。',
     notice: '* P2P订单不需要支付LRC手续费</br>',
-    user_center_p2p:'P2P Trade'
+    user_center_p2p: 'P2P Trade'
   },
   sign: {
     not_signed: "You may have some items not signed",
@@ -269,7 +276,10 @@ export default {
     status: words.status,
     confirm_time: 'Confirm Time',
     value: 'Value',
-    to: 'To'
+    to: 'To',
+    data:'Data',
+    gas_limit:words.gas_limit,
+    gas_price:words.gas_price
   },
   tx_status: {
     all: 'All status',
@@ -315,6 +325,12 @@ export default {
     tabs_basic: 'Basic Detail',
     tabs_fill: 'Fill Detail',
   },
+  tx_resend:{
+    title:'Resend Transaction',
+    action_resend:"Resend",
+    fail_title:"Can't resend this transactions ",
+    fail_reason:"Can't get detail information of this tx."
+  },
   // -----------
   // fill
   // -----------
@@ -326,15 +342,15 @@ export default {
     lrc_fee: words.lrc_fee,
     lrc_reward: words.lrc_reward,
     margin_split: words.margin_split,
-    created:'Created',
+    created: 'Created',
   },
   fill_list: {
-    my_recent_fills:'Recent Fills',
-    my_all_fills:'All Fills',
-    trade_history:'Trade History',
+    my_recent_fills: 'Recent Fills',
+    my_all_fills: 'All Fills',
+    trade_history: 'Trade History',
   },
   fill_detail: {
-    fill_detail:'Fill Detail',
+    fill_detail: 'Fill Detail',
   },
   ring: {
     ringIndex: "RingIndex",
@@ -348,8 +364,8 @@ export default {
     total_margin_split: words.margin_split,
     time: words.time,
   },
-  ring_detail:{
-    ring_detail:"Ring Detail",
+  ring_detail: {
+    ring_detail: "Ring Detail",
   },
   // -----------
   // ticker
@@ -390,7 +406,6 @@ export default {
     data: "Data",
     advanced: "Advanced",
     send_max: "Send Max",
-    transfer_result_etherscan: "View transaction on Etherscan.io",
     from: "From",
     to: "To",
     gas: "Gas",
@@ -406,13 +421,13 @@ export default {
     assets_title: 'Total Value',
   },
   convert: {
-    convert_eth_title:'Convert ETH to WETH',
-    convert_weth_title:'Convert WETH to ETH',
+    convert_eth_title: 'Convert ETH to WETH',
+    convert_weth_title: 'Convert WETH to ETH',
     convert_eth_tip: '0.1 ETH is reserved as gas so that you can send additional transactions.',
     actions_confirm_convert: 'Convert Now',
     actions_max: "Convert Max",
-    notification_suc_title:'Succeed to Convert {value} {token}',
-    notification_fail_title:'Failed to Convert {value} {token}'
+    notification_suc_title: 'Succeed to Convert {value} {token}',
+    notification_fail_title: 'Failed to Convert {value} {token}'
   },
   receive: {
     receive_title: 'My Ethereum Address',
@@ -513,28 +528,28 @@ export default {
     error_mnemonic_tip: "Invalid Mnemonic",
     mnemonic_tip_lack: 'Please Input your mnemonic',
   },
-  user_center:{
-    receive:'Receive',
-    send:'Send'
+  user_center: {
+    receive: 'Receive',
+    send: 'Send'
   },
-  export_keystore:{
-    title:'Export Keystore',
-    types:{
-      file:'File Keystore',
-      text:'Text Keystore',
-      qr:'Qrcode Keystore'
+  export_keystore: {
+    title: 'Export Keystore',
+    types: {
+      file: 'File Keystore',
+      text: 'Text Keystore',
+      qr: 'Qrcode Keystore'
     },
-    actions:{
-      download:'Download Keystore',
-      copy:'Copy Keystore',
-      get:"Get Keystore"
+    actions: {
+      download: 'Download Keystore',
+      copy: 'Copy Keystore',
+      get: "Get Keystore"
     },
     tip: 'Circular doesn\'t keep a copy of your private key, keystore file, or mnemonic words. Make sure you back up these information immediately.',
-},
-  kline_chart:{
-    kline_chart:'Kline Chart',
   },
-  price_chart:{
-    price_chart:'Price Chart',
+  kline_chart: {
+    kline_chart: 'Kline Chart',
+  },
+  price_chart: {
+    price_chart: 'Price Chart',
   },
 }

@@ -1,42 +1,33 @@
 import React from 'react';
-import {Form, Select, Spin,Button,Icon,Tooltip} from 'antd';
+import {Icon, Select, Spin} from 'antd';
 import intl from 'react-intl-universal';
-import {TxFm, getTypes} from 'modules/transactions/formatters';
+import {getTypes, TxFm} from 'modules/transactions/formatters';
 import {getShortAddress} from 'modules/formatter/common';
 import {connect} from "dva";
 import config from '../../common/config'
-import {toHex,toNumber,toBig} from "LoopringJS/common/formatter";
+import {toBig, toHex, toNumber} from "LoopringJS/common/formatter";
 import Notification from '../../common/loopringui/components/Notification'
-
 
 const Option = Select.Option;
 
  function ListTransaction(props) {
-  const {latestTransaction: list,gasPrice} = props
+  const {latestTransaction: list,gasPrice,dispatch} = props
   const statusChange = (value) => {
-    list.filtersChange({filters:{status: value}})
+    dispatch({type:"sockets/filtersChange",payload:{id:"latestTransaction",filters:{status: value}}})
   }
   const typeChange = (value) => {
-    list.filtersChange({filters: {type: value}})
+    console.log('filtersChange:',value)
+    dispatch({type:"sockets/filtersChange",payload:{id:"latestTransaction",filters:{type: value}}})
   }
-  const resendTx  = async (item)  => {
-    window.RELAY.account.getPendingRawTxByHash(item.txHash).then(async (res) => {
+  const resendTx  = (item)  => {
+    window.RELAY.account.getPendingRawTxByHash(item.txHash).then((res) => {
       if (!res.error) {
         const tx = res.result;
         tx.gasPrice = toHex(toBig(gasPrice).times(1e9));
         tx.data = tx.input;
         tx.gasLimit = tx.gas;
         tx.chainId = config.getChainId();
-        const account = props.account || window.account;
-        const signedTx = await account.signEthereumTx(tx);
-        window.ETH.sendRawTransaction(signedTx).then((response) => {
-          if (!response.error) {
-            Notification.open({message: intl.get("txs.resend_success"), type: "success", description:(<Button className="alert-btn mr5" onClick={() => window.open(`https://etherscan.io/tx/${response.result}`,'_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )});
-            window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx:tx, from: window.WALLET.address});
-          } else {
-            Notification.open({message: intl.get("txs.resend_failed"), type: "error", description:response.error.message})
-          }
-        })
+        dispatch({type:'layers/showLayer',payload:{id:'resend',tx}})
       } else {
         Notification.open({
           type: 'error',
@@ -47,27 +38,21 @@ const Option = Select.Option;
     })
   };
 
-  const cancelTx = async (item) => {
-      const tx = {
-        to:window.WALLET.address,
-        value:"0x0",
-        data:'0x',
-        chainId:config.getChainId(),
-        gasLimit:'0x5208',
-        gasPrice:toHex(toBig(gasPrice).times(1e9)),
-        nonce:toHex(toNumber(item.nonce))
-      };
-
-    const account = props.account || window.account;
-    const signedTx = await account.signEthereumTx(tx);
-
-    window.ETH.sendRawTransaction(signedTx).then((response) => {
-      if (!response.error) {
-        Notification.open({message: 'Canceling', type: "success", description:(<Button className="alert-btn mr5" onClick={() => window.open(`https://etherscan.io/tx/${response.result}`,'_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )});
-        window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx:tx, from: window.WALLET.address});
-      } else {
-        Notification.open({message: 'Failed to canceling', type: "error", description:response.error.message})
+  const cancelTx = (item) => {
+    const tx = {
+      to:window.WALLET.address,
+      value:"0x0",
+      data:'0x',
+      chainId:config.getChainId(),
+      gasLimit:'0x5208',
+      gasPrice:toHex(toBig(gasPrice).times(1e9)),
+      nonce:toHex(toNumber(item.nonce))
+    };
+    window.RELAY.account.getPendingRawTxByHash(item.txHash).then((res) => {
+      if(!res.error){
+        tx.gasPrice = res.result.gasPrice
       }
+      dispatch({type:'layers/showLayer',payload:{id:'cancel',tx}})
     })
   };
 

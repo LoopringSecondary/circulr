@@ -83,7 +83,7 @@ class CancelOrderConfirm extends React.Component {
           message: type === 'cancelOrder' ? intl.get('order.cancel_order_success') : intl.get('order.cancel_all_success', {pair: market}),
           type: "success",
           description: (<Button className="alert-btn mr5"
-                                onClick={() => window.open(`https://etherscan.io/tx/${response.result}`, '_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )
+                                onClick={() => window.open(`https://etherscan.io/tx/${response.result}`, '_blank')}> {intl.get('actions.view_result_etherscan')}</Button> )
         });
       } else {
         Notification.open({
