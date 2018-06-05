@@ -11,6 +11,8 @@ const words = {
   type: '类型',
   types: '类型',
   gas: '油费',
+  gas_limit:'Gas 数量',
+  gas_price:'Gas 价格',
   price: '价格',
   total: '总计',
   worth: "价值",
@@ -53,7 +55,7 @@ const words = {
   canceling:'取消中',
   list:{
     no_data:'暂无数据',
-  }
+  },
 }
 
 const types = {
@@ -85,6 +87,12 @@ const notifications = {
     not_allowed_place_order_worth: '订单金额过小',
     in_watch_only_mode:'已切换至观察模式',
     using_watch_only_mode:'您正在使用观察模式',
+    resend_suc:'重新发送交易成功',
+    resend_fail:'重新发送交易失败',
+    cancel_suc:'取消交易成功发出',
+    cancel_fail:'取消交易失败',
+    address_change:'解锁地址改变',
+    unlock_first:'请先解锁钱包'
   },
   message: {
     wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
@@ -103,11 +111,11 @@ const notifications = {
     eth_is_required: '由于需要支付ETH油费, 根据您当前订单需要发送的以太坊交易计算，还需要 {required} ETH',
     lrcfee_is_required: '由于需要支付LRC油费, 汇总您历史订单所需LRC，还需要 {required} LRC',
     unlock_by_cookie_address:'Loopr切换您的账户至观察模式，您的私钥对当前网页已失效。当您执行一些操作时可能需要再次解锁钱包。',
+    address_change:'解锁地址从{add1}变成{add2}'
   }
 }
 
 const actions = {
-  resend:'重发',
   receive: "接收",
   submit_order: '提交订单',
   generate_qrcode: '生成二维码',
@@ -118,6 +126,8 @@ const actions = {
   transfer_send: "是的，马上发送",
   place_buy_order: "提交买单",
   place_sell_order: "提交卖单",
+  view_result_etherscan: "在EtherScan查看结果",
+  cancel_tx:'取消交易'
 }
 
 const time_unit = {
@@ -273,7 +283,10 @@ export default {
     status: words.status,
     confirm_time:'确认时间',
     value:'金额',
-    to:'目的地址'
+    to:'目的地址',
+    data:'二进制数据',
+    gas_limit:words.gas_limit,
+    gas_price:words.gas_price
   },
   tx_status: {
     all:'全部状态',
@@ -317,6 +330,13 @@ export default {
     detail_title: '交易详情',
     tabs_basic: '基础信息',
     tabs_fill: '成交信息',
+  },
+
+  tx_resend:{
+    title:'重新发送交易',
+    action_resend:"重发",
+    fail_title:"无法重新发送交易",
+    fail_reason:"没有获取该交易的详细信息"
   },
   // -----------
   // fill
@@ -396,7 +416,6 @@ export default {
     data: "数据",
     advanced: "高级",
     send_max: "最大数量",
-    transfer_result_etherscan: "在EtherScan查看结果",
     from: "发送方",
     to: "发送到",
     gas: "油费",
@@ -523,6 +542,19 @@ export default {
   user_center:{
     receive:'收款',
     send:'转账'
+  },
+  export_keystore:{
+    title:'导出Keystore',
+    types:{
+      file:'文件下载',
+      text:'文本',
+      qr:'二维码'
+    },
+    actions:{
+      download:'下载Keystore',
+      copy:'复制Keystore',
+      get:"获得 Keystore"
+    }
   },
   kline_chart:{
     kline_chart:'K线图',

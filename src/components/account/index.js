@@ -26,10 +26,10 @@ export default {
 	UnlockByPrivateKey,
 	GenerateWallet,
 	BackupWallet,
+  UnlockByAddress,
 	Modals,
 	UserCenter,
 	ExportKeystore,
-  UnlockByAddress
 }
 
 

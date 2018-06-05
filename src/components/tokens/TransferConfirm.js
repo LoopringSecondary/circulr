@@ -83,7 +83,7 @@ function TransferConfirm(props) {
           type:'success',
           actions:(
             <div>
-              <Button className="alert-btn mr5" onClick={viewInEtherscan.bind(this, extraData.txHash)}>{intl.get('transfer.transfer_result_etherscan')}</Button>
+              <Button className="alert-btn mr5" onClick={viewInEtherscan.bind(this, extraData.txHash)}>{intl.get('actions.view_result_etherscan')}</Button>
             </div>
           )
         })

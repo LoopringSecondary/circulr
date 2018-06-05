@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button, Icon, Alert, Steps } from 'antd';
+import {Button, Modal, Steps} from 'antd';
 import {connect} from 'dva'
 import {MetaMaskAccount,} from "LoopringJS/ethereum/account";
 import routeActions from 'common/utils/routeActions'

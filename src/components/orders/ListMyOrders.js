@@ -21,9 +21,13 @@ const ListHeader = (props) => {
   };
 
   const cancelAll = () => {
-    const {market} = orders.filters;
-    const type = market ? "cancelOrderByTokenPair" : "cancelAllOrder";
-    dispatch({type:'layers/showLayer',payload:{id:'cancelOrderConfirm',type,market}})
+    if(window.WALLET && window.WALLET.unlockType !== 'address') {
+      const {market} = orders.filters;
+      const type = market ? "cancelOrderByTokenPair" : "cancelAllOrder";
+      dispatch({type: 'layers/showLayer', payload: {id: 'cancelOrderConfirm', type, market}})
+    }else{
+      Notification.open({type:'warning',message:intl.get('notifications.title.unlock_first')})
+    }
   };
   return (
     <div className="form-inline form-dark">
@@ -120,7 +124,11 @@ const ItemMore=({item})=>{
 export default function ListMyOrders(props) {
   const {orders = {},dispatch} = props;
   const cancelOrder = (order) => {
-    dispatch({type:'layers/showLayer',payload:{id:'cancelOrderConfirm',type:'cancelOrder',order}})
+    if(window.WALLET && window.WALLET.unlockType !== 'address') {
+      dispatch({type: 'layers/showLayer', payload: {id: 'cancelOrderConfirm', type: 'cancelOrder', order}})
+    }else {
+      Notification.open({type:'warning',message:intl.get('notifications.title.unlock_first')})
+    }
   };
   return (
     <div className="">
@@ -165,7 +173,7 @@ export default function ListMyOrders(props) {
               })
             }
             {
-              orders.items.length == 0 &&
+              orders.items.length === 0 &&
               <tr><td colSpan='100'><div className="text-center">{intl.get('common.list.no_data')}</div></td></tr>
             }
             </tbody>

@@ -1,53 +1,55 @@
 import React from 'react';
-import {Form, Select, Spin,Button,Icon,Tooltip} from 'antd';
+import {Icon, Select, Spin} from 'antd';
 import intl from 'react-intl-universal';
-import {TxFm, getTypes} from 'modules/transactions/formatters';
+import {getTypes, TxFm} from 'modules/transactions/formatters';
 import {getShortAddress} from 'modules/formatter/common';
 import {connect} from "dva";
 import config from '../../common/config'
-import {toHex,toNumber,toBig} from "LoopringJS/common/formatter";
+import {toBig, toHex, toNumber} from "LoopringJS/common/formatter";
 import Notification from '../../common/loopringui/components/Notification'
-
 
 const Option = Select.Option;
 
  function ListTransaction(props) {
-  const {latestTransaction: list,gasPrice} = props
+  const {latestTransaction: list,gasPrice,dispatch} = props;
   const statusChange = (value) => {
-    list.filtersChange({filters:{status: value}})
+    dispatch({type:"sockets/filtersChange",payload:{id:"latestTransaction",filters:{status: value}}})
   }
   const typeChange = (value) => {
-    list.filtersChange({filters: {type: value}})
+    console.log('filtersChange:',value)
+    dispatch({type:"sockets/filtersChange",payload:{id:"latestTransaction",filters:{type: value}}})
   }
-  const resendTx  = async (item)  => {
-    window.RELAY.account.getPendingRawTxByHash(item.txHash).then(async (res) => {
-      if (!res.error) {
-        const tx = res.result;
-        tx.gasPrice = toHex(toBig(gasPrice).times(1e9));
-        tx.data = tx.input;
-        tx.gasLimit = tx.gas;
-        tx.chainId = config.getChainId();
-        const account = props.account || window.account;
-        const signedTx = await account.signEthereumTx(tx);
-        window.ETH.sendRawTransaction(signedTx).then((response) => {
-          if (!response.error) {
-            Notification.open({message: intl.get("txs.resend_success"), type: "success", description:(<Button className="alert-btn mr5" onClick={() => window.open(`https://etherscan.io/tx/${response.result}`,'_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )});
-            window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx:tx, from: window.WALLET.address});
-          } else {
-            Notification.open({message: intl.get("txs.resend_failed"), type: "error", description:response.error.message})
-          }
-        })
-      } else {
-        Notification.open({
-          type: 'error',
-          message: intl.get('txs.can_not_resend'),
-          description: intl.get('txs.not_detail')
-        });
-      }
-    })
+
+  const getGasPrice = (txGas) => {
+    txGas  = toBig(txGas).div(1e9).toNumber() +1;
+    return toHex(toBig(Math.max(txGas,gasPrice)).times(1e9))
   };
 
-  const cancelTx = async (item) => {
+  const resendTx  = (item)  => {
+    if(window.WALLET && window.WALLET.unlockType !== 'address') {
+      window.RELAY.account.getPendingRawTxByHash(item.txHash).then((res) => {
+        if (!res.error) {
+          const tx = res.result;
+          tx.gasPrice = getGasPrice(tx.gasPrice);
+          tx.data = tx.input;
+          tx.gasLimit = tx.gas;
+          tx.chainId = config.getChainId();
+          dispatch({type: 'layers/showLayer', payload: {id: 'resend', tx}})
+        } else {
+          Notification.open({
+            type: 'error',
+            message: intl.get('txs.can_not_resend'),
+            description: intl.get('txs.not_detail')
+          });
+        }
+      })
+    }else{
+      Notification.open({type:'warning',message:intl.get('notifications.title.unlock_first')})
+    }
+  };
+
+  const cancelTx = (item) => {
+    if(window.WALLET && window.WALLET.unlockType !== 'address'){
       const tx = {
         to:window.WALLET.address,
         value:"0x0",
@@ -57,18 +59,15 @@ const Option = Select.Option;
         gasPrice:toHex(toBig(gasPrice).times(1e9)),
         nonce:toHex(toNumber(item.nonce))
       };
-
-    const account = props.account || window.account;
-    const signedTx = await account.signEthereumTx(tx);
-
-    window.ETH.sendRawTransaction(signedTx).then((response) => {
-      if (!response.error) {
-        Notification.open({message: 'Canceling', type: "success", description:(<Button className="alert-btn mr5" onClick={() => window.open(`https://etherscan.io/tx/${response.result}`,'_blank')}> {intl.get('token.transfer_result_etherscan')}</Button> )});
-        window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx:tx, from: window.WALLET.address});
-      } else {
-        Notification.open({message: 'Failed to canceling', type: "error", description:response.error.message})
-      }
-    })
+      window.RELAY.account.getPendingRawTxByHash(item.txHash).then((res) => {
+        if(!res.error){
+          tx.gasPrice = getGasPrice(res.result.gasPrice)
+        }
+        dispatch({type:'layers/showLayer',payload:{id:'cancel',tx}})
+      })
+    }else {
+      Notification.open({type:'warning',message:intl.get('notifications.title.unlock_first')})
+    }
   };
 
   const token = list.filters.token || 'LRC';
@@ -206,7 +205,7 @@ export const renders = {
         {fm.tx.status === 'pending' && <i className="icon-clock"></i>}
         {fm.tx.status === 'pending' &&
           <span>
-            <span className="text-primary ml10" onClick={(e) => {e.stopPropagation();actions.toResend()}}>{intl.get('actions.resend')}</span>
+            <span className="text-primary ml10" onClick={(e) => {e.stopPropagation();actions.toResend()}}>{intl.get('tx_resend.action_resend')}</span>
             <span className="text-primary ml5" onClick={(e) => {e.stopPropagation();actions.toCancel()}}>{intl.get('common.cancel')}</span>
           </span>
         }

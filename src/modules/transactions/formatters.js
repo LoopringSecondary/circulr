@@ -36,7 +36,7 @@ export const getTypes = (token)=>{
   }
 
   if(token.toUpperCase() === 'ETH'){
-    types = [...types, ...cancelTypes]
+    types = [...types, ...cancelTypes,...othersTypes]
   }
 
   if(token.toUpperCase() !== 'ETH'){
@@ -46,7 +46,7 @@ export const getTypes = (token)=>{
   if(token.toUpperCase() === 'LRC'){
     types = [...types,...lrcTypes]
   }
-  return [...types,...othersTypes]
+  return [...types]
 }
 
 export class TxFm{

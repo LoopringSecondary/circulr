@@ -72,6 +72,13 @@ export default {
   reducers: {
     unlock(state, {payload}) {
       const {address, unlockType, account, password} = payload;
+      if(state.unlockType === 'address'  && state.address && state.address !== address  ){
+        Notification.open({
+          message:intl.get('notifications.title.address_change'),
+          description:intl.get('notifications.message.address_change',{add1:state.address,add2:address}),
+          type:'warning'
+        })
+      }
       return {
         ...state,
         address,
@@ -103,7 +110,7 @@ export default {
       const {address, unlockType} = payload;
       storage.wallet.storeUnlockedAddress(unlockType,address);
       window.WALLET = {address, unlockType};
-      //yield call(register, {owner:payload.address});
+      yield call(register, {owner:payload.address});
       yield put({type: 'unlock', payload});
       yield put({type: 'placeOrder/unlock'});
     },
