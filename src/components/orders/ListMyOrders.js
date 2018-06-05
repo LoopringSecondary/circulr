@@ -158,7 +158,7 @@ export default function ListMyOrders(props) {
                   gotoDetail: () => props.dispatch({type: 'layers/showLayer', payload: {id: 'orderDetail', order: item}})
                 };
                 return (
-                  <Popover title={null} content={<ItemMore item={item}/>} >
+                  <Popover title={null} content={<ItemMore item={item}/>} key={index} >
                     <tr key={index} className="cursor-pointer" onClick={actions.gotoDetail}>
                       <td>{orderFm.getMarket()}</td>
                       <td>{renders.side(orderFm)}</td>
