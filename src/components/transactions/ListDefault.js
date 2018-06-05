@@ -11,7 +11,7 @@ import Notification from '../../common/loopringui/components/Notification'
 const Option = Select.Option;
 
  function ListTransaction(props) {
-  const {latestTransaction: list,gasPrice,dispatch} = props
+  const {latestTransaction: list,gasPrice,dispatch} = props;
   const statusChange = (value) => {
     dispatch({type:"sockets/filtersChange",payload:{id:"latestTransaction",filters:{status: value}}})
   }
@@ -19,12 +19,18 @@ const Option = Select.Option;
     console.log('filtersChange:',value)
     dispatch({type:"sockets/filtersChange",payload:{id:"latestTransaction",filters:{type: value}}})
   }
+
+  const getGasPrice = (txGas) => {
+    txGas  = toBig(txGas).div(1e9).toNumber() +1;
+    return toHex(toBig(Math.max(txGas,gasPrice)).times(1e9))
+  };
+
   const resendTx  = (item)  => {
     if(window.WALLET && window.WALLET.unlockType !== 'address') {
       window.RELAY.account.getPendingRawTxByHash(item.txHash).then((res) => {
         if (!res.error) {
           const tx = res.result;
-          tx.gasPrice = toHex(toBig(gasPrice).times(1e9));
+          tx.gasPrice = getGasPrice(tx.gasPrice);
           tx.data = tx.input;
           tx.gasLimit = tx.gas;
           tx.chainId = config.getChainId();
@@ -55,7 +61,7 @@ const Option = Select.Option;
       };
       window.RELAY.account.getPendingRawTxByHash(item.txHash).then((res) => {
         if(!res.error){
-          tx.gasPrice = res.result.gasPrice
+          tx.gasPrice = getGasPrice(res.result.gasPrice)
         }
         dispatch({type:'layers/showLayer',payload:{id:'cancel',tx}})
       })
@@ -199,7 +205,7 @@ export const renders = {
         {fm.tx.status === 'pending' && <i className="icon-clock"></i>}
         {fm.tx.status === 'pending' &&
           <span>
-            <span className="text-primary ml10" onClick={(e) => {e.stopPropagation();actions.toResend()}}>{intl.get('actions.resend')}</span>
+            <span className="text-primary ml10" onClick={(e) => {e.stopPropagation();actions.toResend()}}>{intl.get('tx_resend.action_resend')}</span>
             <span className="text-primary ml5" onClick={(e) => {e.stopPropagation();actions.toCancel()}}>{intl.get('common.cancel')}</span>
           </span>
         }

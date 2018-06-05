@@ -8,8 +8,8 @@ import {toBig, toHex,toNumber} from "LoopringJS/common/formatter";
 
 function Resend({resend}) {
   const {tx} = resend;
-  const handleGasPrice = (e) => {
-    tx.gasPrice = toHex(toBig(e.target.value).times(1e9))
+  const handleGasPrice = (value) => {
+    tx.gasPrice = toHex(toBig(value).times(1e9))
   };
   const resendTx = async () => {
     const account = this.props.account || window.account;
@@ -55,9 +55,13 @@ function Resend({resend}) {
         <Input disabled value={tx.data}/>
       </Form.Item>
       <Form.Item label={intl.get('tx.gas_price')}>
-        <Slider defaultValue={toBig(tx.gasPrice).div(1e9).toNumber()} onChange={handleGasPrice} min={toBig(tx.gasPrice).div(1e9).toNumber()}/>
+        <Slider defaultValue={toBig(tx.gasPrice).div(1e9).toNumber()}
+                onChange={handleGasPrice}
+                min={toBig(tx.gasPrice).div(1e9).toNumber()}
+                max={99}
+                step={1}/>
       </Form.Item>
-      <Button onClick={resendTx} disabled={!tx}/>
+      <Button onClick={resendTx} disabled={!tx}>{intl.get('tx_resend.action_resend')}</Button>
     </div>
   )
 }

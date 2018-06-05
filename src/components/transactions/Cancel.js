@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from "dva";
-import {Button, Slider, Form, Input} from 'antd'
+import {Button, Slider, Form} from 'antd'
 import Notification from '../../common/loopringui/components/Notification'
 import intl from 'react-intl-universal'
 import {toBig, toHex,toNumber} from "LoopringJS/common/formatter";
@@ -8,8 +8,10 @@ import {toBig, toHex,toNumber} from "LoopringJS/common/formatter";
 
 function Cancel({cancel}) {
   const {tx} = cancel;
-  const handleGasPrice = (e) => {
-    tx.gasPrice = toHex(toBig(e.target.value).times(1e9))
+  console.log(tx);
+  const handleGasPrice = (value) => {
+    tx.gasPrice = toHex(toBig(value).times(1e9))
+    console.log(tx.gasPrice);
   };
   const cancelTx = async () => {
     const account = this.props.account || window.account;
@@ -41,9 +43,12 @@ function Cancel({cancel}) {
   return (
     <div>
     <Form.Item label={intl.get('tx.gas_price')}>
-      <Slider defaultValue={toBig(tx.gasPrice).div(1e9).toNumber()} onChange={handleGasPrice} min={toBig(tx.gasPrice).div(1e9).toNumber()}/>
+      <Slider defaultValue={toBig(tx.gasPrice).div(1e9).toNumber()}
+              onChange={handleGasPrice}
+              min={toBig(tx.gasPrice).div(1e9).toNumber()}
+              max={99}/>
     </Form.Item>
-    <Button onClick={cancelTx} disabled={!tx}/>
+      <Button onClick={cancelTx} disabled={!tx}>{intl.get('actions.cancel_tx')}</Button>
     </div>
   )
 }

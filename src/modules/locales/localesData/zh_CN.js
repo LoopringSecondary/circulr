@@ -116,7 +116,6 @@ const notifications = {
 }
 
 const actions = {
-  resend:'重发',
   receive: "接收",
   submit_order: '提交订单',
   generate_qrcode: '生成二维码',
@@ -128,6 +127,7 @@ const actions = {
   place_buy_order: "提交买单",
   place_sell_order: "提交卖单",
   view_result_etherscan: "在EtherScan查看结果",
+  cancel_tx:'取消交易'
 }
 
 const time_unit = {

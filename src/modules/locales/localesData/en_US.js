@@ -114,7 +114,6 @@ const notifications = {
 }
 
 const actions = {
-  resend: 'Resend',
   receive: "Receive",
   submit_order: 'Submit Order',
   generate_qrcode: 'Generate QR Code',
@@ -126,7 +125,8 @@ const actions = {
   place_buy_order: "Place Buy Order",
   place_sell_order: "Place Sell Order",
   view_result_etherscan: "View transaction on Etherscan.io",
-}
+  cancel_tx:'Cancel Tx'
+};
 
 const time_unit = {
   second: "Second",
@@ -135,7 +135,7 @@ const time_unit = {
   day: "Day",
   week: "Week",
   month: "Month",
-}
+};
 
 export default {
   common: {
