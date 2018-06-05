@@ -110,7 +110,7 @@ export default {
       const {address, unlockType} = payload;
       storage.wallet.storeUnlockedAddress(unlockType,address);
       window.WALLET = {address, unlockType};
-      yield call(register, {owner:payload.address});
+      yield window.RELAY.account.register(address);
       yield put({type: 'unlock', payload});
       yield put({type: 'placeOrder/unlock'});
     },
