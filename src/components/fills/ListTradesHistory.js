@@ -2,7 +2,11 @@ import React from 'react'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'
 import {getTokensByMarket,getFormattedTime} from 'modules/formatter/common'
+import {FormatAmount} from 'modules/formatter/FormatNumber'
+import {toBig} from "LoopringJS/common/formatter";
 import {Popover,Spin} from 'antd'
+import TokenFm from 'modules/tokens/TokenFm'
+
 
 const MetaItem = (props) => {
   const {label, value, render} = props
@@ -18,13 +22,39 @@ const MetaItem = (props) => {
   )
 }
 
-const ItemMore=({item})=>{
+const ItemMore=({item,tokens})=> {
+  let splitL = '';
+  let splitR = '';
+  if (item.side === 'sell') {
+    if (Number(item.splitB)) {
+      const tf = new TokenFm({symbol:tokens.right});
+      splitR =  <div >{FormatAmount({value:tf.getUnitAmount(item.splitB)})} {tokens.right} </div>
+    }
+    if (Number(item.splitS)) {
+      const tf = new TokenFm({symbol:tokens.left});
+      splitL = <div>{FormatAmount({value:tf.getUnitAmount(item.splitS)})} { tokens.left}</div>;
+
+    }
+  } else {
+    if (Number(item.splitB)) {
+      const tf = new TokenFm({symbol:tokens.left});
+      splitL = <div> {FormatAmount({value:tf.getUnitAmount(item.splitB)})} {tokens.left}</div>
+    }
+    if (Number(item.splitS)) {
+      const tf = new TokenFm({symbol:tokens.right});
+      splitR = <div>{FormatAmount({value:tf.getUnitAmount(item.splitS)})} {tokens.right} </div> ;
+    }
+  }
+
+  let total  = <div>{FormatAmount({value:toBig(item.amount).times(item.price)})} {tokens.right} </div> ;
+
   return (
     <div>
       <MetaItem label={intl.get('fill.created')} value={getFormattedTime(item.createTime,'MM-DD HH:SS')} />
-      <MetaItem label={intl.get('fill.total')} value="10ETH" />
-      <MetaItem label={intl.get('fill.lrc_fee')} value="3.5LRC" />
-      <MetaItem label={intl.get('fill.lrc_reward')} value="3.5LRC" />
+      <MetaItem label={intl.get('fill.total')} value={total} />
+      <MetaItem label={intl.get('fill.lrc_fee')} value={FormatAmount({value:item.lrcFee})} />
+      {splitL &&  <MetaItem label={`${intl.get('fill.margin_split')} ${tokens.left}`} value={splitL}  />}
+      {splitR &&  <MetaItem label={`${intl.get('fill.margin_split')} ${tokens.right}`} value={splitR}  />}
     </div>
   )
 }
@@ -64,7 +94,7 @@ function ListTradesHistory(props) {
               <ul style={{height: "100%", overflow:"auto",paddingBottom:"0" }}>
                 {
                   trades.items.map((item,index)=>
-                    <Popover placement="left" content={<ItemMore item={item} />} title={null} key={index}>
+                    <Popover placement="left" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>
                       <li key={index}>
                         {
                           (!isIncresse(index)) && <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, item.price.toFixed(8))}>{item.price && item.price.toFixed(8)}</span>
@@ -73,7 +103,7 @@ function ListTradesHistory(props) {
                           (isIncresse(index)) && <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, item.price.toFixed(8))}>{item.price && item.price.toFixed(8)}</span>
                         }
                         <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, item.amount.toFixed(8))}>{item.amount && item.amount.toFixed(8)}</span>
-                        <span style={{textAlign:'right'}}>{getFormattedTime(item.createTime,'MM-DD HH:SS')}</span>
+                        <span style={{textAlign:'right'}}>{FormatAmount({value:item.lrcFee})}</span>
                       </li>
                     </Popover>
                   )

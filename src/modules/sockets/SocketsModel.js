@@ -30,7 +30,7 @@ export default {
     'trades':{...initState,filters:{market:'LRC-WETH'}},
     'tickers':{...initState,filters:{market:'LRC-WETH'}},
     'trends':{...initState,filters:{market:'LRC-WETH'}},
-    'orders':{...initState,filters:{}},
+    'orders':{...initState,filters:{market:'LRC-WETH'}},
     'estimatedGasPrice':{...initState,filters:{}},
     'loopringTickers':{...initState},
     'pendingTx':{...initState},
@@ -82,6 +82,20 @@ export default {
         type:'filtersChange',
         payload:{
           id:'depth',
+          filters:{market:market}
+        }
+      })
+      yield put({
+        type:'filtersChange',
+        payload:{
+          id:'orderBook',
+          filters:{market:market}
+        }
+      })
+      yield put({
+        type:'filtersChange',
+        payload:{
+          id:'trends',
           filters:{market:market}
         }
       })

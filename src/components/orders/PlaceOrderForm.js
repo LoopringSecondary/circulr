@@ -13,6 +13,7 @@ import Notification from 'LoopringUI/components/Notification'
 import {createWallet} from 'LoopringJS/ethereum/account';
 import {getLastGas, getEstimateGas} from 'modules/settings/formatters'
 import {FormatAmount} from 'modules/formatter/FormatNumber'
+import {getFormattedTime} from 'modules/formatter/common'
 
 var _ = require('lodash');
 
@@ -38,17 +39,17 @@ const MenuItem = (prop)=>{
 class PlaceOrderForm extends React.Component {
 
   render() {
-    const {form, placeOrder, settings, balance, wallet, marketcap, pendingTx, gas, ttl, dispatch} = this.props
+    const {form, placeOrder, settings, balance, wallet, marketcap, pendingTx, gas, ttl, lrcFee, dispatch} = this.props
     const gasResult = getLastGas(gas)
     const gasPrice = gasResult.gasPrice
-    const milliLrcFee = placeOrder.sliderMilliLrcFee >0 ? placeOrder.sliderMilliLrcFee : settings.trading.lrcFee
-    const ttlValue = placeOrder.timeToLive >0 ? ttl.timeToLive : settings.trading.timeToLive
+    const milliLrcFee = lrcFee.pattern === 'basic' ? lrcFee.lrcFeeSlider : lrcFee.milliLrcFee
+    const ttlValue = ttl.timeToLive >0 ? ttl.timeToLive : settings.trading.timeToLive
     const ttlUnit = ttl.timeToLiveUnit || settings.trading.timeToLiveUnit
     const {pair, side, priceInput, amountInput} = placeOrder
     const amount = orderFormatter.isValidAmount(amountInput) ? fm.toBig(amountInput) : fm.toBig(0)
     const price = orderFormatter.isValidAmount(amountInput) ? fm.toBig(priceInput) : fm.toBig(0)
     const total = amount.times(price)
-    let left = {}, right = {}, sell = {}, buy = {}, lrcFee = 0, amountSlider = 0
+    let left = {}, right = {}, sell = {}, buy = {}, lrcFeeValue = 0, amountSlider = 0
     let marketConfig = null
     if(pair && side) {
       if(side === 'buy' || side === 'sell'){
@@ -90,7 +91,7 @@ class PlaceOrderForm extends React.Component {
     }
     if(amount.gt(0) && price.gt(0) && milliLrcFee) {
       const total = price.times(amount)
-      lrcFee = orderFormatter.calculateLrcFee(marketcap.items, total, milliLrcFee, right.symbol)
+      lrcFeeValue = orderFormatter.calculateLrcFee(marketcap.items, total, milliLrcFee, right.symbol)
     }
 
     function sideChange(value) {
@@ -132,10 +133,6 @@ class PlaceOrderForm extends React.Component {
       placeOrder.amountChange({amountInput:amount})
     }
 
-    function lrcFeeChange(v) {
-      placeOrder.milliLrcFeeChange({milliLrcFee:v})
-    }
-
     const marks = {
       0: '0',
       25: '25％',
@@ -171,29 +168,6 @@ class PlaceOrderForm extends React.Component {
       </span>
     )
 
-    const editLRCFee = (
-      <Popover overlayClassName="place-order-form-popover" title={<div className="pt5 pb5">{intl.get('trade.custom_lrc_fee_title')}</div>} content={
-        <div>
-          <div className="pb5 fs12">{intl.get('trade.current_lrc_fee_ratio')} : {milliLrcFee}‰</div>
-          <div className="pb15 fs12">{intl.get('trade.current_lrc_fee')} : {lrcFee} LRC</div>
-          {form.getFieldDecorator('lrcFeeSlider', {
-            initialValue: milliLrcFee,
-            rules: []
-          })(
-            <Slider min={1} max={50} step={1}
-                    marks={{
-                      1: intl.get('common.slow'),
-                      50: intl.get('common.fast')
-                    }}
-                    onChange={lrcFeeChange.bind(this)}
-            />
-          )}
-        </div>
-      } trigger="click">
-        <a className="fs12 pointer text-dark"><i className="icon-pencil tradingFee"></i></a>
-      </Popover>
-    )
-
     const customPanelStyle = {
       background: '#fff',
       borderRadius: 4,
@@ -203,18 +177,19 @@ class PlaceOrderForm extends React.Component {
 
     let ttlInSecond = 0, ttlShow = ''
     if(ttl.timeToLivePatternSelect === 'easy') {
-      const ttl = Number(ttlValue)
+      const ttlNumber = Number(ttlValue)
       const unit = ttlUnit
       switch(unit){
-        case 'minute': ttlInSecond = ttl * 60 ; ttlShow = `${ttl} ${intl.get('common.minute')}`; break;
-        case 'hour': ttlInSecond = ttl * 3600 ; ttlShow = `${ttl} ${intl.get('common.hour')}`; break;
-        case 'day': ttlInSecond = ttl * 86400; ttlShow = `${ttl} ${intl.get('common.day')}`; break;
-        case 'week': ttlInSecond = ttl * 7 * 86400; ttlShow = `${ttl} ${intl.get('common.week')}`; break;
-        case 'month': ttlInSecond = ttl * 30 * 86400; ttlShow = `${ttl} ${intl.get('common.month')}`; break;
+        case 'minute': ttlInSecond = ttlNumber * 60 ; ttlShow = `${ttlNumber} ${intl.get('common.minute')}`; break;
+        case 'hour': ttlInSecond = ttlNumber * 3600 ; ttlShow = `${ttlNumber} ${intl.get('common.hour')}`; break;
+        case 'day': ttlInSecond = ttlNumber * 86400; ttlShow = `${ttlNumber} ${intl.get('common.day')}`; break;
+        case 'week': ttlInSecond = ttlNumber * 7 * 86400; ttlShow = `${ttlNumber} ${intl.get('common.week')}`; break;
+        case 'month': ttlInSecond = ttlNumber * 30 * 86400; ttlShow = `${ttlNumber} ${intl.get('common.month')}`; break;
       }
     } else {
       if(ttl.timeToLiveStart && ttl.timeToLiveEnd) {
-        ttlShow = `${ttl.timeToLiveStart.format("lll")} ~ ${ttl.timeToLiveEnd.format("lll")}`
+        //ttlShow = `${ttl.timeToLiveStart.format("lll")} ~ ${ttl.timeToLiveEnd.format("lll")}`
+        ttlShow = `${getFormattedTime(ttl.timeToLiveStart,'MM-DD HH:mm')}~${getFormattedTime(ttl.timeToLiveEnd,'MM-DD HH:mm')}`
       }
     }
 
@@ -233,19 +208,19 @@ class PlaceOrderForm extends React.Component {
           tradeInfo.amount = fm.toBig(values.amount)
           tradeInfo.price = fm.toBig(values.price)
           tradeInfo.total = tradeInfo.amount.times(tradeInfo.price)
-          if(placeOrder.timeToLivePatternSelect === 'easy') {
+          if(ttl.timeToLivePatternSelect === 'easy') {
             tradeInfo.validSince = moment().unix()
             tradeInfo.validUntil = moment().add(ttlInSecond, 'seconds').unix()
           } else {
-            tradeInfo.validSince = placeOrder.timeToLiveStart.unix()
-            tradeInfo.validUntil = placeOrder.timeToLiveEnd.unix()
+            tradeInfo.validSince = ttl.timeToLiveStart.unix()
+            tradeInfo.validUntil = ttl.timeToLiveEnd.unix()
           }
           tradeInfo.marginSplit = settings.trading.marginSplit
           if (values.marginSplit) {
             tradeInfo.marginSplit = Number(values.marginSplit)
           }
           tradeInfo.milliLrcFee = milliLrcFee
-          tradeInfo.lrcFee = lrcFee
+          tradeInfo.lrcFee = lrcFeeValue
           tradeInfo.delegateAddress = config.getDelegateAddress();
           tradeInfo.protocol = settings.trading.contract.address;
           tradeInfo.gasLimit = config.getGasLimitByType('approve').gasLimit;
@@ -492,18 +467,8 @@ class PlaceOrderForm extends React.Component {
               </Form.Item>
               <div className="pt5 pb5" style={{border:'0px solid rgba(255,255,255,0.07)',margin:'0px 0px'}}>
                 <MenuItem label={intl.get('common.total')} value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>}  />
-                <MenuItem label={intl.get('common.lrc_fee')} action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFee} LRC <Icon type="right" className="" /></div>}  />
+                <MenuItem label={intl.get('common.lrc_fee')} action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFeeValue} LRC <Icon type="right" className="" /></div>}  />
                 <MenuItem label={intl.get('common.ttl')} action={<div onClick={setTTL} className="cursor-pointer">{ttlShow} <Icon type="right" className="" /></div>}  />
-                <div hidden className="form-group mr-0">
-                  <div className="form-control-static d-flex justify-content-between">
-                    <span className="font-bold">LRC Fee <i className="icon-info tradingfeetip"></i></span>
-                    <span>
-                      <span>{editLRCFee}</span>
-                      <span></span>
-                      <span className="offset-md"></span>
-                    </span>
-                  </div>
-                </div>
               </div>
               <div className="mb15"></div>
               {

@@ -5,7 +5,6 @@ import Unlock from './Unlock'
 import Test from './Test'
 import WalletTest from './WalletTest'
 
-
 export default {
   Home,
   Trade,
