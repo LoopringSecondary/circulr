@@ -1,6 +1,5 @@
 import '@babel/polyfill'
 import dva from 'dva'
-import { models } from './modules'
 import { message } from 'antd'
 import './assets/css/index.less'
 import {setLocale} from "./common/utils/localeSetting";
@@ -29,6 +28,7 @@ window.config.rpc_host = `${host}/rpc/v2`
 // app.use({})
 
 // 3. Model
+const models = require('./modules/models').default
 models.map(model=>{
   app.model(model)
 })
