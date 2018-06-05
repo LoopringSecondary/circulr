@@ -30,7 +30,7 @@ export default {
     'trades':{...initState,filters:{market:'LRC-WETH'}},
     'tickers':{...initState,filters:{market:'LRC-WETH'}},
     'trends':{...initState,filters:{market:'LRC-WETH'}},
-    'orders':{...initState,filters:{}},
+    'orders':{...initState,filters:{market:'LRC-WETH'}},
     'estimatedGasPrice':{...initState,filters:{}},
     'loopringTickers':{...initState},
     'pendingTx':{...initState},

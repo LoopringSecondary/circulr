@@ -94,9 +94,11 @@ const transfromers = {
   },
   orders:{
     queryTransformer:(payload)=>{
+      const {filters} = payload
       return JSON.stringify({
          delegateAddress: config.getDelegateAddress(),
-         owner:window.WALLET.address
+         owner:window.WALLET.address,
+         market:filters.market,
       })
     },
     resTransformer:(id,res)=>{

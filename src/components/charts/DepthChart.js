@@ -27,16 +27,18 @@ class DepthChart extends React.Component {
     return (
       <div className="row ml0 mr0">
         <div className="col-6 pl0 pr0">
-          <Chart forceFit height={100} data={sourceBuy} padding={[0,0,0,0]}>
+          <Chart forceFit height={100} data={sourceBuy} padding={[0,0,0,0]} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
             <Tooltip crosshairs={{ type: 'line' }} />
-            <Axis />
+            <Axis dataKey="price" />
+            <Axis dataKey="vol" grid={null} show={false}/>
             <Area position="price*vol" color="red"/>
           </Chart>
         </div>
         <div className="col-6 pl0 pr0">
-          <Chart forceFit height={100} data={sourceSell} padding={[0,0,0,0]}>
+          <Chart forceFit height={100} data={sourceSell} padding={[0,0,0,0]} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
             <Tooltip crosshairs={{ type: 'line' }} />
-            <Axis />
+            <Axis dataKey="price" />
+            <Axis dataKey="vol" grid={null} show={false}/>
             <Area position="price*vol" color="green"/>
           </Chart>
         </div>

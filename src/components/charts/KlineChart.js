@@ -1,12 +1,16 @@
-import { Chart, Tooltip, Legend, Axis, Line, Plugin, Slider, View, Candle, Bar } from 'viser-react';
+import { Chart, Tooltip, Legend, Axis, Line, Plugin, Slider, View, Candle, Bar,Grid } from 'viser-react';
+import * as Viser from 'viser-react';
 import * as React from 'react'
 import G2 from '@antv/g2'
 import {connect} from 'dva'
 import {getFormattedTime} from 'modules/formatter/common'
 import moment from 'moment'
+import mockData from './mock'
+
+console.log('Viser',Viser)
 
 const { Global } = G2; // 获取 Global 全局对象
-//Global.setTheme('dark');
+Global.setTheme('dark');
 
 const DataSet = require('@antv/data-set');
 
@@ -14,7 +18,9 @@ const scale1 = [{
   dataKey: 'time',
   type: 'timeCat',
   nice: false,
-  range: [ 0, 1 ]
+  range: [ 0, 1 ],
+  tickInterval: 0.1,
+
 }, {
   dataKey: 'trend',
   values: [ '上涨', '下跌' ],
@@ -57,15 +63,21 @@ class KlineChart extends React.Component {
     const {start, end} = this.state;
     const {trends} = this.props
 
-    const data = trends ? trends.map(item=>{
-      const time = getFormattedTime(moment.unix(item.start),'YYYY-MM-DD HH:mm')
+    // const data = trends ? trends.map(item=>{
+    //   const time = getFormattedTime(moment.unix(item.start),'YYYY-MM-DD HH:mm')
+    //   return {
+    //     time : time,
+    //     start : item.open,
+    //     max : item.high,
+    //     min : item.low,
+    //     end : item.close,
+    //     volumn : item.vol
+    //   }
+    // }) : []
+
+    const data = mockData ? mockData.map(item=>{
       return {
-        time : time,
-        start : item.open,
-        max : item.high,
-        min : item.high,
-        end : item.close,
-        volumn : item.vol
+        ...item
       }
     }) : []
 
@@ -77,13 +89,6 @@ class KlineChart extends React.Component {
     });
     const dv = ds.createView();
     dv.source(data)
-      // .transform({
-      //   type: 'filter',
-      //   callback: obj => {
-      //     const date = obj.time;
-      //     return date <= end && date >= start;
-      //   }
-      // })
       .transform({
         type: 'map',
         callback: obj => {
@@ -98,8 +103,8 @@ class KlineChart extends React.Component {
       ds.setState('start', startText);
       ds.setState('end', endText);
     }
-
     const sliderOpts = {
+      container:"kline",
       width: 'auto',
       height: 26,
       padding: [ 20, 40, 20, 40 ],
@@ -118,63 +123,48 @@ class KlineChart extends React.Component {
     };
 
     return (
-      <div>
-        <Chart forceFit height={255} animate={false} padding={[ 10, 10, 100, 60 ]} data={dv} scale={scale1}>
+      <div id="kline">
+        <Chart forceFit height={255} animate={false} padding={[ 10,10,2,10 ]}  data={dv} scale={scale1} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
           <Tooltip {...tooltipOpts}/>
-          { true && <Axis /> }
-          { true && <Legend offset={20}/> }
+          <Axis dataKey="range" position="right" grid={null} show={false} />
+          <Axis dataKey="time" line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} label={{formatter:(value)=>moment(value,'YYYY-MM-DD').format('MM-DD'),offset:10,textStyle:{fontSize:'10px'}}}/>
           <View data={dv} end={{x: 1, y: 0.68}}  guide={()=>null}>
-            <Candle position='time*range' color={['trend', val => {
-              if (val === '上涨') {
-                return '#f04864';
-              }
-
-              if (val === '下跌') {
-                return '#2fc25b';
-              }
-            }]}
-            tooltip={['time*start*end*max*min', (time, start, end, max, min) => {
-              return {
-                name: time,
-                value: '<br><span style="padding-left: 16px">开盘价：' + start + '</span><br/>'
-                + '<span style="padding-left: 16px">收盘价：' + end + '</span><br/>'
-                + '<span style="padding-left: 16px">最高价：' + max + '</span><br/>'
-                + '<span style="padding-left: 16px">最低价：' + min + '</span>'
-              };
-            }]}
+            <Candle
+              position='time*range'
+              color={['trend', val => {
+                if (val === '上涨') {return '#f04864';}
+                if (val === '下跌') {return '#2fc25b';}
+              }]}
+              tooltip={['time*start*end*max*min', (time, start, end, max, min) => {
+                return {
+                  name: time,
+                  value: '<br><span style="padding-left: 16px">开盘价：' + start + '</span><br/>'
+                  + '<span style="padding-left: 16px">收盘价：' + end + '</span><br/>'
+                  + '<span style="padding-left: 16px">最高价：' + max + '</span><br/>'
+                  + '<span style="padding-left: 16px">最低价：' + min + '</span>'
+                };
+              }]}
             />
           </View>
           <View data={dv} scale={[{dataKey: 'volumn',tickCount: 2}]} start={{x: 0, y: 0.68}}>
-            { true && <Axis dataKey='time' tickLine={null} label={null}/> }
-            { true && <Axis dataKey='volumn' label={{
-              formatter: function(val) {
-                return parseInt(String(val / 1000), 10) + 'k';
-              }
-            }} />}
-            <Bar position='time*volumn' color={['trend',  val => {
-              if (val === '上涨') {
-                return '#f04864';
-              }
-
-              if (val === '下跌') {
-                return '#2fc25b';
-              }
-            }]} tooltip={['time*volumn', (time, volumn) => {
-              return {
-                name: time,
-                value: '<br/><span style="padding-left: 16px">成交量：' + volumn + '</span><br/>'
-              };
-            }]} />
+            <Axis dataKey="time" grid={null} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} />
+            <Axis dataKey="volumn" show={false} />
+            <Bar
+              position='time*volumn'
+              color={['trend',  val => {
+                if (val === '上涨') {return '#f04864';}
+                if (val === '下跌') {return '#2fc25b';}
+              }]}
+              tooltip={['time*volumn', (time, volumn) => {
+                return {
+                  name: time,
+                  value: '<br/><span style="padding-left: 16px">成交量：' + volumn + '</span><br/>'
+                };
+              }]}
+            />
           </View>
         </Chart>
-        {
-          false &&
-          <Plugin>
-            <Slider {...sliderOpts} />
-          </Plugin>
-        }
-
-
+        { false &&<Plugin><Slider {...sliderOpts} /></Plugin>}
       </div>
     );
   }
