@@ -124,10 +124,10 @@ class KlineChart extends React.Component {
 
     return (
       <div id="kline">
-        <Chart forceFit height={255} animate={false} padding={[ 10,10,2,10 ]}  data={dv} scale={scale1} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
+        <Chart forceFit height={235} animate={false} padding={[ 10,0,20,0 ]}  data={dv} scale={scale1} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
           <Tooltip {...tooltipOpts}/>
-          <Axis dataKey="range" position="right" grid={null} show={false} />
-          <Axis dataKey="time" line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} label={{formatter:(value)=>moment(value,'YYYY-MM-DD').format('MM-DD'),offset:10,textStyle:{fontSize:'10px'}}}/>
+          <Axis dataKey="time" grid={null} show={false} />
+          <Axis dataKey="range" position="right" grid={{lineStyle:{stroke: 'rgba(255,255,255,0.1)'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}}/>
           <View data={dv} end={{x: 1, y: 0.68}}  guide={()=>null}>
             <Candle
               position='time*range'
@@ -147,8 +147,8 @@ class KlineChart extends React.Component {
             />
           </View>
           <View data={dv} scale={[{dataKey: 'volumn',tickCount: 2}]} start={{x: 0, y: 0.68}}>
-            <Axis dataKey="time" grid={null} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} />
-            <Axis dataKey="volumn" show={false} />
+            <Axis dataKey="time" line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} label={{formatter:(value)=>moment(value,'YYYY-MM-DD').format('MM-DD'),offset:10,textStyle:{fontSize:'10px'}}}/>
+            <Axis dataKey="volumn" position="right" grid={{lineStyle:{stroke: 'rgba(255,255,255,0.1)'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}}/>
             <Bar
               position='time*volumn'
               color={['trend',  val => {
