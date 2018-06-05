@@ -8,7 +8,6 @@ import {toBig, toHex,toNumber} from "LoopringJS/common/formatter";
 
 function Cancel({cancel}) {
   const {tx} = cancel;
-  console.log(tx);
   const handleGasPrice = (value) => {
     tx.gasPrice = toHex(toBig(value).times(1e9))
     console.log(tx.gasPrice);
