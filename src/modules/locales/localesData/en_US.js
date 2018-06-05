@@ -89,6 +89,7 @@ const notifications = {
     resend_fail:'Resend transaction failed',
     cancel_suc:'Cancel transaction  sent successfully',
     cancel_fail:'Cancel transaction failed',
+    address_change:'Unlock address changed'
   },
   message: {
     wallet_locked: 'Your wallet seems locked yet, please unlock first',
@@ -106,7 +107,8 @@ const notifications = {
     not_allowed_place_order_worth: 'Due to your total worth less than {worth}, you could not place this order',
     eth_is_required: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
     lrcfee_is_required: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
-    unlock_by_cookie_address: 'Loopr has switched your account to the watch-only mode, and your private-key is no longer available to the browser.  You\'ll need to unlock your wallet again to perform some operations.',
+    unlock_by_cookie_address: 'Circular has switched your account to the watch-only mode, and your private-key is no longer available to the browser.  You\'ll need to unlock your wallet again to perform some operations.',
+    address_change:'Address changed from {add1} to {add2}'
   }
 }
 

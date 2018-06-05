@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Input, Button,Icon} from 'antd';
+import {Form, Input, Button,Icon,Modal} from 'antd';
 import {getBalanceBySymbol, getWorthBySymbol,isValidNumber} from "../../modules/tokens/TokenFm";
 import TokenFormatter from '../../modules/tokens/TokenFm';
 import Contracts from 'LoopringJS/ethereum/contracts/Contracts'
@@ -14,7 +14,6 @@ import intl from 'react-intl-universal';
 import {getLastGas} from "../../modules/settings/formatters";
 import Alert from 'LoopringUI/components/Alert'
 
-
 const WETH = Contracts.WETH;
 function ConvertForm(props) {
   const {wallet, convert,convertToken, balances, prices,form,gas,dispatch} = props;
@@ -28,8 +27,7 @@ function ConvertForm(props) {
   const account = wallet.account || window.account;
   const assets = getBalanceBySymbol({balances, symbol: token, toUnit: true});
   const tf = new TokenFormatter({symbol:token});
-
-  const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
+  const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address';
 
   const handleAmountChange = (e) => {
     convert.setAmount({amount: e.target.value});
@@ -45,7 +43,7 @@ function ConvertForm(props) {
   };
 
   const toUnlock = () => {
-    dispatch({type:'layers/showLayer',payload:{id:'unlock'}})
+    dispatch({type:'layers/showLayer',payload:{id:'unlock'}});
   }
 
   const toConvert =  async () => {
