@@ -154,7 +154,7 @@ function PlaceOrderConfirm(props) {
         message: intl.get('notifications.title.place_order_warn'),
         description: intl.get('notifications.message.place_order_balance_not_enough', {
           token: item.value.symbol,
-          amount: window.uiFormatter.getFormatNum(item.value.required)
+          amount: uiFormatter.getFormatNum(item.value.required)
         }),
         type: 'warning',
         actions: ActionItem(item)
