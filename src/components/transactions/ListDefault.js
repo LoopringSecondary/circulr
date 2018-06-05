@@ -20,40 +20,48 @@ const Option = Select.Option;
     dispatch({type:"sockets/filtersChange",payload:{id:"latestTransaction",filters:{type: value}}})
   }
   const resendTx  = (item)  => {
-    window.RELAY.account.getPendingRawTxByHash(item.txHash).then((res) => {
-      if (!res.error) {
-        const tx = res.result;
-        tx.gasPrice = toHex(toBig(gasPrice).times(1e9));
-        tx.data = tx.input;
-        tx.gasLimit = tx.gas;
-        tx.chainId = config.getChainId();
-        dispatch({type:'layers/showLayer',payload:{id:'resend',tx}})
-      } else {
-        Notification.open({
-          type: 'error',
-          message: intl.get('txs.can_not_resend'),
-          description: intl.get('txs.not_detail')
-        });
-      }
-    })
+    if(window.WALLET && window.WALLET.unlockType !== 'address') {
+      window.RELAY.account.getPendingRawTxByHash(item.txHash).then((res) => {
+        if (!res.error) {
+          const tx = res.result;
+          tx.gasPrice = toHex(toBig(gasPrice).times(1e9));
+          tx.data = tx.input;
+          tx.gasLimit = tx.gas;
+          tx.chainId = config.getChainId();
+          dispatch({type: 'layers/showLayer', payload: {id: 'resend', tx}})
+        } else {
+          Notification.open({
+            type: 'error',
+            message: intl.get('txs.can_not_resend'),
+            description: intl.get('txs.not_detail')
+          });
+        }
+      })
+    }else{
+      Notification.open({type:'warning',message:intl.get('notifications.title.unlock_first')})
+    }
   };
 
   const cancelTx = (item) => {
-    const tx = {
-      to:window.WALLET.address,
-      value:"0x0",
-      data:'0x',
-      chainId:config.getChainId(),
-      gasLimit:'0x5208',
-      gasPrice:toHex(toBig(gasPrice).times(1e9)),
-      nonce:toHex(toNumber(item.nonce))
-    };
-    window.RELAY.account.getPendingRawTxByHash(item.txHash).then((res) => {
-      if(!res.error){
-        tx.gasPrice = res.result.gasPrice
-      }
-      dispatch({type:'layers/showLayer',payload:{id:'cancel',tx}})
-    })
+    if(window.WALLET && window.WALLET.unlockType !== 'address'){
+      const tx = {
+        to:window.WALLET.address,
+        value:"0x0",
+        data:'0x',
+        chainId:config.getChainId(),
+        gasLimit:'0x5208',
+        gasPrice:toHex(toBig(gasPrice).times(1e9)),
+        nonce:toHex(toNumber(item.nonce))
+      };
+      window.RELAY.account.getPendingRawTxByHash(item.txHash).then((res) => {
+        if(!res.error){
+          tx.gasPrice = res.result.gasPrice
+        }
+        dispatch({type:'layers/showLayer',payload:{id:'cancel',tx}})
+      })
+    }else {
+      Notification.open({type:'warning',message:intl.get('notifications.title.unlock_first')})
+    }
   };
 
   const token = list.filters.token || 'LRC';

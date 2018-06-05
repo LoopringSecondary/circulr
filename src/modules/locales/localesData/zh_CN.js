@@ -91,6 +91,8 @@ const notifications = {
     resend_fail:'重新发送交易失败',
     cancel_suc:'取消交易成功发出',
     cancel_fail:'取消交易失败',
+    address_change:'解锁地址改变',
+    unlock_first:'请先解锁钱包'
   },
   message: {
     wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
@@ -109,6 +111,7 @@ const notifications = {
     eth_is_required: '由于需要支付ETH油费, 根据您当前订单需要发送的以太坊交易计算，还需要 {required} ETH',
     lrcfee_is_required: '由于需要支付LRC油费, 汇总您历史订单所需LRC，还需要 {required} LRC',
     unlock_by_cookie_address:'Loopr切换您的账户至观察模式，您的私钥对当前网页已失效。当您执行一些操作时可能需要再次解锁钱包。',
+    address_change:'解锁地址从{add1}变成{add2}'
   }
 }
 
