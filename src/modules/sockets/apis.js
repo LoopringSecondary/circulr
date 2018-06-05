@@ -1,6 +1,7 @@
 import io from 'socket.io-client'
 import {store} from '../../index.js'
 import config from 'common/config'
+import {toBig, toFixed} from 'LoopringJS/common/formatter'
 
 const updateItems = (items,id)=>{
   const dispatch = require('../../index.js').default._store.dispatch
@@ -16,7 +17,16 @@ const updateItem = (item,id)=>{
     payload:{id,item,loading:false}
   })
 }
-
+const updateEstimateGasPrice = (item,id)=>{
+  const dispatch = require('../../index.js').default._store.dispatch
+  if(item.value) {
+    const gasPrice = toFixed(toBig(item.value).div(1e9))
+    dispatch({
+      type:'gas/estimateGasChange',
+      payload:{gasPrice}
+    })
+  }
+}
 
 const isArray = (obj)=>{
   return Object.prototype.toString.call(obj) === '[object Array]'
@@ -110,6 +120,7 @@ const transfromers = {
       if (!res.error && res.data ) {
         item.value = res.data
       }
+      updateEstimateGasPrice(item,id)
       updateItem(item,id)
     },
   },
