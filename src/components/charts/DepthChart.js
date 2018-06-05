@@ -31,6 +31,7 @@ class DepthChart extends React.Component {
             <Tooltip crosshairs={{ type: 'line' }} />
             <Axis dataKey="price" />
             <Axis dataKey="vol" grid={null} show={false}/>
+            <Line position="price*vol" color='#f04864' size="1"/>
             <Area position="price*vol" color="red"/>
           </Chart>
         </div>
@@ -39,6 +40,7 @@ class DepthChart extends React.Component {
             <Tooltip crosshairs={{ type: 'line' }} />
             <Axis dataKey="price" />
             <Axis dataKey="vol" grid={null} show={false}/>
+            <Line position="price*vol" color='#2fc25b' size="1"/>
             <Area position="price*vol" color="green"/>
           </Chart>
         </div>
