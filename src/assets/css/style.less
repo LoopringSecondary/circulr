@@ -63,9 +63,9 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .loopring-dex .item:hover:before { position: absolute; top: 0; bottom: 0; margin: -1px 0; left: -1px; width: 4px; border-left: 4px solid @primary-color; content: ""; overflow: hidden }
 .loopring-dex ul { margin: 0; list-style: none; }
 .loopring-dex ul li { margin-bottom: 5px; }
-.loopring-dex ul li span { display: block; }
+.loopring-dex ul li span { display: block; font-weight: bold; font-size: @font-size-base }
 .loopring-dex ul li em { display: block; font-style: normal; font-weight: 600; }
-.loopring-dex ul li small { color: @text-color-dark-3; font-size: @font-size-base; }
+.loopring-dex ul li small { color: @text-color-dark-3; font-size: @font-size-sm; }
 .loopring-dex ul li { width: 100px; font-weight: 400; }
 .side-fixed .table.table-inverse thead th, .side-fixed .table.table-inverse tbody td { padding: 10px 20px; }
 .text-color-dark[class^="icon-"], .text-color-dark[class*=" icon-"] { border: 1px solid @dark-color-1 !important; background: transparent !important; color: @text-color-dark-3 !important; }
@@ -137,7 +137,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 #back i { font-size: 32px; }
 #back:hover { background: @light-color-1; }
 .tradeHeaderEle { display: flex; }
-.tradeHeaderEle .pair-select { width: 180px; font-size: 18px; font-weight: 800; margin-left: 15px; }
+.tradeHeaderEle .pair-select { width: 215px; font-size: 18px; font-weight: 600; margin-left: 15px; }
 .tradeHeaderEle .pair-select .caret { position: relative; top: 2px; }
 .tradeHeaderEle .token-last-quotes { margin-left: 15px; }
 .pair-price { padding: 5px 10px; border: 1px solid @dark-color-2; margin: 10px 0 20px; }
@@ -244,7 +244,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .account-bar ul li .logo { width: 40px; height: 40px; padding: 5px; background: @blue-light; line-height: 30px; }
 .account-bar ul li .logo img { width: 100%; }
 .account-bar ul li:nth-child(1) { display: inline-flex; justify-content: space-between; align-items: center; }
-.account-bar ul li .account-address { width: 160px; padding: 0 5px; text-align: left; color: @text-color-dark-2; word-wrap: break-word; line-height: 1.2; }
+.account-bar ul li .account-address { width: 170px; padding: 0 5px 0 10px; text-align: left; color: @text-color-dark-2; word-wrap: break-word; line-height: 1.2; }
 .account-bar ul li i { font-size: 20px; margin:0; }
 .account-bar ul li:nth-child(n+2):hover { background: @dark-color-1; cursor: pointer; }
 .account-bar ul li .language .icon { position: relative; top: 6px; left: 2px }

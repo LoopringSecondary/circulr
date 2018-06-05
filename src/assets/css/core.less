@@ -184,9 +184,9 @@ section { }
 .btn:focus, .btn.focus { outline: 0;    /*box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);*/ }
 .btn.disabled, .btn:disabled, .disabled .btn { opacity: .65; box-shadow: none; cursor: not-allowed; }
 a.btn.disabled, fieldset[disabled] a.btn { pointer-events: none; }
-.btn-primary { color: @text-color-dark !important; background-color: @primary-color !important; border:0 !important;  }
-.btn-primary:hover { color: @text-color-dark  !important; background-color: fade(@primary-color, 54%) !important; }
-.btn-primary.disabled, .btn-primary:disabled { background-color: fade(@primary-color, 27%)  !important; }
+.btn-primary { color: @text-color-dark !important; background-color: @blue-light !important; border:0 !important;  }
+.btn-primary:hover { color: @text-color-dark  !important; background-color: fade(@blue-light, 54%) !important; }
+.btn-primary.disabled, .btn-primary:disabled { background-color: fade(@blue-light, 27%)  !important; }
 .btn-secondary { background-color: @light-color-1; }
 .btn-secondary:hover { color: @text-color-dark-1; background-color: fade(@light-color-1, 54%) }
 .btn-secondary.disabled, .btn-secondary:disabled { background-color: fade(@light-color-1, 27%) }
@@ -197,14 +197,14 @@ a.btn.disabled, fieldset[disabled] a.btn { pointer-events: none; }
 .btn-danger:hover { color: @text-color-dark!important; background-color: fade(@error-color, 54%)!important; }
 .btn-danger.disabled, .btn-danger:disabled { background-color: fade(@error-color, 27%)!important; }
 .btn-lg{ height: 30px; line-height: 30px; padding: 0 20px; font-size: 16px; line-height: 1.5; }
-.btn-xlg { height: 40px !important; padding: 0 20px; font-size: 18px !important; line-height: 40px !important; font-weight: bold !important }
+.btn-xlg { height: 40px !important; padding: 0 20px; font-size: 16px !important; line-height: 40px !important; font-weight: bold !important }
 .btn-xxlg { height: 60px !important; padding: 0 20px; font-size: 20px !important; line-height: 60px !important; font-weight: bold !important }
 .btn-sm, .btn-group-sm>.btn { padding: 4px 12px; font-size: @font-size-sm; line-height: 1.5; }
 .btn-block { display: block; width: 100% }
 .btn-block+.btn-block { margin-top: 2px; }
 .btn-o-dark { border: 1px solid @dark-color-1 !important; background: @transparent !important; color: @text-color-dark !important; }
 .btn-o-dark:hover { background-color: @dark-color !important; color: @primary-color !important }
-;
+
 .container { margin-right: auto; margin-left: auto; padding-right: 15px; padding-left: 15px; width: 1200px; }
 .row { display: -ms-flexbox; display: flex; -ms-flex-wrap: wrap; flex-wrap: wrap; margin: 0 -2px; }
 .no-gutters { margin-right: 0; margin-left: 0; }
