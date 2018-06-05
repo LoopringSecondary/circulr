@@ -182,8 +182,8 @@ class PlaceOrderForm extends React.Component {
           })(
             <Slider min={1} max={50} step={1}
                     marks={{
-                      1: intl.get('token.slow'),
-                      50: intl.get('token.fast')
+                      1: intl.get('common.slow'),
+                      50: intl.get('common.fast')
                     }}
                     onChange={lrcFeeChange.bind(this)}
             />
