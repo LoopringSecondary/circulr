@@ -60,7 +60,6 @@ export default {
       if(!account || unlockType === 'address') {
         return
       }
-      console.log('11111 place order', signed,unsigned,address)
       const signedNew = yield call(apis.signAll, {signed,unsigned,account,address})
       yield put({ type: 'signedChange',payload:{signed:signedNew}});
       yield put({ type: 'confirmButtonStateChange',payload:{buttonState:1}});
