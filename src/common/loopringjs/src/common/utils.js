@@ -1,4 +1,4 @@
-import * as fm from './formatter'
+import ethUtil from 'ethereumjs-util';
 /**
  * trim head space and tail space
  * @param str string
@@ -15,6 +15,6 @@ export function trimAll(str) {
   return trim(str).replace(/\s/g, "");
 }
 
-export function calculateGas(gasPrice, gasLimit) {
-  return fm.toBig(gasPrice).times(gasLimit).div(1e9);
+export function keccakHash(str) {
+  return ethUtil.bufferToHex(ethUtil.keccak(str))
 }
