@@ -7,6 +7,7 @@ import {OrderFm} from 'modules/orders/OrderFm'
 import {getShortAddress} from 'modules/formatter/common'
 import config from 'common/config'
 import intl from 'react-intl-universal'
+import Notification from '../../common/loopringui/components/Notification'
 
 const ListHeader = (props) => {
   const {orders,dispatch} = props;
@@ -157,7 +158,7 @@ export default function ListMyOrders(props) {
                   gotoDetail: () => props.dispatch({type: 'layers/showLayer', payload: {id: 'orderDetail', order: item}})
                 };
                 return (
-                  <Popover title={null} content={<ItemMore item={item}/>} >
+                  <Popover title={null} content={<ItemMore item={item}/>} key={index} >
                     <tr key={index} className="cursor-pointer" onClick={actions.gotoDetail}>
                       <td>{orderFm.getMarket()}</td>
                       <td>{renders.side(orderFm)}</td>

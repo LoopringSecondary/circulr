@@ -170,8 +170,8 @@ const GasFeeForm = (props) => {
                     })(
                       <Slider min={1} max={99} step={1}
                               marks={{
-                                1: intl.get('token.slow'),
-                                99: intl.get('token.fast')
+                                1: intl.get('common.slow'),
+                                99: intl.get('common.fast')
                               }}
                               onChange={inputChange.bind(this, 'gasPrice')}
                       />

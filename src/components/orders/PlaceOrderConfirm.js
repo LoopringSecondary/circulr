@@ -16,10 +16,14 @@ import Alert from 'LoopringUI/components/Alert'
 function PlaceOrderConfirm(props) {
   const {placeOrderConfirm, placeOrder, settings, balance, wallet, marketcap, pendingTx, dispatch} = props
   let {side, pair, tradeInfo, order} = placeOrderConfirm || {}
-  let {unsigned, signed, confirmButtonState} = placeOrder || {}
   let {price, amount, total, validSince,validUntil, marginSplit, lrcFee, warn, orderType} = tradeInfo || {};
-
+  let {unsigned, signed, confirmButtonState} = placeOrder || {}
   let actualSigned = signed && wallet ? signed.filter(item => item !== undefined && item !== null) : []
+  let submitDatas = signed && unsigned.length === actualSigned.length ? (
+    signed.map((item, index) => {
+      return {signed: item, unsigned:unsigned[index], index}
+    })
+  ) : new Array()
   const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
   const unsignedOrder = unsigned.find(item => item.type === 'order')
   const signedOrder = signed.find(item => item && item.type === 'order')
@@ -28,11 +32,21 @@ function PlaceOrderConfirm(props) {
     qrCodeData = JSON.stringify({type:'p2p_order', data:{authPrivateKey:unsignedOrder.completeOrder.authPrivateKey, orderHash:signedOrder.orderHash}})
   }
 
-  async function doSubmit(signed) {
-    eachLimit(signed, 1, async function (tx, callback) {
-      if(tx.type === 'tx') {
-        const {response, rawTx} = await window.ETH.sendRawTransaction(tx.data)
-        // console.log('...tx:', response)
+  async function doSubmit() {
+    if(submitDatas.length === 0) {
+      Notification.open({
+        message: intl.get('notifications.title.place_order_failed'),
+        type: "error",
+        description: intl.get('notifications.message.some_items_not_signed')
+      });
+      return
+    }
+    eachLimit(submitDatas, 1, async function (item, callback) {
+      const signedItem = item.signed
+      const unsignedItem = item.unsigned
+      if(signedItem.type === 'tx') {
+        const response = await window.ETH.sendRawTransaction(signedItem.data)
+        // console.log('...tx:', response, signedItem)
         if (response.error) {
           Notification.open({
             message: intl.get('notifications.title.place_order_failed'),
@@ -41,13 +55,13 @@ function PlaceOrderConfirm(props) {
           });
           callback(response.error.message)
         } else {
-          tx.txHash = response.result
-          window.STORAGE.wallet.setWallet({address: wallet.address, nonce: tx.nonce});
-          window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: wallet.address});
+          signed[item.index].txHash = response.result
+          window.STORAGE.wallet.setWallet({address: wallet.address, nonce: unsignedItem.data.nonce});
+          window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx:unsignedItem.data, from: wallet.address});
           callback()
         }
       } else {
-        const response = await window.RELAY.order.placeOrder(tx.data)
+        const response = await window.RELAY.order.placeOrder(signedItem.data)
         // console.log('...submit order :', response)
         if (response.error) {
           Notification.open({
@@ -57,7 +71,7 @@ function PlaceOrderConfirm(props) {
           })
           callback(response.error.message)
         } else {
-          tx.orderHash = response.result
+          signed[item.index].orderHash = response.result
           callback()
         }
       }
@@ -89,7 +103,7 @@ function PlaceOrderConfirm(props) {
       });
       return
     }
-    await doSubmit(signed)
+    await doSubmit()
   }
 
   async function handelSubmit() {
@@ -104,7 +118,7 @@ function PlaceOrderConfirm(props) {
       });
       return
     }
-    await doSubmit(signed)
+    await doSubmit()
     dispatch({type:'layers/hideLayer',payload:{id:'placeOrderConfirm'}})
   }
 
@@ -154,7 +168,7 @@ function PlaceOrderConfirm(props) {
         message: intl.get('notifications.title.place_order_warn'),
         description: intl.get('notifications.message.place_order_balance_not_enough', {
           token: item.value.symbol,
-          amount: window.uiFormatter.getFormatNum(item.value.required)
+          amount: uiFormatter.getFormatNum(item.value.required)
         }),
         type: 'warning',
         actions: ActionItem(item)

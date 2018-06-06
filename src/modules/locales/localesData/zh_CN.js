@@ -56,6 +56,8 @@ const words = {
   list:{
     no_data:'暂无数据',
   },
+  slow:'慢',
+  fast:'快'
 }
 
 const types = {

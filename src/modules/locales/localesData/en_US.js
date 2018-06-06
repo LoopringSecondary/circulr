@@ -54,7 +54,9 @@ const words = {
   canceling: 'Canceling',
   list: {
     no_data: 'No Data',
-  }
+  },
+  slow:'Slow',
+  fast:'Fast'
 }
 const types = {
   trade_side: {

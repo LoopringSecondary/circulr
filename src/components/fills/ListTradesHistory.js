@@ -63,6 +63,8 @@ function ListTradesHistory(props) {
   console.log('ListTradesHistory render',props)
   const {trades} = props
   const tokens = getTokensByMarket(trades.filters.market)
+  const lrcFm = new TokenFm({symbol:'LRC'})
+
   const priceSelected = (value, e) => {
     e.preventDefault()
     props.dispatch({type:'placeOrder/priceChange', payload:{priceInput:value}})
@@ -103,7 +105,7 @@ function ListTradesHistory(props) {
                           (isIncresse(index)) && <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, item.price.toFixed(8))}>{item.price && item.price.toFixed(8)}</span>
                         }
                         <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, item.amount.toFixed(8))}>{item.amount && item.amount.toFixed(8)}</span>
-                        <span style={{textAlign:'right'}}>{FormatAmount({value:item.lrcFee})}</span>
+                        <span style={{textAlign:'right'}}>{FormatAmount({value:lrcFm.getUnitAmount(item.lrcFee)})}</span>
                       </li>
                     </Popover>
                   )
