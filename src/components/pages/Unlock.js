@@ -61,36 +61,21 @@ class Unlock extends React.Component {
         <div className="body home">
           <div className="home-content d-flex align-items-center justify-content-center open">
             <div>
-              <h1>Generate Wallet & Unlock Wallet</h1>
+              <h1></h1>
               <ul className="tab tab-card d-flex justify-content-center inup">
-                <li className={`item ${pathname==='/unlock/generateWallet' ? 'active':''}`}>
-                  <a data-toggle="tab" onClick={() => this.changeTab('generateWallet')}><i className="icon-plus"/>
-                    <h4>{intl.get('wallet_type.generate')}</h4></a>
-                </li>
                 <li className={`item ${pathname==='/unlock/address' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('address')}><i className="icon-view"/><h4>{intl.get('wallet_type.address')}</h4>
                   </a>
                 </li>
+                <li className={`item ${pathname==='/unlock/generateWallet' ? 'active':''}`}>
+                  <a data-toggle="tab" onClick={() => this.changeTab('generateWallet')}><i className="icon-qrcode"/>
+                    <h4>Loopr</h4></a>
+                </li>
                 <li className={`item ${pathname==='/unlock/metamask' ? 'active':''}`}>
                   <a data-toggle="tab"  onClick={() => this.changeTab('metamask')}><i className="icon-metamaskwallet"/><h4>{intl.get('wallet_type.metamask')}</h4></a>
                 </li>
-                <li className={`item ${pathname==='/unlock/trezor' ? 'active':''}`}>
-                  <a onClick={() => this.unlock('trezor','trezor')}><i className="icon-trezorwallet"/><h4>{intl.get('wallet_type.trezor')}</h4></a>
-                </li>
                 <li className={`item ${pathname==='/unlock/ledger' ? 'active':''}`}>
                   <a  data-toggle="tab" onClick={() => this.unlock('ledger','ledger')}><i className="icon-ledgerwallet"/><h4>{intl.get('wallet_type.ledger')}</h4></a>
-                </li>
-                <li className={`item ${pathname==='/unlock/json' ? 'active':''}`}>
-                  <a data-toggle="tab" onClick={() => this.changeTab('json')}><i className="icon-json"/><h4>{intl.get('wallet_type.json')}</h4>
-                  </a>
-                </li>
-                <li className={`item ${pathname==='/unlock/mnemonic' ? 'active':''}`}>
-                  <a data-toggle="tab" onClick={() => this.changeTab('mnemonic')}><i className="icon-mnemonic"/><h4>{intl.get('wallet_type.mnemonic')}</h4>
-                  </a>
-                </li>
-                <li className={`item ${pathname==='/unlock/privateKey' ? 'active':''}`}>
-                  <a data-toggle="tab" onClick={() => this.changeTab('privateKey')}><i className="icon-key"/><h4>{intl.get('wallet_type.private_key')}</h4>
-                  </a>
                 </li>
                 <li className="item remove" id="inupRemove">
                   <a href="#"><i className="icon-remove"/></a>
@@ -102,7 +87,7 @@ class Unlock extends React.Component {
               <Route path={`${url}/generateWallet`} exact render={() =>
                 <div className="tab-content">
                   <Containers.Wallet>
-                  <Account.GenerateWallet/>
+                    <div>TODO</div>
                   </Containers.Wallet>
                 </div>}
               />

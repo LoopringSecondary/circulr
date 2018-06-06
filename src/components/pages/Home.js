@@ -3,6 +3,7 @@ import {Link} from 'dva/router';
 import Layout from '../../layout';
 import Footer from '../../layout/Footer';
 import intl from 'react-intl-universal';
+import {Input} from 'antd';
 
 
 function Home(props) {
@@ -11,34 +12,22 @@ function Home(props) {
 	    <div className="body home">
 	        <div className="home-content d-flex align-items-center justify-content-center">
 	            <div>
-	                <h1>Generate Wallet  &  Unlock Wallet</h1>
+	                <h1>Get Address</h1>
+                  <div className="ml10 mr10 mb25">
+                    <Input className="d-block w-100" size="large" placeholder={intl.get('address.placeholder_tip')} />
+                  </div>
 	                <ul className="tab tab-card d-flex justify-content-center">
 	                    <li className="item">
-	                        <Link to="/unlock/generatewallet" data-toggle="tab"><i className="icon-plus"></i><h4>{intl.get('wallet.title_generate')}</h4></Link>
+	                        <Link to="/unlock/qrcode"><i className="icon-qrcode"></i><h4>Loopr</h4></Link>
 	                    </li>
-                      <li className="item">
-                          <Link to="/unlock/address" data-toggle="tab"><i className="icon-view"></i><h4>Address</h4></Link>
+	                    <li className="item">
+	                        <Link to="/unlock/metamask"><i className="icon-metamaskwallet"></i><h4>MetaMask</h4></Link>
+	                    </li>
+	                    <li className="item">
+                          <Link to="/unlock/ledger"><i className="icon-ledgerwallet"></i><h4>Ledger</h4></Link>
                       </li>
-	                    <li className="item">
-	                        <Link to="/unlock/metamask" data-toggle="tab"><i className="icon-metamaskwallet"></i><h4>MetaMask</h4></Link>
-	                    </li>
-	                    <li className="item">
-	                        <Link to="/unlock/trezor"><i className="icon-trezorwallet"></i><h4>Trezor</h4></Link>
-	                    </li>
-	                    <li className="item">
-	                        <Link to="/unlock/ledger" data-toggle="tab"><i className="icon-ledgerwallet"></i><h4>Ledger</h4></Link>
-	                    </li>
-	                    <li className="item">
-	                        <Link to="/unlock/json" data-toggle="tab"><i className="icon-json"></i><h4>JSON</h4></Link>
-	                    </li>
-	                    <li className="item">
-	                        <Link to="/unlock/mnemonic" data-toggle="tab"><i className="icon-mnemonic"></i><h4>Mnemonic</h4></Link>
-	                    </li>
-	                    <li className="item">
-	                        <Link to="/unlock/privateKey" data-toggle="tab"><i className="icon-key"></i><h4>Private Key</h4></Link>
-	                    </li>
-	                    <li className="item remove" id="inupRemove">
-	                        <Link to="/unlock"><i className="icon-remove"></i></Link>
+                      <li className="item">
+	                        <Link to=""><i className="icon-more"></i><h4>More Wallets</h4></Link>
 	                    </li>
 	                </ul>
 	            </div>
