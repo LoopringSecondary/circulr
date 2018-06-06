@@ -40,6 +40,10 @@ const TestModal = (props)=>{
         <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderByMetamask'})}>placeOrderByMetamask</Button>
       </span>
       <span>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderByLedger'})}>placeOrderByLedger</Button>
+      </span>
+
+      <span>
         <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'tradeByP2P'})}>TradeByP2P</Button>
       </span>
       <span>

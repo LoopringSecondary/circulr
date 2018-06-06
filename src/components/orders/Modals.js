@@ -6,6 +6,7 @@ import PlaceOrderConfirm from './PlaceOrderConfirm'
 import PlaceOrderSteps from './PlaceOrderSteps'
 import PlaceOrderByLoopr from './PlaceOrderByLoopr'
 import PlaceOrderByMetamask from './PlaceOrderByMetamask'
+import PlaceOrderByLedger from './PlaceOrderByLedger'
 import PlaceOrderSign from './PlaceOrderSign'
 import TradeByP2P from './TradeByP2P'
 import PlaceOrderLRCFee from './PlaceOrderLRCFee'
@@ -52,6 +53,11 @@ function Modals(props) {
       <Containers.Layers id="placeOrderByMetamask">
         <UiContianers.Modals id="placeOrderByMetamask" width="650px" wrapClassName="" className="rs">
           <PlaceOrderByMetamask />
+        </UiContianers.Modals>
+      </Containers.Layers>
+      <Containers.Layers id="placeOrderByLedger">
+        <UiContianers.Modals id="placeOrderByLedger" width="650px" wrapClassName="" className="rs">
+          <PlaceOrderByLedger />
         </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="placeOrderSign">
