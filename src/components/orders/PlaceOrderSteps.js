@@ -77,8 +77,7 @@ const PlaceOrderSteps = ({
           <OrderMetaItem label="订单数量" value="10000 LRC" />
           <OrderMetaItem label="订单总额" value="15 ETH" />
           <OrderMetaItem label="矿工撮合费" value="2.2 LRC" />
-          <OrderMetaItem label="订单生效时间" value="2018年5月29日 10:38" />
-          <OrderMetaItem label="订单失效时间" value="2018年5月30日 10:38" />
+          <OrderMetaItem label="订单有效期" value="2018-05-29 10:38 ~ 2018-05-30 10:38" />
         </div>
 
         <div className="zb-b mt15">

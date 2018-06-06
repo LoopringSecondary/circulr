@@ -4,6 +4,7 @@ import UiContianers from 'LoopringUI/containers'
 import Detail from './Detail'
 import PlaceOrderConfirm from './PlaceOrderConfirm'
 import PlaceOrderSteps from './PlaceOrderSteps'
+import PlaceOrderByLoopr from './PlaceOrderByLoopr'
 import PlaceOrderSign from './PlaceOrderSign'
 import TradeByP2P from './TradeByP2P'
 import PlaceOrderLRCFee from './PlaceOrderLRCFee'
@@ -40,6 +41,11 @@ function Modals(props) {
       <Containers.Layers id="placeOrderSteps">
         <UiContianers.Modals id="placeOrderSteps" width="650px" wrapClassName="" className="rs">
           <PlaceOrderSteps />
+        </UiContianers.Modals>
+      </Containers.Layers>
+      <Containers.Layers id="placeOrderByLoopr">
+        <UiContianers.Modals id="placeOrderByLoopr" width="650px" wrapClassName="" className="rs">
+          <PlaceOrderByLoopr />
         </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="placeOrderSign">
