@@ -283,7 +283,10 @@ export async function signOrder(tradeInfo, wallet) {
     order.authPrivateKey = fm.clearHexPrefix(authAccount.getPrivateKeyString());
   }
   // sign orders and txs
-  return generateSignData({tradeInfo, order, completeOrder, wallet})
+  const {signed, unsigned} = await generateSignData({tradeInfo, order, completeOrder, wallet})
+  const orderData = unsigned.find(item => item.type === 'order')
+  delete orderData.completeOrder
+  return {order, signed, unsigned}
 }
 
 export async function p2pVerification(balances, walletState, tradeInfo, txs, gasPrice) {
