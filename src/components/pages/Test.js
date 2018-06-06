@@ -31,7 +31,7 @@ const TestModal = (props)=>{
         <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderTTL'})}>TTL</Button>
       </span>
       <span>
-        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderSteps'})}>PlaceOrder Confirm</Button>
+        <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'placeOrderSteps'})}>placeOrderSteps</Button>
       </span>
       <span>
         <Button className="" type="primary" onClick={props.layers.showLayer.bind(this,{id:'tradeByP2P'})}>TradeByP2P</Button>

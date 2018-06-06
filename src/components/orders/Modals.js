@@ -38,7 +38,7 @@ function Modals(props) {
         </UiContianers.Modals>
       </Containers.Layers>
       <Containers.Layers id="placeOrderSteps">
-        <UiContianers.Modals id="placeOrderSteps" width="650px">
+        <UiContianers.Modals id="placeOrderSteps" width="650px" wrapClassName="" className="rs">
           <PlaceOrderSteps />
         </UiContianers.Modals>
       </Containers.Layers>
