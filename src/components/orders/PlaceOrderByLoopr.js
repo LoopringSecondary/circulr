@@ -3,53 +3,6 @@ import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps} from 'an
 import intl from 'react-intl-universal'
 import Alert from 'LoopringUI/components/Alert'
 import {connect} from 'dva'
-
-const OrderMetaItem = (props) => {
-  const {label, value} = props
-  return (
-    <div className="row ml0 mr0 pt5 pb5 pl0 pr0 zb-b-b">
-      <div className="col">
-        <div className="fs13 color-black-2 lh25">{label}</div>
-      </div>
-      <div className="col-auto text-right">
-        <div className="fs13 color-black-1 text-wrap lh25">{value}</div>
-      </div>
-    </div>
-  )
-}
-const WalletItem = (props) => {
-  const {title, description,icon,layout,showArrow} = props
-  if(layout === 'vertical'){
-    return (
-      <div className="mt5 mb5">
-        <div className="text-center">
-          <i className={`fs24 icon-${icon}`}></i>
-        </div>
-        <div className="">
-          <div className="fs14">{title}</div>
-        </div>
-      </div>
-    )
-  }else{
-    return (
-      <div className="row pt10 pb10 pl0 pr0 align-items-center zb-b-b">
-        <div className="col-auto pr5 text-right text-primary">
-          <i className={`fs20 icon-${icon}`}></i>
-        </div>
-        <div className="col pl10">
-          <div className="fs14 color-black-1 text-wrap">{title}</div>
-          <div className="fs12 color-black-2">{description}</div>
-        </div>
-        {showArrow &&
-          <div className="col-auto text-right">
-            <Icon type="right" />
-          </div>
-        }
-      </div>
-     )
-  }
-}
-
 const PlaceOrderByLoopr = ({
     form
   }) => {
