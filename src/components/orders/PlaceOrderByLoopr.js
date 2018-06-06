@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps} from 'antd'
 import intl from 'react-intl-universal'
 import Alert from 'LoopringUI/components/Alert'
+import PlaceOrderResult from './PlaceOrderResult'
 import {connect} from 'dva'
 const PlaceOrderByLoopr = ({
     form
@@ -24,7 +25,7 @@ const PlaceOrderByLoopr = ({
     title: '手机扫码',
     content: 'First-content',
   }, {
-    title: '签名提交',
+    title: '交易签名',
     content: 'Second-content',
   }, {
     title: '下单结果',
@@ -71,25 +72,7 @@ const PlaceOrderByLoopr = ({
         {
           true &&
           <div className="mt15">
-            <div className="zb-b">
-                {
-                  true &&
-                  <div className="text-center p35">
-                    <i className={`fs36 icon-success`}></i>
-                    <div className="mt15">订单提交成功！</div>
-                    <Button className="mt15" type="default"> 查看订单 </Button>
-                  </div>
-                }
-                {
-                  true &&
-                  <div className="text-center p35">
-                    <Icon type="close-circle" className="fs36 text-error" />
-                    <div className="mt15">您取消了订单提交</div>
-                    <Button className="mt15" type="default"> 返回上级 </Button>
-                    <Button className="mt15" type="default"> 返回交易页 </Button>
-                  </div>
-                }
-            </div>
+            <PlaceOrderResult />
           </div>
         }
 
