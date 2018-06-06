@@ -1,8 +1,19 @@
 import React from 'react';
 import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps} from 'antd'
-import intl from 'react-intl-universal'
-import Alert from 'LoopringUI/components/Alert'
 import {connect} from 'dva'
+import {toBig, toHex, clearHexPrefix} from 'LoopringJS/common/formatter'
+import config from 'common/config'
+import intl from 'react-intl-universal';
+import * as datas from 'common/config/data'
+import eachLimit from 'async/eachLimit';
+import * as orderFormatter from 'modules/orders/formatters'
+import Notification from 'LoopringUI/components/Notification'
+import {createWallet} from 'LoopringJS/ethereum/account';
+import * as uiFormatter from 'modules/formatter/common'
+import * as fm from 'LoopringJS/common/formatter'
+import QRCode from 'qrcode.react';
+import Alert from 'LoopringUI/components/Alert'
+import {keccakHash} from 'LoopringJS/common/utils'
 
 const OrderMetaItem = (props) => {
   const {label, value} = props
@@ -50,9 +61,172 @@ const WalletItem = (props) => {
   }
 }
 
-const PlaceOrderSteps = ({
-    form
-  }) => {
+const PlaceOrderSteps = (props) => {
+  const {placeOrderSteps, placeOrder, wallet, dispatch, form} = props
+  let {side, pair, tradeInfo, order} = placeOrderSteps || {}
+  let {price, amount, total, validSince,validUntil, marginSplit, lrcFee, warn, orderType} = tradeInfo || {};
+  let {unsigned, signed, confirmButtonState} = placeOrder || {}
+  let actualSigned = signed && wallet ? signed.filter(item => item !== undefined && item !== null) : []
+  let submitDatas = signed && unsigned.length === actualSigned.length ? (
+    signed.map((item, index) => {
+      return {signed: item, unsigned:unsigned[index], index}
+    })
+  ) : new Array()
+
+  const hash = keccakHash(JSON.stringify(unsigned))
+
+  const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
+  const unsignedOrder = unsigned.find(item => item.type === 'order')
+  const signedOrder = signed.find(item => item && item.type === 'order')
+  let qrCodeData = ''
+  if(tradeInfo.orderType === 'p2p_order' && unsignedOrder.completeOrder && unsignedOrder.completeOrder.authPrivateKey && signedOrder && signedOrder.orderHash) {
+    qrCodeData = JSON.stringify({type:'p2p_order', data:{authPrivateKey:unsignedOrder.completeOrder.authPrivateKey, orderHash:signedOrder.orderHash}})
+  }
+
+  async function doSubmit() {
+    if(submitDatas.length === 0) {
+      Notification.open({
+        message: intl.get('notifications.title.place_order_failed'),
+        type: "error",
+        description: intl.get('notifications.message.some_items_not_signed')
+      });
+      return
+    }
+    eachLimit(submitDatas, 1, async function (item, callback) {
+      const signedItem = item.signed
+      const unsignedItem = item.unsigned
+      if(signedItem.type === 'tx') {
+        const response = await window.ETH.sendRawTransaction(signedItem.data)
+        // console.log('...tx:', response, signedItem)
+        if (response.error) {
+          Notification.open({
+            message: intl.get('notifications.title.place_order_failed'),
+            type: "error",
+            description: response.error.message
+          });
+          callback(response.error.message)
+        } else {
+          signed[item.index].txHash = response.result
+          window.STORAGE.wallet.setWallet({address: wallet.address, nonce: unsignedItem.data.nonce});
+          window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx:unsignedItem.data, from: wallet.address});
+          callback()
+        }
+      } else {
+        const response = await window.RELAY.order.placeOrder(signedItem.data)
+        // console.log('...submit order :', response)
+        if (response.error) {
+          Notification.open({
+            message: intl.get('notifications.title.place_order_failed'),
+            type: "error",
+            description: response.error.message
+          })
+          callback(response.error.message)
+        } else {
+          signed[item.index].orderHash = response.result
+          callback()
+        }
+      }
+    }, function (error) {
+      if(error){
+        Notification.open({
+          message: intl.get('notifications.title.place_order_failed'),
+          type: "error",
+          description: error.message
+        });
+        dispatch({type:'placeOrder/confirmButtonStateChange',payload:{state:1}})
+      }else {
+        const balanceWarn = warn ? warn.filter(item => item.type === "BalanceNotEnough") : [];
+        openNotification(balanceWarn);
+        dispatch({type:'placeOrder/sendDone',payload:{signed}})
+      }
+    });
+  }
+
+  const ActionItem = (item) => {
+    return (
+      <div>
+        <Button className="alert-btn mr5"
+                onClick={() => dispatch({type:'layers/showLayer',payload:{id:'receive',symbol: item.value.symbol.toUpperCase()}})}>
+          {`${intl.get('common.receive')} ${item.value.symbol.toUpperCase()}`}
+        </Button>
+        {item.value.symbol.toUpperCase() !== 'WETH' && item.value.symbol.toUpperCase() !== 'BAR' && item.value.symbol.toUpperCase() !== 'FOO' &&
+        <Button className="alert-btn mr5"
+                onClick={() => window.routeActions.gotoPath(`/trade/${item.value.symbol.toUpperCase()}-WETH`)}>
+          {`${intl.get('common.buy')} ${item.value.symbol.toUpperCase()}`}
+        </Button>}
+        {(item.value.symbol.toUpperCase() === 'BAR' || item.value.symbol.toUpperCase() === 'FOO') &&
+        <Button className="alert-btn mr5"
+                onClick={() => window.routeActions.gotoPath('/trade/FOO-BAR')}>
+          {`${intl.get('common.buy')} ${item.value.symbol.toUpperCase()}`}
+        </Button>}
+        {item.value.symbol.toUpperCase() === 'WETH' &&
+        <Button className="alert-btn mr5"
+                onClick={() => dispatch({type:'layers/showLayer',payload:{id:'convert', item: {symbol: 'ETH'}, showFrozenAmount: true}})}>
+          {`${intl.get('common.convert')} ${item.value.symbol.toUpperCase()}`}
+        </Button>}
+      </div>
+    )
+  };
+
+  const openNotification = (warn) => {
+    const args = {
+      message: intl.get('notifications.title.place_order_success'),
+      description: intl.get('notifications.message.place_order_success'),
+      type: 'success',
+    };
+    Notification.open(args);
+    warn.forEach((item) => {
+      Notification.open({
+        message: intl.get('notifications.title.place_order_warn'),
+        description: intl.get('notifications.message.place_order_balance_not_enough', {
+          token: item.value.symbol,
+          amount: uiFormatter.getFormatNum(item.value.required)
+        }),
+        type: 'warning',
+        actions: ActionItem(item)
+      })
+    })
+  };
+
+  async function generateQrCode() {
+    if(orderType !== 'p2p_order') {
+      throw new Error('orderType Data Error')
+    }
+    if(!order || (unsigned.length > 0 && unsigned.length !== actualSigned.length)) {
+      Notification.open({
+        message: intl.get('notifications.title.place_order_failed'),
+        type: "error",
+        description: intl.get('notifications.message.some_items_not_signed')
+      });
+      return
+    }
+    await doSubmit()
+  }
+
+  async function handelSubmit() {
+    if(orderType !== 'market_order') {
+      throw new Error('orderType Data Error')
+    }
+    if(!order || (unsigned.length > 0 && unsigned.length !== actualSigned.length)) {
+      Notification.open({
+        message: intl.get('notifications.title.place_order_failed'),
+        type: "error",
+        description: intl.get('notifications.message.some_items_not_signed')
+      });
+      return
+    }
+    await doSubmit()
+    dispatch({type:'layers/hideLayer',payload:{id:'placeOrderConfirm'}})
+  }
+
+  const toUnlock = () => {
+    dispatch({type:'layers/showLayer',payload:{id:'unlock'}})
+  }
+
+  const toSign = () => {
+    dispatch({type:'layers/showLayer',payload:{id:'placeOrderSign'}})
+  }
+
   function handleSubmit() {
     form.validateFields((err,values) => {
       console.log('values',values);
@@ -61,65 +235,55 @@ const PlaceOrderSteps = ({
       }
     });
   }
-  function handleReset() {
+  function chooseType(type) {
 
-  }
-  function resetForm(){
-    form.resetFields()
   }
   return (
     <Card className="rs" title={<div className="pl10 ">订单提交</div>}>
       <div className="p15">
         <div className="zb-b">
           <div className="fs16 color-black-1 p10 zb-b-b">订单详情</div>
-          <OrderMetaItem label="订单类型" value="P2P订单" />
-          <OrderMetaItem label="订单价格" value="0.00015 ETH" />
-          <OrderMetaItem label="订单数量" value="10000 LRC" />
-          <OrderMetaItem label="订单总额" value="15 ETH" />
-          <OrderMetaItem label="矿工撮合费" value="2.2 LRC" />
-          <OrderMetaItem label="订单有效期" value="2018-05-29 10:38 ~ 2018-05-30 10:38" />
+          <OrderMetaItem label={intl.get('place_order.order_type')} value={tradeInfo.orderType === 'p2p_order' ? intl.get('order_type.p2p_order') : intl.get('order_type.market_order')} />
+          <OrderMetaItem label={intl.get('common.price')} value={`${uiFormatter.getFormatNum(price.toString(10))} ${pair.split('-')[1]}`} />
+          <OrderMetaItem label={intl.get('common.amount')} value={`${amount.toString(10)} ${pair.split('-')[0]}`} />
+          <OrderMetaItem label={intl.get('common.total')} value={`${total.toString(10)} ${pair.split('-')[1]}`} />
+          <OrderMetaItem label={intl.get('common.lrc_fee')} value={`${uiFormatter.getFormatNum(lrcFee)} LRC`} />
+          <OrderMetaItem label={intl.get('common.margin_split')} value={`${marginSplit} %`} />
+          <OrderMetaItem label={intl.get('common.ttl')} value={`${uiFormatter.getFormatTime(validSince * 1e3)} ~ ${uiFormatter.getFormatTime(validUntil * 1e3)}`} />
         </div>
 
         <div className="zb-b mt15">
           <div className="fs16 color-black-1 p10 zb-b-b">选择支付钱包</div>
           <div className="row ml0 mr0">
-            <div className="col-4 zb-b-r">
+            <div className="col-4 zb-b-r" onClick={chooseType.bind(this, 'LooprWallet')}>
               <WalletItem icon="json" title="Loopr Wallet" />
             </div>
-            <div className="col-4 zb-b-r">
+            <div className="col-4 zb-b-r" onClick={chooseType.bind(this, 'MetaMask')}>
               <WalletItem icon="metamaskwallet" title="MetaMask" />
             </div>
-            <div className="col-4">
+            <div className="col-4" onClick={chooseType.bind(this, 'Ledger')}>
               <WalletItem icon="ledgerwallet" title="Ledger" />
             </div>
-            <div className="col-4 zb-b-r">
+            {false && <div className="col-4 zb-b-r">
               <WalletItem icon="trezorwallet" title="TREZOR" />
-            </div>
-            <div className="col-4 zb-b-r">
+            </div>}
+            <div className="col-4 zb-b-r" onClick={chooseType.bind(this, 'imToken')}>
               <WalletItem icon="key" title="imToken" />
             </div>
           </div>
         </div>
-
-        {
-          false &&
-          <div className="mt20 d-block w-100">
-            <div className="mb15"></div>
-            <div className="mb15"></div>
-            <Alert type="info" title={<div className="color-black-1">您的钱包还没有解锁 <a>解锁钱包<Icon type="right" /></a></div>} theme="light" size="small"/>
-            <div className="mb15"></div>
-            <Alert type="info" title={<div className="color-black-1">您的订单还没有完成签名 <a>订单签名<Icon type="right" /></a></div>} theme="light" size="small" />
-            <div className="mb15"></div>
-            <Button onClick={handleReset} type="primary" size="large" disabled className="d-block w-100">提交订单</Button>
-            <div className="mb15"></div>
-          </div>
-        }
       </div>
     </Card>
   );
 };
 
+function mapToProps(state) {
+  return {
+    placeOrder:state.placeOrder,
+    wallet:state.wallet,
+  }
+}
 
-export default Form.create()(connect()(PlaceOrderSteps));
+export default Form.create()(connect(mapToProps)(PlaceOrderSteps));
 
 

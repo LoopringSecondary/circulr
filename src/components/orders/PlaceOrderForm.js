@@ -366,7 +366,7 @@ class PlaceOrderForm extends React.Component {
 
     const showTradeModal = (tradeInfo, order, signed, unsigned) => {
       placeOrder.toConfirm({signed, unsigned})
-      dispatch({type:'layers/showLayer', payload: {id: 'placeOrderConfirm', side, pair, tradeInfo, order}})
+      dispatch({type:'layers/showLayer', payload: {id: 'placeOrderSteps', side, pair, tradeInfo, order}})
     }
     const setLRCFee = ()=>{
       dispatch({type:'layers/showLayer', payload: {id: 'placeOrderLRCFee', side, pair}})
