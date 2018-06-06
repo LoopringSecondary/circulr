@@ -12,6 +12,7 @@ import * as uiFormatter from 'modules/formatter/common'
 import * as fm from 'LoopringJS/common/formatter'
 import QRCode from 'qrcode.react';
 import Alert from 'LoopringUI/components/Alert'
+import {keccakHash} from 'LoopringJS/common/utils'
 
 function PlaceOrderConfirm(props) {
   const {placeOrderConfirm, placeOrder, settings, balance, wallet, marketcap, pendingTx, dispatch} = props
@@ -24,6 +25,9 @@ function PlaceOrderConfirm(props) {
       return {signed: item, unsigned:unsigned[index], index}
     })
   ) : new Array()
+
+  const hash = keccakHash(JSON.stringify(unsigned))
+
   const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
   const unsignedOrder = unsigned.find(item => item.type === 'order')
   const signedOrder = signed.find(item => item && item.type === 'order')
