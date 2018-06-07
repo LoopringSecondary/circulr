@@ -236,7 +236,6 @@ export async function tradeVerification(balances, walletState, tradeInfo, sell, 
     }
     if(failed) {
       tradeInfo.error = error
-      return
     }
   }
   tradeInfo.warn = warn

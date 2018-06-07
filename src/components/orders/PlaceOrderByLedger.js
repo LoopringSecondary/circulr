@@ -11,13 +11,11 @@ import {wallets} from "../../common/config/data";
 import {trimAll} from "LoopringJS/common/utils";
 
 const PlaceOrderByLedger = (props) => {
-  const {wallet, hardwareWallet, placeOrder, dispatch} = props
+  const {wallet, hardwareWallet, placeOrder, placeOrderByLedger, dispatch} = props
   const {address, dpath, publicKey, chainCode, walletType} = hardwareWallet;
 
-  console.log(11111, wallet, hardwareWallet)
-
   let currentStep = 0
-  if(address) {
+  if(placeOrderByLedger.ledger && placeOrderByLedger.addressConfirmed) {
     currentStep = 1
     if(placeOrder.orderState >= 1) {
       currentStep = 2
@@ -25,6 +23,7 @@ const PlaceOrderByLedger = (props) => {
   }
 
   const unlock = () => {
+    dispatch({type:"hardwareWallet/setWalletType",payload:{walletType:'ledger'}});
     const walletConfig = wallets.find(wallet => trimAll(wallet.name).toLowerCase() === 'ledger(eth)');
     connectLedger().then(res =>{
       if(!res.error){
@@ -32,17 +31,42 @@ const PlaceOrderByLedger = (props) => {
         getLedgerPublicKey(walletConfig.dpath,ledger).then(resp => {
           if(!resp.error){
             const {chainCode, publicKey} = resp.result;
+            dispatch({type: "placeOrderByLedger/connectedChange", payload: {ledger}});
             dispatch({type: "hardwareWallet/setKeyAndCode", payload: {chainCode, publicKey}});
+          } else {
+            Notification.open({
+              message: 'Connect Ledger Failed',
+              type: "error",
+              description: resp.error
+            });
           }
+        });
+      } else {
+        Notification.open({
+          message: 'Connect Ledger Failed',
+          type: "error",
+          description: res.error
         });
       }
     });
   };
 
+  const confirmAddress = () => {
+    if (address && placeOrderByLedger.ledger) {
+      dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger:placeOrderByLedger.ledger, dpath: `${dpath}/0`}});
+      dispatch({type: 'hardwareWallet/reset', payload: {}});
+      dispatch({type: 'sockets/unlocked'})
+      dispatch({type: 'placeOrderByLedger/confirmAddressChange', payload: {confirmed:true}});
+    } else {
+      Notification.open({type: 'error',  description:intl.get('unlock.connect_ledger_tip')})
+    }
+  }
+
   const moreAddress = () => {
     if (address) {
-      props.dispatch({type: 'determineWallet/setHardwareWallet', payload: {publicKey, chainCode, dpath, walletType}});
-      hardwareWallet.reset();
+      dispatch({type: 'determineWallet/setHardwareWallet', payload: {publicKey, chainCode, dpath, walletType}});
+      dispatch({type: 'hardwareWallet/reset', payload: {}});
+      dispatch({type:'layers/showLayer',payload:{id:'determineAddress'}});
     } else {
       Notification.open({type: 'error',  description:intl.get('unlock.connect_ledger_tip')})
     }
@@ -71,11 +95,22 @@ const PlaceOrderByLedger = (props) => {
           currentStep === 0 &&
           <div className="mt15">
             <div className="zb-b">
+              {!placeOrderByLedger.ledger &&
+                <div className="text-center p15">
+                  <i className={`fs36 icon-ledgerwallet text-primary`}></i>
+                  <div className="mt10">连接 Leager</div>
+                  <Button className="mt15" type="default" onClick={unlock}> Connect </Button>
+                </div>
+              }
+              {placeOrderByLedger.ledger && !placeOrderByLedger.confirmAddressChange &&
               <div className="text-center p15">
                 <i className={`fs36 icon-ledgerwallet text-primary`}></i>
-                <div className="mt10">连接 Leager</div>
-                <Button className="mt15" type="default" onClick={unlock}> Connect </Button>
+                <div className="mt10">请确认解锁地址</div>
+                <div className="mt10">{address}</div>
+                <Button className="mt15" type="default" onClick={confirmAddress}> Confirm address </Button>
+                <Button className="mt15" type="default" disabled onClick={moreAddress}> {intl.get('wallet_determine.actions_other_address')} </Button>
               </div>
+              }
             </div>
           </div>
         }
@@ -100,7 +135,8 @@ function mapToProps(state) {
   return {
     wallet:state.wallet,
     hardwareWallet:state.hardwareWallet,
-    placeOrder:state.placeOrder
+    placeOrder:state.placeOrder,
+    placeOrderByLedger:state.placeOrderByLedger
   }
 }
 export default connect(mapToProps)(PlaceOrderByLedger);

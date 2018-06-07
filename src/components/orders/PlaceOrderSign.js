@@ -39,6 +39,20 @@ const PlaceOrderSign = (props) => {
         });
         return
       }
+      let toConfirmWarn = ''
+      if (wallet.unlockType === 'ledger') {
+        toConfirmWarn = intl.get('notifications.message.confirm_warn_ledger')
+      }
+      if (wallet.unlockType === 'metaMask') {
+        toConfirmWarn = intl.get('notifications.message.confirm_warn_metamask')
+      }
+      if(toConfirmWarn) {
+        Notification.open({
+          message: intl.get('notifications.title.to_confirm'),
+          description: toConfirmWarn,
+          type: 'info'
+        })
+      }
       if(item.type === 'order') {
         const signedOrder = await account.signOrder(item.data)
         signedOrder.powNonce = 100;
@@ -110,11 +124,6 @@ const PlaceOrderSign = (props) => {
         type: "error",
         description: intl.get('notifications.message.some_items_not_signed')
       });
-      return
-    }
-    //TODO MOCK
-    if(submitDatas.length > 0) {
-      dispatch({type:'placeOrder/orderStateChange',payload:{orderState:2}})
       return
     }
     eachLimit(submitDatas, 1, async function (item, callback) {

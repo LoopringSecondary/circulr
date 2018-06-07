@@ -66,7 +66,7 @@ export default {
         return
       }
       const {account, unlockType, address} = yield select(({ ['wallet']:state }) => state )
-      if(!account || unlockType === 'address') {
+      if(!account || (unlockType !== 'keystore' && unlockType !== 'mnemonic' && unlockType !== 'privateKey')) {
         return
       }
       const signedNew = yield call(apis.signAll, {signed,unsigned,account,address})

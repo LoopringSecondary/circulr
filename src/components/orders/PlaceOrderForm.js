@@ -308,39 +308,39 @@ class PlaceOrderForm extends React.Component {
             return
           }
 
-          if(tradeInfo.error) {
-            tradeInfo.error.map(item=>{
-              if(item.value.symbol === 'ETH') {
-                Notification.open({
-                  message: intl.get('notifications.title.place_order_failed'),
-                  description: intl.get('notifications.message.eth_is_required', {required:item.value.required}),
-                  type:'error',
-                  actions:(
-                    <div>
-                      <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'ETH'}})}>
-                        {`${intl.get('actions.receive')} ETH`}
-                      </Button>
-                    </div>
-                  )
-                })
-              } else if (item.value.symbol === 'LRC') {
-                Notification.open({
-                  message: intl.get('notifications.title.place_order_failed'),
-                  description: intl.get('notifications.message.lrcfee_is_required', {required:item.value.required}),
-                  type:'error',
-                  actions:(
-                    <div>
-                      <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'LRC'}})}>
-                        {`${intl.get('actions.receive')} LRC`}
-                      </Button>
-                    </div>
-                  )
-                })
-              }
-            })
-            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
-            return
-          }
+          // if(tradeInfo.error) {
+          //   tradeInfo.error.map(item=>{
+          //     if(item.value.symbol === 'ETH') {
+          //       Notification.open({
+          //         message: intl.get('notifications.title.place_order_failed'),
+          //         description: intl.get('notifications.message.eth_is_required', {required:item.value.required}),
+          //         type:'error',
+          //         actions:(
+          //           <div>
+          //             <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'ETH'}})}>
+          //               {`${intl.get('actions.receive')} ETH`}
+          //             </Button>
+          //           </div>
+          //         )
+          //       })
+          //     } else if (item.value.symbol === 'LRC') {
+          //       Notification.open({
+          //         message: intl.get('notifications.title.place_order_failed'),
+          //         description: intl.get('notifications.message.lrcfee_is_required', {required:item.value.required}),
+          //         type:'error',
+          //         actions:(
+          //           <div>
+          //             <Button className="alert-btn mr5" onClick={() => dispatch({type:'layers/showLayer', payload: {id: 'receiveToken', symbol:'LRC'}})}>
+          //               {`${intl.get('actions.receive')} LRC`}
+          //             </Button>
+          //           </div>
+          //         )
+          //       })
+          //     }
+          //   })
+          //   placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+          //   return
+          // }
 
           //TODO MOCK
           //const test = new Array()
