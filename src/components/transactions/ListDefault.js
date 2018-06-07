@@ -140,7 +140,7 @@ const Option = Select.Option;
                       <td className="text-left">{item.nonce}</td>
                       <td className="text-left">{renders.txHash(txFm, actions)}</td>
                       <td className="text-left">{renders.createTime(txFm)}</td>
-                      <td className="text-left">{renders.status(txFm,actions,index)}</td>
+                      <td className="">{renders.status(txFm,actions,index)}</td>
                     </tr>
                   )
                 })
