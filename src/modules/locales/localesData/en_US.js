@@ -56,7 +56,7 @@ const words = {
     no_data: 'No Data',
   },
   slow:'Slow',
-  fast:'Fast'
+  fast:'Fast',
 }
 const types = {
   trade_side: {
