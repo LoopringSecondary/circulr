@@ -351,7 +351,7 @@ async function generateSignData({tradeInfo, order, completeOrder, wallet}) {
   const signed = new Array()
   // sign orders and txs
   if(tradeInfo.orderType === 'market_order') {
-    unsigned.push({type: 'order', data:order, address:wallet.address})
+    unsigned.push({type: 'order', data:order, address:wallet.address, side:tradeInfo.side, market:tradeInfo.pair})
   } else {
     unsigned.push({type: 'order', data:order, completeOrder:completeOrder, description: `Sign Order`, address:wallet.address})
   }

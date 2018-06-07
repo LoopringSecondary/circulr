@@ -14,6 +14,9 @@ import * as fm from 'LoopringJS/common/formatter'
 import QRCode from 'qrcode.react';
 import Alert from 'LoopringUI/components/Alert'
 import {keccakHash} from 'LoopringJS/common/utils'
+import {getXPubKey as getLedgerPublicKey,connect as connectLedger} from "LoopringJS/ethereum/ledger";
+import {wallets} from "../../common/config/data";
+import {trimAll} from "LoopringJS/common/utils";
 
 const OrderMetaItem = (props) => {
   const {label, value} = props
@@ -252,6 +255,19 @@ const PlaceOrderSteps = (props) => {
         dispatch({type:'layers/showLayer',payload:{id:'placeOrderByMetamask'}});
         break;
       case 'Ledger' :
+        dispatch({type:"hardwareWallet/setWalletType",payload:{walletType:'ledger'}});
+        const walletConfig = wallets.find(wallet => trimAll(wallet.name).toLowerCase() === 'ledger(eth)');
+        connectLedger().then(res =>{
+          if(!res.error){
+            const ledger = res.result;
+            getLedgerPublicKey(walletConfig.dpath,ledger).then(resp => {
+              if(!resp.error){
+                const {chainCode, publicKey} = resp.result;
+                dispatch({type: "hardwareWallet/setKeyAndCode", payload: {chainCode, publicKey}});
+              }
+            });
+          }
+        });
         dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLedger'}});
         break;
     }
