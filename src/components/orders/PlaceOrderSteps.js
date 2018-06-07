@@ -263,6 +263,7 @@ const PlaceOrderSteps = (props) => {
             getLedgerPublicKey(walletConfig.dpath,ledger).then(resp => {
               if(!resp.error){
                 const {chainCode, publicKey} = resp.result;
+                dispatch({type: "placeOrderByLedger/connectChange", payload: {isConnected:true}});
                 dispatch({type: "hardwareWallet/setKeyAndCode", payload: {chainCode, publicKey}});
               }
             });
