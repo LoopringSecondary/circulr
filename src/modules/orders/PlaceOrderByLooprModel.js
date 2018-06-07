@@ -3,6 +3,7 @@ export default {
   namespace: MODULES,
   state: {
    step:0, //0:qrcode, 1:waiting for sign 2:result
+   generateTime:null,
    qrcode:''
   },
   effects:{
@@ -25,6 +26,14 @@ export default {
       return {
         ...state,
         qrcode
+      }
+    },
+    generateTimeChange(state, action) {
+      const {payload} = action
+      let {generateTime} = payload
+      return {
+        ...state,
+        generateTime
       }
     },
   },

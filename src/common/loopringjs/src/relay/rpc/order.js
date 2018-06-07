@@ -32,7 +32,8 @@ export default class Order
         return getOrderHash(order);
     }
 
-    storeDatasInShortTerm (hash, origin) {
+    storeDatasInShortTerm (hash, origin)
+    {
         return storeDatasInShortTerm(this.host, hash, origin)
     }
 }
