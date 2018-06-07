@@ -117,7 +117,7 @@ export async function signMessage (dpath, message, ledgerConnect)
  * @description sign ethereum tx
  * @param dpath string
  * @param rawTx
- * @param ledger
+ * @param ledgerConnect
  * @returns {Promise}
  */
 export async function signEthereumTx (dpath, rawTx, ledgerConnect)
