@@ -30,7 +30,10 @@ const updateEstimateGasPrice = (item,id)=>{
 const updateStepInPlaceOrderByLoopr = (item,id)=>{
   const dispatch = require('../../index.js').default._store.dispatch
   if(item) {
-    switch(item.status) { //init accept reject
+    switch(item.status) { //init received accept reject
+      case 'received':
+        dispatch({type:'placeOrderByLoopr/stepChange', payload:{step:1}})
+        break;
       case 'accept':
         dispatch({type:'placeOrder/orderStateChange', payload:{orderState:1}})
         dispatch({type:'placeOrderByLoopr/stepChange', payload:{step:2}})

@@ -4,6 +4,7 @@ export default [
   require('./orders/ListModel').default,
   require('./orders/PlaceOrderModel').default,
   require('./orders/PlaceOrderByLooprModel').default,
+  require('./orders/PlaceOrderByLedgerModel').default,
   require('./orders/P2POrderModel').default,
   require('./fills/ListModel').default,
   require('./tokens/ListModel').default,
