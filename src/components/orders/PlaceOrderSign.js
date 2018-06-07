@@ -4,15 +4,20 @@ import Alert from 'LoopringUI/components/Alert'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'
 import Notification from 'LoopringUI/components/Notification'
+import eachLimit from 'async/eachLimit';
+import * as uiFormatter from 'modules/formatter/common'
 
 const PlaceOrderSign = (props) => {
   const {placeOrder, wallet, dispatch} = props
-  // const {signed,unsigned} = placeOrder
-  const unsigned = [{"type":"order","data":{"owner":"0x23bD9CAfe75610C3185b85BC59f760f400bd89b5","delegateAddress":"0x17233e07c67d086464fD408148c3ABB56245FA64","protocol":"0x8d8812b72d1e4ffCeC158D25f56748b7d67c1e78","tokenB":"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2","tokenS":"0xEF68e7C694F40c8202821eDF525dE3782458639f","amountB":"0x10a741a462780000","amountS":"0xa688906bd8b00000","lrcFee":"0x12751bf40f450000","validSince":"0x5b176f81","validUntil":"0x5b18c101","marginSplitPercentage":50,"buyNoMoreThanAmountB":false,"walletAddress":"0xb94065482ad64d4c2b9252358d746b39e820a582","orderType":"market_order","authAddr":"0x084f0ff385b78d33105d8f8bc8abfb17cd7b9943","authPrivateKey":"48451ed89ce6834fb4e6c47112740b51ceab15423aa746de4c282110bc65f6a0"},"completeOrder":{"owner":"0x23bD9CAfe75610C3185b85BC59f760f400bd89b5","delegateAddress":"0x17233e07c67d086464fD408148c3ABB56245FA64","protocol":"0x8d8812b72d1e4ffCeC158D25f56748b7d67c1e78","tokenB":"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2","tokenS":"0xEF68e7C694F40c8202821eDF525dE3782458639f","amountB":"0x10a741a462780000","amountS":"0xa688906bd8b00000","lrcFee":"0x12751bf40f450000","validSince":"0x5b176f81","validUntil":"0x5b18c101","marginSplitPercentage":50,"buyNoMoreThanAmountB":false,"walletAddress":"0xb94065482ad64d4c2b9252358d746b39e820a582","orderType":"market_order","authAddr":"0x084f0ff385b78d33105d8f8bc8abfb17cd7b9943","authPrivateKey":"48451ed89ce6834fb4e6c47112740b51ceab15423aa746de4c282110bc65f6a0"},"description":"Sign Order","address":"0x23bD9CAfe75610C3185b85BC59f760f400bd89b5"},{"type":"tx","data":{"to":"0xEF68e7C694F40c8202821eDF525dE3782458639f","value":"0x0","data":"0x095ea7b300000000000000000000000017233e07c67d086464fd408148c3abb56245fa640000000000000000000000000000000000000000000000000000000000000000","gasPrice":"0x2540be400","gasLimit":"0x30d40","nonce":"0x21","chainId":1},"description":"Cancel LRC allowance","address":"0x23bD9CAfe75610C3185b85BC59f760f400bd89b5"},{"type":"tx","data":{"to":"0xEF68e7C694F40c8202821eDF525dE3782458639f","value":"0x0","data":"0x095ea7b300000000000000000000000017233e07c67d086464fd408148c3abb56245fa640000000000000000000000000000000006f05b59d3b1ffffe43e9298b1380000","gasPrice":"0x2540be400","gasLimit":"0x30d40","nonce":"0x22","chainId":1},"description":"Approve LRC allowance","address":"0x23bD9CAfe75610C3185b85BC59f760f400bd89b5"},{"type":"tx","data":{"to":"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2","value":"0x0","data":"0x095ea7b300000000000000000000000017233e07c67d086464fd408148c3abb56245fa640000000000000000000000000000000000000000000000000000000000000000","gasPrice":"0x2540be400","gasLimit":"0x30d40","nonce":"0x23","chainId":1},"description":"Cancel WETH allowance","address":"0x23bD9CAfe75610C3185b85BC59f760f400bd89b5"},{"type":"tx","data":{"to":"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2","value":"0x0","data":"0x095ea7b300000000000000000000000017233e07c67d086464fd408148c3abb56245fa640000000000000000000000000000000006f05b59d3b1ffffe43e9298b1380000","gasPrice":"0x2540be400","gasLimit":"0x30d40","nonce":"0x24","chainId":1},"description":"Approve WETH allowance","address":"0x23bD9CAfe75610C3185b85BC59f760f400bd89b5"}]
-  // const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
-  // const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
-  const isUnlocked =  true
-  const signed = [{"type":"order","data":{"owner":"0x23bD9CAfe75610C3185b85BC59f760f400bd89b5","delegateAddress":"0x17233e07c67d086464fD408148c3ABB56245FA64","protocol":"0x8d8812b72d1e4ffCeC158D25f56748b7d67c1e78","tokenB":"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2","tokenS":"0xEF68e7C694F40c8202821eDF525dE3782458639f","amountB":"0x10a741a462780000","amountS":"0xa688906bd8b00000","lrcFee":"0x12bc29d8eec70000","validSince":"0x5b17a5d6","validUntil":"0x5b18f756","marginSplitPercentage":50,"buyNoMoreThanAmountB":false,"walletAddress":"0xb94065482ad64d4c2b9252358d746b39e820a582","orderType":"market_order","authAddr":"0xc06894dddd0c0734f0b19eea4bca7820fe8007a4","authPrivateKey":"4dd0320e85a7c9929ee3e01c09f864762fb0a344fa09e1b2aed5a25ea78c9d07","v":28,"r":"0x764cfaf81b9287fee7647f5d8bc55975332c2b77deed1962005174b8f2433a5e","s":"0x14a4403a4481de6172d14cd6b50824dbc71a8e8c94b4e7a72777430bd0aaa598","powNonce":100}},{"type":"tx","data":"0xf8aa218502540be40083030d4094ef68e7c694f40c8202821edf525de3782458639f80b844095ea7b300000000000000000000000017233e07c67d086464fd408148c3abb56245fa64000000000000000000000000000000000000000000000000000000000000000025a0c05ac772004a72bdf9bd9588c2532d3550da3dbd89b60d4950c15b6bf26b748da0068935b1f92827d1d39f7770184377d479b570853818c85f92824f53ef60eb97"},{"type":"tx","data":"0xf8aa228502540be40083030d4094ef68e7c694f40c8202821edf525de3782458639f80b844095ea7b300000000000000000000000017233e07c67d086464fd408148c3abb56245fa640000000000000000000000000000000006f05b59d3b1ffffe43e9298b138000026a046182bff801cf5cb377b8aaeb6eaf770184068d3ace893a9b727f984d0c68372a02cf8845b769ab895970c63bd73dbdd4ba711d9f863d5028802acd2eeaf6955e1"},{"type":"tx","data":"0xf8aa238502540be40083030d4094c02aaa39b223fe8d0a0e5c4f27ead9083c756cc280b844095ea7b300000000000000000000000017233e07c67d086464fd408148c3abb56245fa64000000000000000000000000000000000000000000000000000000000000000025a003c9c47d2bac6aa786bae0ec258aeb3553ffc7001b97577c453f748d1df8ae61a01e46b5916f2f1e13a3ed8308a8a6e843c6130143bd403599e02920d30867fba7"},{"type":"tx","data":"0xf8aa248502540be40083030d4094c02aaa39b223fe8d0a0e5c4f27ead9083c756cc280b844095ea7b300000000000000000000000017233e07c67d086464fd408148c3abb56245fa640000000000000000000000000000000006f05b59d3b1ffffe43e9298b138000025a0f13b6218626c9f8d7ff9d0c5ca6c774b49535adf5c111bc3955922f7fc29e69aa0046c93597a80c942bec3f3740cb7eb2c18872f68b915cc4911a33effc8d4dfe1"}]
+  const {tradeInfo,signed,unsigned} = placeOrder
+  let {warn} = tradeInfo || {};
+  const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
+  let actualSigned = signed && wallet ? signed.filter(item => item !== undefined && item !== null) : []
+  let submitDatas = signed && unsigned.length === actualSigned.length ? (
+    signed.map((item, index) => {
+      return {signed: item, unsigned:unsigned[index], index}
+    })
+  ) : new Array()
 
   async function sign(item, index, e) {
     e.preventDefault()
@@ -26,7 +31,6 @@ const PlaceOrderSign = (props) => {
       return
     }
     try {
-      console.log(item.address, wallet.address)
       if(item.address !== wallet.address) {
         Notification.open({
           message: intl.get('trade.place_order_failed'),
@@ -51,6 +55,139 @@ const PlaceOrderSign = (props) => {
         description: e.message
       });
     }
+  }
+
+  const ActionItem = (item) => {
+    return (
+      <div>
+        <Button className="alert-btn mr5"
+                onClick={() => dispatch({type:'layers/showLayer',payload:{id:'receive',symbol: item.value.symbol.toUpperCase()}})}>
+          {`${intl.get('common.receive')} ${item.value.symbol.toUpperCase()}`}
+        </Button>
+        {item.value.symbol.toUpperCase() !== 'WETH' && item.value.symbol.toUpperCase() !== 'BAR' && item.value.symbol.toUpperCase() !== 'FOO' &&
+        <Button className="alert-btn mr5"
+                onClick={() => window.routeActions.gotoPath(`/trade/${item.value.symbol.toUpperCase()}-WETH`)}>
+          {`${intl.get('common.buy')} ${item.value.symbol.toUpperCase()}`}
+        </Button>}
+        {(item.value.symbol.toUpperCase() === 'BAR' || item.value.symbol.toUpperCase() === 'FOO') &&
+        <Button className="alert-btn mr5"
+                onClick={() => window.routeActions.gotoPath('/trade/FOO-BAR')}>
+          {`${intl.get('common.buy')} ${item.value.symbol.toUpperCase()}`}
+        </Button>}
+        {item.value.symbol.toUpperCase() === 'WETH' &&
+        <Button className="alert-btn mr5"
+                onClick={() => dispatch({type:'layers/showLayer',payload:{id:'convert', item: {symbol: 'ETH'}, showFrozenAmount: true}})}>
+          {`${intl.get('common.convert')} ${item.value.symbol.toUpperCase()}`}
+        </Button>}
+      </div>
+    )
+  };
+
+  const openNotification = (warn) => {
+    const args = {
+      message: intl.get('notifications.title.place_order_success'),
+      description: intl.get('notifications.message.place_order_success'),
+      type: 'success',
+    };
+    Notification.open(args);
+    warn.forEach((item) => {
+      Notification.open({
+        message: intl.get('notifications.title.place_order_warn'),
+        description: intl.get('notifications.message.place_order_balance_not_enough', {
+          token: item.value.symbol,
+          amount: uiFormatter.getFormatNum(item.value.required)
+        }),
+        type: 'warning',
+        actions: ActionItem(item)
+      })
+    })
+  };
+
+  async function doSubmit() {
+    if(submitDatas.length === 0) {
+      Notification.open({
+        message: intl.get('notifications.title.place_order_failed'),
+        type: "error",
+        description: intl.get('notifications.message.some_items_not_signed')
+      });
+      return
+    }
+    //TODO MOCK
+    if(submitDatas.length > 0) {
+      dispatch({type:'placeOrder/orderStateChange',payload:{orderState:2}})
+      return
+    }
+    eachLimit(submitDatas, 1, async function (item, callback) {
+      const signedItem = item.signed
+      const unsignedItem = item.unsigned
+      if(signedItem.type === 'tx') {
+        const response = await window.ETH.sendRawTransaction(signedItem.data)
+        // console.log('...tx:', response, signedItem)
+        if (response.error) {
+          Notification.open({
+            message: intl.get('notifications.title.place_order_failed'),
+            type: "error",
+            description: response.error.message
+          });
+          callback(response.error.message)
+        } else {
+          signed[item.index].txHash = response.result
+          window.STORAGE.wallet.setWallet({address: wallet.address, nonce: unsignedItem.data.nonce});
+          window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx:unsignedItem.data, from: wallet.address});
+          callback()
+        }
+      } else {
+        const response = await window.RELAY.order.placeOrder(signedItem.data)
+        // console.log('...submit order :', response)
+        if (response.error) {
+          Notification.open({
+            message: intl.get('notifications.title.place_order_failed'),
+            type: "error",
+            description: response.error.message
+          })
+          callback(response.error.message)
+        } else {
+          signed[item.index].orderHash = response.result
+          callback()
+        }
+      }
+    }, function (error) {
+      if(error){
+        Notification.open({
+          message: intl.get('notifications.title.place_order_failed'),
+          type: "error",
+          description: error.message
+        });
+        dispatch({type:'placeOrder/confirmButtonStateChange',payload:{state:1}})
+      } else {
+        const balanceWarn = warn ? warn.filter(item => item.type === "BalanceNotEnough") : [];
+        openNotification(balanceWarn);
+        dispatch({type:'placeOrder/sendDone',payload:{signed}})
+      }
+    });
+  }
+
+  async function handelSubmit() {
+    if(!signed || unsigned.length !== actualSigned.length) {
+      Notification.open({
+        message: intl.get('trade.place_order_failed'),
+        type: "error",
+        description: 'to sign'
+      });
+      return
+    }
+    if(tradeInfo.orderType !== 'market_order') {
+      throw new Error('orderType Data Error')
+    }
+    if(unsigned.length > 0 && unsigned.length !== actualSigned.length) {
+      Notification.open({
+        message: intl.get('notifications.title.place_order_failed'),
+        type: "error",
+        description: intl.get('notifications.message.some_items_not_signed')
+      });
+      return
+    }
+    await doSubmit()
   }
 
   const TxHeader = ({tx,index})=>{
@@ -107,7 +244,7 @@ const PlaceOrderSign = (props) => {
         }
       </Collapse>
       <div className="p10">
-        <Button className="w-100 d-block" size="large" type="primary"> 发送交易 </Button>
+        <Button className="w-100 d-block" size="large" type="primary" onClick={handelSubmit} disabled={!signed || unsigned.length !== actualSigned.length}> 发送交易 </Button>
       </div>
 
     </div>

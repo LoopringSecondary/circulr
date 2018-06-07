@@ -1,13 +1,14 @@
 import React from 'react';
 import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps} from 'antd'
 import intl from 'react-intl-universal'
+import {connect} from 'dva'
 
-const PlaceOrderResult = ({
-  }) => {
+const PlaceOrderResult = (props) => {
+  const {placeOrder} = props
   return (
     <div className="zb-b">
         {
-          true &&
+          placeOrder.orderState === 1 &&
           <div className="text-center p35">
             <i className={`fs50 icon-success`}></i>
             <div className="fs18 color-black-1">订单提交成功！</div>
@@ -18,10 +19,10 @@ const PlaceOrderResult = ({
           </div>
         }
         {
-          true &&
+          placeOrder.orderState === 2 &&
           <div className="text-center p35">
             <Icon type="close-circle" className="fs50 text-error" />
-            <div className="fs18 color-black-1 mt15">您取消了订单提交</div>
+            <div className="fs18 color-black-1 mt15">提交失败</div>
             <div className="mt10">
               <Button className="m5" type="default"> 返回上级 </Button>
               <Button className="m5" type="default"> 返回交易页 </Button>
@@ -32,7 +33,14 @@ const PlaceOrderResult = ({
   );
 };
 
+function mapToProps(state) {
+  return {
+    wallet:state.wallet,
+    placeOrder:state.placeOrder
+  }
+}
 
-export default PlaceOrderResult;
+export default connect(mapToProps) (PlaceOrderResult);
+
 
 

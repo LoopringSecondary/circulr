@@ -356,7 +356,6 @@ function mapToProps(state) {
     marketcap:state.sockets.marketcap.items,
     tokens:state.tokens.items,
     settings:state.settings,
-    wallet:state.wallet,
     gas:state.gas,
     pendingTx:state.pendingTx
   }

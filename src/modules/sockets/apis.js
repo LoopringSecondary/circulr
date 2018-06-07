@@ -46,6 +46,7 @@ const transfromers = {
       })
     },
     resTransformer:(id,res)=>{
+      if(!res) return null
       res = JSON.parse(res)
       // console.log(id,'res',res)
       let items = []
@@ -66,6 +67,7 @@ const transfromers = {
       })
     },
     resTransformer:(id,res)=>{
+      if(!res) return null
       res = JSON.parse(res)
       // console.log(id,'res',res)
       let items = []
@@ -83,6 +85,7 @@ const transfromers = {
       })
     },
     resTransformer:(id,res)=>{
+      if(!res) return null
       res = JSON.parse(res)
      // console.log(id,'res',res)
       let items = []
@@ -102,6 +105,7 @@ const transfromers = {
       })
     },
     resTransformer:(id,res)=>{
+      if(!res) return null
       res = JSON.parse(res)
      // console.log(id,'res',res)
       let items = []
@@ -116,6 +120,7 @@ const transfromers = {
       return ""
     },
     resTransformer:(id,res)=>{
+      if(!res) return null
       res = JSON.parse(res)
       //  console.log(id,'res',res)
       let item = {}
@@ -134,6 +139,7 @@ const transfromers = {
       })
     },
     resTransformer:(id,res)=>{
+      if(!res) return null
       res = JSON.parse(res)
     //  console.log(id,'res',res)
       let items =[]
@@ -152,6 +158,7 @@ const transfromers = {
       })
     },
     resTransformer:(id,res)=>{
+      if(!res) return null
       res = JSON.parse(res)
    // console.log(id,'res',res)
       let item ={}
@@ -171,6 +178,7 @@ const transfromers = {
       })
     },
     resTransformer:(id,res)=>{
+      if(!res) return null
       res = JSON.parse(res)
    // console.log(id,'res',res)
       let items = []
@@ -189,6 +197,7 @@ const transfromers = {
       })
     },
     resTransformer:(id,res)=>{
+      if(!res) return null
       res = JSON.parse(res)
       let item ={}
       if(!res.error && res.data){
@@ -207,6 +216,7 @@ const transfromers = {
       })
     },
     resTransformer:(id,res)=>{
+      if(!res) return null
       res = JSON.parse(res)
       //console.log(id,'res',res)
       let items =[]
@@ -225,6 +235,7 @@ const transfromers = {
       })
     },
     resTransformer:(id,res)=>{
+      if(!res) return null
       res = JSON.parse(res)
       //console.log(id,'res',res)
       let item = {}
@@ -243,6 +254,7 @@ const transfromers = {
       })
     },
     resTransformer:(id,res)=>{
+      if(!res) return null
       res = JSON.parse(res)
       //console.log(id,'res',res)
       let items =[]
@@ -260,6 +272,7 @@ const transfromers = {
       })
     },
     resTransformer:(id,res)=>{
+      if(!res) return null
       res = JSON.parse(res)
       //console.log(id,'res',res)
       let items =[]

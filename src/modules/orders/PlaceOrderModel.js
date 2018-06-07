@@ -12,13 +12,20 @@ export default {
    priceInput: '0',
    amountInput:'0',
    submitButtonLoading: false,
+   tradeInfo:null,
    unsigned:null,
    signed:null,
+   orderState:0, //0:not send, 1:send succeed 2:send failed
    confirmButtonState : 1, //1:init, 2:loading, 3:submitted
   },
   effects:{
     *init({ payload={} }, { put }) {
       yield put({ type: 'pairChangeEffects',payload});
+      yield put({ type: 'confirmButtonStateChange',payload:{buttonState:1}});
+      yield put({ type: 'orderStateChange',payload:{orderState:0}});
+      yield put({ type: 'tradeInfoChange',payload:{tradeInfo:null}});
+      yield put({ type: 'unsignedChange',payload:{unsigned:null}});
+      yield put({ type: 'signedChange',payload:{signed:null}});
     },
     *pairChangeEffects({ payload={} }, { put }) {
       let {pair, price} = payload
@@ -37,7 +44,8 @@ export default {
       }
     },
     *toConfirm({ payload={} }, { select, put }) {
-      const {unsigned, signed} = payload
+      const {tradeInfo, unsigned, signed} = payload
+      yield put({ type: 'tradeInfoChange',payload:{tradeInfo}});
       yield put({ type: 'unsignedChange',payload:{unsigned}});
       yield put({ type: 'signedChange',payload:{signed}});
       yield put({ type: 'confirmButtonStateChange',payload:{buttonState:1}});
@@ -46,6 +54,7 @@ export default {
       const {signed} = payload
       yield put({ type: 'signedChange',payload:{signed}});
       yield put({ type: 'confirmButtonStateChange',payload:{buttonState:3}});
+      yield put({ type: 'orderStateChange',payload:{orderState:1}});
     },
     *unlock({ payload={} }, { select, put ,call}) {
       const {signed,unsigned} = yield select(({ [MODULES]:state }) => state )
@@ -125,6 +134,14 @@ export default {
         submitButtonLoading
       }
     },
+    tradeInfoChange(state, action) {
+      const {payload} = action
+      let {tradeInfo} = payload
+      return {
+        ...state,
+        tradeInfo
+      }
+    },
     unsignedChange(state, action) {
       const {payload} = action
       let {unsigned} = payload
@@ -147,6 +164,14 @@ export default {
       return {
         ...state,
         confirmButtonState:buttonState
+      }
+    },
+    orderStateChange(state, action) {
+      const {payload} = action
+      let {orderState} = payload
+      return {
+        ...state,
+        orderState
       }
     },
   },
