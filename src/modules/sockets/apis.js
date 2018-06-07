@@ -27,6 +27,22 @@ const updateEstimateGasPrice = (item,id)=>{
     })
   }
 }
+const updateStepInPlaceOrderByLoopr = (item,id)=>{
+  const dispatch = require('../../index.js').default._store.dispatch
+  if(item) {
+    switch(item.status) { //init accept reject
+      case 'accept':
+        dispatch({type:'placeOrder/orderStateChange', payload:{orderState:1}})
+        dispatch({type:'placeOrderByLoopr/stepChange', payload:{step:2}})
+        break;
+      case 'reject':
+        dispatch({type:'placeOrder/orderStateChange', payload:{orderState:2}})
+        dispatch({type:'placeOrderByLoopr/stepChange', payload:{step:2}})
+        break;
+    }
+    dispatch({type:'placeOrderByLoopr/generateTimeChange', payload:{generateTime:item.timestamp}})
+  }
+}
 
 const isArray = (obj)=>{
   return Object.prototype.toString.call(obj) === '[object Array]'
@@ -280,6 +296,25 @@ const transfromers = {
         items =[ ...res.data ]
       }
       updateItems(items,id)
+    },
+  },
+  authorization:{
+    queryTransformer:(payload)=>{
+      const {filters} = payload
+      return JSON.stringify({
+        "hash": filters.hash,
+      })
+    },
+    resTransformer:(id,res)=>{
+      if(!res) return null
+      res = JSON.parse(res)
+      // console.log(id,'res',res)
+      let item = {}
+      if(!res.error && res.data){
+        item = {...res.data}
+      }
+      updateItems(item,id)
+      updateStepInPlaceOrderByLoopr(item,id)
     },
   },
 }

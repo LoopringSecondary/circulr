@@ -34,6 +34,7 @@ export default {
     'estimatedGasPrice':{...initState,filters:{}},
     'loopringTickers':{...initState},
     'pendingTx':{...initState},
+    'authorization':{...initState},
   },
   subscriptions: {
     setup({ dispatch, history }) {
