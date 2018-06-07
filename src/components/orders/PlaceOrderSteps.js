@@ -227,16 +227,12 @@ const PlaceOrderSteps = (props) => {
     dispatch({type:'layers/showLayer',payload:{id:'placeOrderSign'}})
   }
 
-  function handleSubmit() {
-    form.validateFields((err,values) => {
-      console.log('values',values);
-      if(!err){
-        // TODO
-      }
-    });
-  }
   function chooseType(type) {
-
+    switch(type) {
+      case 'Loopr' : dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLoopr'}}); break;
+      case 'MetaMask' : dispatch({type:'layers/showLayer',payload:{id:'placeOrderByMetamask'}}); break;
+      case 'Ledger' : dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLedger'}}); break;
+    }
   }
   return (
     <Card className="rs" title={<div className="pl10 ">订单提交</div>}>
@@ -255,19 +251,19 @@ const PlaceOrderSteps = (props) => {
         <div className="zb-b mt15">
           <div className="fs16 color-black-1 p10 zb-b-b">选择支付钱包</div>
           <div className="row ml0 mr0">
-            <div className="col-4 zb-b-r" onClick={chooseType.bind(this, 'LooprWallet')}>
+            <div className="col-4 zb-b-r cursor-pointer" onClick={chooseType.bind(this, 'Loopr')}>
               <WalletItem icon="json" title="Loopr Wallet" />
             </div>
-            <div className="col-4 zb-b-r" onClick={chooseType.bind(this, 'MetaMask')}>
+            <div className="col-4 zb-b-r cursor-pointer" onClick={chooseType.bind(this, 'MetaMask')}>
               <WalletItem icon="metamaskwallet" title="MetaMask" />
             </div>
-            <div className="col-4" onClick={chooseType.bind(this, 'Ledger')}>
+            <div className="col-4 cursor-pointer" onClick={chooseType.bind(this, 'Ledger')}>
               <WalletItem icon="ledgerwallet" title="Ledger" />
             </div>
             {false && <div className="col-4 zb-b-r">
               <WalletItem icon="trezorwallet" title="TREZOR" />
             </div>}
-            <div className="col-4 zb-b-r" onClick={chooseType.bind(this, 'imToken')}>
+            <div className="col-4 zb-b-r cursor-pointer" onClick={chooseType.bind(this, 'imToken')}>
               <WalletItem icon="key" title="imToken" />
             </div>
           </div>
