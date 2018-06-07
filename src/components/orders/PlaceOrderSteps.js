@@ -62,10 +62,10 @@ const WalletItem = (props) => {
 }
 
 const PlaceOrderSteps = (props) => {
-  const {placeOrderSteps, placeOrder, wallet, dispatch, form} = props
+  const {placeOrderSteps, placeOrder, wallet, dispatch} = props
   let {side, pair, tradeInfo, order} = placeOrderSteps || {}
   let {price, amount, total, validSince,validUntil, marginSplit, lrcFee, warn, orderType} = tradeInfo || {};
-  let {unsigned, signed, confirmButtonState} = placeOrder || {}
+  let {unsigned, signed} = placeOrder || {}
   let actualSigned = signed && wallet ? signed.filter(item => item !== undefined && item !== null) : []
   let submitDatas = signed && unsigned.length === actualSigned.length ? (
     signed.map((item, index) => {
@@ -73,15 +73,7 @@ const PlaceOrderSteps = (props) => {
     })
   ) : new Array()
 
-  const hash = keccakHash(JSON.stringify(unsigned))
-
   const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
-  const unsignedOrder = unsigned.find(item => item.type === 'order')
-  const signedOrder = signed.find(item => item && item.type === 'order')
-  let qrCodeData = ''
-  if(tradeInfo.orderType === 'p2p_order' && unsignedOrder.completeOrder && unsignedOrder.completeOrder.authPrivateKey && signedOrder && signedOrder.orderHash) {
-    qrCodeData = JSON.stringify({type:'p2p_order', data:{authPrivateKey:unsignedOrder.completeOrder.authPrivateKey, orderHash:signedOrder.orderHash}})
-  }
 
   async function doSubmit() {
     if(submitDatas.length === 0) {
@@ -229,9 +221,37 @@ const PlaceOrderSteps = (props) => {
 
   function chooseType(type) {
     switch(type) {
-      case 'Loopr' : dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLoopr'}}); break;
-      case 'MetaMask' : dispatch({type:'layers/showLayer',payload:{id:'placeOrderByMetamask'}}); break;
-      case 'Ledger' : dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLedger'}}); break;
+      case 'Loopr' :
+        const origin = JSON.stringify(unsigned)
+        const hash = keccakHash(origin)
+        const qrcode = JSON.stringify({type:'sign', 'id':hash})
+        window.RELAY.order.storeDatasInShortTerm(hash, origin).then(res=>{
+          if(!res.error) {
+            dispatch({type:'placeOrderByLoopr/qrcodeChange',payload:{qrcode}});
+            dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLoopr'}});
+          } else {
+            console.error(res.error)
+            Notification.open({
+              message: intl.get('notifications.title.place_order_failed'),
+              type: "error",
+              description: 'failed send datas'
+            });
+          }
+        }).catch(e=>{
+          console.error(e)
+          Notification.open({
+            message: intl.get('notifications.title.place_order_failed'),
+            type: "error",
+            description: 'failed send datas'
+          });
+        })
+        break;
+      case 'MetaMask' :
+        dispatch({type:'layers/showLayer',payload:{id:'placeOrderByMetamask'}});
+        break;
+      case 'Ledger' :
+        dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLedger'}});
+        break;
     }
   }
   return (

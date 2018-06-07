@@ -284,8 +284,6 @@ export async function signOrder(tradeInfo, wallet) {
   }
   // sign orders and txs
   const {signed, unsigned} = await generateSignData({tradeInfo, order, completeOrder, wallet})
-  const orderData = unsigned.find(item => item.type === 'order')
-  delete orderData.completeOrder
   return {order, signed, unsigned}
 }
 
@@ -352,7 +350,11 @@ async function generateSignData({tradeInfo, order, completeOrder, wallet}) {
   const unsigned = new Array()
   const signed = new Array()
   // sign orders and txs
-  unsigned.push({type: 'order', data:order, completeOrder:completeOrder, description: `Sign Order`, address:wallet.address})
+  if(tradeInfo.orderType === 'market_order') {
+    unsigned.push({type: 'order', data:order, address:wallet.address})
+  } else {
+    unsigned.push({type: 'order', data:order, completeOrder:completeOrder, description: `Sign Order`, address:wallet.address})
+  }
   const approveWarn = tradeInfo.warn.filter(item => item.type === "AllowanceNotEnough");
   if (approveWarn) {
     const gasLimit = tradeInfo.gasLimit;
@@ -365,11 +367,19 @@ async function generateSignData({tradeInfo, order, completeOrder, wallet}) {
       const tokenConfig = config.getTokenBySymbol(item.value.symbol);
       if (item.value.allowance > 0) {
         const cancel = generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:'0x0', nonce:fm.toHex(nonce)})
-        unsigned.push({type: 'tx', data:cancel, description: `Cancel ${item.value.symbol} allowance`, address:wallet.address})
+        if(tradeInfo.orderType === 'market_order') {
+          unsigned.push({type: 'tx', data:cancel, token:item.value.symbol, index:0, action: 'CancelAllowance', address:wallet.address})
+        } else {
+          unsigned.push({type: 'tx', data:cancel, description: `Cancel ${item.value.symbol} allowance`, address:wallet.address})
+        }
         nonce = nonce + 1;
       }
       const approve = generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:fm.toHex(fm.toBig('9223372036854775806').times('1e' + tokenConfig.digits || 18)), nonce:fm.toHex(nonce)})
-      unsigned.push({type: 'tx', data:approve, description: `Approve ${item.value.symbol} allowance`, address:wallet.address})
+      if(tradeInfo.orderType === 'market_order') {
+        unsigned.push({type: 'tx', data:approve, token:item.value.symbol, index:1, action: 'ApproveAllowance', address:wallet.address})
+      } else {
+        unsigned.push({type: 'tx', data:approve, description: `Approve ${item.value.symbol} allowance`, address:wallet.address})
+      }
       nonce = nonce + 1;
     });
 
