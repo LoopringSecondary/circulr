@@ -27,7 +27,6 @@ export default {
       const {hash} = payload
       const state = yield select(({ [MODULES]:state }) => state )
       if(state.hash === hash) {
-        yield put({ type: 'orderStateChange',payload:{orderState:2}});
         yield put({ type: 'stepChange',payload:{step:1}});
       }
     },
