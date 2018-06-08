@@ -253,10 +253,9 @@ const PlaceOrderSign = (props) => {
 
   return (
     <div className="zb-b">
-      { false && <Alert type="info" title={`您需要通过 ${wallet.unlockType} 完成下面 ${unsigned.length} 个交易的签名：`} theme="light" size="small" /> }
       <Collapse accordion bordered={false} defaultActiveKey={[]}>
         {
-          isUnlocked && unsigned.map((item, index)=>{
+          isUnlocked && unsigned && unsigned.map((item, index)=>{
             return (
               <Collapse.Panel  header={<TxHeader tx={item} index={index} />} key={index} showArrow={false}>
                 <TxContent tx={item} index={index}/>
@@ -266,7 +265,7 @@ const PlaceOrderSign = (props) => {
         }
       </Collapse>
       <div className="p10">
-        <Button className="w-100 d-block" size="large" type="primary" onClick={handelSubmit} disabled={!signed || unsigned.length !== actualSigned.length}> 发送交易 </Button>
+        <Button className="w-100 d-block" size="large" type="primary" onClick={handelSubmit} disabled={!signed || !unsigned || unsigned.length !== actualSigned.length}> 发送交易 </Button>
       </div>
 
     </div>

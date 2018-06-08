@@ -95,7 +95,7 @@ class PlaceOrderForm extends React.Component {
     }
 
     function sideChange(value) {
-      placeOrder.sideChangeEffects({side:value})
+      dispatch({type:'placeOrder/sideChangeEffects', payload:{side:value}})
     }
 
     function validatePirce(value) {
@@ -109,12 +109,12 @@ class PlaceOrderForm extends React.Component {
       if (type === 'price') {
         price = orderFormatter.formatPriceByMarket(e.target.value.toString(), marketConfig)
         //e.target.value = price
-        placeOrder.priceChange({priceInput:price})
+        dispatch({type:'placeOrder/priceChange', payload:{priceInput:price}})
       } else if (type === 'amount') {
         const tokenRConfig = config.getTokenBySymbol(right.symbol)
         amount = orderFormatter.formatAmountByMarket(e.target.value.toString(), tokenRConfig, marketConfig)
         //e.target.value = amount
-        placeOrder.amountChange({amountInput:amount})
+        dispatch({type:'placeOrder/amountChange', payload:{amountInput:amount}})
       }
     }
 
@@ -130,7 +130,7 @@ class PlaceOrderForm extends React.Component {
         availableAmount = sell.availableAmount
       }
       const amount = orderFormatter.sliderEffectAmount(availableAmount, e, left, right)
-      placeOrder.amountChange({amountInput:amount})
+      dispatch({type:'placeOrder/amountChange', payload:{amountInput:amount}})
     }
 
     const marks = {
@@ -246,7 +246,7 @@ class PlaceOrderForm extends React.Component {
             })
             return
           }
-          placeOrder.submitButtonLoadingChange({submitButtonLoading:true})
+          dispatch({type:'placeOrder/submitButtonLoadingChange', payload:{submitButtonLoading:true}})
 
           //TODO mock
           // const lrcBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:'LRC', toUnit:true})
@@ -269,7 +269,7 @@ class PlaceOrderForm extends React.Component {
               description:intl.get('notifications.message.failed_fetch_data_from_server'),
               type:'error'
             })
-            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+            dispatch({type:'placeOrder/submitButtonLoadingChange', payload:{submitButtonLoading:false}})
             return
           }
           let allowed = false
@@ -292,7 +292,7 @@ class PlaceOrderForm extends React.Component {
               description:intl.get('notifications.message.not_allowed_place_order_worth', {worth: priceSymbol}),
               type:'error'
             })
-            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+            dispatch({type:'placeOrder/submitButtonLoadingChange', payload:{submitButtonLoading:false}})
             return
           }
           try {
@@ -304,7 +304,7 @@ class PlaceOrderForm extends React.Component {
               description:e.message,
               type:'error'
             })
-            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+            dispatch({type:'placeOrder/submitButtonLoadingChange', payload:{submitButtonLoading:false}})
             return
           }
 
@@ -338,7 +338,7 @@ class PlaceOrderForm extends React.Component {
                 })
               }
             })
-            placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+            dispatch({type:'placeOrder/submitButtonLoadingChange', payload:{submitButtonLoading:false}})
             return
           }
 
@@ -359,13 +359,13 @@ class PlaceOrderForm extends React.Component {
               type:'error'
             })
           }
-          placeOrder.submitButtonLoadingChange({submitButtonLoading:false})
+          dispatch({type:'placeOrder/submitButtonLoadingChange', payload:{submitButtonLoading:false}})
         }
       });
     }
 
     const showTradeModal = (tradeInfo, order, signed, unsigned) => {
-      placeOrder.toConfirm({tradeInfo, signed, unsigned})
+      dispatch({type:'placeOrder/toConfirm', payload:{tradeInfo, signed, unsigned}})
       dispatch({type:'placeOrder/orderStateChange', payload:{orderState:0}})
       dispatch({type:'placeOrderByLedger/reset', payload: {}})
       dispatch({type:'placeOrderByLoopr/reset', payload: {}})
