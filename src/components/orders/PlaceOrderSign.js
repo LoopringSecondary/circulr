@@ -21,6 +21,7 @@ const PlaceOrderSign = (props) => {
 
   async function sign(item, index, e) {
     e.preventDefault()
+    e.stopPropagation()
     const account = wallet.account || window.account
     if(!account || wallet.unlockType === 'address') {
       Notification.open({
@@ -201,10 +202,10 @@ const PlaceOrderSign = (props) => {
 
   const Description = ({tx}) => {
     if(tx.type === 'order') {
-      return 'Original Order'
+      return 'Sign Original Order'
     } else if(tx.type === 'tx') {
       if(tx.action === 'CancelAllowance') {
-        return `Cancel ${tx.token} Allowance (Why doing this)`
+        return `Cancel ${tx.token} Allowance`
       } else if (tx.action === 'ApproveAllowance') {
         return `Approve ${tx.token} Allowance`
       }

@@ -73,13 +73,13 @@ const PlaceOrderByLedger = (props) => {
   };
 
   const steps = [{
-    title: '连接',
+    title: 'Connect Wallet',
     content: 'First-content',
   }, {
-    title: '交易签名',
+    title: 'Sign Order',
     content: 'Second-content',
   }, {
-    title: '结果',
+    title: 'Result',
     content: 'Last-content',
   },
   ]

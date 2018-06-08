@@ -24,13 +24,13 @@ const PlaceOrderByLoopr = (props) => {
     form.resetFields()
   }
   const steps = [{
-    title: '手机扫码',
+    title: 'Qrcode',
     content: 'First-content',
   }, {
-    title: '交易签名',
+    title: 'Sign Order',
     content: 'Second-content',
   }, {
-    title: '下单结果',
+    title: 'Result',
     content: 'Last-content',
   }];
 
