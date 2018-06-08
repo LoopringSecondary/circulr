@@ -73,8 +73,8 @@ export const renders = {
   gas:(fm)=>{
     return (
       <div>
-        <div className="row justify-content-end">{`${fm.getGas()}  ETH`}</div>
-        <div className="row justify-content-end text-mute">{`Gas(${fm.getGasLimit()}) * Gas Price(${fm.getGasPrice()} Gwei)`}</div>
+        <div className="justify-content-end">{`${fm.getGas()}  ETH`}</div>
+        <div className="justify-content-end text-mute">{`Gas(${fm.getGasLimit()}) * Gas Price(${fm.getGasPrice()} Gwei)`}</div>
       </div>
     )
   }
