@@ -1,5 +1,6 @@
 import Auth from './Auth'
 import UnlockWallet from './unlock/UnlockWallet'
+import UnlockByLoopr from './unlock/UnlockByLoopr'
 import UnlockByMetaMask from './unlock/UnlockByMetaMask'
 import UnlockByTrezor from './unlock/UnlockByTrezor'
 import UnlockByLedger from './unlock/UnlockByLedger'
@@ -17,6 +18,7 @@ import UnlockByAddress from './unlock/UnlockByAddress'
 export default {
 	Auth,
 	UnlockWallet,
+  UnlockByLoopr,
 	UnlockByMetaMask,
 	UnlockByTrezor,
 	UnlockByLedger,

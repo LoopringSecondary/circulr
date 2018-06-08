@@ -12,13 +12,13 @@ function Home(props) {
 	    <div className="body home">
 	        <div className="home-content d-flex align-items-center justify-content-center">
 	            <div>
-	                <h1>Get Address</h1>
+	                <h1>Get Your Address</h1>
                   <div className="ml10 mr10 mb25">
                     <Input className="d-block w-100" size="large" placeholder={intl.get('address.placeholder_tip')} />
                   </div>
 	                <ul className="tab tab-card d-flex justify-content-center">
 	                    <li className="item">
-	                        <Link to="/unlock/qrcode"><i className="icon-qrcode"></i><h4>Loopr</h4></Link>
+	                        <Link to="/unlock/loopr"><i className="icon-qrcode"></i><h4>Loopr</h4></Link>
 	                    </li>
 	                    <li className="item">
 	                        <Link to="/unlock/metamask"><i className="icon-metamaskwallet"></i><h4>MetaMask</h4></Link>
