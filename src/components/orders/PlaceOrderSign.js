@@ -199,13 +199,26 @@ const PlaceOrderSign = (props) => {
     await doSubmit()
   }
 
+  const Description = ({tx}) => {
+    if(tx.type === 'order') {
+      return 'Order'
+    } else if(tx.type === 'tx') {
+      if(tx.action === 'CancelAllowance') {
+        return `Cancel ${tx.token} Allowance (Why doing this)`
+      } else if (tx.action === 'ApproveAllowance') {
+        return `Approve ${tx.token} Allowance`
+      }
+    }
+    return ''
+  }
+
   const TxHeader = ({tx,index})=>{
     return (
       <div className="row pl0 pr0 align-items-center">
         <div className="col">
           <div className="fs14 color-black-2">
             <Button type="primary" shape="circle" size="small" className="mr10">{index+1}</Button>
-            {tx.description}
+            <Description tx={tx}/>
           </div>
         </div>
         <div className="col-auto pr20">

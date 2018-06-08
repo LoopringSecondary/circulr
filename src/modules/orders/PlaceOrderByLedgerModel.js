@@ -9,7 +9,12 @@ export default {
   },
   effects:{
     *init({ payload={} }, { put }) {
-
+      // yield put({ type: 'confirmAddressChange',payload:{confirmed:false}});
+      // yield put({ type: 'stepChange',payload:{step:0}});
+    },
+    *reset({ payload={} }, { put }) {
+      yield put({ type: 'confirmAddressChange',payload:{confirmed:false}});
+      yield put({ type: 'stepChange',payload:{step:0}});
     },
   },
   reducers: {

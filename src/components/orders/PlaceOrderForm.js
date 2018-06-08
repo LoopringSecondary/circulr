@@ -343,10 +343,10 @@ class PlaceOrderForm extends React.Component {
           }
 
           //TODO MOCK
-          //const test = new Array()
-          //test.push({type:"AllowanceNotEnough", value:{symbol:'LRC', allowance:12, required:123456}})
-          //test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
-          //tradeInfo.warn = test
+          // const test = new Array()
+          // test.push({type:"AllowanceNotEnough", value:{symbol:'LRC', allowance:12, required:123456}})
+          // test.push({type:"AllowanceNotEnough", value:{symbol:'WETH', allowance:12, required:123456}})
+          // tradeInfo.warn = test
 
           try {
             const {order, signed, unsigned} = await orderFormatter.signOrder(tradeInfo, wallet)
@@ -366,6 +366,9 @@ class PlaceOrderForm extends React.Component {
 
     const showTradeModal = (tradeInfo, order, signed, unsigned) => {
       placeOrder.toConfirm({tradeInfo, signed, unsigned})
+      dispatch({type:'placeOrder/orderStateChange', payload:{orderState:0}})
+      dispatch({type:'placeOrderByLedger/reset', payload: {}})
+      dispatch({type:'placeOrderByLoopr/reset', payload: {}})
       dispatch({type:'layers/showLayer', payload: {id: 'placeOrderSteps', side, pair, tradeInfo, order}})
     }
     const setLRCFee = ()=>{
