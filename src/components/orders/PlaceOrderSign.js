@@ -201,7 +201,7 @@ const PlaceOrderSign = (props) => {
 
   const Description = ({tx}) => {
     if(tx.type === 'order') {
-      return 'Order'
+      return 'Original Order'
     } else if(tx.type === 'tx') {
       if(tx.action === 'CancelAllowance') {
         return `Cancel ${tx.token} Allowance (Why doing this)`
