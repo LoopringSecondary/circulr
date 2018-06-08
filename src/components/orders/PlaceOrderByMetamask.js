@@ -37,7 +37,6 @@ const PlaceOrderByMetamask = (props) => {
         dispatch({type:'wallet/unlockMetaMaskWallet',payload:{address}});
         Notification.open({type:'success',message:intl.get('notifications.title.unlock_suc')});
         dispatch({type: 'sockets/unlocked'});
-        routeActions.gotoPath('/wallet');
         dispatch({type:'metaMask/setLoading',payload:{loading:false}})
         dispatch({type:'layers/hideLayer', payload:{id:'unlock'}})
 

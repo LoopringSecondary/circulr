@@ -10,6 +10,11 @@ export default {
     *init({ payload={} }, { put }) {
 
     },
+    *reset({ payload={} }, { put }) {
+      yield put({ type: 'qrcodeChange',payload:{qrcode:''}});
+      yield put({ type: 'stepChange',payload:{step:0}});
+      yield put({ type: 'generateTimeChange',payload:{generateTime:null}});
+    },
   },
   reducers: {
     stepChange(state, action) {
