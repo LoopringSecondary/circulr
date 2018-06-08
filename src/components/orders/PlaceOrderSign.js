@@ -118,6 +118,11 @@ const PlaceOrderSign = (props) => {
     })
   };
 
+  function UserError(message) {
+    this.message = message;
+
+  }
+
   async function doSubmit() {
     if(submitDatas.length === 0) {
       Notification.open({
@@ -134,12 +139,7 @@ const PlaceOrderSign = (props) => {
         const response = await window.ETH.sendRawTransaction(signedItem.data)
         // console.log('...tx:', response, signedItem)
         if (response.error) {
-          Notification.open({
-            message: intl.get('notifications.title.place_order_failed'),
-            type: "error",
-            description: response.error.message
-          });
-          callback(response.error.message)
+          callback(new UserError(response.error.message))
         } else {
           signed[item.index].txHash = response.result
           window.STORAGE.wallet.setWallet({address: wallet.address, nonce: unsignedItem.data.nonce});
@@ -150,12 +150,7 @@ const PlaceOrderSign = (props) => {
         const response = await window.RELAY.order.placeOrder(signedItem.data)
         // console.log('...submit order :', response)
         if (response.error) {
-          Notification.open({
-            message: intl.get('notifications.title.place_order_failed'),
-            type: "error",
-            description: response.error.message
-          })
-          callback(response.error.message)
+          callback(new UserError(response.error.message))
         } else {
           signed[item.index].orderHash = response.result
           callback()
@@ -168,11 +163,33 @@ const PlaceOrderSign = (props) => {
           type: "error",
           description: error.message
         });
+        switch(placeOrder.payWith) {
+          case 'ledger':
+            dispatch({type:'placeOrderByLedger/orderStateChange',payload:{orderState:2}})
+            break;
+          case 'metaMask':
+            dispatch({type:'placeOrderByMetaMask/orderStateChange',payload:{orderState:2}})
+            break;
+          case 'loopr':
+            dispatch({type:'placeOrderByLoopr/orderStateChange',payload:{orderState:2}})
+            break;
+        }
         dispatch({type:'placeOrder/confirmButtonStateChange',payload:{state:1}})
       } else {
         const balanceWarn = warn ? warn.filter(item => item.type === "BalanceNotEnough") : [];
         openNotification(balanceWarn);
         dispatch({type:'placeOrder/sendDone',payload:{signed}})
+        switch(placeOrder.payWith) {
+          case 'ledger':
+            dispatch({type:'placeOrderByLedger/orderStateChange',payload:{orderState:1}})
+            break;
+          case 'metaMask':
+            dispatch({type:'placeOrderByMetaMask/orderStateChange',payload:{orderState:1}})
+            break;
+          case 'loopr':
+            dispatch({type:'placeOrderByLoopr/orderStateChange',payload:{orderState:1}})
+            break;
+        }
       }
     });
   }
@@ -254,10 +271,9 @@ const PlaceOrderSign = (props) => {
 
   return (
     <div className="zb-b">
-      { false && <Alert type="info" title={`您需要通过 ${wallet.unlockType} 完成下面 ${unsigned.length} 个交易的签名：`} theme="light" size="small" /> }
       <Collapse accordion bordered={false} defaultActiveKey={[]}>
         {
-          isUnlocked && unsigned.map((item, index)=>{
+          isUnlocked && unsigned && unsigned.map((item, index)=>{
             return (
               <Collapse.Panel  header={<TxHeader tx={item} index={index} />} key={index} showArrow={false}>
                 <TxContent tx={item} index={index}/>
@@ -267,7 +283,7 @@ const PlaceOrderSign = (props) => {
         }
       </Collapse>
       <div className="p10">
-        <Button className="w-100 d-block" size="large" type="primary" onClick={handelSubmit} disabled={!signed || unsigned.length !== actualSigned.length}> 发送交易 </Button>
+        <Button className="w-100 d-block" size="large" type="primary" onClick={handelSubmit} disabled={!signed || !unsigned || unsigned.length !== actualSigned.length}> 发送交易 </Button>
       </div>
 
     </div>

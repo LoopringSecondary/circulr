@@ -46,24 +46,22 @@ const WalletItem = (props) => {
     )
   }else{
     return (
-
-        <div className="row pt10 pb10 pl0 pr0 align-items-center zb-b-b">
-          <div className="col-auto pr5 text-right text-primary">
-            <i className={`fs20 icon-${icon}`}></i>
-          </div>
-          <div className="col pl10">
-            <Spin spinning={loading}>
-              <div className="fs14 color-black-1 text-wrap">{title}</div>
-              <div className="fs12 color-black-2">{description}</div>
-            </Spin>
-          </div>
-          {showArrow &&
-            <div className="col-auto text-right">
-              <Icon type="right" />
-            </div>
-          }
+      <div className="row pt10 pb10 pl0 pr0 align-items-center zb-b-b">
+        <div className="col-auto pr5 text-right text-primary">
+          <i className={`fs20 icon-${icon}`}></i>
         </div>
-
+        <div className="col pl10">
+          <Spin spinning={loading}>
+            <div className="fs14 color-black-1 text-wrap">{title}</div>
+            <div className="fs12 color-black-2">{description}</div>
+          </Spin>
+        </div>
+        {showArrow &&
+          <div className="col-auto text-right">
+            <Icon type="right" />
+          </div>
+        }
+      </div>
      )
   }
 }
@@ -81,65 +79,6 @@ const PlaceOrderSteps = (props) => {
   ) : new Array()
 
   const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
-
-  async function doSubmit() {
-    if(submitDatas.length === 0) {
-      Notification.open({
-        message: intl.get('notifications.title.place_order_failed'),
-        type: "error",
-        description: intl.get('notifications.message.some_items_not_signed')
-      });
-      return
-    }
-    eachLimit(submitDatas, 1, async function (item, callback) {
-      const signedItem = item.signed
-      const unsignedItem = item.unsigned
-      if(signedItem.type === 'tx') {
-        const response = await window.ETH.sendRawTransaction(signedItem.data)
-        // console.log('...tx:', response, signedItem)
-        if (response.error) {
-          Notification.open({
-            message: intl.get('notifications.title.place_order_failed'),
-            type: "error",
-            description: response.error.message
-          });
-          callback(response.error.message)
-        } else {
-          signed[item.index].txHash = response.result
-          window.STORAGE.wallet.setWallet({address: wallet.address, nonce: unsignedItem.data.nonce});
-          window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx:unsignedItem.data, from: wallet.address});
-          callback()
-        }
-      } else {
-        const response = await window.RELAY.order.placeOrder(signedItem.data)
-        // console.log('...submit order :', response)
-        if (response.error) {
-          Notification.open({
-            message: intl.get('notifications.title.place_order_failed'),
-            type: "error",
-            description: response.error.message
-          })
-          callback(response.error.message)
-        } else {
-          signed[item.index].orderHash = response.result
-          callback()
-        }
-      }
-    }, function (error) {
-      if(error){
-        Notification.open({
-          message: intl.get('notifications.title.place_order_failed'),
-          type: "error",
-          description: error.message
-        });
-        dispatch({type:'placeOrder/confirmButtonStateChange',payload:{state:1}})
-      }else {
-        const balanceWarn = warn ? warn.filter(item => item.type === "BalanceNotEnough") : [];
-        openNotification(balanceWarn);
-        dispatch({type:'placeOrder/sendDone',payload:{signed}})
-      }
-    });
-  }
 
   const ActionItem = (item) => {
     return (
@@ -187,54 +126,16 @@ const PlaceOrderSteps = (props) => {
     })
   };
 
-  async function generateQrCode() {
-    if(orderType !== 'p2p_order') {
-      throw new Error('orderType Data Error')
-    }
-    if(!order || (unsigned.length > 0 && unsigned.length !== actualSigned.length)) {
-      Notification.open({
-        message: intl.get('notifications.title.place_order_failed'),
-        type: "error",
-        description: intl.get('notifications.message.some_items_not_signed')
-      });
-      return
-    }
-    await doSubmit()
-  }
-
-  async function handelSubmit() {
-    if(orderType !== 'market_order') {
-      throw new Error('orderType Data Error')
-    }
-    if(!order || (unsigned.length > 0 && unsigned.length !== actualSigned.length)) {
-      Notification.open({
-        message: intl.get('notifications.title.place_order_failed'),
-        type: "error",
-        description: intl.get('notifications.message.some_items_not_signed')
-      });
-      return
-    }
-    await doSubmit()
-    dispatch({type:'layers/hideLayer',payload:{id:'placeOrderConfirm'}})
-  }
-
-  const toUnlock = () => {
-    dispatch({type:'layers/showLayer',payload:{id:'unlock'}})
-  }
-
-  const toSign = () => {
-    dispatch({type:'layers/showLayer',payload:{id:'placeOrderSign'}})
-  }
-
   function chooseType(type) {
     switch(type) {
       case 'Loopr' :
+        dispatch({type:'placeOrder/payWithChange',payload:{payWith:'loopr'}});
         const origin = JSON.stringify(unsigned)
         const hash = keccakHash(origin)
         const qrcode = JSON.stringify({type:'sign', 'id':hash})
         window.RELAY.order.storeDatasInShortTerm(hash, origin).then(res=>{
           if(!res.error) {
-            dispatch({type:'placeOrderByLoopr/qrcodeChange',payload:{qrcode}});
+            dispatch({type:'placeOrderByLoopr/qrcodeGenerated',payload:{qrcode, hash}});
             dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLoopr'}});
             dispatch({type:'sockets/filtersChange',payload:{id:'authorization', filters:{hash}}});
             dispatch({type:'sockets/fetch',payload:{id:'authorization'}});
@@ -256,9 +157,11 @@ const PlaceOrderSteps = (props) => {
         })
         break;
       case 'MetaMask' :
+        dispatch({type:'placeOrder/payWithChange',payload:{payWith:'metaMask'}});
         dispatch({type:'layers/showLayer',payload:{id:'placeOrderByMetamask'}});
         break;
       case 'Ledger' :
+        dispatch({type:'placeOrder/payWithChange',payload:{payWith:'ledger'}});
         dispatch({type:"hardwareWallet/setWalletType",payload:{walletType:'ledger'}});
         const walletConfig = wallets.find(wallet => trimAll(wallet.name).toLowerCase() === 'ledger(eth)');
         connectLedger().then(res =>{
@@ -296,20 +199,20 @@ const PlaceOrderSteps = (props) => {
         <div className="zb-b mt15">
           <div className="fs16 color-black-1 p10 zb-b-b bg-grey-50">2. Select A Wallet to Place Order</div>
           <div className="row ml0 mr0">
-            <div className="col-4 zb-b-r cursor-pointer" onClick={loading ? ()=>{} : chooseType.bind(this, 'Loopr')}>
+            <div hidden={signed && signed.length >0 && placeOrder.payWith !== 'loopr'} className="col-4 zb-b-r cursor-pointer" onClick={loading ? ()=>{} : chooseType.bind(this, 'Loopr')}>
               <WalletItem icon="json" title="Loopr Wallet" loading={loading} />
             </div>
-            <div className="col-4 zb-b-r cursor-pointer" onClick={chooseType.bind(this, 'MetaMask')}>
+            <div hidden={signed && signed.length >0 && placeOrder.payWith !== 'metaMask'} className="col-4 zb-b-r cursor-pointer" onClick={chooseType.bind(this, 'MetaMask')}>
               <WalletItem icon="metamaskwallet" title="MetaMask" />
             </div>
-            <div className="col-4 cursor-pointer" onClick={chooseType.bind(this, 'Ledger')}>
+            <div hidden={signed && signed.length >0 && placeOrder.payWith !== 'ledger'} className="col-4 cursor-pointer" onClick={chooseType.bind(this, 'Ledger')}>
               <WalletItem icon="ledgerwallet" title="Ledger" />
             </div>
             {false && <div className="col-4 zb-b-r">
               <WalletItem icon="trezorwallet" title="TREZOR" />
             </div>}
-            <div className="col-4 zb-b-r cursor-pointer" onClick={chooseType.bind(this, 'imToken')}>
-              <WalletItem icon="key" title="imToken" />
+            <div hidden={signed && signed.length >0 && placeOrder.payWith !== 'more'} className="col-4 zb-b-r cursor-pointer" onClick={chooseType.bind(this, 'more')}>
+              <WalletItem icon="key" title="More Wallets" />
             </div>
           </div>
         </div>

@@ -15,14 +15,14 @@ export default {
    tradeInfo:null,
    unsigned:null,
    signed:null,
-   orderState:0, //0:not send, 1:send succeed 2:send failed
+   payWith:'', //ledger, metaMask, loopr
    confirmButtonState : 1, //1:init, 2:loading, 3:submitted
   },
   effects:{
     *init({ payload={} }, { put }) {
       yield put({ type: 'pairChangeEffects',payload});
       yield put({ type: 'confirmButtonStateChange',payload:{buttonState:1}});
-      yield put({ type: 'orderStateChange',payload:{orderState:0}});
+      yield put({ type: 'payWithChange',payload:{payWith:''}});
       yield put({ type: 'tradeInfoChange',payload:{tradeInfo:null}});
       yield put({ type: 'unsignedChange',payload:{unsigned:null}});
       yield put({ type: 'signedChange',payload:{signed:null}});
@@ -54,7 +54,6 @@ export default {
       const {signed} = payload
       yield put({ type: 'signedChange',payload:{signed}});
       yield put({ type: 'confirmButtonStateChange',payload:{buttonState:3}});
-      yield put({ type: 'orderStateChange',payload:{orderState:1}});
     },
     *unlock({ payload={} }, { select, put ,call}) {
       const {signed,unsigned} = yield select(({ [MODULES]:state }) => state )
@@ -166,12 +165,12 @@ export default {
         confirmButtonState:buttonState
       }
     },
-    orderStateChange(state, action) {
+    payWithChange(state, action) {
       const {payload} = action
-      let {orderState} = payload
+      let {payWith} = payload
       return {
         ...state,
-        orderState
+        payWith
       }
     },
   },

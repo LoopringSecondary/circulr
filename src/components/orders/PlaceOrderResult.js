@@ -4,11 +4,23 @@ import intl from 'react-intl-universal'
 import {connect} from 'dva'
 
 const PlaceOrderResult = (props) => {
-  const {placeOrder} = props
+  const {placeOrder, placeOrderByLedger, placeOrderByMetaMask, placeOrderByLoopr} = props
+  let orderState = 0
+  switch(placeOrder.payWith) {
+    case 'ledger':
+      orderState = placeOrderByLedger.orderState
+      break;
+    case 'metaMask':
+      orderState = placeOrderByMetaMask.orderState
+      break;
+    case 'loopr':
+      orderState = placeOrderByLoopr.orderState
+      break;
+  }
   return (
     <div className="zb-b">
         {
-          placeOrder.orderState === 1 &&
+          orderState === 1 &&
           <div className="text-center p35">
             <i className={`fs50 icon-success`}></i>
             <div className="fs18 color-black-1">订单提交成功！</div>
@@ -19,7 +31,7 @@ const PlaceOrderResult = (props) => {
           </div>
         }
         {
-          placeOrder.orderState === 2 &&
+          orderState === 2 &&
           <div className="text-center p35">
             <Icon type="close-circle" className="fs50 text-error" />
             <div className="fs18 color-black-1 mt15">提交失败</div>
@@ -36,7 +48,10 @@ const PlaceOrderResult = (props) => {
 function mapToProps(state) {
   return {
     wallet:state.wallet,
-    placeOrder:state.placeOrder
+    placeOrder:state.placeOrder,
+    placeOrderByMetaMask:state.placeOrderByMetaMask,
+    placeOrderByLoopr:state.placeOrderByLoopr,
+    placeOrderByLedger:state.placeOrderByLedger
   }
 }
 

@@ -7,22 +7,8 @@ import {connect} from 'dva'
 import QRCode from 'qrcode.react';
 
 const PlaceOrderByLoopr = (props) => {
-  const {form, wallet, placeOrder, placeOrderByLoopr} = props
+  const {placeOrderByLoopr,dispatch} = props
 
-  function handleSubmit() {
-    form.validateFields((err,values) => {
-      console.log('values',values);
-      if(!err){
-        // TODO
-      }
-    });
-  }
-  function handleReset() {
-
-  }
-  function resetForm(){
-    form.resetFields()
-  }
   const steps = [{
     title: 'Qrcode',
     content: 'First-content',
@@ -33,6 +19,16 @@ const PlaceOrderByLoopr = (props) => {
     title: 'Result',
     content: 'Last-content',
   }];
+
+  const test = (value) => {
+    if(value === 1) {
+      dispatch({type:'placeOrderByLoopr/scanned', payload:{hash:placeOrderByLoopr.hash}})
+    } else if(value === 2) {
+      dispatch({type:'placeOrderByLoopr/submitSuccessfully', payload:{hash:placeOrderByLoopr.hash}})
+    } else {
+      dispatch({type:'placeOrderByLoopr/submitFailed', payload:{hash:placeOrderByLoopr.hash}})
+    }
+  }
 
   return (
     <Card className="rs" title={<div className="pl10 ">Place Order By Loopr Wallet</div>}>
@@ -54,6 +50,9 @@ const PlaceOrderByLoopr = (props) => {
                   2. 打开 Loopr Wallet，点击扫码
                   <br />
                   * 二维码有效时间24小时，请尽快完成扫码操作，过期后请重新下单生成二维码
+                  <Button className="mt15" type="default" onClick={test.bind(this, 1)}> scan </Button>
+                  <Button className="mt15" type="default" onClick={test.bind(this, 2)}> success </Button>
+                  <Button className="mt15" type="default" onClick={test.bind(this, 3)}> failed </Button>
                 </div>
               </div>
             </div>
@@ -85,11 +84,9 @@ const PlaceOrderByLoopr = (props) => {
 
 function mapToProps(state) {
   return {
-    wallet:state.wallet,
-    placeOrder:state.placeOrder,
     placeOrderByLoopr:state.placeOrderByLoopr
   }
 }
-export default Form.create()(connect(mapToProps)(PlaceOrderByLoopr));
+export default connect(mapToProps)(PlaceOrderByLoopr);
 
 
