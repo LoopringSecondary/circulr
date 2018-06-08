@@ -375,7 +375,7 @@ async function generateSignData({tradeInfo, order, completeOrder, wallet}) {
       }
       const approve = generateApproveTx({symbol:item.value.symbol, gasPrice, gasLimit, amount:fm.toHex(fm.toBig('9223372036854775806').times('1e' + tokenConfig.digits || 18)), nonce:fm.toHex(nonce)})
       if(tradeInfo.orderType === 'market_order') {
-        unsigned.push({type: 'tx', data:approve, token:item.value.symbol, index:1, action: 'ApproveAllowance', address:wallet.address})
+        unsigned.push({type: 'tx', data:approve, token:item.value.symbol, index:(item.value.allowance > 0 ? 1 : 0), action: 'ApproveAllowance', address:wallet.address})
       } else {
         unsigned.push({type: 'tx', data:approve, description: `Approve ${item.value.symbol} allowance`, address:wallet.address})
       }
