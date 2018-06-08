@@ -135,7 +135,7 @@ const PlaceOrderSteps = (props) => {
         const qrcode = JSON.stringify({type:'sign', 'id':hash})
         window.RELAY.order.storeDatasInShortTerm(hash, origin).then(res=>{
           if(!res.error) {
-            dispatch({type:'placeOrderByLoopr/qrcodeChange',payload:{qrcode}});
+            dispatch({type:'placeOrderByLoopr/qrcodeGenerated',payload:{qrcode, hash}});
             dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLoopr'}});
             dispatch({type:'sockets/filtersChange',payload:{id:'authorization', filters:{hash}}});
             dispatch({type:'sockets/fetch',payload:{id:'authorization'}});

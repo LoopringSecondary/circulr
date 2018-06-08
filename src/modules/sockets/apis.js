@@ -32,15 +32,13 @@ const updateStepInPlaceOrderByLoopr = (item,id)=>{
   if(item) {
     switch(item.status) { //init received accept reject
       case 'received':
-        dispatch({type:'placeOrderByLoopr/stepChange', payload:{hash:item.hash, step:1}})
+        dispatch({type:'placeOrderByLoopr/scanned', payload:{hash:item.hash}})
         break;
       case 'accept':
-        dispatch({type:'placeOrder/orderStateChange', payload:{orderState:1}})
-        dispatch({type:'placeOrderByLoopr/stepChange', payload:{hash:item.hash, step:2}})
+        dispatch({type:'placeOrderByLoopr/submitSuccessfully', payload:{hash:item.hash}})
         break;
       case 'reject':
-        dispatch({type:'placeOrder/orderStateChange', payload:{orderState:2}})
-        dispatch({type:'placeOrderByLoopr/stepChange', payload:{hash:item.hash, step:2}})
+        dispatch({type:'placeOrderByLoopr/submitFailed', payload:{hash:item.hash}})
         break;
     }
     dispatch({type:'placeOrderByLoopr/generateTimeChange', payload:{generateTime:item.timestamp}})
