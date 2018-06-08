@@ -365,10 +365,10 @@ class PlaceOrderForm extends React.Component {
     }
 
     const showTradeModal = (tradeInfo, order, signed, unsigned) => {
-      dispatch({type:'placeOrder/toConfirm', payload:{tradeInfo, signed, unsigned}})
-      dispatch({type:'placeOrder/orderStateChange', payload:{orderState:0}})
       dispatch({type:'placeOrderByLedger/reset', payload: {}})
       dispatch({type:'placeOrderByLoopr/reset', payload: {}})
+      dispatch({type:'placeOrderByMetaMask/reset', payload:{}})
+      dispatch({type:'placeOrder/toConfirm', payload:{tradeInfo, signed, unsigned}})
       dispatch({type:'layers/showLayer', payload: {id: 'placeOrderSteps', side, pair, tradeInfo, order}})
     }
     const setLRCFee = ()=>{

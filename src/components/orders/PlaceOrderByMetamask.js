@@ -10,12 +10,12 @@ import routeActions from 'common/utils/routeActions'
 import Notification from 'LoopringUI/components/Notification'
 
 const PlaceOrderByMetamask = (props) => {
-  const {metaMask, wallet, placeOrder, form, dispatch} = props
+  const {metaMask, wallet, placeOrderByMetaMask, form, dispatch} = props
   const isUnlocked = wallet.unlockType === 'metaMask'
   let currentStep = 0
   if(isUnlocked) {
     currentStep = 1
-    if(placeOrder.orderState >= 1) {
+    if(placeOrderByMetaMask.orderState >= 1) {
       currentStep = 2
     }
   }
@@ -132,7 +132,7 @@ function mapToProps(state) {
   return {
     metaMask:state.metaMask,
     wallet:state.wallet,
-    placeOrder:state.placeOrder
+    placeOrderByMetaMask:state.placeOrderByMetaMask
   }
 }
 

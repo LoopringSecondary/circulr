@@ -118,6 +118,11 @@ const PlaceOrderSign = (props) => {
     })
   };
 
+  function UserError(message) {
+    this.message = message;
+
+  }
+
   async function doSubmit() {
     if(submitDatas.length === 0) {
       Notification.open({
@@ -134,12 +139,7 @@ const PlaceOrderSign = (props) => {
         const response = await window.ETH.sendRawTransaction(signedItem.data)
         // console.log('...tx:', response, signedItem)
         if (response.error) {
-          Notification.open({
-            message: intl.get('notifications.title.place_order_failed'),
-            type: "error",
-            description: response.error.message
-          });
-          callback(response.error.message)
+          callback(new UserError(response.error.message))
         } else {
           signed[item.index].txHash = response.result
           window.STORAGE.wallet.setWallet({address: wallet.address, nonce: unsignedItem.data.nonce});
@@ -150,12 +150,7 @@ const PlaceOrderSign = (props) => {
         const response = await window.RELAY.order.placeOrder(signedItem.data)
         // console.log('...submit order :', response)
         if (response.error) {
-          Notification.open({
-            message: intl.get('notifications.title.place_order_failed'),
-            type: "error",
-            description: response.error.message
-          })
-          callback(response.error.message)
+          callback(new UserError(response.error.message))
         } else {
           signed[item.index].orderHash = response.result
           callback()
@@ -168,11 +163,33 @@ const PlaceOrderSign = (props) => {
           type: "error",
           description: error.message
         });
+        switch(placeOrder.payWith) {
+          case 'ledger':
+            dispatch({type:'placeOrderByLedger/orderStateChange',payload:{orderState:2}})
+            break;
+          case 'metaMask':
+            dispatch({type:'placeOrderByMetaMask/orderStateChange',payload:{orderState:2}})
+            break;
+          case 'loopr':
+            dispatch({type:'placeOrderByLoopr/orderStateChange',payload:{orderState:2}})
+            break;
+        }
         dispatch({type:'placeOrder/confirmButtonStateChange',payload:{state:1}})
       } else {
         const balanceWarn = warn ? warn.filter(item => item.type === "BalanceNotEnough") : [];
         openNotification(balanceWarn);
         dispatch({type:'placeOrder/sendDone',payload:{signed}})
+        switch(placeOrder.payWith) {
+          case 'ledger':
+            dispatch({type:'placeOrderByLedger/orderStateChange',payload:{orderState:1}})
+            break;
+          case 'metaMask':
+            dispatch({type:'placeOrderByMetaMask/orderStateChange',payload:{orderState:1}})
+            break;
+          case 'loopr':
+            dispatch({type:'placeOrderByLoopr/orderStateChange',payload:{orderState:1}})
+            break;
+        }
       }
     });
   }

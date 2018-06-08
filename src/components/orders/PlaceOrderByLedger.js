@@ -11,13 +11,13 @@ import {wallets} from "../../common/config/data";
 import {trimAll} from "LoopringJS/common/utils";
 
 const PlaceOrderByLedger = (props) => {
-  const {wallet, hardwareWallet, placeOrder, placeOrderByLedger, dispatch} = props
+  const {wallet, hardwareWallet, placeOrderByLedger, dispatch} = props
   const {address, dpath, publicKey, chainCode, walletType} = hardwareWallet;
 
   let currentStep = 0
   if(placeOrderByLedger.ledger && placeOrderByLedger.addressConfirmed) {
     currentStep = 1
-    if(placeOrder.orderState >= 1) {
+    if(placeOrderByLedger.orderState >= 1) {
       currentStep = 2
     }
   }
@@ -135,7 +135,6 @@ function mapToProps(state) {
   return {
     wallet:state.wallet,
     hardwareWallet:state.hardwareWallet,
-    placeOrder:state.placeOrder,
     placeOrderByLedger:state.placeOrderByLedger
   }
 }

@@ -7,22 +7,8 @@ import {connect} from 'dva'
 import QRCode from 'qrcode.react';
 
 const PlaceOrderByLoopr = (props) => {
-  const {form, wallet, placeOrder, placeOrderByLoopr} = props
+  const {placeOrderByLoopr} = props
 
-  function handleSubmit() {
-    form.validateFields((err,values) => {
-      console.log('values',values);
-      if(!err){
-        // TODO
-      }
-    });
-  }
-  function handleReset() {
-
-  }
-  function resetForm(){
-    form.resetFields()
-  }
   const steps = [{
     title: 'Qrcode',
     content: 'First-content',
@@ -85,11 +71,9 @@ const PlaceOrderByLoopr = (props) => {
 
 function mapToProps(state) {
   return {
-    wallet:state.wallet,
-    placeOrder:state.placeOrder,
     placeOrderByLoopr:state.placeOrderByLoopr
   }
 }
-export default Form.create()(connect(mapToProps)(PlaceOrderByLoopr));
+export default connect(mapToProps)(PlaceOrderByLoopr);
 
 

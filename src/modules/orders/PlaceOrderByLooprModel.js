@@ -3,6 +3,7 @@ export default {
   namespace: MODULES,
   state: {
    step:0, //0:qrcode, 1:waiting for sign 2:result
+   orderState:0, //0:not send, 1:send succeed 2:send failed
    generateTime:null,
    qrcode:''
   },
@@ -23,6 +24,14 @@ export default {
       return {
         ...state,
         step
+      }
+    },
+    orderStateChange(state, action) {
+      const {payload} = action
+      let {orderState} = payload
+      return {
+        ...state,
+        orderState
       }
     },
     qrcodeChange(state, action) {
