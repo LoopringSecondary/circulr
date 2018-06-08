@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps} from 'antd'
+import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps,Spin} from 'antd'
 import {connect} from 'dva'
 import {toBig, toHex, clearHexPrefix} from 'LoopringJS/common/formatter'
 import config from 'common/config'
@@ -21,18 +21,18 @@ import {trimAll} from "LoopringJS/common/utils";
 const OrderMetaItem = (props) => {
   const {label, value} = props
   return (
-    <div className="row ml0 mr0 pt5 pb5 pl0 pr0 zb-b-b">
-      <div className="col">
-        <div className="fs13 color-black-2 lh25">{label}</div>
+    <div className="row ml0 mr0 pb5 pl0 pr0">
+      <div className="col-auto">
+        <div className="fs13 color-black-2 lh25" style={{width:'80px'}}>{label}</div>
       </div>
-      <div className="col-auto text-right">
+      <div className="col text-left">
         <div className="fs13 color-black-1 text-wrap lh25">{value}</div>
       </div>
     </div>
   )
 }
 const WalletItem = (props) => {
-  const {title, description,icon,layout,showArrow} = props
+  const {title, description,icon,layout,showArrow,loading=false} = props
   if(layout === 'vertical'){
     return (
       <div className="mt5 mb5">
@@ -46,20 +46,24 @@ const WalletItem = (props) => {
     )
   }else{
     return (
-      <div className="row pt10 pb10 pl0 pr0 align-items-center zb-b-b">
-        <div className="col-auto pr5 text-right text-primary">
-          <i className={`fs20 icon-${icon}`}></i>
-        </div>
-        <div className="col pl10">
-          <div className="fs14 color-black-1 text-wrap">{title}</div>
-          <div className="fs12 color-black-2">{description}</div>
-        </div>
-        {showArrow &&
-          <div className="col-auto text-right">
-            <Icon type="right" />
+
+        <div className="row pt10 pb10 pl0 pr0 align-items-center zb-b-b">
+          <div className="col-auto pr5 text-right text-primary">
+            <i className={`fs20 icon-${icon}`}></i>
           </div>
-        }
-      </div>
+          <div className="col pl10">
+            <Spin spinning={loading}>
+              <div className="fs14 color-black-1 text-wrap">{title}</div>
+              <div className="fs12 color-black-2">{description}</div>
+            </Spin>
+          </div>
+          {showArrow &&
+            <div className="col-auto text-right">
+              <Icon type="right" />
+            </div>
+          }
+        </div>
+
      )
   }
 }
@@ -273,25 +277,27 @@ const PlaceOrderSteps = (props) => {
         break;
     }
   }
+  const loading = false
   return (
-    <Card className="rs" title={<div className="pl10 ">订单提交</div>}>
+    <Card className="rs" title={<div className="pl10 ">Place Order</div>}>
       <div className="p15">
         <div className="zb-b">
-          <div className="fs16 color-black-1 p10 zb-b-b">订单详情</div>
-          <OrderMetaItem label={intl.get('place_order.order_type')} value={tradeInfo.orderType === 'p2p_order' ? intl.get('order_type.p2p_order') : intl.get('order_type.market_order')} />
-          <OrderMetaItem label={intl.get('common.price')} value={`${uiFormatter.getFormatNum(price.toString(10))} ${pair.split('-')[1]}`} />
-          <OrderMetaItem label={intl.get('common.amount')} value={`${amount.toString(10)} ${pair.split('-')[0]}`} />
-          <OrderMetaItem label={intl.get('common.total')} value={`${total.toString(10)} ${pair.split('-')[1]}`} />
-          <OrderMetaItem label={intl.get('common.lrc_fee')} value={`${uiFormatter.getFormatNum(lrcFee)} LRC`} />
-          <OrderMetaItem label={intl.get('common.margin_split')} value={`${marginSplit} %`} />
-          <OrderMetaItem label={intl.get('common.ttl')} value={`${uiFormatter.getFormatTime(validSince * 1e3)} ~ ${uiFormatter.getFormatTime(validUntil * 1e3)}`} />
+          <div className="fs16 color-black-1 p10 zb-b-b bg-grey-50">1. You are buying 10.00 LRC</div>
+          <div className="pt10 pb10">
+            <OrderMetaItem label={intl.get('common.sell')} value={`${amount.toString(10)} ${pair.split('-')[0]}`} />
+            <OrderMetaItem label={intl.get('common.buy')} value={`${total.toString(10)} ${pair.split('-')[1]}`} />
+            <OrderMetaItem label={intl.get('common.price')} value={`${uiFormatter.getFormatNum(price.toString(10))} ${pair.split('-')[1]}`} />
+            <OrderMetaItem label={intl.get('common.lrc_fee')} value={`${uiFormatter.getFormatNum(lrcFee)} LRC`} />
+            { false && <OrderMetaItem label={intl.get('common.margin_split')} value={`${marginSplit} %`} /> }
+            <OrderMetaItem label={intl.get('common.ttl')} value={`${uiFormatter.getFormatTime(validSince * 1e3)} ~ ${uiFormatter.getFormatTime(validUntil * 1e3)}`} />
+          </div>
         </div>
 
         <div className="zb-b mt15">
-          <div className="fs16 color-black-1 p10 zb-b-b">选择支付钱包</div>
+          <div className="fs16 color-black-1 p10 zb-b-b bg-grey-50">2. Select A Wallet to Place Order</div>
           <div className="row ml0 mr0">
-            <div className="col-4 zb-b-r cursor-pointer" onClick={chooseType.bind(this, 'Loopr')}>
-              <WalletItem icon="json" title="Loopr Wallet" />
+            <div className="col-4 zb-b-r cursor-pointer" onClick={loading ? ()=>{} : chooseType.bind(this, 'Loopr')}>
+              <WalletItem icon="json" title="Loopr Wallet" loading={loading} />
             </div>
             <div className="col-4 zb-b-r cursor-pointer" onClick={chooseType.bind(this, 'MetaMask')}>
               <WalletItem icon="metamaskwallet" title="MetaMask" />

@@ -82,13 +82,13 @@ const PlaceOrderByMetamask = (props) => {
     }
   }
   const steps = [{
-    title: '连接',
+    title: 'Connect Wallet',
     content: 'First-content',
   }, {
-    title: '交易签名',
+    title: 'Sign Order',
     content: 'Second-content',
   }, {
-    title: '结果',
+    title: 'Result',
     content: 'Last-content',
   },
   ]
@@ -105,9 +105,8 @@ const PlaceOrderByMetamask = (props) => {
           <div className="mt15">
             <div className="zb-b">
               <div className="text-center p15">
-                <i className={`fs36 icon-metamaskwallet text-primary`}></i>
-                <div className="mt10">Metamask 连接</div>
-                <Button className="mt15" type="default" onClick={connectToMetamask}> Connect </Button>
+                <div><i className={`fs36 icon-metamaskwallet text-primary`}></i></div>
+                <Button className="mt15" type="primary" onClick={connectToMetamask}> Connect Metamask</Button>
               </div>
             </div>
           </div>

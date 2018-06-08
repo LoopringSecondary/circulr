@@ -13,8 +13,8 @@ export async function fetchList(payload){
       filter.pageSize = page.size
     }
     filter.delegateAddress = config.getDelegateAddress();
-    filter.owner = window.WALLET.address
-    const host = window.config.rpc_host
+    filter.owner = window.WALLET && window.WALLET.address
+    const host = window.config && window.config.rpc_host
     console.log('getOrders req',filter)
     return getOrders(host,filter).then(res=>{
       console.log('getOrders res',res)
