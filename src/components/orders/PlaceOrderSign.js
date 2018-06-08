@@ -99,12 +99,6 @@ const PlaceOrderSign = (props) => {
   };
 
   const openNotification = (warn) => {
-    const args = {
-      message: intl.get('notifications.title.place_order_success'),
-      description: intl.get('notifications.message.place_order_success'),
-      type: 'success',
-    };
-    Notification.open(args);
     warn.forEach((item) => {
       Notification.open({
         message: intl.get('notifications.title.place_order_warn'),
@@ -158,11 +152,6 @@ const PlaceOrderSign = (props) => {
       }
     }, function (error) {
       if(error){
-        Notification.open({
-          message: intl.get('notifications.title.place_order_failed'),
-          type: "error",
-          description: error.message
-        });
         switch(placeOrder.payWith) {
           case 'ledger':
             dispatch({type:'placeOrderByLedger/orderStateChange',payload:{orderState:2}})
@@ -174,6 +163,7 @@ const PlaceOrderSign = (props) => {
             dispatch({type:'placeOrderByLoopr/orderStateChange',payload:{orderState:2}})
             break;
         }
+        dispatch({type:'placeOrder/resultMsgChange',payload:{resultMsg:error.message}})
         dispatch({type:'placeOrder/confirmButtonStateChange',payload:{state:1}})
       } else {
         const balanceWarn = warn ? warn.filter(item => item.type === "BalanceNotEnough") : [];
