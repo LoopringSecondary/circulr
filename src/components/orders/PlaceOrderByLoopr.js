@@ -50,9 +50,6 @@ const PlaceOrderByLoopr = (props) => {
                   2. 打开 Loopr Wallet，点击扫码
                   <br />
                   * 二维码有效时间24小时，请尽快完成扫码操作，过期后请重新下单生成二维码
-                  <Button className="mt15" type="default" onClick={test.bind(this, 1)}> scan </Button>
-                  <Button className="mt15" type="default" onClick={test.bind(this, 2)}> success </Button>
-                  <Button className="mt15" type="default" onClick={test.bind(this, 3)}> failed </Button>
                 </div>
               </div>
             </div>
