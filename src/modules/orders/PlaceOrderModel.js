@@ -7,16 +7,17 @@ const MODULES = 'placeOrder'
 export default {
   namespace: MODULES,
   state: {
-   side:'buy',
-   pair:'LRC-WETH',
-   priceInput: '0',
-   amountInput:'0',
-   submitButtonLoading: false,
-   tradeInfo:null,
-   unsigned:null,
-   signed:null,
-   payWith:'', //ledger, metaMask, loopr
-   confirmButtonState : 1, //1:init, 2:loading, 3:submitted
+    side:'buy',
+    pair:'LRC-WETH',
+    priceInput: '0',
+    amountInput:'0',
+    submitButtonLoading: false,
+    tradeInfo:null,
+    unsigned:null,
+    signed:null,
+    payWith:'', //ledger, metaMask, loopr
+    resultMsg: '',
+    confirmButtonState : 1, //1:init, 2:loading, 3:submitted
   },
   effects:{
     *init({ payload={} }, { put }) {
@@ -26,6 +27,7 @@ export default {
       yield put({ type: 'tradeInfoChange',payload:{tradeInfo:null}});
       yield put({ type: 'unsignedChange',payload:{unsigned:null}});
       yield put({ type: 'signedChange',payload:{signed:null}});
+      yield put({ type: 'resultMsgChange',payload:{resultMsg:''}});
     },
     *pairChangeEffects({ payload={} }, { put }) {
       let {pair, price} = payload
@@ -171,6 +173,13 @@ export default {
       return {
         ...state,
         payWith
+      }
+    },
+    resultMsgChange(state, {payload}) {
+      let {resultMsg} = payload
+      return {
+        ...state,
+        resultMsg
       }
     },
   },

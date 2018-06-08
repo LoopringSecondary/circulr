@@ -44,6 +44,15 @@ const updateStepInPlaceOrderByLoopr = (item,id)=>{
     dispatch({type:'placeOrderByLoopr/generateTimeChange', payload:{generateTime:item.timestamp}})
   }
 }
+const updateScannedAddress = (item,id)=>{
+  if(item && item.address) {
+    const dispatch = require('../../index.js').default._store.dispatch
+    dispatch({
+      type:'scanAddress/addressChanged',
+      payload:{address:item.address}
+    })
+  }
+}
 
 const isArray = (obj)=>{
   return Object.prototype.toString.call(obj) === '[object Array]'
@@ -316,6 +325,25 @@ const transfromers = {
       }
       updateItems(item,id)
       updateStepInPlaceOrderByLoopr(item,id)
+    },
+  },
+  scanAddress:{
+    queryTransformer:(payload)=>{
+      const {filters} = payload
+      return JSON.stringify({
+        "UUID": filters.UUID,
+      })
+    },
+    resTransformer:(id,res)=>{
+      if(!res) return null
+      res = JSON.parse(res)
+      // console.log(id,'res',res)
+      let item = {}
+      if(!res.error && res.data){
+        item = {...res.data}
+      }
+      updateItems(item,id)
+      updateScannedAddress(item,id)
     },
   },
 }

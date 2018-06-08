@@ -35,6 +35,7 @@ export default {
     'loopringTickers':{...initState},
     'pendingTx':{...initState},
     'authorization':{...initState},
+    'scanAddress':{...initState}
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -131,6 +132,7 @@ export default {
       yield put({type:'fetch',payload:{id:'loopringTickers'}})
       yield put({type:'fetch',payload:{id:'orderBook'}})
       yield put({type:'fetch',payload:{id:'estimatedGasPrice'}})
+      yield put({type:'fetch',payload:{id:'scanAddress'}})
       if(window.WALLET && window.WALLET.address){
         yield put({type:'unlocked'})
       }
