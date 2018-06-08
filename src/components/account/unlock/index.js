@@ -1,4 +1,5 @@
 import UnlockWallet from './UnlockWallet'
+import UnlockByLoopr from './UnlockByLoopr'
 import UnlockByMetaMask from './UnlockByMetaMask'
 import UnlockByTrezor from './UnlockByTrezor'
 import UnlockByLedger from './UnlockByLedger'
@@ -8,7 +9,8 @@ import DetermineWallet from './DetermineWallet'
 import UnlockByPrivateKey from './UnlockByPrivateKey'
 
 export default {
-	UnlockWallet,
+  UnlockWallet,
+	UnlockByLoopr,
 	UnlockByMetaMask,
 	UnlockByTrezor,
 	UnlockByLedger,
