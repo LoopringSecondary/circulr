@@ -40,6 +40,9 @@ const updateStepInPlaceOrderByLoopr = (item,id)=>{
       case 'reject':
         dispatch({type:'placeOrderByLoopr/submitFailed', payload:{hash:item.hash}})
         break;
+      case 'txFailed':
+        dispatch({type:'placeOrderByLoopr/submitFailed', payload:{hash:item.hash}})
+        break;
     }
     dispatch({type:'placeOrderByLoopr/generateTimeChange', payload:{generateTime:item.timestamp}})
   }
