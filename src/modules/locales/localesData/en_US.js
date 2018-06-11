@@ -93,6 +93,10 @@ const notifications = {
     cancel_fail:'Cancel transaction failed',
     address_change:'Unlock address changed',
     unlock_first:'Please unlock your wallet first',
+    cancel_order_suc:"Cancel order successfully",
+    cancel_all_order_suc:"Cancel all {market} orders successfully",
+    cancel_order_failed:"Cancel order failed",
+    cancel_all_order_failed:"Cancel all {market} orders failed",
   },
   message: {
     wallet_locked: 'Your wallet seems locked yet, please unlock first',

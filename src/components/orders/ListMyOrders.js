@@ -1,5 +1,5 @@
 import React from 'react'
-import {Form, Select, Badge,Spin,Popover} from 'antd'
+import {Modal, Select, Badge,Spin,Popover} from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import SelectContainer from 'LoopringUI/components/SelectContainer'
 import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'
@@ -8,9 +8,12 @@ import {getShortAddress} from 'modules/formatter/common'
 import config from 'common/config'
 import intl from 'react-intl-universal'
 import Notification from '../../common/loopringui/components/Notification'
+import moment from 'moment';
+import {connect} from 'dva';
+import {toHex} from "LoopringJS/common/formatter";
 
 const ListHeader = (props) => {
-  const {orders,dispatch} = props;
+  const {orders,dispatch,account} = props;
   const sideChange = (side) => {
     orders.filtersChange({filters: {side}})
   };
@@ -22,11 +25,35 @@ const ListHeader = (props) => {
   };
 
   const cancelAll = () => {
+    const {market} = orders.filters;
+    const type = market ? 4 : 2;
+    const params = {};
+    if(market) {
+      const tokenS = market.split('-')[0];
+      const tokenB = market.split('-')[1];
+      params.tokenS = config.getTokenBySymbol(tokenS).address;
+      params.tokenB = config.getTokenBySymbol(tokenB).address
+    }
     if(window.WALLET && window.WALLET.unlockType !== 'address') {
-      const {market} = orders.filters;
-      const type = market ? "cancelOrderByTokenPair" : "cancelAllOrder";
-      dispatch({type: 'layers/showLayer', payload: {id: 'cancelOrderConfirm', type, market}})
-    }else{
+      Modal.confirm({
+        title:intl.get('order_cancel.cancel_all_title', {pair: market || ''}),
+        async onOk(){
+          const timestamp = Math.floor(moment().valueOf() / 1e3).toString();
+          const sig = await account.signMessage(timestamp);
+          return window.RELAY.order.cancelOrder({...params,type,sign:{owner:window.WALLET.address, v:sig.v,r:toHex(sig.r),s:toHex(sig.s)}}).then(res=>{
+            if(res.error){
+              Notification.open({type:'error',message:intl.get('notifications.title.cancel_all_order_failed',{market}),description:res.error.message})
+            }else{
+              Notification.open({type:'success',message:intl.get('notifications.title.cancel_all_order_suc',{market})})
+            }
+          });
+        },
+        onCancel() {}
+      });
+
+
+      dispatch({type: 'layers/showLayer', payload: {id: 'cancelOrderConfirm', type: 'cancelOrder', order}})
+    }else {
       Notification.open({type:'warning',message:intl.get('notifications.title.unlock_first')})
     }
   };
@@ -122,10 +149,28 @@ const ItemMore=({item})=>{
   )
 }
 
-export default function ListMyOrders(props) {
-  const {orders = {},dispatch} = props;
+function ListMyOrders(props) {
+  const {orders = {},dispatch,wallet} = props;
+  const account =wallet.account || window.account;
   const cancelOrder = (order) => {
     if(window.WALLET && window.WALLET.unlockType !== 'address') {
+      Modal.confirm({
+        title:intl.get('order_cancel.cancel_title'),
+       async onOk(){
+          const timestamp = Math.floor(moment().valueOf() / 1e3).toString();
+          const sig = await account.signMessage(timestamp);
+         return window.RELAY.order.cancelOrder({orderHash:order.hash,type:1,sign:{owner:window.WALLET.address, v:sig.v,r:toHex(sig.r),s:toHex(sig.s)}}).then(res=>{
+           if(res.error){
+             Notification.open({type:'error',message:intl.get('notifications.title.cancel_order_failed'),description:res.error.message})
+           }else{
+             Notification.open({type:'success',message:intl.get('notifications.title.cancel_order_suc')})
+           }
+         });
+        },
+        onCancel() {}
+      });
+
+
       dispatch({type: 'layers/showLayer', payload: {id: 'cancelOrderConfirm', type: 'cancelOrder', order}})
     }else {
       Notification.open({type:'warning',message:intl.get('notifications.title.unlock_first')})
@@ -133,7 +178,7 @@ export default function ListMyOrders(props) {
   };
   return (
     <div className="">
-      <ListHeader orders={orders} dispatch={props.dispatch}/>
+      <ListHeader orders={orders} dispatch={props.dispatch} account={account}/>
       <div style={{height: "160px", overflow: "auto"}}>
         <Spin spinning={orders.loading}>
           <table style={{overflow: 'auto'}}
@@ -206,7 +251,7 @@ export const renders = {
     </div>
   ),
   status: (fm,order,cancelOrder) => {
-    const status = fm.getStatus()
+    const status = fm.getStatus();
     const cancleBtn = (
       <a className="ml5 fs12  text-primary"
          onClick={()=> cancelOrder(order)}>
@@ -236,3 +281,14 @@ export const renders = {
     )
   },
 }
+
+function mapStateToProps(state) {
+
+
+  return {
+    wallet:state.wallet
+  }
+}
+
+
+export default connect(mapToProps)(ListMyOrders)

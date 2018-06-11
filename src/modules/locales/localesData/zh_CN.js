@@ -94,7 +94,11 @@ const notifications = {
     cancel_suc:'取消交易成功发出',
     cancel_fail:'取消交易失败',
     address_change:'解锁地址改变',
-    unlock_first:'请先解锁钱包'
+    unlock_first:'请先解锁钱包',
+    cancel_order_suc:"取消订单成功",
+    cancel_all_order_suc:"取消全部{market}订单成功",
+    cancel_order_failed:"取消订单失败",
+    cancel_all_order_failed:"取消全部{market}订单失败",
   },
   message: {
     wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
