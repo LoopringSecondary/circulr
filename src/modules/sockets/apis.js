@@ -313,9 +313,9 @@ const transfromers = {
   },
   authorization:{
     queryTransformer:(payload)=>{
-      const {filters} = payload
+      const {extra} = payload
       return JSON.stringify({
-        "hash": filters.hash,
+        "hash": extra.hash,
       })
     },
     resTransformer:(id,res)=>{
@@ -330,11 +330,11 @@ const transfromers = {
       updateStepInPlaceOrderByLoopr(item,id)
     },
   },
-  scanAddress:{
+  addressUnlock:{
     queryTransformer:(payload)=>{
-      const {filters} = payload
+      const {extra} = payload
       return JSON.stringify({
-        "UUID": filters.UUID,
+        "uuid": extra.UUID,
       })
     },
     resTransformer:(id,res)=>{

@@ -10,13 +10,30 @@ import {getXPubKey as getLedgerPublicKey,connect as connectLedger} from "Looprin
 import {wallets} from "../../common/config/data";
 import {trimAll} from "LoopringJS/common/utils";
 import intl from 'react-intl-universal'
-
+import uuidv4 from 'uuid/v4'
 
 class Unlock extends React.Component {
+
+  componentDidMount(){
+    const {match, location} = this.props;
+    const param = location.pathname.replace(`${match.path}/`, '')
+    if(param){
+      //TODO to fix bug, socket not connected
+      this.changeTab(param)
+    }
+  }
 
   changeTab = (path) => {
     const {match} = this.props;
     const {url} = match;
+    switch(path) {
+      case 'loopr':
+        const uuid = uuidv4()
+        this.props.dispatch({type:'scanAddress/uuidChanged', payload:{UUID:uuid.substring(0, 8)}})
+        this.props.dispatch({type:'sockets/extraChange',payload:{id:'addressUnlock', extra:{UUID:uuid.substring(0, 8)}}});
+        this.props.dispatch({type:'sockets/fetch',payload:{id:'addressUnlock'}});
+        break;
+    }
     routeActions.gotoPath(`${url}/${path}`);
   };
 
