@@ -5,9 +5,20 @@ import Alert from 'LoopringUI/components/Alert'
 import PlaceOrderResult from './PlaceOrderResult'
 import {connect} from 'dva'
 import QRCode from 'qrcode.react';
+import moment from 'moment'
+import CountDown from 'LoopringUI/components/CountDown';
+import {keccakHash} from 'LoopringJS/common/utils'
 
 const PlaceOrderByLoopr = (props) => {
   const {placeOrderByLoopr,dispatch} = props
+  let targetTime = moment().valueOf() + 86400000;
+  if(placeOrderByLoopr.generateTime) {
+    targetTime = moment.unix(placeOrderByLoopr.generateTime).valueOf() + 86400000;
+  }
+
+  const overdue = () => {
+    dispatch({type:'placeOrderByLoopr/overdueChange', payload:{overdue:true}})
+  }
 
   const steps = [{
     title: 'Qrcode',
@@ -19,16 +30,6 @@ const PlaceOrderByLoopr = (props) => {
     title: 'Result',
     content: 'Last-content',
   }];
-
-  const test = (value) => {
-    if(value === 1) {
-      dispatch({type:'placeOrderByLoopr/scanned', payload:{hash:placeOrderByLoopr.hash}})
-    } else if(value === 2) {
-      dispatch({type:'placeOrderByLoopr/submitSuccessfully', payload:{hash:placeOrderByLoopr.hash}})
-    } else {
-      dispatch({type:'placeOrderByLoopr/submitFailed', payload:{hash:placeOrderByLoopr.hash}})
-    }
-  }
 
   return (
     <Card className="rs" title={<div className="pl10 ">Place Order By Loopr Wallet</div>}>
@@ -43,7 +44,17 @@ const PlaceOrderByLoopr = (props) => {
           <div className="mt15">
             <div className="zb-b">
               <div className="text-center p15">
-                {placeOrderByLoopr.qrcode && <QRCode value={placeOrderByLoopr.qrcode} size={320} level='H'/>}
+                {
+                  placeOrderByLoopr.overdue &&
+                  <div>Overdue</div>
+                }
+                {
+                  !placeOrderByLoopr.overdue && placeOrderByLoopr.qrcode &&
+                  <div>
+                    <div><QRCode value={placeOrderByLoopr.qrcode} size={320} level='H'/></div>
+                    <div><CountDown style={{ fontSize: 20 }} target={targetTime} onEnd={overdue}/></div>
+                  </div>
+                }
                 <div className="pt10 pb10 color-black-2 text-left fs12 " style={{width:'320px',margin:'0 auto'}}>
                   1. 下载 Loopr-IOS
                   <br />
@@ -53,7 +64,6 @@ const PlaceOrderByLoopr = (props) => {
                 </div>
               </div>
             </div>
-
           </div>
         }
         {

@@ -137,7 +137,7 @@ const PlaceOrderSteps = (props) => {
           if(!res.error) {
             dispatch({type:'placeOrderByLoopr/qrcodeGenerated',payload:{qrcode, hash}});
             dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLoopr'}});
-            dispatch({type:'sockets/filtersChange',payload:{id:'authorization', filters:{hash}}});
+            dispatch({type:'sockets/extraChange',payload:{id:'authorization', extra:{hash}}});
             dispatch({type:'sockets/fetch',payload:{id:'authorization'}});
           } else {
             console.error(res.error)

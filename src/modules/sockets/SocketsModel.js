@@ -35,7 +35,7 @@ export default {
     'loopringTickers':{...initState},
     'pendingTx':{...initState},
     'authorization':{...initState},
-    'scanAddress':{...initState}
+    'addressUnlock':{...initState}
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -132,7 +132,6 @@ export default {
       yield put({type:'fetch',payload:{id:'loopringTickers'}})
       yield put({type:'fetch',payload:{id:'orderBook'}})
       yield put({type:'fetch',payload:{id:'estimatedGasPrice'}})
-      yield put({type:'fetch',payload:{id:'scanAddress'}})
       if(window.WALLET && window.WALLET.address){
         yield put({type:'unlocked'})
       }
@@ -169,10 +168,10 @@ export default {
     *emitEvent({ payload={} },{call,select,put}) {
       let {id} = payload
       // todo idValidator
-      const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
-      console.log('filtersChange emitEvent',id,filters)
+      const {socket,[id]:{page,filters,sort,extra}} = yield select(({ [namespace]:model }) => model )
+      console.log('filtersChange emitEvent',id,filters,extra)
       if(socket){
-        let new_payload = {page,filters,sort,socket,id}
+        let new_payload = {page,filters,sort,socket,id,extra}
         yield call(apis.emitEvent, new_payload)
       }else{
         console.log('socket is not connected!')
@@ -181,9 +180,9 @@ export default {
     *onEvent({ payload={} }, { call, select, put }) {
       let {id} = payload
       // todo idValidator
-      const {socket,[id]:{page,filters,sort}} = yield select(({ [namespace]:model }) => model )
+      const {socket,[id]:{page,filters,sort,extra}} = yield select(({ [namespace]:model }) => model )
       if(socket){
-        let new_payload = {page,filters,sort,socket,id}
+        let new_payload = {page,filters,sort,socket,id,extra}
         yield call(apis.onEvent, new_payload)
       }else{
         console.log('socket is not connected!')

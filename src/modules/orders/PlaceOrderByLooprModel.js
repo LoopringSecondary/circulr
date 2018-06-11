@@ -7,6 +7,7 @@ export default {
     step:0, //0:qrcode, 1:waiting for sign 2:result
     orderState:0, //0:not send, 1:send succeed 2:send failed
     generateTime:null,
+    overdue:false
   },
   effects:{
     *init({ payload={} }, { put }) {
@@ -17,6 +18,7 @@ export default {
       yield put({ type: 'qrcodeChange',payload:{qrcode:''}});
       yield put({ type: 'stepChange',payload:{step:0}});
       yield put({ type: 'generateTimeChange',payload:{generateTime:null}});
+      yield put({ type: 'overdueChange',payload:{overdue:false}});
     },
     *qrcodeGenerated({ payload={} }, { put }) {
       const {qrcode, hash} = payload
@@ -86,6 +88,14 @@ export default {
       return {
         ...state,
         generateTime
+      }
+    },
+    overdueChange(state, action) {
+      const {payload} = action
+      let {overdue} = payload
+      return {
+        ...state,
+        overdue
       }
     },
   },
