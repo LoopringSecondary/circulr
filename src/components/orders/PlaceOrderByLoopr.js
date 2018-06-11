@@ -11,10 +11,13 @@ import {keccakHash} from 'LoopringJS/common/utils'
 
 const PlaceOrderByLoopr = (props) => {
   const {placeOrderByLoopr,dispatch} = props
-  let targetTime = moment().valueOf() + 86400000;
+  let targetTime = moment().valueOf();
   if(placeOrderByLoopr.generateTime) {
     targetTime = moment.unix(placeOrderByLoopr.generateTime).valueOf() + 86400000;
+  } else {
+    targetTime = moment().valueOf() + 86400000;
   }
+  console.log(placeOrderByLoopr)
 
   const overdue = () => {
     dispatch({type:'placeOrderByLoopr/overdueChange', payload:{overdue:true}})

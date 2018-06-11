@@ -67,7 +67,7 @@ const WalletItem = (props) => {
 }
 
 const PlaceOrderSteps = (props) => {
-  const {placeOrderSteps, placeOrder, wallet, dispatch} = props
+  const {placeOrderSteps, placeOrder, placeOrderByLoopr, wallet, dispatch} = props
   let {side, pair, tradeInfo, order} = placeOrderSteps || {}
   let {price, amount, total, validSince,validUntil, marginSplit, lrcFee, warn, orderType} = tradeInfo || {};
   let {unsigned, signed} = placeOrder || {}
@@ -129,6 +129,10 @@ const PlaceOrderSteps = (props) => {
   function chooseType(type) {
     switch(type) {
       case 'Loopr' :
+        if(placeOrderByLoopr.qrcode) {
+          dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLoopr'}});
+          return
+        }
         dispatch({type:'placeOrder/payWithChange',payload:{payWith:'loopr'}});
         const origin = JSON.stringify(unsigned)
         const hash = keccakHash(origin)
@@ -224,6 +228,7 @@ const PlaceOrderSteps = (props) => {
 function mapToProps(state) {
   return {
     placeOrder:state.placeOrder,
+    placeOrderByLoopr:state.placeOrderByLoopr,
     wallet:state.wallet,
   }
 }
