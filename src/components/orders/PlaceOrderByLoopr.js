@@ -17,7 +17,6 @@ const PlaceOrderByLoopr = (props) => {
   } else {
     targetTime = moment().valueOf() + 86400000;
   }
-  console.log(placeOrderByLoopr)
 
   const overdue = () => {
     dispatch({type:'placeOrderByLoopr/overdueChange', payload:{overdue:true}})
