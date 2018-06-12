@@ -8,14 +8,33 @@ import QRCode from 'qrcode.react';
 import moment from 'moment'
 import CountDown from 'LoopringUI/components/CountDown';
 import {keccakHash} from 'LoopringJS/common/utils'
+import {getSocketAuthorizationByHash} from 'modules/orders/formatters'
 
 const PlaceOrderByLoopr = (props) => {
-  const {placeOrderByLoopr,dispatch} = props
+  const {placeOrderByLoopr, authorization, dispatch} = props
   let targetTime = moment().valueOf();
   if(placeOrderByLoopr.generateTime) {
-    targetTime = moment.unix(placeOrderByLoopr.generateTime).valueOf() + 86400000;
+    targetTime = placeOrderByLoopr.generateTime + 86400000;
   } else {
     targetTime = moment().valueOf() + 86400000;
+  }
+  const hashItem = getSocketAuthorizationByHash(placeOrderByLoopr.hash, authorization)
+  let step = 0
+  if(hashItem) {
+    switch (hashItem.status) { //init received accept reject
+      case 'received':
+        step = 1
+        break;
+      case 'accept':
+        step = 2
+        break;
+      case 'reject':
+        step = 2
+        break;
+      case 'txFailed':
+        step = 2
+        break;
+    }
   }
 
   const overdue = () => {
@@ -37,12 +56,12 @@ const PlaceOrderByLoopr = (props) => {
     <Card className="rs" title={<div className="pl10 ">{intl.get('place_order_by_loopr.title')}</div>}>
       <div className="p15">
         <div className="mb20 mt15">
-          <Steps current={placeOrderByLoopr.step}>
+          <Steps current={step}>
            {steps.map(item => <Steps.Step key={item.title} title={item.title} />)}
           </Steps>
         </div>
         {
-          placeOrderByLoopr.step === 0 &&
+          step === 0 &&
           <div className="mt15">
             <div className="zb-b">
               <div className="text-center p15">
@@ -69,7 +88,7 @@ const PlaceOrderByLoopr = (props) => {
           </div>
         }
         {
-          placeOrderByLoopr.step === 1 &&
+          step === 1 &&
           <div className="mt15">
             <div className="zb-b">
                 <div className="text-center p35">
@@ -81,7 +100,7 @@ const PlaceOrderByLoopr = (props) => {
           </div>
         }
         {
-          placeOrderByLoopr.step === 2 &&
+          step === 2 &&
           <div className="mt15">
             <PlaceOrderResult />
           </div>
@@ -93,7 +112,8 @@ const PlaceOrderByLoopr = (props) => {
 
 function mapToProps(state) {
   return {
-    placeOrderByLoopr:state.placeOrderByLoopr
+    placeOrderByLoopr:state.placeOrderByLoopr,
+    authorization:state.sockets.authorization
   }
 }
 export default connect(mapToProps)(PlaceOrderByLoopr);

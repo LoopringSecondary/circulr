@@ -2,6 +2,9 @@ import io from 'socket.io-client'
 import {store} from '../../index.js'
 import config from 'common/config'
 import {toBig, toFixed} from 'LoopringJS/common/formatter'
+import routeActions from 'common/utils/routeActions'
+import Notification from 'LoopringUI/components/Notification'
+import intl from 'react-intl-universal';
 
 const updateItems = (items,id)=>{
   const dispatch = require('../../index.js').default._store.dispatch
@@ -54,6 +57,13 @@ const updateScannedAddress = (item,id)=>{
       type:'scanAddress/addressChanged',
       payload:{address:item.owner}
     })
+    dispatch({type:'scanAddress/addressChanged', payload:{address:item.owner}})
+    dispatch({type:"wallet/unlockAddressWallet",payload:{address:item.owner}});
+    Notification.open({type:'success',message:intl.get('notifications.title.unlock_suc')});
+    dispatch({type: 'sockets/unlocked'});
+    routeActions.gotoPath('/wallet');
+    dispatch({type:'layers/hideLayer', payload:{id:'unlock'}})
+    dispatch({type:'scanAddress/reset', payload:{}})
   }
 }
 
@@ -322,12 +332,12 @@ const transfromers = {
       if(!res) return null
       res = JSON.parse(res)
       // console.log(id,'res',res)
-      let item = {}
-      if(!res.error && res.data){
-        item = {...res.data}
+      let items = []
+      if(!res.error && isArray(res.data)){
+        items =[ ...res.data ]
       }
-      updateItems(item,id)
-      updateStepInPlaceOrderByLoopr(item,id)
+      updateItems(items,id)
+      // updateStepInPlaceOrderByLoopr(item,id)
     },
   },
   addressUnlock:{
