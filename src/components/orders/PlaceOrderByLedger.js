@@ -25,29 +25,39 @@ const PlaceOrderByLedger = (props) => {
   const unlock = () => {
     dispatch({type:"hardwareWallet/setWalletType",payload:{walletType:'ledger'}});
     const walletConfig = wallets.find(wallet => trimAll(wallet.name).toLowerCase() === 'ledger(eth)');
+    let ledger = null;
     connectLedger().then(res =>{
       if(!res.error){
-        const ledger = res.result;
-        getLedgerPublicKey(walletConfig.dpath,ledger).then(resp => {
-          if(!resp.error){
-            const {chainCode, publicKey} = resp.result;
-            dispatch({type: "placeOrderByLedger/connectedChange", payload: {ledger}});
-            dispatch({type: "hardwareWallet/setKeyAndCode", payload: {chainCode, publicKey}});
-          } else {
-            Notification.open({
-              message: 'Connect Ledger Failed',
-              type: "error",
-              description: resp.error
-            });
-          }
-        });
+        ledger = res.result;
+        return getLedgerPublicKey(walletConfig.dpath,ledger)
       } else {
+        console.log(res.error)
         Notification.open({
           message: 'Connect Ledger Failed',
           type: "error",
-          description: res.error
+          description: intl.get('notifications.message.ledger_connect_failed')
         });
       }
+    }).then(resp =>{
+      if(!resp.error){
+        const {chainCode, publicKey} = resp.result;
+        dispatch({type: "placeOrderByLedger/connectedChange", payload: {ledger}});
+        dispatch({type: "hardwareWallet/setKeyAndCode", payload: {chainCode, publicKey}});
+      } else {
+        console.log(resp.error)
+        Notification.open({
+          message: 'Connect Ledger Failed',
+          type: "error",
+           description: intl.get('notifications.message.ledger_connect_failed')
+        });
+      }
+    }).catch(error => {
+      console.log(error)
+      Notification.open({
+        message: 'Connect Ledger Failed',
+        type: "error",
+        description: intl.get('notifications.message.ledger_connect_failed')
+      });
     });
   };
 

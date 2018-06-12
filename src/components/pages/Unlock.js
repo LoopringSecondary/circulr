@@ -33,6 +33,9 @@ class Unlock extends React.Component {
         this.props.dispatch({type:'sockets/extraChange',payload:{id:'addressUnlock', extra:{UUID:uuid.substring(0, 8)}}});
         this.props.dispatch({type:'sockets/fetch',payload:{id:'addressUnlock'}});
         break;
+      case 'ledger':
+        this.unlock('ledger','ledger')
+        break;
     }
     routeActions.gotoPath(`${url}/${path}`);
   };
