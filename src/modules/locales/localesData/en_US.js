@@ -500,6 +500,11 @@ export default {
     connect_trezor_tip: "Please connect to your TREZOR",
     error_invalid_tip: 'Invalid Information',
   },
+  unlock_by_loopr: {
+    instruction_download: 'Download Loopr-IOS',
+    instruction_scan: 'Open your Loopr wallet，scan the QRcode and confirm',
+    instruction_warn: '* The QRcode is valid for 10 minute, please scan as soon as possible. When expired, please scan the new QRcode generated automatically',
+  },
   password: {
     password_strength_title: 'Password Strength',
     password_strength: {
