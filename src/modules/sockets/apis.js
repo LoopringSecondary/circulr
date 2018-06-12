@@ -48,11 +48,11 @@ const updateStepInPlaceOrderByLoopr = (item,id)=>{
   }
 }
 const updateScannedAddress = (item,id)=>{
-  if(item && item.address) {
+  if(item && item.owner) {
     const dispatch = require('../../index.js').default._store.dispatch
     dispatch({
       type:'scanAddress/addressChanged',
-      payload:{address:item.address}
+      payload:{address:item.owner}
     })
   }
 }
