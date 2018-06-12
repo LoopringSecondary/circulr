@@ -11,14 +11,14 @@ import uuidv4 from 'uuid/v4'
 
 function UnlockByLoopr(props) {
   const {scanAddress, dispatch} = props
-  let targetTime = moment().valueOf() + 300000;
+  let targetTime = moment().valueOf() + 600000;
 
   const refresh = () => {
     const uuid = uuidv4()
     props.dispatch({type:'scanAddress/uuidChanged', payload:{UUID:uuid.substring(0, 8)}})
     props.dispatch({type:'sockets/extraChange',payload:{id:'addressUnlock', extra:{UUID:uuid.substring(0, 8)}}});
     props.dispatch({type:'sockets/fetch',payload:{id:'addressUnlock'}});
-    targetTime = moment().valueOf() + 300000;
+    targetTime = moment().valueOf() + 600000;
   }
 
   const unlock = () => {
@@ -59,7 +59,7 @@ function UnlockByLoopr(props) {
         <br />
         2. xxx
         <br />
-        * 二维码有效时间5分钟，请尽快扫描确认。过期后请重新生成
+        * 二维码有效时间10分钟，请尽快扫描确认。过期后请重新扫描
         <br />
       </div>
     </div>
