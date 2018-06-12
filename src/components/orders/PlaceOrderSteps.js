@@ -17,6 +17,7 @@ import {keccakHash} from 'LoopringJS/common/utils'
 import {getXPubKey as getLedgerPublicKey,connect as connectLedger} from "LoopringJS/ethereum/ledger";
 import {wallets} from "../../common/config/data";
 import {trimAll} from "LoopringJS/common/utils";
+import moment from 'moment'
 
 const OrderMetaItem = (props) => {
   const {label, value} = props
@@ -139,7 +140,8 @@ const PlaceOrderSteps = (props) => {
         const qrcode = JSON.stringify({type:'sign', 'id':hash})
         window.RELAY.order.storeDatasInShortTerm(hash, origin).then(res=>{
           if(!res.error) {
-            dispatch({type:'placeOrderByLoopr/qrcodeGenerated',payload:{qrcode, hash}});
+            const time = moment().valueOf()
+            dispatch({type:'placeOrderByLoopr/qrcodeGenerated',payload:{qrcode, hash, time}});
             dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLoopr'}});
             dispatch({type:'sockets/extraChange',payload:{id:'authorization', extra:{hash}}});
             dispatch({type:'sockets/fetch',payload:{id:'authorization'}});
