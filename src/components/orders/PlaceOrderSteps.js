@@ -67,7 +67,7 @@ const WalletItem = (props) => {
 }
 
 const PlaceOrderSteps = (props) => {
-  const {placeOrderSteps, placeOrder, wallet, dispatch} = props
+  const {placeOrderSteps, placeOrder, placeOrderByLoopr, wallet, dispatch} = props
   let {side, pair, tradeInfo, order} = placeOrderSteps || {}
   let {price, amount, total, validSince,validUntil, marginSplit, lrcFee, warn, orderType} = tradeInfo || {};
   let {unsigned, signed} = placeOrder || {}
@@ -129,6 +129,10 @@ const PlaceOrderSteps = (props) => {
   function chooseType(type) {
     switch(type) {
       case 'Loopr' :
+        if(placeOrderByLoopr.qrcode) {
+          dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLoopr'}});
+          return
+        }
         dispatch({type:'placeOrder/payWithChange',payload:{payWith:'loopr'}});
         const origin = JSON.stringify(unsigned)
         const hash = keccakHash(origin)
@@ -137,7 +141,7 @@ const PlaceOrderSteps = (props) => {
           if(!res.error) {
             dispatch({type:'placeOrderByLoopr/qrcodeGenerated',payload:{qrcode, hash}});
             dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLoopr'}});
-            dispatch({type:'sockets/filtersChange',payload:{id:'authorization', filters:{hash}}});
+            dispatch({type:'sockets/extraChange',payload:{id:'authorization', extra:{hash}}});
             dispatch({type:'sockets/fetch',payload:{id:'authorization'}});
           } else {
             console.error(res.error)
@@ -182,10 +186,10 @@ const PlaceOrderSteps = (props) => {
   }
   const loading = false
   return (
-    <Card className="rs" title={<div className="pl10 ">Place Order</div>}>
+    <Card className="rs" title={<div className="pl10 ">{intl.get('place_order.title')}</div>}>
       <div className="p15">
         <div className="zb-b">
-          <div className="fs16 color-black-1 p10 zb-b-b bg-grey-50">1. You are buying 10.00 LRC</div>
+          <div className="fs16 color-black-1 p10 zb-b-b bg-grey-50">1. {intl.get(`place_order.${side === 'sell' ? 'selling' : 'buying'}`)} {intl.get('common.format_amount', {amount})} {pair.split('-')[0]}</div>
           <div className="pt10 pb10">
             <OrderMetaItem label={intl.get('common.sell')} value={`${amount.toString(10)} ${pair.split('-')[0]}`} />
             <OrderMetaItem label={intl.get('common.buy')} value={`${total.toString(10)} ${pair.split('-')[1]}`} />
@@ -197,7 +201,7 @@ const PlaceOrderSteps = (props) => {
         </div>
 
         <div className="zb-b mt15">
-          <div className="fs16 color-black-1 p10 zb-b-b bg-grey-50">2. Select A Wallet to Place Order</div>
+          <div className="fs16 color-black-1 p10 zb-b-b bg-grey-50">2. {intl.get('place_order.select_wallet')}</div>
           <div className="row ml0 mr0">
             <div hidden={signed && signed.length >0 && placeOrder.payWith !== 'loopr'} className="col-4 zb-b-r cursor-pointer" onClick={loading ? ()=>{} : chooseType.bind(this, 'Loopr')}>
               <WalletItem icon="json" title="Loopr Wallet" loading={loading} />
@@ -224,6 +228,7 @@ const PlaceOrderSteps = (props) => {
 function mapToProps(state) {
   return {
     placeOrder:state.placeOrder,
+    placeOrderByLoopr:state.placeOrderByLoopr,
     wallet:state.wallet,
   }
 }

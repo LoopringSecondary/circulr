@@ -25,29 +25,39 @@ const PlaceOrderByLedger = (props) => {
   const unlock = () => {
     dispatch({type:"hardwareWallet/setWalletType",payload:{walletType:'ledger'}});
     const walletConfig = wallets.find(wallet => trimAll(wallet.name).toLowerCase() === 'ledger(eth)');
+    let ledger = null;
     connectLedger().then(res =>{
       if(!res.error){
-        const ledger = res.result;
-        getLedgerPublicKey(walletConfig.dpath,ledger).then(resp => {
-          if(!resp.error){
-            const {chainCode, publicKey} = resp.result;
-            dispatch({type: "placeOrderByLedger/connectedChange", payload: {ledger}});
-            dispatch({type: "hardwareWallet/setKeyAndCode", payload: {chainCode, publicKey}});
-          } else {
-            Notification.open({
-              message: 'Connect Ledger Failed',
-              type: "error",
-              description: resp.error
-            });
-          }
-        });
+        ledger = res.result;
+        return getLedgerPublicKey(walletConfig.dpath,ledger)
       } else {
+        console.log(res.error)
         Notification.open({
           message: 'Connect Ledger Failed',
           type: "error",
-          description: res.error
+          description: intl.get('notifications.message.ledger_connect_failed')
         });
       }
+    }).then(resp =>{
+      if(!resp.error){
+        const {chainCode, publicKey} = resp.result;
+        dispatch({type: "placeOrderByLedger/connectedChange", payload: {ledger}});
+        dispatch({type: "hardwareWallet/setKeyAndCode", payload: {chainCode, publicKey}});
+      } else {
+        console.log(resp.error)
+        Notification.open({
+          message: 'Connect Ledger Failed',
+          type: "error",
+           description: intl.get('notifications.message.ledger_connect_failed')
+        });
+      }
+    }).catch(error => {
+      console.log(error)
+      Notification.open({
+        message: 'Connect Ledger Failed',
+        type: "error",
+        description: intl.get('notifications.message.ledger_connect_failed')
+      });
     });
   };
 
@@ -73,18 +83,18 @@ const PlaceOrderByLedger = (props) => {
   };
 
   const steps = [{
-    title: 'Connect Wallet',
+    title: intl.get('place_order_by_ledger.step_connect'),
     content: 'First-content',
   }, {
-    title: 'Sign Order',
+    title: intl.get('place_order_by_ledger.step_sign'),
     content: 'Second-content',
   }, {
-    title: 'Result',
+    title: intl.get('place_order_by_ledger.step_result'),
     content: 'Last-content',
   },
   ]
   return (
-    <Card className="rs" title={<div className="pl10 ">Place Order By Ledger</div>}>
+    <Card className="rs" title={<div className="pl10 ">{intl.get('place_order_by_ledger.title')}</div>}>
       <div className="p15">
         <div className="mb20 mt15">
           <Steps current={currentStep}>
@@ -98,16 +108,16 @@ const PlaceOrderByLedger = (props) => {
               {!placeOrderByLedger.ledger &&
                 <div className="text-center p15">
                   <i className={`fs36 icon-ledgerwallet text-primary`}></i>
-                  <div className="mt10">连接 Leager</div>
-                  <Button className="mt15" type="default" onClick={unlock}> Connect </Button>
+                  <div className="mt10">{intl.get('place_order_by_ledger.connect')}</div>
+                  <Button className="mt15" type="default" onClick={unlock}> {intl.get('unlock.actions_unlock')} </Button>
                 </div>
               }
               {placeOrderByLedger.ledger && !placeOrderByLedger.confirmAddressChange &&
               <div className="text-center p15">
                 <i className={`fs36 icon-ledgerwallet text-primary`}></i>
-                <div className="mt10">请确认解锁地址</div>
+                <div className="mt10">{intl.get('place_order_by_ledger.confirm_unlock_address')}</div>
                 <div className="mt10">{address}</div>
-                <Button className="mt15" type="default" onClick={confirmAddress}> Confirm address </Button>
+                <Button className="mt15" type="default" onClick={confirmAddress}>{intl.get('actions.confirm')}</Button>
                 <Button className="mt15" type="default" disabled onClick={moreAddress}> {intl.get('wallet_determine.actions_other_address')} </Button>
               </div>
               }

@@ -32,10 +32,10 @@ const PlaceOrderResult = (props) => {
           orderState === 1 &&
           <div className="text-center p35">
             <i className={`fs50 icon-success`}></i>
-            <div className="fs18 color-black-1">订单提交成功！</div>
+            <div className="fs18 color-black-1">{intl.get('place_order_result.submit_success')}</div>
             <div className="mt10">
-              <Button className="m5" type="default"> 查看订单 </Button>
-              <Button className="m5" type="default"> 继续下单 </Button>
+              <Button className="m5" type="default"> {intl.get('place_order_result.view_order')} </Button>
+              <Button className="m5" type="default" onClick={gotToTrade}> {intl.get('place_order_result.continue_place_order')} </Button>
             </div>
           </div>
         }
@@ -43,10 +43,10 @@ const PlaceOrderResult = (props) => {
           orderState === 2 &&
           <div className="text-center p35">
             <Icon type="close-circle" className="fs50 text-error" />
-            <div className="fs18 color-black-1 mt15 mb10">提交失败</div>
+            <div className="fs18 color-black-1 mt15 mb10">{intl.get('place_order_result.submit_failed')}</div>
             <Alert message={placeOrder.resultMsg} size="small" type="error" theme="light" icon={false}/>
             <div className="mt10">
-              <Button className="m5" type="default" onClick={gotToTrade}> 返回交易页 </Button>
+              <Button className="m5" type="default" onClick={gotToTrade}> {intl.get('place_order_result.back_to_trade')} </Button>
             </div>
           </div>
         }
