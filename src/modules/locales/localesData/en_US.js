@@ -293,6 +293,13 @@ export default {
   place_order_confirm: {
     qrcode_security: '*For your order\'s security, your QR code will only generated once and not be stored locally. Make sure to save it properly, any one who received your QR code could take your order',
   },
+  place_order_result: {
+    submit_success: 'Submit Successfully',
+    view_order: 'View Order',
+    continue_place_order: 'Continue Place Order',
+    submit_failed: 'Submit Failed',
+    back_to_trade: 'Back To Trade'
+  },
   p2p_order: {
     order_title: 'Privacy P2P Trade',
     amounts_placeholder: 'Amount to sell',

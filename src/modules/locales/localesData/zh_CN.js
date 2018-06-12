@@ -296,6 +296,13 @@ export default {
   place_order_confirm: {
     qrcode_security: '*为了您订单的安全，二维码只会生成一次并且不会保存在任何地方。请确认妥善保存二维码，任何收到您二维码的人都有可能吃掉您的订单。'
   },
+  place_order_result: {
+    submit_success: '订单提交成功！',
+    view_order: '查看订单',
+    continue_place_order: '继续下单',
+    submit_failed: '提交失败',
+    back_to_trade: '返回交易页'
+  },
   p2p_order: {
     order_title: '私密点对点交易',
     amounts_placeholder: '卖出数量',
