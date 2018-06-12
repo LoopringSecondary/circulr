@@ -130,7 +130,8 @@ const actions = {
   place_buy_order: "提交买单",
   place_sell_order: "提交卖单",
   view_result_etherscan: "在EtherScan查看结果",
-  cancel_tx:'取消交易'
+  cancel_tx:'取消交易',
+  confirm: '确认'
 }
 
 const time_unit = {
@@ -195,9 +196,48 @@ export default {
     tabs_fills: '成交信息',
   },
   place_order: {
+    title: '提交订单',
     order_type: '订单类型',
     order_since: "订单生效时间",
     order_until: "订单失效时间",
+    buying: "您正在购买",
+    selling: "您正在出售",
+    select_wallet: '选择下单钱包'
+  },
+  place_order_by_loopr: {
+    title: '使用Loopr移动端钱包下单',
+    step_qrcode: '扫描二维码',
+    step_sign: '在Loopr上签名发送',
+    step_result: '结果',
+    qrcode_overdue: '二维码已过期，请重新下单生成新二维码',
+    instruction_download: '下载Loopr-IOS',
+    instruction_scan: '打开您的Loopr钱包，扫描二维码，确认信息完成签名，并提交订单',
+    instruction_warn: '* 二维码有效时间24小时，请尽快完成扫码操作，过期后请重新下单生成二维码',
+    waiting_sign: '等待手机对订单进行签名提交',
+  },
+  place_order_by_ledger: {
+    title: '使用Ledger下单',
+    connect: '连接 Leager',
+    confirm_unlock_address: '请确认解锁地址',
+    step_connect: '连接您的Ledger',
+    step_sign: '在Ledger上确认签名',
+    step_result: '结果'
+  },
+  place_order_by_metamask: {
+    title: '使用 MetaMask 下单',
+    connect: '连接 MetaMask',
+    step_connect: '连接MetaMask',
+    step_sign: '在MetaMask上确认签名',
+    step_result: '结果'
+  },
+  place_order_sign: {
+    unsigned_tx: '未签名信息',
+    signed_tx: '签名后信息',
+    unsigned: '未签名',
+    signed: '已签名',
+    type_sign_order: '签名原始订单',
+    type_cancel_allowance: '取消{token}授权',
+    type_approve: '{token}授权'
   },
   order_cancel:{
     cancel_title:'您确定要取消该笔订单',
@@ -255,6 +295,13 @@ export default {
   },
   place_order_confirm: {
     qrcode_security: '*为了您订单的安全，二维码只会生成一次并且不会保存在任何地方。请确认妥善保存二维码，任何收到您二维码的人都有可能吃掉您的订单。'
+  },
+  place_order_result: {
+    submit_success: '订单提交成功！',
+    view_order: '查看订单',
+    continue_place_order: '继续下单',
+    submit_failed: '提交失败',
+    back_to_trade: '返回交易页'
   },
   p2p_order: {
     order_title: '私密点对点交易',

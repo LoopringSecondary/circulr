@@ -128,7 +128,8 @@ const actions = {
   place_buy_order: "Place Buy Order",
   place_sell_order: "Place Sell Order",
   view_result_etherscan: "View transaction on Etherscan.io",
-  cancel_tx:'Cancel Tx'
+  cancel_tx:'Cancel Tx',
+  confirm: 'Confirm'
 };
 
 const time_unit = {
@@ -193,9 +194,48 @@ export default {
     tabs_fills: 'Fill Detail',
   },
   place_order: {
+    title: 'Place Order',
     order_type: 'Order Type',
     order_since: "Valid Since",
     order_until: "Valid Until",
+    buying: "You are buying",
+    selling: "You are selling",
+    select_wallet: 'Select A Wallet to Place Order',
+  },
+  place_order_by_loopr: {
+    title: 'Place Order By Loopr Wallet',
+    step_qrcode: 'Scan QRcode with Loopr',
+    step_sign: 'Sign Order On Loopr',
+    step_result: 'Result',
+    qrcode_overdue: 'QRcode is overdue, please place order again',
+    instruction_download: 'Download Loopr-IOS',
+    instruction_scan: 'Open your Loopr wallet, scan the QRcode and submit',
+    instruction_warn: '* The QRcode is valid for 24 hours, please scan as soon as possible. When expired, please place an new order to generate new QRcode',
+    waiting_sign: 'Waiting for your operations on Loopr Wallet to sign and submit',
+  },
+  place_order_by_ledger: {
+    title: 'Place Order By Ledger',
+    connect: 'Connect Leager',
+    confirm_unlock_address: 'Please confirm your unlock address',
+    step_connect: 'Connect With Your Ledger',
+    step_sign: 'Sign Order On Ledger',
+    step_result: 'Result'
+  },
+  place_order_by_metamask: {
+    title: 'Place Order By MetaMask',
+    connect: 'Connect with MetaMask',
+    step_connect: 'Connect With MetaMask',
+    step_sign: 'Sign Order On MetaMask',
+    step_result: 'Result'
+  },
+  place_order_sign: {
+    unsigned_tx: 'Unsigned Data',
+    signed_tx: 'Signed Data',
+    unsigned: 'Unsigned',
+    signed: 'Signed',
+    type_sign_order: 'Sign Original Order',
+    type_cancel_allowance: 'Cancel {token} Allowance',
+    type_approve: 'Approve {token} Allowance'
   },
   order_cancel: {
     cancel_title: "Do you want to cancel this order?",
@@ -253,6 +293,13 @@ export default {
   place_order_confirm: {
     qrcode_security: '*For your order\'s security, your QR code will only generated once and not be stored locally. Make sure to save it properly, any one who received your QR code could take your order',
   },
+  place_order_result: {
+    submit_success: 'Submit Successfully',
+    view_order: 'View Order',
+    continue_place_order: 'Continue Place Order',
+    submit_failed: 'Submit Failed',
+    back_to_trade: 'Back To Trade'
+  },
   p2p_order: {
     order_title: 'Privacy P2P Trade',
     amounts_placeholder: 'Amount to sell',
@@ -262,7 +309,7 @@ export default {
     generate_order: 'Generate Order',
     instruction: '<h4>当您希望与指定的人成交时，可以使用P2P交易模式，中继服务只会展示您的订单但无法完成撮合，因为订单成交的关键信息只有您指定的人能获得。</h4>1. 以您希望的兑换率生成一个订单，把不包含鉴权数据的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方使用Circulr移动端扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗以太坊油费。',
     notice: '* P2P订单不需要支付LRC手续费</br>',
-    user_center_p2p: 'P2P Trade'
+    user_center_p2p: 'P2P Trade',
   },
   sign: {
     not_signed: "You may have some items not signed",
