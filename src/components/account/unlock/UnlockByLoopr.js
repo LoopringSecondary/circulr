@@ -38,7 +38,7 @@ function UnlockByLoopr(props) {
   return (
     <div className="text-center">
       {
-        scanAddress.address &&
+        false && scanAddress.address &&
         <div>
           <div>Address: {scanAddress.address}</div>
           <div><Button className="mt15" type="default" onClick={unlock}> Unlock In Watch Only Mode </Button></div>

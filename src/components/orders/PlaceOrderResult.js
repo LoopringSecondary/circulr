@@ -4,9 +4,10 @@ import {Button, Icon, Alert} from 'antd'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'
 import routeActions from 'common/utils/routeActions';
+import {getSocketAuthorizationByHash} from 'modules/orders/formatters'
 
 const PlaceOrderResult = (props) => {
-  const {placeOrder, placeOrderByLedger, placeOrderByMetaMask, placeOrderByLoopr,dispatch} = props
+  const {placeOrder, placeOrderByLedger, placeOrderByMetaMask, placeOrderByLoopr, authorization, dispatch} = props
   let orderState = 0
   switch(placeOrder.payWith) {
     case 'ledger':
@@ -16,7 +17,20 @@ const PlaceOrderResult = (props) => {
       orderState = placeOrderByMetaMask.orderState
       break;
     case 'loopr':
-      orderState = placeOrderByLoopr.orderState
+      const hashItem = getSocketAuthorizationByHash(placeOrderByLoopr.hash, authorization)
+      if(hashItem) {
+        switch (hashItem.status) { //init received accept reject
+          case 'accept':
+            orderState = 1
+            break;
+          case 'reject':
+            orderState = 2
+            break;
+          case 'txFailed':
+            orderState = 2
+            break;
+        }
+      }
       break;
   }
   const gotToTrade = () => {
@@ -60,7 +74,8 @@ function mapToProps(state) {
     placeOrder:state.placeOrder,
     placeOrderByMetaMask:state.placeOrderByMetaMask,
     placeOrderByLoopr:state.placeOrderByLoopr,
-    placeOrderByLedger:state.placeOrderByLedger
+    placeOrderByLedger:state.placeOrderByLedger,
+    authorization:state.sockets.authorization
   }
 }
 

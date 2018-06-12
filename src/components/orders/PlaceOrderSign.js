@@ -159,9 +159,6 @@ const PlaceOrderSign = (props) => {
           case 'metaMask':
             dispatch({type:'placeOrderByMetaMask/orderStateChange',payload:{orderState:2}})
             break;
-          case 'loopr':
-            dispatch({type:'placeOrderByLoopr/orderStateChange',payload:{orderState:2}})
-            break;
         }
         dispatch({type:'placeOrder/resultMsgChange',payload:{resultMsg:error.message}})
         dispatch({type:'placeOrder/confirmButtonStateChange',payload:{state:1}})
@@ -175,9 +172,6 @@ const PlaceOrderSign = (props) => {
             break;
           case 'metaMask':
             dispatch({type:'placeOrderByMetaMask/orderStateChange',payload:{orderState:1}})
-            break;
-          case 'loopr':
-            dispatch({type:'placeOrderByLoopr/orderStateChange',payload:{orderState:1}})
             break;
         }
       }
