@@ -209,12 +209,12 @@ const PlaceOrderSign = (props) => {
 
   const Description = ({tx}) => {
     if(tx.type === 'order') {
-      return 'Sign Original Order'
+      return intl.get('place_order_sign.type_sign_order')
     } else if(tx.type === 'tx') {
       if(tx.action === 'CancelAllowance') {
-        return `Cancel ${tx.token} Allowance`
+        return intl.get('place_order_sign.type_cancel_allowance', {token:tx.token})
       } else if (tx.action === 'ApproveAllowance') {
-        return `Approve ${tx.token} Allowance`
+        return intl.get('place_order_sign.type_approve', {token:tx.token})
       }
     }
     return ''
@@ -232,12 +232,12 @@ const PlaceOrderSign = (props) => {
         <div className="col-auto pr20">
           {signed[index] &&
             <div className="text-up">
-               Signed <Icon className="ml5" type="check-circle"  />
+              {intl.get('place_order_sign.signed')} <Icon className="ml5" type="check-circle"  />
             </div>
           }
           {!signed[index] &&
             <div className="color-black-3">
-              <a onClick={sign.bind(this, tx, index)}>Sign<Icon className="ml5" type="right"  /></a>
+              <a onClick={sign.bind(this, tx, index)}>{intl.get('place_order_sign.unsigned')}<Icon className="ml5" type="right"  /></a>
             </div>
           }
         </div>
@@ -248,11 +248,11 @@ const PlaceOrderSign = (props) => {
     return (
       <div className="row p5 zb-b-t">
         <div className="col-6 pr5">
-          <div className="fs12 color-black-2 mt5">Unsigned Tx</div>
+          <div className="fs12 color-black-2 mt5">{intl.get('place_order_sign.unsigned_tx')}</div>
           <Input.TextArea disabled placeholder="" className="fs12 lh20 border-none" autosize={{ minRows: 6, maxRows: 10 }} value={JSON.stringify(unsigned[index])}/>
         </div>
         <div className="col-6 pl5">
-          <div className="fs12 color-black-2 mt5">Signed Tx</div>
+          <div className="fs12 color-black-2 mt5">{intl.get('place_order_sign.signed_tx')}</div>
           <Input.TextArea disabled placeholder="" className="fs12 lh20 border-none" autosize={{ minRows: 6, maxRows: 10 }} value={signed && signed[index] ? JSON.stringify(signed[index]) : ''}/>
         </div>
       </div>
@@ -273,7 +273,7 @@ const PlaceOrderSign = (props) => {
         }
       </Collapse>
       <div className="p10">
-        <Button className="w-100 d-block" size="large" type="primary" onClick={handelSubmit} disabled={!signed || !unsigned || unsigned.length !== actualSigned.length}> 发送交易 </Button>
+        <Button className="w-100 d-block" size="large" type="primary" onClick={handelSubmit} disabled={!signed || !unsigned || unsigned.length !== actualSigned.length}> {intl.get('actions.submit_order')} </Button>
       </div>
 
     </div>

@@ -23,18 +23,18 @@ const PlaceOrderByLoopr = (props) => {
   }
 
   const steps = [{
-    title: 'Qrcode',
+    title: intl.get('place_order_by_loopr.step_qrcode'),
     content: 'First-content',
   }, {
-    title: 'Sign Order',
+    title: intl.get('place_order_by_loopr.step_sign'),
     content: 'Second-content',
   }, {
-    title: 'Result',
+    title: intl.get('place_order_by_loopr.step_result'),
     content: 'Last-content',
   }];
 
   return (
-    <Card className="rs" title={<div className="pl10 ">Place Order By Loopr Wallet</div>}>
+    <Card className="rs" title={<div className="pl10 ">{intl.get('place_order_by_loopr.title')}</div>}>
       <div className="p15">
         <div className="mb20 mt15">
           <Steps current={placeOrderByLoopr.step}>
@@ -48,7 +48,7 @@ const PlaceOrderByLoopr = (props) => {
               <div className="text-center p15">
                 {
                   placeOrderByLoopr.overdue &&
-                  <div>Overdue</div>
+                  <div>{intl.get('place_order_by_loopr.qrcode_overdue')}</div>
                 }
                 {
                   !placeOrderByLoopr.overdue && placeOrderByLoopr.qrcode &&
@@ -58,11 +58,11 @@ const PlaceOrderByLoopr = (props) => {
                   </div>
                 }
                 <div className="pt10 pb10 color-black-2 text-left fs12 " style={{width:'320px',margin:'0 auto'}}>
-                  1. 下载 Loopr-IOS
+                  1. {intl.get('place_order_by_loopr.instruction_download')}
                   <br />
-                  2. 打开 Loopr Wallet，点击扫码
+                  2. {intl.get('place_order_by_loopr.instruction_scan')}
                   <br />
-                  * 二维码有效时间24小时，请尽快完成扫码操作，过期后请重新下单生成二维码
+                  {intl.get('place_order_by_loopr.instruction_warn')}
                 </div>
               </div>
             </div>
@@ -74,8 +74,8 @@ const PlaceOrderByLoopr = (props) => {
             <div className="zb-b">
                 <div className="text-center p35">
                   <Icon type="clock-circle" className="fs36 text-warning" />
-                  <div className="mt15">等待手机对订单进行签名提交</div>
-                  <Button className="mt15" type="default"> 返回上一级 </Button>
+                  <div className="mt15">{intl.get('place_order_by_loopr.waiting_sign')}</div>
+                  {false && <Button className="mt15" type="default"> 返回上一级 </Button>}
                 </div>
             </div>
           </div>

@@ -35,7 +35,7 @@ const PlaceOrderResult = (props) => {
             <div className="fs18 color-black-1">订单提交成功！</div>
             <div className="mt10">
               <Button className="m5" type="default"> 查看订单 </Button>
-              <Button className="m5" type="default"> 继续下单 </Button>
+              <Button className="m5" type="default" onClick={gotToTrade}> 继续下单 </Button>
             </div>
           </div>
         }

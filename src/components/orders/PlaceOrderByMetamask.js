@@ -82,18 +82,18 @@ const PlaceOrderByMetamask = (props) => {
     }
   }
   const steps = [{
-    title: 'Connect Wallet',
+    title: intl.get('place_order_by_metamask.step_connect'),
     content: 'First-content',
   }, {
-    title: 'Sign Order',
+    title: intl.get('place_order_by_metamask.step_sign'),
     content: 'Second-content',
   }, {
-    title: 'Result',
+    title: intl.get('place_order_by_metamask.step_result'),
     content: 'Last-content',
   },
   ]
   return (
-    <Card className="rs" title={<div className="pl10 ">Place Order By MetaMask</div>}>
+    <Card className="rs" title={<div className="pl10 ">{intl.get('place_order_by_metamask.title')}</div>}>
       <div className="p15">
         <div className="mb20 mt15">
           <Steps current={currentStep}>
@@ -106,7 +106,7 @@ const PlaceOrderByMetamask = (props) => {
             <div className="zb-b">
               <div className="text-center p15">
                 <div><i className={`fs36 icon-metamaskwallet text-primary`}></i></div>
-                <Button className="mt15" type="primary" onClick={connectToMetamask}> Connect Metamask</Button>
+                <Button className="mt15" type="primary" onClick={connectToMetamask}>{intl.get('place_order_by_metamask.connect')}</Button>
               </div>
             </div>
           </div>
