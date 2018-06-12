@@ -333,7 +333,7 @@ const transfromers = {
       res = JSON.parse(res)
       // console.log(id,'res',res)
       let item = {}
-      if(!res.error && isArray(res.data)){
+      if(!res.error && res.data){
         item = {...res.data}
       }
       updateItem(item,id)
