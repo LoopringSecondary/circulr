@@ -60,8 +60,8 @@ function UserCenter(props) {
     	        <div className="blk-lg"/>
     	        <div className="menu">
     	            <ul>
-                    {window.WALLET && window.WALLET.address && <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'receiveToken',symbol:null}) }} className="side-receive" ><i className="icon-receive"/><span>{intl.get('user_center.receive')}</span></a></li>}
-                    {window.WALLET && window.WALLET.address &&  <li><a onClick={transfer} className="side-send"><i className="icon-send"/><span>{intl.get('user_center.send')}</span></a></li>}
+                    {false && window.WALLET && window.WALLET.address && <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'receiveToken',symbol:null}) }} className="side-receive" ><i className="icon-receive"/><span>{intl.get('user_center.receive')}</span></a></li>}
+                    {false && window.WALLET && window.WALLET.address &&  <li><a onClick={transfer} className="side-send"><i className="icon-send"/><span>{intl.get('user_center.send')}</span></a></li>}
                     {window.WALLET && window.WALLET.address &&  <li><Link to="/trade"><i className="icon-trade"/><span>{intl.get('common.market')}</span></Link></li>}
                     {window.WALLET && window.WALLET.address &&  <li><a onClick={() => dispatch({type:'layers/showLayer',payload:{id:'tradeByP2P'}})}><i className="icon-trade"/><span>{intl.get('p2p_order.user_center_p2p')}</span></a></li>}
                     {false && window.WALLET && (window.WALLET.unlockType==='privateKey'|| window.WALLET.unlockType==='keystore' || window.WALLET.unlockType==='mnemonic') &&  <li><a onClick={() => dispatch({type:'layers/showLayer',payload:{id:'export'}})}><i className="icon-export"/><span>{intl.get('export_keystore.title')}</span></a></li>}
