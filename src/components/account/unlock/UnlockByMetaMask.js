@@ -89,17 +89,16 @@ function MetaMask(props) {
             })
             return
           }
-          if (window.web3.eth.accounts[0] !== address) {
+          if (window.web3.eth.accounts[0] && window.web3.eth.accounts[0] !== address) {
             address = window.web3.eth.accounts[0];
             Notification.open({
               message:intl.get('wallet_meta.account_change_title'),
               description:intl.get('wallet_meta.account_change_tip'),
               type:'info'
             })
-            if(address) {
-              console.log("MetaMask account changed to:", address)
-              props.dispatch({type:'wallet/unlockMetaMaskWallet',payload:{address}});
-            }
+            console.log("MetaMask account changed to:", address)
+            props.dispatch({type:'wallet/unlockMetaMaskWallet',payload:{address}});
+            props.dispatch({type: 'sockets/unlocked'});
           }
         }, 100);
       })
