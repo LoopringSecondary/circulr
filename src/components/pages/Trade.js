@@ -19,7 +19,9 @@ function Trade(props) {
         <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000" }}>
             <div className="bg d-flex justify-content-between align-items-center">
                 <Tickers.TickerHeader />
-                <AccountMenu dispatch={props.dispatch} />
+                <Containers.Wallet>
+                  <AccountMenu dispatch={props.dispatch} />
+                </Containers.Wallet>
             </div>
         </header>
   	    <div className="side-fixed" style={{ top:"0", left:"0", width:"320px", paddingTop:"74px" }}>
