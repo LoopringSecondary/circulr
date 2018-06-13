@@ -1,5 +1,5 @@
 import React from 'react'
-import {Modal, Select, Badge,Spin,Popover} from 'antd'
+import {Modal, Select, Badge, Spin, Popover} from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import SelectContainer from 'LoopringUI/components/SelectContainer'
 import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'
@@ -13,7 +13,7 @@ import {connect} from 'dva';
 import {toHex} from "LoopringJS/common/formatter";
 
 const ListHeader = (props) => {
-  const {orders,dispatch,account} = props;
+  const {orders, dispatch, wallet} = props;
   const sideChange = (side) => {
     orders.filtersChange({filters: {side}})
   };
@@ -27,34 +27,11 @@ const ListHeader = (props) => {
   const cancelAll = () => {
     const {market} = orders.filters;
     const type = market ? 4 : 2;
-    const params = {};
-    if(market) {
-      const tokenS = market.split('-')[0];
-      const tokenB = market.split('-')[1];
-      params.tokenS = config.getTokenBySymbol(tokenS).address;
-      params.tokenB = config.getTokenBySymbol(tokenB).address
-    }
-    if(window.WALLET && window.WALLET.unlockType !== 'address') {
-      Modal.confirm({
-        title:intl.get('order_cancel.cancel_all_title', {pair: market || ''}),
-        async onOk(){
-          const timestamp = Math.floor(moment().valueOf() / 1e3).toString();
-          const sig = await account.signMessage(timestamp);
-          return window.RELAY.order.cancelOrder({...params,type,sign:{owner:window.WALLET.address, v:sig.v,r:toHex(sig.r),s:toHex(sig.s)}}).then(res=>{
-            if(res.error){
-              Notification.open({type:'error',message:intl.get('notifications.title.cancel_all_order_failed',{market}),description:res.error.message})
-            }else{
-              Notification.open({type:'success',message:intl.get('notifications.title.cancel_all_order_suc',{market})})
-            }
-          });
-        },
-        onCancel() {}
-      });
-
-
-      dispatch({type: 'layers/showLayer', payload: {id: 'cancelOrderConfirm', type: 'cancelOrder', order}})
-    }else {
-      Notification.open({type:'warning',message:intl.get('notifications.title.unlock_first')})
+    if (wallet.unlockType) {
+      dispatch({type: 'flexCancelOrder/init', payload: {type, market}});
+      dispatch({type: 'layers/showLayer', payload: {id: 'flexCancelOrder'}})
+    } else {
+      Notification.open({type: 'warning', message: intl.get('notifications.title.unlock_first')})
     }
   };
   return (
@@ -118,7 +95,8 @@ const ListHeader = (props) => {
           </span>
         </div>
         <div>
-          <span><button className="btn btn-primary" onClick={cancelAll}>{intl.get('order_list.actions_cancel_all')}</button></span>
+          <span><button className="btn btn-primary"
+                        onClick={cancelAll}>{intl.get('order_list.actions_cancel_all')}</button></span>
         </div>
       </div>
     </div>
@@ -128,7 +106,7 @@ const ListHeader = (props) => {
 const MetaItem = (props) => {
   const {label, value, render} = props
   return (
-    <div className="row pt5 pb5 align-items-center zb-b-b" style={{minWidth:'150px',maxWidth:'250px'}}>
+    <div className="row pt5 pb5 align-items-center zb-b-b" style={{minWidth: '150px', maxWidth: '250px'}}>
       <div className="col-auto fs12 color-black-2">
         {label}
       </div>
@@ -138,47 +116,30 @@ const MetaItem = (props) => {
     </div>
   )
 }
-const ItemMore=({item})=>{
+const ItemMore = ({item}) => {
   return (
     <div>
-      <MetaItem label={intl.get('order.status')} value="TODO" />
-      <MetaItem label={intl.get('order.total')} value="1.1 WETH" />
-      <MetaItem label={intl.get('order.validSince')} value="2018-08-01 10:22" />
-      <MetaItem label={intl.get('order.validUntil')} value="2018-08-01 10:22" />
+      <MetaItem label={intl.get('order.status')} value="TODO"/>
+      <MetaItem label={intl.get('order.total')} value="1.1 WETH"/>
+      <MetaItem label={intl.get('order.validSince')} value="2018-08-01 10:22"/>
+      <MetaItem label={intl.get('order.validUntil')} value="2018-08-01 10:22"/>
     </div>
   )
 }
 
 function ListMyOrders(props) {
-  const {orders = {},dispatch,wallet} = props;
-  const account =wallet.account || window.account;
+  const {orders = {}, dispatch, wallet} = props;
   const cancelOrder = (order) => {
-    if(window.WALLET && window.WALLET.unlockType !== 'address') {
-      Modal.confirm({
-        title:intl.get('order_cancel.cancel_title'),
-       async onOk(){
-          const timestamp = Math.floor(moment().valueOf() / 1e3).toString();
-          const sig = await account.signMessage(timestamp);
-         return window.RELAY.order.cancelOrder({orderHash:order.hash,type:1,sign:{owner:window.WALLET.address, v:sig.v,r:toHex(sig.r),s:toHex(sig.s)}}).then(res=>{
-           if(res.error){
-             Notification.open({type:'error',message:intl.get('notifications.title.cancel_order_failed'),description:res.error.message})
-           }else{
-             Notification.open({type:'success',message:intl.get('notifications.title.cancel_order_suc')})
-           }
-         });
-        },
-        onCancel() {}
-      });
-
-
-      dispatch({type: 'layers/showLayer', payload: {id: 'cancelOrderConfirm', type: 'cancelOrder', order}})
-    }else {
-      Notification.open({type:'warning',message:intl.get('notifications.title.unlock_first')})
+    if (wallet.unlockType) {
+      dispatch({type: 'flexCancelOrder/init', payload: {type: 1, orderHash: order.hash}});
+      dispatch({type: 'layers/showLayer', payload: {id: 'flexCancelOrder'}})
+    } else {
+      Notification.open({type: 'warning', message: intl.get('notifications.title.unlock_first')})
     }
   };
   return (
     <div className="">
-      <ListHeader orders={orders} dispatch={props.dispatch} account={account}/>
+      <ListHeader orders={orders} dispatch={props.dispatch} wallet={wallet}/>
       <div style={{height: "160px", overflow: "auto"}}>
         <Spin spinning={orders.loading}>
           <table style={{overflow: 'auto'}}
@@ -200,10 +161,13 @@ function ListMyOrders(props) {
               orders.items.map((item, index) => {
                 const orderFm = new OrderFm(item)
                 const actions = {
-                  gotoDetail: () => props.dispatch({type: 'layers/showLayer', payload: {id: 'orderDetail', order: item}})
+                  gotoDetail: () => props.dispatch({
+                    type: 'layers/showLayer',
+                    payload: {id: 'orderDetail', order: item}
+                  })
                 };
                 return (
-                  <Popover title={null} content={<ItemMore item={item}/>} key={index} >
+                  <Popover title={null} content={<ItemMore item={item}/>} key={index}>
                     <tr key={index} className="cursor-pointer" onClick={actions.gotoDetail}>
                       <td>{orderFm.getMarket()}</td>
                       <td>{renders.side(orderFm)}</td>
@@ -212,7 +176,7 @@ function ListMyOrders(props) {
                       <td className="text-right">{orderFm.getTotal()}</td>
                       <td className="text-right">{orderFm.getLRCFee()}</td>
                       <td>{orderFm.getFilledPercent()}%</td>
-                      <td className="text-left">{renders.status(orderFm,item.originalOrder,cancelOrder)}</td>
+                      <td className="text-left">{renders.status(orderFm, item.originalOrder, cancelOrder)}</td>
                     </tr>
                   </Popover>
                 )
@@ -220,7 +184,11 @@ function ListMyOrders(props) {
             }
             {
               orders.items.length === 0 &&
-              <tr><td colSpan='100'><div className="text-center">{intl.get('common.list.no_data')}</div></td></tr>
+              <tr>
+                <td colSpan='100'>
+                  <div className="text-center">{intl.get('common.list.no_data')}</div>
+                </td>
+              </tr>
             }
             </tbody>
           </table>
@@ -250,29 +218,37 @@ export const renders = {
       }
     </div>
   ),
-  status: (fm,order,cancelOrder) => {
+  status: (fm, order, cancelOrder) => {
     const status = fm.getStatus();
     const cancleBtn = (
       <a className="ml5 fs12  text-primary"
-         onClick={()=> cancelOrder(order)}>
+         onClick={(e) => {
+           e.stopPropagation();
+           cancelOrder(order)
+         }}>
         {intl.get('order.no')}
       </a>
     )
     let statusNode
     if (status === 'ORDER_OPENED') {
-      statusNode = <Badge className="text-color-dark-1" status="processing" text={<span className="color-white-1">{intl.get('order_status.opened')}</span>}/>
+      statusNode = <Badge className="text-color-dark-1" status="processing"
+                          text={<span className="color-white-1">{intl.get('order_status.opened')}</span>}/>
     }
     if (status === 'ORDER_FINISHED') {
-      statusNode = <Badge className="text-color-dark-1" status="success" text={<span className="text-up">{intl.get('order_status.completed')}</span>}/>
+      statusNode = <Badge className="text-color-dark-1" status="success"
+                          text={<span className="text-up">{intl.get('order_status.completed')}</span>}/>
     }
     if (status === 'ORDER_CANCELLED') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={<span className="color-white-3">{intl.get('order_status.canceled')}</span>}/>
+      statusNode = <Badge className="text-color-dark-1" status="default"
+                          text={<span className="color-white-3">{intl.get('order_status.canceled')}</span>}/>
     }
     if (status === 'ORDER_CUTOFF') {
-      statusNode = <Badge className="text-color-dark-1" status="default" text={<span className="color-white-3">{intl.get('order_status.canceled')}</span>}/>
+      statusNode = <Badge className="text-color-dark-1" status="default"
+                          text={<span className="color-white-3">{intl.get('order_status.canceled')}</span>}/>
     }
     if (status === 'ORDER_EXPIRE') {
-      statusNode = <Badge className="color-white-3" status="default" text={<span className="color-white-3">{intl.get('order_status.expired')}</span>}/>
+      statusNode = <Badge className="color-white-3" status="default"
+                          text={<span className="color-white-3">{intl.get('order_status.expired')}</span>}/>
     }
     return (
       <div className="d-flex text-nowrap text-left">
@@ -283,12 +259,9 @@ export const renders = {
 }
 
 function mapStateToProps(state) {
-
-
   return {
-    wallet:state.wallet
+    wallet: state.wallet
   }
 }
 
-
-export default connect(mapToProps)(ListMyOrders)
+export default connect(mapStateToProps)(ListMyOrders)

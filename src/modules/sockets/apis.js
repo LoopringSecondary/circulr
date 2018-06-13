@@ -64,9 +64,10 @@ const isArray = (obj)=>{
 const transfromers = {
   transaction:{
     queryTransformer:(payload)=>{
-      const {filters,page} = payload
+      const {filters,page} = payload;
+      const store = require('../../index.js').default._store
       return JSON.stringify({
-        owner:window.WALLET.address,
+        owner:store.getState().wallet.address,
         symbol:filters.token,
         status:filters.status,
         txType:filters.type,
@@ -87,9 +88,10 @@ const transfromers = {
   },
   latestTransaction:{
     queryTransformer:(payload)=>{
-      const {filters,page} = payload
+      const {filters,page} = payload;
+      const store = require('../../index.js').default._store
       return JSON.stringify({
-        owner:window.WALLET.address,
+        owner:store.getState().wallet.address,
         symbol:filters.token,
         status:filters.status,
         txType:filters.type,
@@ -108,9 +110,10 @@ const transfromers = {
   },
   balance:{
     queryTransformer:(payload)=>{
+      const store = require('../../index.js').default._store
       return JSON.stringify({
          delegateAddress: config.getDelegateAddress(),
-         owner:window.WALLET.address
+         owner:store.getState().wallet.address
       })
     },
     resTransformer:(id,res)=>{
@@ -126,10 +129,11 @@ const transfromers = {
   },
   orders:{
     queryTransformer:(payload)=>{
-      const {filters} = payload
+      const {filters} = payload;
+      const store = require('../../index.js').default._store
       return JSON.stringify({
          delegateAddress: config.getDelegateAddress(),
-         owner:window.WALLET.address,
+         owner:store.getState().wallet.address,
          market:filters.market,
       })
     },
@@ -296,8 +300,9 @@ const transfromers = {
   },
   pendingTx:{
     queryTransformer:(payload)=>{
+      const store = require('../../index.js').default._store
       return JSON.stringify({
-         owner:window.WALLET.address
+         owner:store.getState().wallet.address
       })
     },
     resTransformer:(id,res)=>{
@@ -311,11 +316,12 @@ const transfromers = {
       updateItems(items,id)
     },
   },
-  authorization:{
+  circulrNotify:{
     queryTransformer:(payload)=>{
-      const {extra} = payload
+      const {extra} = payload;
+      const store = require('../../index.js').default._store
       return JSON.stringify({
-        "hash": extra.hash,
+        owner:store.getState().wallet.address,
       })
     },
     resTransformer:(id,res)=>{
@@ -323,10 +329,10 @@ const transfromers = {
       res = JSON.parse(res)
       // console.log(id,'res',res)
       let item = {}
-      if(!res.error && res.data){
-        item = {...res.data}
+      if(!res.error && res.data && res.data.body){
+        item = {...res.data.body}
       }
-      updateItems(item,id)
+      updateItem(item,id)
       updateStepInPlaceOrderByLoopr(item,id)
     },
   },

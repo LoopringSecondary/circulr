@@ -3,6 +3,8 @@ import {Containers} from 'modules'
 import UiContianers from 'LoopringUI/containers'
 import UserCenter from './UserCenter'
 import ExportKeystore from './ExportKeystore'
+import SignByLoopr from './sign/SignByLoopr'
+
 
 function Modals(props) {
   return (
@@ -15,6 +17,11 @@ function Modals(props) {
       <Containers.Layers id="export">
         <UiContianers.Modals id="export" >
           <ExportKeystore />
+        </UiContianers.Modals>
+      </Containers.Layers>
+      <Containers.Layers id="signByLoopr">
+        <UiContianers.Modals id="signByLoopr" >
+          <SignByLoopr />
         </UiContianers.Modals>
       </Containers.Layers>
     </div>

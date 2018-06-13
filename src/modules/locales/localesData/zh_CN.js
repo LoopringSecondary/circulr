@@ -135,7 +135,8 @@ const actions = {
   place_sell_order: "提交卖单",
   view_result_etherscan: "在EtherScan查看结果",
   cancel_tx:'取消交易',
-  confirm: '确认'
+  confirm: '确认',
+  select_wallet:'选择钱包来授权操作'
 }
 
 const time_unit = {
@@ -244,8 +245,9 @@ export default {
     type_approve: '{token}授权'
   },
   order_cancel:{
-    cancel_title:'您确定要取消该笔订单',
-    cancel_all_title:"您确定要取消全部{pair}订单？",
+    title:'取消订单',
+    cancel_title:'您正在取消一笔订单',
+    cancel_all_title:"您正在取消全部{pair}订单",
     canceling:words.canceling,
     actions_to_cancel:'确认取消订单',
     manual_cancel_tip:'手动取消订单会消耗ETH Gas',
@@ -616,5 +618,13 @@ export default {
   price_chart:{
     price_chart:'价格行情',
   },
+  loopr_sign:{
+    title:'使用Loopr移动端钱包签名',
+    steps:{
+      qrcode:'扫描二维码',
+      sign:'签名并发送',
+      result:'结果'
+    }
+  }
 }
 

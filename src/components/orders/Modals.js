@@ -12,6 +12,8 @@ import TradeByP2P from './TradeByP2P'
 import PlaceOrderLRCFee from './PlaceOrderLRCFee'
 import PlaceOrderTTL from './PlaceOrderTTL'
 import CancelOrderConfirm  from './CancelOrderConfirm'
+import FlexCancelOrder from './FlexCancelOrder'
+
 
 function Modals(props) {
   return (
@@ -93,6 +95,11 @@ function Modals(props) {
             </Containers.Gas>
             </Containers.Wallet>
           </Containers.Settings>
+        </UiContianers.Modals>
+      </Containers.Layers>
+      <Containers.Layers id="flexCancelOrder">
+        <UiContianers.Modals id="flexCancelOrder" className="rs">
+                <FlexCancelOrder />
         </UiContianers.Modals>
       </Containers.Layers>
     </div>

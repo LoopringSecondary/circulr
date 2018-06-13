@@ -20,7 +20,7 @@ const PlaceOrderByLoopr = (props) => {
 
   const overdue = () => {
     dispatch({type:'placeOrderByLoopr/overdueChange', payload:{overdue:true}})
-  }
+  };
 
   const steps = [{
     title: intl.get('place_order_by_loopr.step_qrcode'),

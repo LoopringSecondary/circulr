@@ -133,7 +133,8 @@ const actions = {
   place_sell_order: "Place Sell Order",
   view_result_etherscan: "View transaction on Etherscan.io",
   cancel_tx:'Cancel Tx',
-  confirm: 'Confirm'
+  confirm: 'Confirm',
+  select_wallet:'Select wallet to approve'
 };
 
 const time_unit = {
@@ -242,8 +243,9 @@ export default {
     type_approve: 'Approve {token} Allowance'
   },
   order_cancel: {
-    cancel_title: "Do you want to cancel this order?",
-    cancel_all_title: "Are you sure to cancel all  {pair} orders ?",
+    title:"Cancel Order",
+    cancel_title: "You are  canceling an order",
+    cancel_all_title: "You are canceling all  {pair} orders",
     canceling: words.canceling,
     actions_to_cancel: 'Confirm to Cancel Order',
     manual_cancel_tip: 'Cancel order manually shall cost gas',
@@ -252,7 +254,7 @@ export default {
     order_validity: 'Order Validity',
     order_expired_tip: "This order is already expired",
     actions_wait_expire: 'Wait for expiring automatically',
-    auto_expire_title: 'Order expired costs no gas'
+    auto_expire_title: 'Order expired costs no gas',
   },
   settings: {
     title: 'Settings',
@@ -610,4 +612,12 @@ export default {
   price_chart: {
     price_chart: 'Price Chart',
   },
+  loopr_sign:{
+    title:'Sign By Loopr',
+    steps:{
+      qrcode:'Scan QRCode',
+      sign:'Sign && Send',
+      result:'Result'
+    }
+  }
 }
