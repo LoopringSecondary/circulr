@@ -153,6 +153,7 @@ const PlaceOrderSteps = (props) => {
               description: 'failed send datas'
             });
           }
+          dispatch({type:'layers/hideLayer',payload:{id:'placeOrderSteps'}});
         }).catch(e=>{
           console.error(e)
           Notification.open({
@@ -165,6 +166,7 @@ const PlaceOrderSteps = (props) => {
       case 'MetaMask' :
         dispatch({type:'placeOrder/payWithChange',payload:{payWith:'metaMask'}});
         dispatch({type:'layers/showLayer',payload:{id:'placeOrderByMetamask'}});
+        dispatch({type:'layers/hideLayer',payload:{id:'placeOrderSteps'}});
         break;
       case 'Ledger' :
         dispatch({type:'placeOrder/payWithChange',payload:{payWith:'ledger'}});
@@ -178,11 +180,12 @@ const PlaceOrderSteps = (props) => {
                 const {chainCode, publicKey} = resp.result;
                 dispatch({type: "placeOrderByLedger/connectChange", payload: {isConnected:true}});
                 dispatch({type: "hardwareWallet/setKeyAndCode", payload: {chainCode, publicKey}});
+                dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLedger'}});
+                dispatch({type:'layers/hideLayer',payload:{id:'placeOrderSteps'}});
               }
             });
           }
         });
-        dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLedger'}});
         break;
     }
   }
