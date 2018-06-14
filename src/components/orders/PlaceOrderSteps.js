@@ -137,7 +137,7 @@ const PlaceOrderSteps = (props) => {
         dispatch({type:'placeOrder/payWithChange',payload:{payWith:'loopr'}});
         const origin = JSON.stringify(unsigned)
         const hash = keccakHash(origin)
-        const qrcode = JSON.stringify({type:'sign', 'id':hash})
+        const qrcode = JSON.stringify({key:'sign', value:hash})
         window.RELAY.order.storeDatasInShortTerm(hash, origin).then(res=>{
           if(!res.error) {
             const time = moment().valueOf()
