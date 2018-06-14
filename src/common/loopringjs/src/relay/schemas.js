@@ -22,6 +22,12 @@ const loopringScheams = {
         required: true,
         enum: ['LRC', 'LRN', 'LRQ']
     },
+    CANCEL_ORDER_TYPE:{
+      type: 'enum',
+      required: true,
+      enum: [1, 2, 3,4]
+    },
+
     RAW_Order: {
         type: 'object',
         required: true,

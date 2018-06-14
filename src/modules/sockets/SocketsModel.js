@@ -34,7 +34,7 @@ export default {
     'estimatedGasPrice':{...initState,filters:{}},
     'loopringTickers':{...initState},
     'pendingTx':{...initState},
-    'authorization':{...initState},
+    'circulrNotify':{...initState},
     'addressUnlock':{...initState}
   },
   subscriptions: {
@@ -142,6 +142,7 @@ export default {
       yield put({type:'fetch',payload:{id:'balance'}})
       yield put({type:'fetch',payload:{id:'pendingTx'}})
       yield put({type:'fetch',payload:{id:'orders'}})
+      yield put({type:'fetch',payload:{id:'circulrNotify'}})
     },
     *fetch({payload},{call,select,put}){
       yield put({type:'onEvent',payload})
