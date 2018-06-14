@@ -361,6 +361,24 @@ const transfromers = {
       updateScannedAddress(item,id)
     },
   },
+  globalTrend:{
+    queryTransformer:(payload)=>{
+      const {filters} = payload
+      return JSON.stringify({
+        "token":filters.token,
+      })
+    },
+    resTransformer:(id,res)=>{
+      if(!res) return null
+      res = JSON.parse(res)
+      // console.log(id,'res',res)
+      let items = []
+      if(!res.error && res.data && isArray(res.data)){
+        items = [ ...res.data ]
+      }
+      updateItems(items,id)
+    },
+  },
 }
 const getQueryTransformer = (id)=>{
   if(transfromers[id] && transfromers[id].queryTransformer){
