@@ -11,14 +11,14 @@ import {keccakHash} from 'LoopringJS/common/utils'
 import {getSocketAuthorizationByHash} from 'modules/orders/formatters'
 
 const PlaceOrderByLoopr = (props) => {
-  const {placeOrderByLoopr, authorization, dispatch} = props
+  const {placeOrderByLoopr, circulrNotify, dispatch} = props
   let targetTime = moment().valueOf();
   if(placeOrderByLoopr.generateTime) {
     targetTime = placeOrderByLoopr.generateTime + 86400000;
   } else {
     targetTime = moment().valueOf() + 86400000;
   }
-  const hashItem = getSocketAuthorizationByHash(placeOrderByLoopr.hash, authorization)
+  const hashItem = getSocketAuthorizationByHash(placeOrderByLoopr.hash, circulrNotify)
   let step = 0
   if(hashItem) {
     switch (hashItem.status) { //init received accept reject
@@ -113,7 +113,7 @@ const PlaceOrderByLoopr = (props) => {
 function mapToProps(state) {
   return {
     placeOrderByLoopr:state.placeOrderByLoopr,
-    authorization:state.sockets.authorization
+    circulrNotify:state.sockets.circulrNotify
   }
 }
 export default connect(mapToProps)(PlaceOrderByLoopr);

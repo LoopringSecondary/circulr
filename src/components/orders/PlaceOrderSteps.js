@@ -137,14 +137,12 @@ const PlaceOrderSteps = (props) => {
         dispatch({type:'placeOrder/payWithChange',payload:{payWith:'loopr'}});
         const origin = JSON.stringify(unsigned)
         const hash = keccakHash(origin)
-        const qrcode = JSON.stringify({key:'sign', value:hash})
-        window.RELAY.order.storeDatasInShortTerm(hash, origin).then(res=>{
+        const qrcode = JSON.stringify({type:'sign', value:hash})
+        window.RELAY.order.setTempStore(hash, origin).then(res=>{
           if(!res.error) {
             const time = moment().valueOf()
             dispatch({type:'placeOrderByLoopr/qrcodeGenerated',payload:{qrcode, hash, time}});
             dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLoopr'}});
-            dispatch({type:'sockets/extraChange',payload:{id:'authorization', extra:{hash}}});
-            dispatch({type:'sockets/fetch',payload:{id:'authorization'}});
           } else {
             console.error(res.error)
             Notification.open({

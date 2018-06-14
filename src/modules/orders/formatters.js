@@ -392,9 +392,9 @@ async function generateSignData({tradeInfo, order, completeOrder, wallet}) {
   return {order, signed, unsigned}
 }
 
-export function getSocketAuthorizationByHash(hash, authorization) {
-  if(hash && authorization.item && authorization.item.hash === hash) {
-    return authorization.item
+export function getSocketAuthorizationByHash(hash, circulrNotify) {
+  if(hash && circulrNotify.item && circulrNotify.item.hash === hash) {
+    return circulrNotify.item
   }
   return null
 }
