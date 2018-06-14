@@ -7,7 +7,7 @@ import routeActions from 'common/utils/routeActions';
 import {getSocketAuthorizationByHash} from 'modules/orders/formatters'
 
 const PlaceOrderResult = (props) => {
-  const {placeOrder, placeOrderByLedger, placeOrderByMetaMask, placeOrderByLoopr, authorization, dispatch} = props
+  const {placeOrder, placeOrderByLedger, placeOrderByMetaMask, placeOrderByLoopr, circulrNotify, dispatch} = props
   let orderState = 0
   switch(placeOrder.payWith) {
     case 'ledger':
@@ -17,7 +17,7 @@ const PlaceOrderResult = (props) => {
       orderState = placeOrderByMetaMask.orderState
       break;
     case 'loopr':
-      const hashItem = getSocketAuthorizationByHash(placeOrderByLoopr.hash, authorization)
+      const hashItem = getSocketAuthorizationByHash(placeOrderByLoopr.hash, circulrNotify)
       if(hashItem) {
         switch (hashItem.status) { //init received accept reject
           case 'accept':
@@ -75,7 +75,7 @@ function mapToProps(state) {
     placeOrderByMetaMask:state.placeOrderByMetaMask,
     placeOrderByLoopr:state.placeOrderByLoopr,
     placeOrderByLedger:state.placeOrderByLedger,
-    authorization:state.sockets.authorization
+    circulrNotify:state.sockets.circulrNotify
   }
 }
 

@@ -53,10 +53,6 @@ const updateStepInPlaceOrderByLoopr = (item,id)=>{
 const updateScannedAddress = (item,id)=>{
   if(item && item.owner) {
     const dispatch = require('../../index.js').default._store.dispatch
-    dispatch({
-      type:'scanAddress/addressChanged',
-      payload:{address:item.owner}
-    })
     dispatch({type:'scanAddress/addressChanged', payload:{address:item.owner}})
     dispatch({type:"wallet/unlockAddressWallet",payload:{address:item.owner}});
     Notification.open({type:'success',message:intl.get('notifications.title.unlock_suc')});
