@@ -35,7 +35,8 @@ export default {
     'loopringTickers':{...initState},
     'pendingTx':{...initState},
     'circulrNotify':{...initState},
-    'addressUnlock':{...initState}
+    'addressUnlock':{...initState},
+    'globalTrend':{...initState,filters:{token:'LRC'}}
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -116,6 +117,11 @@ export default {
         }
       })
     },
+    *tokenChange({payload},{call,select,put}){
+      const {token} = payload
+      yield put({type:'filtersChange', payload:{id:'globalTrend', filters:{token}}})
+      //TODO all other token change dispatch
+    },
     *urlChange({payload},{call,select,put}){
       yield put({type:'urlChangeStart',payload})
       yield put({type:'connect',payload})
@@ -132,6 +138,7 @@ export default {
       yield put({type:'fetch',payload:{id:'loopringTickers'}})
       yield put({type:'fetch',payload:{id:'orderBook'}})
       yield put({type:'fetch',payload:{id:'estimatedGasPrice'}})
+      yield put({type:'fetch',payload:{id:'globalTrend'}})
       if(window.WALLET && window.WALLET.address){
         yield put({type:'unlocked'})
       }
