@@ -41,6 +41,25 @@ function ListOrderBook(props) {
     e.preventDefault()
     props.dispatch({type:'placeOrder/amountChange', payload:{amountInput:value}})
   };
+  let sell = [], buy = []
+  if(list && list.item) {
+    if(list.item.sell) {
+      if(list.item.sell.length > 14) {
+        sell = list.item.sell.slice(list.item.sell.length - 14, list.item.sell.length).reverse()
+      } else {
+        sell = list.item.sell.reverse()
+      }
+      // sell = Array(8-list.item.sell.length).fill([]).concat(list.item.sell)
+    }
+    if(list.item.buy) {
+      buy = [...list.item.buy].map(item=>{
+        if(sell.length > 0 && Number(item[0]) > Number(sell[sell.length - 1][0])) {
+          item.largerThanSell1 = true
+        }
+        return item
+      })
+    }
+  }
 
   const isIncresse = () => {
     if(trades.length===0 || trades.length ===1){
@@ -73,7 +92,7 @@ function ListOrderBook(props) {
               <Spin spinning={list.loading}>
                 <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0px" }}>
                       {
-                        list.item.sell.slice(0,14).map((item,index)=>
+                        sell.map((item,index)=>
                           <Popover placement="right" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>
                             <li >
                               <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),8))}>{toFixed(Number(item.price),8)}</span>
@@ -84,7 +103,7 @@ function ListOrderBook(props) {
                         )
                       }
                       {
-                        list.item.sell.length === 0 &&
+                        sell.length === 0 &&
                         <li className="text-center">{intl.get('common.list.no_data')}</li>
                       }
                   </ul>
@@ -94,7 +113,7 @@ function ListOrderBook(props) {
               <Spin spinning={list.loading}>
   	            <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0" }}>
   	                {
-                      list.item.buy.map((item,index)=>
+                      buy.map((item,index)=>
                         <Popover placement="right" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>
                           <li key={index}>
                             <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),8))}>{toFixed(Number(item.price),8)}</span>
@@ -104,7 +123,7 @@ function ListOrderBook(props) {
                       )
                     }
                     {
-                      list.item.buy.length === 0 &&
+                      buy.length === 0 &&
                           <li className="text-center" >{intl.get('common.list.no_data')}</li>
                     }
   	            </ul>
