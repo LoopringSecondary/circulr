@@ -15,17 +15,15 @@ import {getLastGas} from "../../modules/settings/formatters";
 
 const WETH = Contracts.WETH;
 function ConvertForm(props) {
-  const {wallet, convert,convertToken, balances, prices,form,gas,dispatch} = props;
+  const {address, convert,convertToken, balances, prices,form,gas,dispatch} = props;
   const gasPrice = getLastGas(gas).gasPrice
   const {amount,isMax,loading} = convert;
   const {token} = convertToken;
   if(!token){console.error('token is required');return null}
   const type = token.toLowerCase() === 'eth' ? 'deposit': 'withdraw';
   const gasLimit = config.getGasLimitByType(type).gasLimit;
-  const {address} = wallet;
   const assets = getBalanceBySymbol({balances, symbol: token, toUnit: true});
   const tf = new TokenFormatter({symbol:token});
-  const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address';
 
   const handleAmountChange = (e) => {
     convert.setAmount({amount: e.target.value});
@@ -63,6 +61,11 @@ function ConvertForm(props) {
           value,
           nonce: toHex(await window.STORAGE.wallet.getNonce(address))
       };
+
+        dispatch({type:'convertConfirm/init',payload:{tx,amount,token}});
+        dispatch({type:'convert/reset',payload:{}});
+        dispatch({type: 'layers/hideLayer', payload: {id: 'convertToken'}});
+        dispatch({type: 'layers/showLayer', payload: {id: 'convertConfirm'}});
     }})
   };
   const getGas = () =>{
@@ -149,7 +152,7 @@ function ConvertForm(props) {
           </span>
         </div>
       </div>
-      <Button className="btn-block btn-xlg btn-o-dark" onClick={toConvert} disabled={loading || !isUnlocked} loading={loading}>{intl.get('convert.actions_confirm_convert')}</Button>
+      <Button className="btn-block btn-xlg btn-o-dark" onClick={toConvert}  loading={loading} disabled={loading}>{intl.get('convert.actions_confirm_convert')}</Button>
       {false && token.toLowerCase() === 'eth' && <p className="text-color-dark-1 mt15">{intl.get('convert.convert_eth_tip')}</p>}
     </div>
   )
@@ -157,6 +160,7 @@ function ConvertForm(props) {
 
 function mapToProps(state) {
   return {
+    address:state.wallet.address,
     balances:state.sockets.balance.items,
     prices:state.sockets.marketcap.items,
     gas:state.gas

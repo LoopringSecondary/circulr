@@ -134,7 +134,8 @@ const actions = {
   view_result_etherscan: "View transaction on Etherscan.io",
   cancel_tx:'Cancel Tx',
   confirm: 'Confirm',
-  select_wallet:'Select wallet to approve'
+  select_wallet:'Select wallet to approve',
+  submit:"Submit"
 };
 
 const time_unit = {
@@ -624,5 +625,14 @@ export default {
       sign:'Sign && Send',
       result:'Result'
     }
+  },
+  metamask_sign:{
+    title:'Sign By MetaMask',
+    steps:{
+      connect:'Connect to MetaMask',
+      sign:'Sign && Send',
+      result:'Result'
+    },
+    uncomplete_tip:"Please complete signing first"
   }
 }
