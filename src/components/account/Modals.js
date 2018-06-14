@@ -11,7 +11,9 @@ function Modals(props) {
     <div>
       <Containers.Layers id="userCenter">
         <UiContianers.Panels id="userCenter" position="right" width="300px">
-          <UserCenter />
+          <Containers.Wallet>
+            <UserCenter />
+          </Containers.Wallet>
         </UiContianers.Panels>
       </Containers.Layers>
       <Containers.Layers id="export">

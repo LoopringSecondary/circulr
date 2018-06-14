@@ -510,6 +510,11 @@ export default {
     connect_trezor_tip: "请连接您的TREZOR",
     error_invalid_tip: "信息不合法",
   },
+  unlock_by_loopr: {
+    instruction_download: '下载Loopr-IOS',
+    instruction_scan: '打开您的Loopr钱包，扫描二维码，确认信息',
+    instruction_warn: '* 二维码有效时间10分钟，请尽快扫描确认。过期后请重新扫描',
+  },
   wallet_type: {
     generate: '生成钱包',
     address: '地址',

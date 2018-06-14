@@ -8,6 +8,7 @@ import {Tooltip} from 'antd'
 import {connect} from 'dva'
 
 export const AccountMenu = (props)=>{
+  const {wallet} = props
   const showUserCenter = ()=>{
     props.dispatch({
       type:'layers/showLayer',
@@ -19,15 +20,15 @@ export const AccountMenu = (props)=>{
       <ul>
         <li onMouseOver={showUserCenter}>
           <div className="logo">
-            {window.WALLET && window.WALLET.unlockType === 'address' && <Tooltip title={'Watch Only Wallet'}><i className="icon-eye" /> </Tooltip>}
-            {window.WALLET && window.WALLET.unlockType === 'metamask' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-metamaskwallet" /> </Tooltip>}
-            {window.WALLET && window.WALLET.unlockType === 'ledger' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-ledgerwallet" /> </Tooltip>}
-            {window.WALLET && window.WALLET.unlockType === 'trezor' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-trezorwallet" /> </Tooltip>}
-            {window.WALLET && window.WALLET.unlockType === 'keystore' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-json" /> </Tooltip>}
-            {window.WALLET && window.WALLET.unlockType === 'mnemonic' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-mnemonic" /> </Tooltip>}
-            {window.WALLET && window.WALLET.unlockType === 'privateKey' && <Tooltip title={window.WALLET.unlockType + 'Wallet'}><i className="icon-key" /> </Tooltip>}
+            {wallet && wallet.unlockType === 'address' && <Tooltip title={'Watch Only Wallet'}><i className="icon-eye" /> </Tooltip>}
+            {wallet && wallet.unlockType === 'metamask' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-metamaskwallet" /> </Tooltip>}
+            {wallet && wallet.unlockType === 'ledger' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-ledgerwallet" /> </Tooltip>}
+            {wallet && wallet.unlockType === 'trezor' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-trezorwallet" /> </Tooltip>}
+            {wallet && wallet.unlockType === 'keystore' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-json" /> </Tooltip>}
+            {wallet && wallet.unlockType === 'mnemonic' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-mnemonic" /> </Tooltip>}
+            {wallet && wallet.unlockType === 'privateKey' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-key" /> </Tooltip>}
           </div>
-          <div className="account-address">{window.WALLET && window.WALLET.address}</div>
+          <div className="account-address">{wallet && wallet.address}</div>
         </li>
       </ul>
     </div>
@@ -41,7 +42,10 @@ function Wallet(props) {
         <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000"}}>
             <div className="bg text-color-dark-1 w-control d-flex justify-content-between align-items-center">
                 <h2>{token.toUpperCase()}</h2>
-                <AccountMenu dispatch={props.dispatch} />
+              <Containers.Wallet>
+                <AccountMenu />
+              </Containers.Wallet>
+
             </div>
         </header>
         <div className="side-fixed" style={{top:"0",left: "0",width: "280px",padding: "20px 0"}} id="tokenSide">

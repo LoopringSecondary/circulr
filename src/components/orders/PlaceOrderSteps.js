@@ -17,6 +17,7 @@ import {keccakHash} from 'LoopringJS/common/utils'
 import {getXPubKey as getLedgerPublicKey,connect as connectLedger} from "LoopringJS/ethereum/ledger";
 import {wallets} from "../../common/config/data";
 import {trimAll} from "LoopringJS/common/utils";
+import moment from 'moment'
 
 const OrderMetaItem = (props) => {
   const {label, value} = props
@@ -139,7 +140,8 @@ const PlaceOrderSteps = (props) => {
         const qrcode = JSON.stringify({type:'sign', 'id':hash})
         window.RELAY.order.storeDatasInShortTerm(hash, origin).then(res=>{
           if(!res.error) {
-            dispatch({type:'placeOrderByLoopr/qrcodeGenerated',payload:{qrcode, hash}});
+            const time = moment().valueOf()
+            dispatch({type:'placeOrderByLoopr/qrcodeGenerated',payload:{qrcode, hash, time}});
             dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLoopr'}});
             dispatch({type:'sockets/extraChange',payload:{id:'authorization', extra:{hash}}});
             dispatch({type:'sockets/fetch',payload:{id:'authorization'}});
@@ -151,6 +153,7 @@ const PlaceOrderSteps = (props) => {
               description: 'failed send datas'
             });
           }
+          dispatch({type:'layers/hideLayer',payload:{id:'placeOrderSteps'}});
         }).catch(e=>{
           console.error(e)
           Notification.open({
@@ -163,6 +166,7 @@ const PlaceOrderSteps = (props) => {
       case 'MetaMask' :
         dispatch({type:'placeOrder/payWithChange',payload:{payWith:'metaMask'}});
         dispatch({type:'layers/showLayer',payload:{id:'placeOrderByMetamask'}});
+        dispatch({type:'layers/hideLayer',payload:{id:'placeOrderSteps'}});
         break;
       case 'Ledger' :
         dispatch({type:'placeOrder/payWithChange',payload:{payWith:'ledger'}});
@@ -176,11 +180,12 @@ const PlaceOrderSteps = (props) => {
                 const {chainCode, publicKey} = resp.result;
                 dispatch({type: "placeOrderByLedger/connectChange", payload: {isConnected:true}});
                 dispatch({type: "hardwareWallet/setKeyAndCode", payload: {chainCode, publicKey}});
+                dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLedger'}});
+                dispatch({type:'layers/hideLayer',payload:{id:'placeOrderSteps'}});
               }
             });
           }
         });
-        dispatch({type:'layers/showLayer',payload:{id:'placeOrderByLedger'}});
         break;
     }
   }

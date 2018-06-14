@@ -38,7 +38,7 @@ function UnlockByLoopr(props) {
   return (
     <div className="text-center">
       {
-        scanAddress.address &&
+        false && scanAddress.address &&
         <div>
           <div>Address: {scanAddress.address}</div>
           <div><Button className="mt15" type="default" onClick={unlock}> Unlock In Watch Only Mode </Button></div>
@@ -55,11 +55,11 @@ function UnlockByLoopr(props) {
       }
 
       <div style={{width:"320px"}} className="pt15 pb15 text-left m-auto" >
-        1. 下载 Loopr IOS 版
+        1. {intl.get('unlock_by_loopr.instruction_download')}
         <br />
-        2. xxx
+        2. {intl.get('unlock_by_loopr.instruction_scan')}
         <br />
-        * 二维码有效时间10分钟，请尽快扫描确认。过期后请重新扫描
+        {intl.get('unlock_by_loopr.instruction_warn')}
         <br />
       </div>
     </div>
