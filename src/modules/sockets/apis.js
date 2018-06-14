@@ -330,6 +330,8 @@ const transfromers = {
       // console.log(id,'res',res)
       let item = {}
       if(!res.error && res.data && res.data.body){
+        console.log('circulr_Notify',res.data);
+        console.log('circulr_Notify',res.data.body);
         item = {...res.data.body}
       }
       updateItem(item,id)

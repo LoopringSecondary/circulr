@@ -7,33 +7,32 @@ import CountDown from 'LoopringUI/components/CountDown';
 
 class SignByLoopr extends React.Component {
 
-
   state = {
     step: 0,
-    result:''
+    result: ''
   };
 
   componentWillReceiveProps(nextProps) {
-
     if (this.props.auth !== nextProps.auth) {
-      if(nextProps.auth && nextProps.auth.hash === this.props.hash){
+      console.log("loopr_sign",nextProps.auth);
+      if (nextProps.auth && nextProps.auth.hash === this.props.hash) {
         const status = nextProps.auth.status
-        if(!status || status === 'init'){
-          this.setState({step:0});
+        if (!status || status === 'init') {
+          this.setState({step: 0});
           return;
         }
-        if(status && status === 'received'){
-          this.setState({step:1});
+        if (status && status === 'received') {
+          this.setState({step: 1});
           return;
         }
-        this.setState({step:3,result:status === 'accept' ? '成功':'失败'})
+        this.setState({step: 2, result: status === 'accept' ? '成功' : '失败'})
       }
     }
   }
 
   render() {
-    const {type, from,hash, validity, expired, dispatch, auth} = this.props;
-    const {step,result} = this.state;
+    const {type, from, hash, validity, expired, dispatch, auth} = this.props;
+    const {step, result} = this.state;
     const overdue = () => {
       dispatch({type: 'signByLoopr', payload: {expired: true}})
     };
@@ -41,7 +40,7 @@ class SignByLoopr extends React.Component {
     const steps = [
       {title: intl.get('loopr_sign.steps.qrcode')},
       {title: intl.get('loopr_sign.steps.sign')},
-      {title:intl.get('loopr_sign.steps.result')}];
+      {title: intl.get('loopr_sign.steps.result')}];
 
     return (
       <Card title={<div className="pl10 ">{intl.get('loopr_sign.title')}</div>} className="rs">
@@ -52,15 +51,23 @@ class SignByLoopr extends React.Component {
             </Steps>
           </div>
         </div>
-        {step===0 && <div className="text-center p15">
-          {!expired && <div><QRCode value={JSON.stringify({type: 'cancelOrder', value: hash})} size={320} level='H'/></div>}
+        {step === 0 && <div className="text-center p15">
+          {!expired &&
+          <div><QRCode value={JSON.stringify({type: 'cancelOrder', value: hash})} size={320} level='H'/></div>}
           {expired && <div><p className='p15'>已失效</p></div>}
-          <div><CountDown style={{fontSize: 20}} target={from+validity} onEnd={overdue}/></div>
+          <div><CountDown style={{fontSize: 20}} target={from + validity} onEnd={overdue}/></div>
+          <div className="pt10 pb10 color-black-2 text-left fs12 " style={{width: '320px', margin: '0 auto'}}>
+            1. {intl.get('loopr_sign.tips.download')}
+            <br/>
+            2. {intl.get('loopr_sign.tips.scan')}
+            <br/>
+            3. {intl.get('loopr_sign.tips.warn')}
+          </div>
         </div>}
-        {step ===1 && <div className="text-center p15">
+        {step === 1 && <div className="text-center p15">
           <p className='p15'>扫码成功</p>
         </div>}
-        {step ===2 && <div className="text-center p15">
+        {step === 2 && <div className="text-center p15">
           <p className='p15'>{result}</p>
         </div>}
       </Card>

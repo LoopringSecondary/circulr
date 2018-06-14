@@ -624,7 +624,15 @@ export default {
       qrcode:'扫描二维码',
       sign:'签名并发送',
       result:'结果'
+    },
+    tips:{
+      download:'下载Loopr-IOS',
+      scan: '打开您的Loopr钱包，扫描二维码，确认信息完成签名，并确认操作',
+      warn: '请尽快完成扫码操作，过期后请关闭当前页面重新操作',
     }
+  },
+  metamask_sign:{
+    title:'使用MetaMask钱包签名',
   }
 }
 
