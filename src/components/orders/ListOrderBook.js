@@ -31,24 +31,22 @@ const ItemMore=({item,tokens})=>{
   )
 }
 function ListOrderBook(props) {
-  console.log('ListOrderBook render',props)
-  const {orderBook:list,trades} = props
-  console.log('ListOrderBook,trades',trades)
+  const {orderBook:list,trades} = props;
   const tokens = getTokensByMarket(list.filters.market)
   const priceSelected = (value, e) => {
     e.preventDefault()
     props.dispatch({type:'placeOrder/priceChange', payload:{priceInput:value}})
-  }
+  };
   const amountSelected = (value, e) => {
     e.preventDefault()
     props.dispatch({type:'placeOrder/amountChange', payload:{amountInput:value}})
-  }
+  };
 
   const isIncresse = () => {
     if(trades.length===0 || trades.length ===1){
       return true
     }else {
-      return trades[0].price > trades[1].price
+      return trades[0].price >= trades[1].price
     }
   };
   return (
@@ -59,14 +57,11 @@ function ListOrderBook(props) {
 	    	</div>
 	    	<div className="trade-list" style={{height:"-webkit-calc(100% - 31px)"}}>
     	    	    <div className="bg" style={{ position: "absolute", top:"50%", marginTop:"-45px", zIndex: "100", width: "100%", height: "40px", lineHeight: "38px", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0", fontSize: "16px"}}>
-                  {trades.length >1 && isIncresse() &&	<div className="text-up text-center cursor-pointer" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}>{trades[0] && trades[0].price}<span className="offset-md"><i className="icon-arrow-up"></i></span></div>}
-                  {trades.length >1 && !isIncresse() &&	<div className="text-down text-center cursor-pointer" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}>{trades[0] && trades[0].price}<span className="offset-md"><i className="icon-arrow-down"></i></span></div>}
+                  {trades.length >0 && isIncresse() &&	<div className="text-up text-center cursor-pointer" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}>{trades[0] && trades[0].price}<span className="offset-md"><i className="icon-arrow-up"></i></span></div>}
+                  {trades.length >0 && !isIncresse() &&	<div className="text-down text-center cursor-pointer" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}>{trades[0] && trades[0].price}<span className="offset-md"><i className="icon-arrow-down"></i></span></div>}
                 </div>
-	    	    	<div className="bg blockbar" style={{ position: "absolute", bottom:"40px", zIndex: "100", width: "100%", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0 0", fontSize: "16px"}}>
-	    		    	{/*<span>Aggregation</span>*/}
-	    		    	{/*<span>1.0</span>*/}
-	    		    	{/*<span><i className="icon-plus-o"/><i className="icon-minus-o"></i></span>*/}
-	    	    	</div>
+	    	    	{/*<div className="bg blockbar" style={{ position: "absolute", bottom:"40px", zIndex: "100", width: "100%", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0 0", fontSize: "16px"}}>*/}
+	    	    	{/*</div>*/}
     	        <ul className="mr-0">
 	    	            <li className="trade-list-header">
 			    	        <span>{intl.get('order.price')} {tokens.right}</span>
@@ -78,7 +73,7 @@ function ListOrderBook(props) {
               <Spin spinning={list.loading}>
                 <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0px" }}>
                       {
-                        list.item.sell.map((item,index)=>
+                        list.item.sell.slice(0,14).map((item,index)=>
                           <Popover placement="right" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>
                             <li >
                               <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),8))}>{toFixed(Number(item.price),8)}</span>

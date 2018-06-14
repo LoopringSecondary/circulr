@@ -1,7 +1,6 @@
 import React from 'react';
-import {Form, Input, Button,Icon,Modal} from 'antd';
-import {getBalanceBySymbol, getWorthBySymbol,isValidNumber} from "../../modules/tokens/TokenFm";
-import TokenFormatter from '../../modules/tokens/TokenFm';
+import {Button, Form, Icon, Input} from 'antd';
+import TokenFormatter, {getBalanceBySymbol, getWorthBySymbol, isValidNumber} from "../../modules/tokens/TokenFm";
 import Contracts from 'LoopringJS/ethereum/contracts/Contracts'
 import {toBig, toHex} from "../../common/loopringjs/src/common/formatter";
 import config from '../../common/config'
@@ -9,10 +8,10 @@ import Currency from 'modules/settings/CurrencyContainer'
 import {connect} from "dva";
 import {Containers} from 'modules'
 import GasFee from '../setting/GasFee1'
-import Notification from '../../common/loopringui/components/Notification'
 import intl from 'react-intl-universal';
 import {getLastGas} from "../../modules/settings/formatters";
-import Alert from 'LoopringUI/components/Alert'
+
+
 
 const WETH = Contracts.WETH;
 function ConvertForm(props) {
@@ -24,7 +23,6 @@ function ConvertForm(props) {
   const type = token.toLowerCase() === 'eth' ? 'deposit': 'withdraw';
   const gasLimit = config.getGasLimitByType(type).gasLimit;
   const {address} = wallet;
-  const account = wallet.account || window.account;
   const assets = getBalanceBySymbol({balances, symbol: token, toUnit: true});
   const tf = new TokenFormatter({symbol:token});
   const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address';
@@ -41,10 +39,6 @@ function ConvertForm(props) {
     convert.setMax({amount: max});
     form.setFieldsValue({amount:max})
   };
-
-  const toUnlock = () => {
-    dispatch({type:'layers/showLayer',payload:{id:'unlock'}});
-  }
 
   const toConvert =  async () => {
     form.validateFields(async  (err,values) => {
@@ -69,32 +63,7 @@ function ConvertForm(props) {
           value,
           nonce: toHex(await window.STORAGE.wallet.getNonce(address))
       };
-        const signTx = await account.signEthereumTx(tx);
-        window.ETH.sendRawTransaction(signTx).then(res => {
-          convert.reset();
-          if(!res.error){
-            Notification.open({
-              message:intl.get('convert.notification_suc_title',{value:amount,token}),
-              type:'success',
-              actions:(
-                <div>
-                  <Button className="alert-btn mr5"
-                          onClick={() => window.open(`https://etherscan.io/tx/${res.result}`, '_blank')}> {intl.get('actions.view_result_etherscan')}
-                  </Button>
-                </div>
-              )
-            });
-            window.STORAGE.wallet.setWallet({address: window.WALLET.getAddress(), nonce: tx.nonce});
-            window.RELAY.account.notifyTransactionSubmitted({txHash:res.result,rawTx:tx, from: window.WALLET.getAddress()});
-          }else {
-            Notification.open({type:'error',message:intl.get('convert.notification_fail_title',{value:amount,token}),description:res.error.message})
-          }
-        });
-     }else{
-        Notification.open({type:'error',message:intl.get('convert.notification_fail_title',{value:amount,token}),description:err.message})
-      }
-    });
-
+    }})
   };
   const getGas = () =>{
     return tf.toPricisionFixed(toBig(gasPrice).times(gasLimit).div(1e9))
@@ -180,12 +149,6 @@ function ConvertForm(props) {
           </span>
         </div>
       </div>
-      {
-        !isUnlocked &&
-        <div className="mb15 mt15">
-          <Alert type="info" title={<div className="color-black-1">{intl.get('unlock.has_not_unlocked')}<a onClick={toUnlock} className="ml5">{intl.get('actions.to_unlock')}<Icon type="right" /></a></div>} theme="light" size="small"/>
-        </div>
-      }
       <Button className="btn-block btn-xlg btn-o-dark" onClick={toConvert} disabled={loading || !isUnlocked} loading={loading}>{intl.get('convert.actions_confirm_convert')}</Button>
       {false && token.toLowerCase() === 'eth' && <p className="text-color-dark-1 mt15">{intl.get('convert.convert_eth_tip')}</p>}
     </div>

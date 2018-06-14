@@ -94,7 +94,11 @@ const notifications = {
     cancel_suc:'取消交易成功发出',
     cancel_fail:'取消交易失败',
     address_change:'解锁地址改变',
-    unlock_first:'请先解锁钱包'
+    unlock_first:'请先解锁钱包',
+    cancel_order_suc:"取消订单成功",
+    cancel_all_order_suc:"取消全部{market}订单成功",
+    cancel_order_failed:"取消订单失败",
+    cancel_all_order_failed:"取消全部{market}订单失败",
   },
   message: {
     wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
@@ -131,7 +135,8 @@ const actions = {
   place_sell_order: "提交卖单",
   view_result_etherscan: "在EtherScan查看结果",
   cancel_tx:'取消交易',
-  confirm: '确认'
+  confirm: '确认',
+  select_wallet:'选择钱包来授权操作'
 }
 
 const time_unit = {
@@ -240,8 +245,9 @@ export default {
     type_approve: '{token}授权'
   },
   order_cancel:{
-    cancel_title:'您确定要取消该笔订单',
-    cancel_all_title:"您确定要取消全部{pair}订单？",
+    title:'取消订单',
+    cancel_title:'您正在取消一笔订单',
+    cancel_all_title:"您正在取消全部{pair}订单",
     canceling:words.canceling,
     actions_to_cancel:'确认取消订单',
     manual_cancel_tip:'手动取消订单会消耗ETH Gas',
@@ -617,5 +623,21 @@ export default {
   price_chart:{
     price_chart:'价格行情',
   },
+  loopr_sign:{
+    title:'使用Loopr移动端钱包签名',
+    steps:{
+      qrcode:'扫描二维码',
+      sign:'签名并发送',
+      result:'结果'
+    },
+    tips:{
+      download:'下载Loopr-IOS',
+      scan: '打开您的Loopr钱包，扫描二维码，确认信息完成签名，并确认操作',
+      warn: '请尽快完成扫码操作，过期后请关闭当前页面重新操作',
+    }
+  },
+  metamask_sign:{
+    title:'使用MetaMask钱包签名',
+  }
 }
 

@@ -80,14 +80,14 @@ class CancelOrderConfirm extends React.Component {
         window.STORAGE.wallet.setWallet({address: window.WALLET.getAddress(), nonce: tx.nonce});
         window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.address})
         Notification.open({
-          message: type === 'cancelOrder' ? intl.get('order.cancel_order_success') : intl.get('order.cancel_all_success', {pair: market}),
+          message: type === 'cancelOrder' ? intl.get('notifications.title.cancel_order_suc') : intl.get('notifications.title.cancel_all_order_success', {pair: market}),
           type: "success",
           description: (<Button className="alert-btn mr5"
                                 onClick={() => window.open(`https://etherscan.io/tx/${response.result}`, '_blank')}> {intl.get('actions.view_result_etherscan')}</Button> )
         });
       } else {
         Notification.open({
-          message: type === 'cancelOrder' ? intl.get('order.cancel_order_failed') : intl.get('order.cancel_all_failed', {pair: market}),
+          message: type === 'cancelOrder' ? intl.get('notifications.title.cancel_order_failed') : intl.get('notifications.title.cancel_all_order_failed', {pair: market}),
           type: "error",
           description: response.error.message
         })
