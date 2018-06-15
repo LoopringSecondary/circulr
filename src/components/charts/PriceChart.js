@@ -1,6 +1,6 @@
 import React from 'react'
 import intl from 'react-intl-universal'
-import { Chart, Tooltip, Axis, Line } from 'viser-react';
+import { Chart, Tooltip, Axis, Line, Area } from 'viser-react';
 import {connect} from 'dva'
 
 function PriceChart(props) {
@@ -13,11 +13,12 @@ function PriceChart(props) {
             <h4>{intl.get('price_chart.price_chart')}</h4>
         </div>
         <div className="card-body">
-          <Chart forceFit height={190} data={source} padding={[0,5,15,5]} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
+          <Chart forceFit height={190} data={source} padding={[0,0,0,0]} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
             <Tooltip crosshairs={{ type: 'line' }} />
-            <Axis dataKey="time" label={{formatter:(value)=>value,offset:10,textStyle:{fontSize:'10px'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} />
-            <Axis dataKey="price" position="left" label={{formatter:(value)=>value,offset:10,textStyle:{fontSize:'10px'}}} grid={{lineStyle:{stroke: 'rgba(255,255,255,0.1)'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}}/>
+            <Axis show={false} dataKey="time" label={{formatter:(value)=>value,offset:10,textStyle:{fontSize:'10px'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} />
+            <Axis show={false} dataKey="price" position="left" label={{formatter:(value)=>value,offset:10,textStyle:{fontSize:'10px'}}} grid={{lineStyle:{stroke: 'rgba(255,255,255,0.1)'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}}/>
             <Line position="price*time" color='#0e45c5' size="2"/>
+            <Area position="price*time" color="#0e45c5"/>
           </Chart>
        </div>
     </div>
