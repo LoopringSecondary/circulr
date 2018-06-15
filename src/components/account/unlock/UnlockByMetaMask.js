@@ -13,14 +13,17 @@ function MetaMask(props) {
     'Chrome' : "https://chrome.google.com/webstore/detail/nkbihfbeogaeaoehlefnkodbefgpgknn",
     'Firefox' : "https://addons.mozilla.org/firefox/addon/ether-metamask/"
   }
-  let browserType = '',  metamaskState = '', visible = false
+  let browserType = '', browserSupported = false,  metamaskState = '', visible = false
   var u = navigator.userAgent, app = navigator.appVersion;
   if(u.indexOf('OPR') > -1) {
     browserType = 'Opera'
+    browserSupported = true
   } else if (u.indexOf('Chrome') > -1) {
     browserType = 'Chrome'
+    browserSupported = true
   } else if(u.indexOf('Firefox') > -1) {
     browserType = 'Firefox'
+    browserSupported = true
   } else {
     browserType = 'Others'
   }
@@ -29,11 +32,11 @@ function MetaMask(props) {
       metamaskState = 'locked'
     }
   } else { // to install
-    metamaskState = 'uninstall'
+    metamaskState = 'notInstalled'
   }
 
   const openToRefresh = () => {
-    if(metamaskState === 'uninstall') {
+    if(metamaskState === 'notInstalled') {
       if(browserType !== 'Others') {
         window.open(chromeExtention[browserType])
       }
@@ -129,7 +132,7 @@ function MetaMask(props) {
         footer={null}
       >
         <Steps direction="vertical">
-          {metamaskState === 'uninstall' && <Steps.Step status="process" title={intl.get('wallet_meta.unlock_step_install_title')} description={intl.get('wallet_meta.unlock_step_install_content')} />}
+          {metamaskState === 'notInstalled' && <Steps.Step status="process" title={intl.get('wallet_meta.unlock_step_install_title')} description={intl.get('wallet_meta.unlock_step_install_content')} />}
           <Steps.Step status="process" title={intl.get('wallet_meta.unlock_step_unlock_title')} description={intl.get('wallet_meta.unlock_step_unlock_content')} />
           <Steps.Step status="process" title={intl.get('wallet_meta.unlock_step_refresh_title')}
                       description={
@@ -148,13 +151,13 @@ function MetaMask(props) {
           {!browserType || browserType === 'Others' &&
             <Button size="large" style={{width:"260px"}} disabled>{intl.get('wallet_meta.browser_tip')}</Button>
           }
-          {browserType && browserType !== 'Others' && metamaskState === 'locked' &&
+          {browserSupported && metamaskState === 'locked' &&
             <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet_meta.unlock_metaMask_tip')}</Button>
           }
-          {browserType && browserType !== 'Others' && metamaskState === 'uninstall' &&
+          {browserSupported && metamaskState === 'notInstalled' &&
             <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet_meta.install_metaMask_tip')}</Button>
           }
-          {browserType && browserType !== 'Others' && !metamaskState &&
+          {browserSupported && !metamaskState &&
             <Button onClick={connectToMetamask} size="large" style={{width:"260px"}}> {intl.get('unlock.actions_connect',{walletType:'MetaMask'})}</Button>
           }
         </li>
