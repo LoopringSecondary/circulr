@@ -80,7 +80,7 @@ class SignByMetaMask extends React.Component {
 
   componentDidMount() {
     setInterval(() => {
-      if (window.web3.eth.accounts[0]) {
+      if (this.state.step === 0 && window.web3.eth.accounts[0]) {
         this.setState({step: 1})
       }
     }, 1000);
