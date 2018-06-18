@@ -4,7 +4,7 @@ import {Card, Steps, Button, Input, Icon, Collapse} from 'antd';
 import intl from 'react-intl-universal';
 import {MetaMaskAccount} from "LoopringJS/ethereum/account";
 import eachLimit from 'async/eachLimit';
-
+import Notification from '../../../common/loopringui/components/Notification'
 
 const steps = [
   {title: intl.get('metamask_sign.steps.qrcode')},
@@ -75,7 +75,8 @@ const JobContent = ({job, index}) => {
 class SignByMetaMask extends React.Component {
 
   state = {
-    step: 0
+    step: 0,
+    result:''
   };
 
   componentDidMount() {
@@ -100,6 +101,8 @@ class SignByMetaMask extends React.Component {
             job.signed = res;
             dispatch({type: 'signByMetaMask/updateJob', payload: {job, index}})
           }
+        }).catch(err=>{
+          Notification.open({type: 'error', description: err.message})
         });
         break;
       case 'order':
@@ -108,22 +111,26 @@ class SignByMetaMask extends React.Component {
             job.signed = res;
             dispatch({type: 'signByMetaMask/updateJob', payload: {job, index}})
           }
+        }).catch(err=> {
+          Notification.open({type: 'error', description: err.message})
         });
         break;
       case 'cancelOrder':
         wallet.signMessage(job.raw.timestamp).then(res => {
-          job.signed = res;
+          job.signed = {sign:{...res,owner:wallet.getAddress(),timestamp:job.raw.timestamp},...job.raw};
           dispatch({type: 'signByMetaMask/updateJob', payload: {job, index}})
+        }).catch(err => {
+          Notification.open({type: 'error', description: err.message})
         });
         break;
       default:
         wallet.signMessage(job.raw).then(res => {
           job.signed = res;
           dispatch({type: 'signByMetaMask/updateJob', payload: {job, index}})
+        }).catch(err => {
+          Notification.open({type: 'error', description: err.message});
         })
-
     }
-
   };
 
   submit = () => {
@@ -133,7 +140,6 @@ class SignByMetaMask extends React.Component {
       return;
     }
     eachLimit(jobs, 1, async (job, callback) => {
-
       switch (job.type) {
         case 'convert':
         case 'resendTx':
@@ -143,7 +149,7 @@ class SignByMetaMask extends React.Component {
           window.ETH.sendRawTransaction(job.signed).then(res => {
             if (!res.error) {
               callback()
-            }else{
+            } else {
               callback(res.error)
             }
           });
@@ -152,29 +158,34 @@ class SignByMetaMask extends React.Component {
           window.RELAY.order.placeOrder(job.signed).then(res => {
             if (!res.error) {
               callback()
-            }else{
+            } else {
               callback(res.error)
             }
           });
           break;
         case 'cancelOrder':
-          window.RELAY.order.cancelOrder({sign:{...job.signed,owner:this.props.wallet.address,timestamp:job.raw.timestamp},...job.raw}).then(res => {
+          window.RELAY.order.cancelOrder(job.signed).then(res => {
             if (!res.error) {
               callback()
-            }else{
+            } else {
               callback(res.error)
             }
           })
       }
 
     }, (error) => {
-
+      if(error){
+        Notification.open({type: 'error',message:'提交失败', description: error.message});
+        this.setState({step:2,result:"failed"})
+      }else{
+        this.setState({step:2,result:"suc"})
+      }
     })
 
   };
 
   render() {
-    const {step} = this.state;
+    const {step,result} = this.state;
     const {jobs} = this.props;
     const chromeExtention = {
       'Opera': "https://addons.opera.com/extensions/details/metamask/",
@@ -234,6 +245,11 @@ class SignByMetaMask extends React.Component {
                         type="primary" onClick={this.submit}> {intl.get('actions.submit')} </Button>
               </div>
             </div>}
+            {step ===2 && <div>
+
+              {result === 'suc' ? '成功' :'失败'}
+
+            </div>}
           </div>
         </div>
       </Card>
@@ -246,7 +262,7 @@ function mapStateToProps(state) {
   return {
     jobs: state.signByMetaMask.jobs,
     completed: state.signByMetaMask.completed,
-    wallet:state.wallet
+    wallet: state.wallet
   }
 }
 
