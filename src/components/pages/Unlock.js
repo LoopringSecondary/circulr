@@ -57,7 +57,6 @@ class Unlock extends React.Component {
       case 'ledger':
       connectLedger().then(res =>{
           if(!res.error){
-            console.log(res.result);
             const ledger = res.result;
             getLedgerPublicKey(wallet.dpath,ledger).then(resp => {
               if(!resp.error){

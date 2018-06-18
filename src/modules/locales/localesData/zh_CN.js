@@ -645,6 +645,16 @@ export default {
       result:'结果'
     },
     uncomplete_tip:'请完成签名以后再提交'
+  },
+  ledger_sign:{
+    title:'使用Ledger钱包签名',
+    steps:{
+      connect:'连接到Ledger',
+      sign:'签名并发送',
+      result:'结果'
+    },
+    connect:'连接Ledger',
+    uncomplete_tip:'请完成签名以后再提交'
   }
 }
 

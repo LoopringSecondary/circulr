@@ -634,5 +634,15 @@ export default {
       result:'Result'
     },
     uncomplete_tip:"Please complete signing first"
+  },
+   ledger_sign:{
+    title:'Sign By Ledger',
+    steps:{
+      connect:'Connect to Ledger',
+      sign:'Sign && Send',
+      result:'Result'
+    },
+     connect:'Connect to Ledger',
+    uncomplete_tip:"Please complete signing first"
   }
 }

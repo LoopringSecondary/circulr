@@ -1,15 +1,16 @@
 import React from 'react'
-import {connect} from 'dva';
-import {Card, Steps, Button, Input, Icon, Collapse} from 'antd';
-import intl from 'react-intl-universal';
-import {MetaMaskAccount} from "LoopringJS/ethereum/account";
+import {Card, Steps, Button, Collapse, Icon, Input} from 'antd'
+import {connect} from "dva";
+import intl from 'react-intl-universal'
+import {getXPubKey as getLedgerPublicKey, connect as connectLedger} from "LoopringJS/ethereum/ledger";
+import {LedgerAccount} from "LoopringJS/ethereum/account";
 import eachLimit from 'async/eachLimit';
-import Notification from '../../../common/loopringui/components/Notification'
 
 const steps = [
-  {title: intl.get('metamask_sign.steps.qrcode')},
-  {title: intl.get('metamask_sign.steps.sign')},
-  {title: intl.get('metamask_sign.steps.result')}];
+  {title: intl.get('ledger_sign.steps.qrcode')},
+  {title: intl.get('ledger_sign.steps.sign')},
+  {title: intl.get('ledger_sign.steps.result')}];
+
 
 const JobTitle = ({type, token}) => {
   switch (type) {
@@ -71,25 +72,49 @@ const JobContent = ({job, index}) => {
   )
 }
 
+const dpath = "m/44'/60'/0'";
 
-class SignByMetaMask extends React.Component {
+class SignByLedger extends React.Component {
 
   state = {
     step: 0,
-    result:''
+    account: null,
+    address: '',
+    result: ''
   };
 
   componentDidMount() {
-    setInterval(() => {
-      if (this.state.step === 0 && window.web3.eth.accounts[0]) {
-        this.setState({step: 1})
-      }
-    }, 1000);
+    const {wallet} = this.props;
+    if (wallet.unlockType === 'ledger') {
+      this.setState({account: wallet.account, address: wallet.address})
+    } else {
+      connectLedger().then(res => {
+        if (!res.error) {
+          const ledger = res.result;
+          getLedgerPublicKey(wallet.dpath, ledger).then(resp => {
+            if (!resp.error) {
+              const {address} = resp.result;
+              this.setState({account: new LedgerAccount(ledger, dpath.concat('/0')), address})
+            }
+          });
+        }
+      });
+
+    }
   }
+
+  connectToLedger = () => {
+    const {account} = this.state;
+    if (account) {
+      this.setState({step: 1})
+    }else{
+      // TODO connect to Ledger
+    }
+  };
 
   sign = async (job, index) => {
     const {dispatch} = this.props;
-    const wallet = new MetaMaskAccount(window.web3);
+    const wallet = this.state.account;
     switch (job.type) {
       case 'convert':
       case 'resendTx':
@@ -99,7 +124,7 @@ class SignByMetaMask extends React.Component {
         wallet.signEthereumTx(job.raw).then(res => {
           if (!res.error) {
             job.signed = res;
-            dispatch({type: 'signByMetaMask/updateJob', payload: {job, index}})
+            dispatch({type: 'signByLedger/updateJob', payload: {job, index}})
           }
         }).catch(err=>{
           Notification.open({type: 'error', description: err.message})
@@ -109,7 +134,7 @@ class SignByMetaMask extends React.Component {
         wallet.signOrder(job.raw).then(res => {
           if (!res.error) {
             job.signed = res;
-            dispatch({type: 'signByMetaMask/updateJob', payload: {job, index}})
+            dispatch({type: 'signByLedger/updateJob', payload: {job, index}})
           }
         }).catch(err=> {
           Notification.open({type: 'error', description: err.message})
@@ -118,7 +143,7 @@ class SignByMetaMask extends React.Component {
       case 'cancelOrder':
         wallet.signMessage(job.raw.timestamp).then(res => {
           job.signed = {sign:{...res,owner:wallet.getAddress(),timestamp:job.raw.timestamp},...job.raw};
-          dispatch({type: 'signByMetaMask/updateJob', payload: {job, index}})
+          dispatch({type: 'signByLedger/updateJob', payload: {job, index}})
         }).catch(err => {
           Notification.open({type: 'error', description: err.message})
         });
@@ -126,7 +151,7 @@ class SignByMetaMask extends React.Component {
       default:
         wallet.signMessage(job.raw).then(res => {
           job.signed = res;
-          dispatch({type: 'signByMetaMask/updateJob', payload: {job, index}})
+          dispatch({type: 'signByLedger/updateJob', payload: {job, index}})
         }).catch(err => {
           Notification.open({type: 'error', description: err.message});
         })
@@ -136,7 +161,7 @@ class SignByMetaMask extends React.Component {
   submit = () => {
     const {jobs,completed} = this.props;
     if (!completed) {
-      Notification.open({type: 'warning', message: intl.get('metamask_sign.uncomplete_tip')});
+      Notification.open({type: 'warning', message: intl.get('ledger_sign.uncomplete_tip')});
       return;
     }
     eachLimit(jobs, 1, async (job, callback) => {
@@ -184,86 +209,69 @@ class SignByMetaMask extends React.Component {
 
   };
 
+
   render() {
-    const {step,result} = this.state;
+    const {step, address, result} = this.state;
     const {jobs} = this.props;
-    const chromeExtention = {
-      'Opera': "https://addons.opera.com/extensions/details/metamask/",
-      'Chrome': "https://chrome.google.com/webstore/detail/nkbihfbeogaeaoehlefnkodbefgpgknn",
-      'Firefox': "https://addons.mozilla.org/firefox/addon/ether-metamask/"
-    };
-    let browserType = '';
-    var u = navigator.userAgent, app = navigator.appVersion;
-    if (u.indexOf('OPR') > -1) {
-      browserType = 'Opera'
-    } else if (u.indexOf('Chrome') > -1) {
-      browserType = 'Chrome'
-    } else if (u.indexOf('Firefox') > -1) {
-      browserType = 'Firefox'
-    } else {
-      browserType = 'Others'
-    }
     return (
-      <Card title={intl.get('metamask_sign.title')} className="rs">
+      <Card title={intl.get('ledger_sign.title')} className="rs">
         <div className="p15">
           <div className="mb20 mt15">
             <Steps current={step}>
               {steps.map((item, index) => <Steps.Step key={index} title={item.title}/>)}
             </Steps>
           </div>
-            {step === 0 &&
+          {step === 0 && <div>
             <div className="mt15">
               <div className="zb-b">
                 <div className="text-center p15">
-                  {!window.web3 &&
-                  <div>
-                    <a
-                      href={chromeExtention[browserType]}>{intl.get("wallet_meta.actions_get_metaMask", {browser: browserType})}</a>
-                  </div>
-                  }
-                  <div>
-                    <a>{intl.get("wallet_meta.unlock_step_unlock_title")}</a></div>
+                  <span className="label">{intl.get('wallet_determine.default_address')}:{address}</span>
+                  <div className="blk"/>
+                  <Button className="mt15" type="primary"
+                          onClick={this.connectToLedger}>{intl.get('ledger_sign.connect')}</Button>
                 </div>
-            </div>
-            </div>
-            }
-            {step === 1 &&
-            <div className="zb-b mt20">
-              <Collapse accordion bordered={false} defaultActiveKey={[]}>
-                {
-                  jobs.map((job, index) => {
-                    return (
-                      <Collapse.Panel header={<JobHeader job={job} index={index} sign={this.sign}/>} key={index}
-                                      showArrow={false}>
-                        <JobContent job={job} index={index}/>
-                      </Collapse.Panel>
-                    )
-                  })
-                }
-              </Collapse>
-              <div className="p10 mt10">
-                <Button className="w-100 d-block" size="large"
-                        type="primary" onClick={this.submit}> {intl.get('actions.submit')} </Button>
               </div>
-            </div>}
-            {step ===2 && <div>
-
-              {result === 'suc' ? '成功' :'失败'}
-
-            </div>}
-          </div>
+            </div>
+          </div>}
+          {step === 1 &&
+          <div className="zb-b mt20">
+            <Collapse accordion bordered={false} defaultActiveKey={[]}>
+              {
+                jobs.map((job, index) => {
+                  return (
+                    <Collapse.Panel header={<JobHeader job={job} index={index} sign={this.sign}/>} key={index}
+                                    showArrow={false}>
+                      <JobContent job={job} index={index}/>
+                    </Collapse.Panel>
+                  )
+                })
+              }
+            </Collapse>
+            <div className="p10 mt10">
+              <Button className="w-100 d-block" size="large"
+                      type="primary" onClick={this.submit}> {intl.get('actions.submit')} </Button>
+            </div>
+          </div>}
+          {step === 2 && <div>
+            {result === 'suc' ? '成功' : '失败'}
+          </div>}
+        </div>
       </Card>
     )
   }
-}
 
+
+}
 
 function mapStateToProps(state) {
+
   return {
-    jobs: state.signByMetaMask.jobs,
-    completed: state.signByMetaMask.completed,
-    wallet: state.wallet
+    wallet: state.wallet,
+    jobs: state.signByLedger.jobs,
+    completed: state.signByLedger.completed
   }
+
 }
 
-export default connect(mapStateToProps)(SignByMetaMask)
+export default connect(mapStateToProps)(SignByLedger)
+
