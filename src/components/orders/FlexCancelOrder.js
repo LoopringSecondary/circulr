@@ -59,13 +59,9 @@ function FlexCancelOrder(props) {
         });
         break;
       case 'metamask':
-        if (window.web3 && window.web3.eth.accounts[0]) {
-          const account = new MetaMaskAccount(window.web3);
-          const {timestamp} = this.props;
-          const sig = await account.signMessage(timestamp);
-        } else {
-          Notification.open({type: 'error', message: intl.get('wallet_meta.unlock_tip')})
-        }
+        dispatch({type:'signByMetaMask/setJobs',payload:{jobs:[{raw:{type, tokenS, tokenB, orderHash, market,timestamp,hash},type:'cancelOrder'}]}});
+        dispatch({type: 'layers/hideLayer', payload: {id: 'flexCancelOrder'}});
+        dispatch({type: 'layers/showLayer', payload: {id: 'signByMetaMask'}});
         break;
       case 'ledger':
         break;
