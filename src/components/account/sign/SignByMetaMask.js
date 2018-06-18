@@ -134,7 +134,7 @@ class SignByMetaMask extends React.Component {
   };
 
   submit = () => {
-    const {jobs,completed} = this.props;
+    const {jobs,completed,wallet} = this.props;
     if (!completed) {
       Notification.open({type: 'warning', message: intl.get('metamask_sign.uncomplete_tip')});
       return;
@@ -148,6 +148,11 @@ class SignByMetaMask extends React.Component {
         case 'cancelTx':
           window.ETH.sendRawTransaction(job.signed).then(res => {
             if (!res.error) {
+              window.RELAY.account.notifyTransactionSubmitted({
+                txHash: res.result,
+                rawTx: job.raw,
+                from: wallet.address
+              });
               callback()
             } else {
               callback(res.error)

@@ -1,9 +1,9 @@
 import React from 'react'
 import {connect} from "dva";
-import {Button, Slider, Form, Input} from 'antd'
+import {Form, Input, Slider} from 'antd'
 import Notification from '../../common/loopringui/components/Notification'
 import intl from 'react-intl-universal'
-import {toBig, toHex,toNumber} from "LoopringJS/common/formatter";
+import {toBig, toHex, toNumber} from "LoopringJS/common/formatter";
 
 
 function Resend({resend}) {
@@ -11,34 +11,47 @@ function Resend({resend}) {
   const handleGasPrice = (value) => {
     tx.gasPrice = toHex(toBig(value).times(1e9))
   };
-  const resendTx = async () => {
-    const account = this.props.account || window.account;
-    const signedTx = await account.signEthereumTx(tx);
-    window.ETH.sendRawTransaction(signedTx).then((response) => {
-      if (!response.error) {
-        Notification.open({
-          message: intl.get("notifications.title.resend_suc"),
-          type: "success",
-          description: (<Button className="alert-btn mr5"
-                                onClick={() => window.open(`https://etherscan.io/tx/${response.result}`, '_blank')}> {intl.get('actions.view_result_etherscan')}</Button> )
+  const chooseWallet = async (walletType) => {
+    const hash = keccakHash(JSON.stringify(tx));
+    switch (walletType) {
+      case 'loopr':
+        window.RELAY.order.setTempStore(hash, JSON.stringify({
+          tx,
+          hash,
+          owner: wallet.address
+        })).then(res => {
+          if (!res.error) {
+            dispatch({type: 'signByLoopr/init', payload: {type: 'cancelTx', hash}});
+            dispatch({type: 'layers/hideLayer', payload: {id: 'convertConfirm'}});
+            dispatch({type: 'layers/showLayer', payload: {id: 'signByLoopr'}});
+          } else {
+            Notification.open({
+              type: 'error',
+              message: intl.get('notifications.title.cancel_order_failed'),
+              description: res.error.message
+            })
+          }
         });
-        window.RELAY.account.notifyTransactionSubmitted({
-          txHash: response.result,
-          rawTx: tx,
-          from: window.WALLET.address
-        });
-      } else {
-        Notification.open({
-          message: intl.get("notifications.title.resend_fail"),
-          type: "error",
-          description: response.error.message
-        })
-      }
-    })
-  }
+        break;
+      case 'metamask':
+        dispatch({type:'signByMetaMask/setJobs',payload:{jobs:[{raw:tx,type:'cancelTx'}]}});
+        dispatch({type: 'layers/hideLayer', payload: {id: 'convertConfirm'}});
+        dispatch({type: 'layers/showLayer', payload: {id: 'signByMetaMask'}});
+        break;
+      case 'ledger':
+        dispatch({type:'signByLedger/setJobs',payload:{jobs:[{raw:tx,type:'cancelTx'}]}});
+        dispatch({type: 'layers/hideLayer', payload: {id: 'convertConfirm'}});
+        dispatch({type: 'layers/showLayer', payload: {id: 'signByLedger'}});
+        break;
+      default:
+        Notification.open({type: 'warning', message: '不存在的钱包类型'})
+    }
+  };
+
   return (
-    <div>
-      <div>{intl.get('tx_resend.title')}</div>
+    <Card title={intl.get('tx_resend.title')}>
+      <div className="fs16 color-black-1 p10 zb-b-b bg-grey-50">
+        1. {intl.get('actions.change_gas_price')}</div>
       <Form.Item label={intl.get('tx.to')}>
         <Input disabled value={tx.to}/>
       </Form.Item>
@@ -61,8 +74,20 @@ function Resend({resend}) {
                 max={99}
                 step={1}/>
       </Form.Item>
-      <Button onClick={resendTx} disabled={!tx}>{intl.get('tx_resend.action_resend')}</Button>
-    </div>
+      <div className="fs16 color-black-1 p10 zb-b-b bg-grey-50">
+        2. {intl.get('actions.select_wallet')}</div>
+      <div className="row ml0 mr0">
+        <div className="col-4 zb-b-r cursor-pointer" onClick={() => chooseWallet('loopr')}>
+          <LoopringUI.WalletItem icon="json" title="Loopr Wallet" loading={false}/>
+        </div>
+        <div className="col-4 zb-b-r cursor-pointer" onClick={() => chooseWallet('metamask')}>
+          <LoopringUI.WalletItem icon="metamaskwallet" title="MetaMask"/>
+        </div>
+        <div className="col-4 cursor-pointer" onClick={() => chooseWallet('ledger')}>
+          <LoopringUI.WalletItem icon="ledgerwallet" title="Ledger"/>
+        </div>
+      </div>
+    </Card>
   )
 }
 

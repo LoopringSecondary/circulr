@@ -135,7 +135,8 @@ const actions = {
   cancel_tx:'Cancel Tx',
   confirm: 'Confirm',
   select_wallet:'Select wallet to approve',
-  submit:"Submit"
+  submit:"Submit",
+  change_gas_price:'Adjust gas price'
 };
 
 const time_unit = {
@@ -386,8 +387,9 @@ export default {
     tabs_basic: 'Basic Detail',
     tabs_fill: 'Fill Detail',
   },
-  tx_resend:{
-    title:'Resend Transaction',
+  tx_actions:{
+    resend_title:'Resend Transaction',
+    cancel_title:'Cancel Transaction',
     action_resend:"Resend",
     fail_title:"Can't resend this transactions ",
     fail_reason:"Can't get detail information of this tx."

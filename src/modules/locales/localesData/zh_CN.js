@@ -137,7 +137,8 @@ const actions = {
   cancel_tx:'取消交易',
   confirm: '确认',
   select_wallet:'选择钱包来授权操作',
-  submit:'提交'
+  submit:'提交',
+  change_gas_price:'调整Gas Price'
 }
 
 const time_unit = {
@@ -389,12 +390,14 @@ export default {
     tabs_fill: '成交信息',
   },
 
-  tx_resend:{
-    title:'重新发送交易',
+  tx_actions:{
+    resend_title:'重新发送交易',
+    cancel_title:'取消交易',
     action_resend:"重发",
     fail_title:"无法重新发送交易",
     fail_reason:"没有获取该交易的详细信息"
   },
+
   // -----------
   // fill
   // -----------
