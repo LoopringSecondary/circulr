@@ -221,7 +221,5 @@
       "gasLimit":"0x30d40"
     }
   ],
-  "ignoreTokens": [
-
-  ]
+  "ignoreTokens": []
 }
