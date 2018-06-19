@@ -78,6 +78,18 @@ const getGas = ()=>{
   }
 }
 
+const setTokensConfig = (tokens)=>{
+  localStorage.tokensConfig = JSON.stringify(tokens)
+}
+
+const getTokensConfig = ()=>{
+  if(localStorage.tokensConfig){
+    return JSON.parse(localStorage.tokensConfig)
+  }else{
+    return []
+  }
+}
+
 export default {
   set,
   get,
@@ -85,5 +97,7 @@ export default {
   getGas,
   getRelay,
   getContractVersion,
+  setTokensConfig,
+  getTokensConfig
 }
 

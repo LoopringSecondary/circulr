@@ -97,6 +97,7 @@ const notifications = {
     cancel_all_order_suc:"Cancel all {market} orders successfully",
     cancel_order_failed:"Cancel order failed",
     cancel_all_order_failed:"Cancel all {market} orders failed",
+    init_failed: "Init failed"
   },
   message: {
     wallet_locked: 'Your wallet seems locked yet, please unlock first',

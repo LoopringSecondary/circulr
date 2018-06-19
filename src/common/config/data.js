@@ -1,5 +1,3 @@
-import tokens from './tokens.js'
-export {tokens};
 export const languages = require('./languages.json');
 let languagesArray = new Array();
 for(var p in languages){
@@ -17,7 +15,6 @@ for(var p in timezones){
 export {timezoneArray}
 
 export const configs = require('./config.json');
-
 export const paths = require('./path.json');
 export const wallets = require('./dpath.json');
 export const projects = require('./projects.json');
