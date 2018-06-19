@@ -14,7 +14,6 @@ class SignByLoopr extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.auth !== nextProps.auth) {
-      console.log("loopr_sign",nextProps.auth);
       if (nextProps.auth && nextProps.auth.hash === this.props.hash) {
         const status = nextProps.auth.status
         if (!status || status === 'init') {
@@ -53,7 +52,7 @@ class SignByLoopr extends React.Component {
         </div>
         {step === 0 && <div className="text-center p15">
           {!expired &&
-          <div><QRCode value={JSON.stringify({type: 'cancelOrder', value: hash})} size={320} level='H'/></div>}
+          <div><QRCode value={JSON.stringify({type, value: hash})} size={320} level='H'/></div>}
           {expired && <div><p className='p15'>已失效</p></div>}
           <div><CountDown style={{fontSize: 20}} target={from + validity} onEnd={overdue}/></div>
           <div className="pt10 pb10 color-black-2 text-left fs12 " style={{width: '320px', margin: '0 auto'}}>

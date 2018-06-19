@@ -212,7 +212,7 @@ const PlaceOrderSign = (props) => {
       }
     }
     return ''
-  }
+  };
 
   const TxHeader = ({tx,index})=>{
     return (

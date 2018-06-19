@@ -136,7 +136,8 @@ const actions = {
   view_result_etherscan: "在EtherScan查看结果",
   cancel_tx:'取消交易',
   confirm: '确认',
-  select_wallet:'选择钱包来授权操作'
+  select_wallet:'选择钱包来授权操作',
+  submit:'提交'
 }
 
 const time_unit = {
@@ -638,6 +639,12 @@ export default {
   },
   metamask_sign:{
     title:'使用MetaMask钱包签名',
+    steps:{
+      connect:'连接到MetaMask',
+      sign:'签名并发送',
+      result:'结果'
+    },
+    uncomplete_tip:'请完成签名以后再提交'
   }
 }
 

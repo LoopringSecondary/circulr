@@ -1,29 +1,33 @@
 export default {
   namespace: 'signByMetaMask',
   state: {
-    value: '',
-    sig: ''
+    jobs: [],
+    completed:false
   },
   reducers: {
-    reset(state,{payload}){
+    reset(state, {payload}) {
       return {
-        value: '',
-        sig:''
+        jobs:[],
+        completed:false
       }
     },
-    setValue(state,{payload}){
-      const {value} = payload;
+    setJobs(state, {payload}) {
+      const {jobs} = payload;
+      const unsignedJob = jobs.find(job => !job.signed);
       return {
-        value,
-        sig:''
+        jobs,
+        completed:!unsignedJob
       }
     },
-    setSig(state,{payload}){
-      const {sig} = payload;
+    updateJob(state,{payload}){
+      const {job,index} = payload;
+      const {jobs} = state;
+      jobs[index] = job;
+      const unsignedJob = jobs.find(job => !job.signed);
       return {
-        ...state,
-        sig
+        jobs,
+        completed:!unsignedJob
       }
     }
-  }
+  },
 }

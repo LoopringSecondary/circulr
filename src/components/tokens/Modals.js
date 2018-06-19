@@ -5,6 +5,8 @@ import Receive from './Receive'
 import Transfer from './TransferForm'
 import Convert from './ConvertForm'
 import TransferConfirm from './TransferConfirm'
+import ConvertConfirm from './ConvertConfirm'
+
 
 function Modals(props) {
   return (
@@ -44,12 +46,15 @@ function Modals(props) {
       </Containers.Layers>
       <Containers.Layers id="convertToken" >
         <UiContianers.Panels id="convertToken" position="right" width="450px">
-              <Containers.Wallet>
                 <Containers.Convert >
                   <Convert/>
                 </Containers.Convert>
-              </Containers.Wallet>
         </UiContianers.Panels>
+      </Containers.Layers>
+      <Containers.Layers id="convertConfirm">
+          <UiContianers.Modals id="convertConfirm"  className="rs" wrapClassName="theme-blue">
+            <ConvertConfirm/>
+          </UiContianers.Modals>
       </Containers.Layers>
     </div>
   )
