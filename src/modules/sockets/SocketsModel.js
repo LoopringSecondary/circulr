@@ -21,7 +21,6 @@ export default {
   state: {
     'url':STORAGE.settings.get().relay.selected,
     'socket':null,
-    'address':'',
     'transaction':{...initState,filters:{token:'LRC'}},
     'latestTransaction':{...initState,filters:{token:'LRC'}},
     'balance':{...initState,filters:{currency:'usd'}},
