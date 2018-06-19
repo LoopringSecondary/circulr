@@ -36,6 +36,9 @@ function ConvertConfirm(props) {
         dispatch({type: 'layers/showLayer', payload: {id: 'signByMetaMask'}});
         break;
       case 'ledger':
+        dispatch({type:'signByLedger/setJobs',payload:{jobs:[{raw:tx,type:'convert',token}]}});
+        dispatch({type: 'layers/hideLayer', payload: {id: 'convertConfirm'}});
+        dispatch({type: 'layers/showLayer', payload: {id: 'signByLedger'}});
         break;
       default:
         Notification.open({type: 'warning', message: '不存在的钱包类型'})

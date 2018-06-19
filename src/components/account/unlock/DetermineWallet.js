@@ -54,7 +54,7 @@ export default class DetermineWallet extends React.Component {
     }
   };
   onCustomPathChange = (e) => {
-    this.props.determineWallet.CustomChange({customPath:e.target.value})
+    this.props.determineWallet.customChange({customPath:e.target.value})
   };
 
   isSupported = (path) => {

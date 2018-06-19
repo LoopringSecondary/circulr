@@ -65,6 +65,9 @@ function FlexCancelOrder(props) {
         dispatch({type: 'layers/showLayer', payload: {id: 'signByMetaMask'}});
         break;
       case 'ledger':
+        dispatch({type:'signByLedger/setJobs',payload:{jobs:[{raw:{type, tokenS, tokenB, orderHash, market,timestamp,hash},type:'cancelOrder'}]}});
+        dispatch({type: 'layers/hideLayer', payload: {id: 'flexCancelOrder'}});
+        dispatch({type: 'layers/showLayer', payload: {id: 'signByLedger'}});
         break;
       default:
         Notification.open({type: 'warning', message: '不存在的钱包类型'})

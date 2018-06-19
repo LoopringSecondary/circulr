@@ -5,6 +5,9 @@ import UserCenter from './UserCenter'
 import ExportKeystore from './ExportKeystore'
 import SignByLoopr from './sign/SignByLoopr'
 import SignByMetaMask from './sign/SignByMetaMask'
+import SignByLedger from './sign/SignByLedger'
+import ChooseLedgerAddress from './unlock/ChooseLedgerAddress'
+
 
 function Modals(props) {
   return (
@@ -29,6 +32,16 @@ function Modals(props) {
       <Containers.Layers id="signByMetaMask">
         <UiContianers.Modals id="signByMetaMask" >
           <SignByMetaMask />
+        </UiContianers.Modals>
+      </Containers.Layers>
+      <Containers.Layers id="signByLedger">
+        <UiContianers.Modals id="signByLedger" >
+          <SignByLedger />
+        </UiContianers.Modals>
+      </Containers.Layers>
+      <Containers.Layers id="chooseLedgerAddress">
+        <UiContianers.Modals id="chooseLedgerAddress" >
+          <ChooseLedgerAddress />
         </UiContianers.Modals>
       </Containers.Layers>
     </div>

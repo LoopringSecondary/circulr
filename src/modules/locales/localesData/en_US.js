@@ -97,7 +97,10 @@ const notifications = {
     cancel_all_order_suc:"Cancel all {market} orders successfully",
     cancel_order_failed:"Cancel order failed",
     cancel_all_order_failed:"Cancel all {market} orders failed",
-    init_failed: "Init failed"
+    init_failed: "Init failed",
+    sub_failed:"Submit Failed",
+    invalid_wallet_type:'Invalid  Wallet Type',
+    dif_address:'The address you just unlocked is different from your wallet address, please sign with your wallet address'
   },
   message: {
     wallet_locked: 'Your wallet seems locked yet, please unlock first',
@@ -137,7 +140,8 @@ const actions = {
   cancel_tx:'Cancel Tx',
   confirm: 'Confirm',
   select_wallet:'Select wallet to approve',
-  submit:"Submit"
+  submit:"Submit",
+  change_gas_price:'Adjust gas price'
 };
 
 const time_unit = {
@@ -388,8 +392,9 @@ export default {
     tabs_basic: 'Basic Detail',
     tabs_fill: 'Fill Detail',
   },
-  tx_resend:{
-    title:'Resend Transaction',
+  tx_actions:{
+    resend_title:'Resend Transaction',
+    cancel_title:'Cancel Transaction',
     action_resend:"Resend",
     fail_title:"Can't resend this transactions ",
     fail_reason:"Can't get detail information of this tx."
@@ -635,6 +640,21 @@ export default {
       sign:'Sign && Send',
       result:'Result'
     },
-    uncomplete_tip:"Please complete signing first"
+    uncomplete_tip:"Please complete signing first",
+    connect_tip:'Please unlock and connect to MetaMask'
+  },
+   ledger_sign:{
+    title:'Sign By Ledger',
+    steps:{
+      connect:'Connect to Ledger',
+      sign:'Sign && Send',
+      result:'Result'
+    },
+     connect:'Connect to Ledger',
+    uncomplete_tip:"Please complete signing first",
+    current_unlock_address:'Current unlocked wallet address',
+     unlock:{
+       title:'Choose Ledger Address'
+     }
   }
 }

@@ -263,7 +263,6 @@ export function cancelOrder(host,{sign,orderHash,tokenS,tokenB,cutoff,type}) {
   const {owner,r,s,v} = sign;
   try
   {
-    debugger;
     validator.validate({value: owner, type: 'ETH_ADDRESS'});
     validator.validate({value: v, type: 'NUM'});
     validator.validate({value: s, type: 'ETH_DATA'});

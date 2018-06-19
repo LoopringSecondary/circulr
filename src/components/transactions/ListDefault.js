@@ -7,19 +7,17 @@ import {connect} from "dva";
 import config from '../../common/config'
 import {toBig, toHex, toNumber} from "LoopringJS/common/formatter";
 import Notification from '../../common/loopringui/components/Notification'
-import storage from 'modules/storage/'
 
 const Option = Select.Option;
 
  function ListTransaction(props) {
-  const {latestTransaction: list,gasPrice,dispatch} = props;
+  const {latestTransaction: list,gasPrice,wallet,dispatch} = props;
   const statusChange = (value) => {
     dispatch({type:"sockets/filtersChange",payload:{id:"latestTransaction",filters:{status: value}}})
-  }
+  };
   const typeChange = (value) => {
-    console.log('filtersChange:',value)
     dispatch({type:"sockets/filtersChange",payload:{id:"latestTransaction",filters:{type: value}}})
-  }
+  };
 
   const getGasPrice = (txGas) => {
     txGas  = toBig(txGas).div(1e9).toNumber() +1;
@@ -27,7 +25,7 @@ const Option = Select.Option;
   };
 
   const resendTx  = (item)  => {
-    if(storage.wallet.getUnlockedAddress() && storage.wallet.getUnlockedType() !== 'address') {
+    if(wallet.unlockType && wallet.unlockType !== 'locked') {
       window.RELAY.account.getPendingRawTxByHash(item.txHash).then((res) => {
         if (!res.error) {
           const tx = res.result;
@@ -50,9 +48,9 @@ const Option = Select.Option;
   };
 
   const cancelTx = (item) => {
-    if(storage.wallet.getUnlockedAddress() && storage.wallet.getUnlockedType() !== 'address'){
+    if(wallet.unlockType && wallet.unlockType !== 'locked'){
       const tx = {
-        to:storage.wallet.getUnlockedAddress(),
+        to:window.WALLET.address,
         value:"0x0",
         data:'0x',
         chainId:config.getChainId(),
@@ -218,7 +216,7 @@ export const renders = {
 function mapStateToProps(state) {
    return {
      gasPrice:state.gas.gasPrice.estimate,
-     account:state.wallet.account,
+     wallet:state.wallet,
      latestTransaction:state.sockets.latestTransaction,
    }
 }

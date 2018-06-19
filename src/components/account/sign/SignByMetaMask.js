@@ -22,7 +22,11 @@ const JobTitle = ({type, token}) => {
     case 'approve':
       return intl.get('place_order_sign.type_approve', {token});
     case 'convert':
-      return token.toLowerCase() === 'eth' ? intl.get('convert.convert_eth_title') : intl.get('convert.convert_weth_title')
+      return token.toLowerCase() === 'eth' ? intl.get('convert.convert_eth_title') : intl.get('convert.convert_weth_title');
+    case 'cancelTx':
+      return intl.get('tx_actions.cancel_title');
+    case 'resendTx':
+      return intl.get('tx_resend.title')
   }
 };
 
@@ -89,12 +93,20 @@ class SignByMetaMask extends React.Component {
 
   sign = async (job, index) => {
     const {dispatch} = this.props;
+    if(!(window.web3 && window.web3.eth.accounts[0])){
+      Notification.open({type:'warning',message:intl.get('metamask_sign.connect_tip')})
+      return;
+    }else if(window.web3.eth.accounts[0] !==   this.props.wallet.address){
+      Notification.open({type:'warning',description:intl.get('notifications.title.dif_address')});
+      return;
+    }
+
     const wallet = new MetaMaskAccount(window.web3);
     switch (job.type) {
       case 'convert':
       case 'resendTx':
       case 'approve':
-      case 'zero':
+      case 'approveZero':
       case 'cancelTx':
         wallet.signEthereumTx(job.raw).then(res => {
           if (!res.error) {
@@ -134,8 +146,8 @@ class SignByMetaMask extends React.Component {
   };
 
   submit = () => {
-    const {jobs} = this.props;
-    if (jobs.find(job => !job.signed)) {
+    const {jobs,completed,wallet} = this.props;
+    if (!completed) {
       Notification.open({type: 'warning', message: intl.get('metamask_sign.uncomplete_tip')});
       return;
     }
@@ -144,10 +156,15 @@ class SignByMetaMask extends React.Component {
         case 'convert':
         case 'resendTx':
         case 'approve':
-        case 'zero':
+        case 'approveZero':
         case 'cancelTx':
           window.ETH.sendRawTransaction(job.signed).then(res => {
             if (!res.error) {
+              window.RELAY.account.notifyTransactionSubmitted({
+                txHash: res.result,
+                rawTx: job.raw,
+                from: wallet.address
+              });
               callback()
             } else {
               callback(res.error)
@@ -175,13 +192,12 @@ class SignByMetaMask extends React.Component {
 
     }, (error) => {
       if(error){
-        Notification.open({type: 'error',message:'提交失败', description: error.message});
+        Notification.open({type: 'error',message:intl.get('notifications.title.sub_failed'), description: error.message});
         this.setState({step:2,result:"failed"})
       }else{
         this.setState({step:2,result:"suc"})
       }
     })
-
   };
 
   render() {
@@ -210,6 +226,7 @@ class SignByMetaMask extends React.Component {
             <Steps current={step}>
               {steps.map((item, index) => <Steps.Step key={index} title={item.title}/>)}
             </Steps>
+          </div>
             {step === 0 &&
             <div className="mt15">
               <div className="zb-b">
@@ -223,7 +240,7 @@ class SignByMetaMask extends React.Component {
                   <div>
                     <a>{intl.get("wallet_meta.unlock_step_unlock_title")}</a></div>
                 </div>
-              </div>
+            </div>
             </div>
             }
             {step === 1 &&
@@ -251,7 +268,6 @@ class SignByMetaMask extends React.Component {
 
             </div>}
           </div>
-        </div>
       </Card>
     )
   }
