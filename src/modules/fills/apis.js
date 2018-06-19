@@ -1,5 +1,7 @@
 import {getFills} from 'LoopringJS/relay/rpc/ring'
 import config from 'common/config'
+import storage from '../storage/'
+
 export async function fetchList(payload){
     let {page,filters,sort} = payload
     let filter = {}
@@ -11,7 +13,7 @@ export async function fetchList(payload){
       filter.pageSize = page.size
     }
     filter.delegateAddress = config.getDelegateAddress();
-    filter.owner = window.WALLET && window.WALLET.address
+    filter.owner = storage.wallet.getUnlockedAddress()
     const host = window.config && window.config.rpc_host
     return getFills(host,filter).then(res=>{
       if(!res.error && res.result.data){

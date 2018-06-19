@@ -6,7 +6,7 @@ import {connect} from "dva";
 import {getFileName} from "LoopringJS/ethereum/keystore";
 import copy from 'copy-to-clipboard';
 import Notification from '../../common/loopringui/components/Notification'
-
+import storage from 'modules/storage/'
 
 class ExportKeyStore extends React.Component{
 
@@ -28,14 +28,15 @@ class ExportKeyStore extends React.Component{
   };
 
   getKeystore = () => {
-
-    if(window.WALLET && window.WALLET.unlockType && (window.WALLET.unlockType === 'keystore' ||window.WALLET.unlockType === 'mnemonic' || window.WALLET.unlockType==='privateKey')){
+    const address = storage.wallet.getUnlockedAddress()
+    const unlockType = storage.wallet.getUnlockedType()
+    if(address && unlockType && (unlockType === 'keystore' || unlockType === 'mnemonic' || unlockType ==='privateKey')){
       const {wallet} =  this.props;
       const {password} = this.state;
       const keystore = wallet.toV3Keystore(password);
       const blob = new Blob([JSON.stringify(keystore)], {type: 'text/json;charset=UTF-8'});
       const url =  window.URL.createObjectURL(blob);
-      const fileName = getFileName(window.WALLET.address);
+      const fileName = getFileName(address);
       this.setState({url,fileName,keystore})
     }
   };

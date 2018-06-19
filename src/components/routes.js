@@ -10,9 +10,10 @@ import Tickers from './tickers';
 import Setting from './setting';
 import Tools from './tools';
 import UnlockModals from './account/unlock/Modals'
+import storage from 'modules/storage/'
 
 const UnLogged = ()=>{
-  const isLogged = !!window.WALLET && !!window.WALLET.address
+  const isLogged = !!storage.wallet.getUnlockedAddress()
   if(isLogged){
     return <Redirect to="/wallet" />
   }else{
@@ -26,7 +27,7 @@ const UnLogged = ()=>{
   }
 }
 const Logged = ()=>{
-  const isLogged = !!window.WALLET && !!window.WALLET.address
+  const isLogged = !!storage.wallet.getUnlockedAddress()
   if(isLogged){
     return (
       <Switch>
