@@ -8,20 +8,21 @@ import moment from 'moment';
 import LoopringUI from 'LoopringUI/components'
 import Notification from '../../common/loopringui/components/Notification'
 import {MetaMaskAccount} from '../../common/loopringjs/src/ethereum/account'
+import storage from 'modules/storage/'
 
 const computeHash = ({type, timestamp, orderHash, tokenS, tokenB}) => {
   switch (type) {
     case 1:
-      return keccakHash(JSON.stringify({type, timestamp, orderHash, owner: window.WALLET.address}));
+      return keccakHash(JSON.stringify({type, timestamp, orderHash, owner: storage.wallet.getUnlockedAddress()}));
     case 2:
-      return keccakHash(JSON.stringify({type, timestamp, owner: window.WALLET.address}));
+      return keccakHash(JSON.stringify({type, timestamp, owner: storage.wallet.getUnlockedAddress()}));
     case 4:
       return keccakHash(JSON.stringify({
         type,
         tokenS,
         tokenB,
         timestamp,
-        owner: window.WALLET.address
+        owner: storage.wallet.getUnlockedAddress()
       }));
   }
 };

@@ -10,7 +10,7 @@ import TokenFormatter from '../../modules/tokens/TokenFm';
 import config from '../../common/config'
 import {connect} from 'dva'
 import routeActions from 'common/utils/routeActions'
-
+import storage from 'modules/storage/'
 
 export default class Receive extends React.Component {
   state = {
@@ -23,7 +23,7 @@ export default class Receive extends React.Component {
     if (symbol) {
       const _this = this;
       const tf = new TokenFormatter({symbol});
-      const owner = window.WALLET.address;
+      const owner = storage.wallet.getUnlockedAddress();
       window.RELAY.account.getEstimatedAllocatedAllowance({owner,token:symbol.toUpperCase(),delegateAddress:config.getDelegateAddress()}).then(res => {
         if (!res.error) {
           const orderAmount = res.result;
@@ -50,7 +50,7 @@ export default class Receive extends React.Component {
   getNeeded = () => {
     const {symbol,amount} = this.state;
 
-    if(symbol && window.WALLET){
+    if(symbol && storage.wallet.getUnlockedAddress()){
       const {balance} = this.props;
       const asset = getBalanceBySymbol({balances: balance.items, symbol, toUnit: true});
       if(!asset){ return toFixed(toBig(0),8) }
@@ -61,7 +61,7 @@ export default class Receive extends React.Component {
 
 
   render(){
-    const address = window.WALLET && window.WALLET.address;
+    const address = storage.wallet.getUnlockedAddress();
     const {receiveToken} = this.props;
     if(!address){
       Notification.open({message: intl.get('unlock.has_not_unlocked'), type: "error", size: 'small'});

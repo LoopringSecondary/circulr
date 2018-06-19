@@ -139,7 +139,7 @@ export default {
       yield put({type:'fetch',payload:{id:'orderBook'}})
       yield put({type:'fetch',payload:{id:'estimatedGasPrice'}})
       yield put({type:'fetch',payload:{id:'globalTrend'}})
-      if(window.WALLET && window.WALLET.address){
+      if(STORAGE.wallet.getUnlockedAddress()){
         yield put({type:'unlocked'})
       }
     },
