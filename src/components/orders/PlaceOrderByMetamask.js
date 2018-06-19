@@ -34,6 +34,15 @@ const PlaceOrderByMetamask = (props) => {
           return
         }
         let address = window.web3.eth.accounts[0]
+        if(wallet.address !== address) {
+          Notification.open({
+            message:intl.get('notifications.title.unlock_fail'),
+            description:intl.get('notifications.message5.unlock_diff_address_to_sign'),
+            type:'error'
+          })
+          dispatch({type:'metaMask/setLoading',payload:{loading:false}})
+          return
+        }
         dispatch({type:'wallet/unlockMetaMaskWallet',payload:{address}});
         Notification.open({type:'success',message:intl.get('notifications.title.unlock_suc')});
         dispatch({type: 'sockets/unlocked'});

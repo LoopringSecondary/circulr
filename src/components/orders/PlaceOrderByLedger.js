@@ -62,6 +62,14 @@ const PlaceOrderByLedger = (props) => {
   };
 
   const confirmAddress = () => {
+    if(wallet.address !== address) {
+      Notification.open({
+        message:intl.get('notifications.title.unlock_fail'),
+        description:intl.get('notifications.message5.unlock_diff_address_to_sign'),
+        type:'error'
+      })
+      return
+    }
     if (address && placeOrderByLedger.ledger) {
       dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger:placeOrderByLedger.ledger, dpath: `${dpath}/0`}});
       dispatch({type: 'hardwareWallet/reset', payload: {}});
