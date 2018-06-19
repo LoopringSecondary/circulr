@@ -44,7 +44,7 @@ function ChooseLedgerAddress({dispatch, pageNum, dpath, customPath, addresses,ch
   const confirm = (index) => {
     const {chooseAddress} = chooseLedgerAddress;
 
-    if(addresses[index] !== wallet.address){
+    if(addresses[index].toLowerCase() !== wallet.address.toLowerCase()){
       Notification.open({type:'warning',description:intl.get('notifications.title.dif_address')});
       return;
     }

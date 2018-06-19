@@ -99,7 +99,7 @@ class SignByLedger extends React.Component {
           getLedgerPublicKey(dpath, ledger).then(resp => {
             if (!resp.error) {
               const {address} = resp.result;
-              if (address === wallet.address) {
+              if (address.toLowerCase() === wallet.address.toLowerCase()) {
                 this.setState({account: new LedgerAccount(ledger, dpath.concat('/0')), step: 1})
               }
             }
@@ -117,7 +117,7 @@ class SignByLedger extends React.Component {
         getLedgerPublicKey(path, ledger).then(resp => {
           if (!resp.error) {
             const {address} = resp.result;
-            if (address === wallet.address) {
+            if (address.toLowerCase() === wallet.address.toLowerCase()) {
               this.setState({account: new LedgerAccount(ledger, path), step: 1})
             } else {
               Notification.open({type:'warning',description:intl.get('notifications.title.dif_address')});
@@ -184,7 +184,8 @@ class SignByLedger extends React.Component {
         break;
       case 'cancelOrder':
         wallet.signMessage(job.raw.timestamp).then(res => {
-          job.signed = {sign: {...res, owner: wallet.getAddress(), timestamp: job.raw.timestamp}, ...job.raw};
+
+          job.signed = {sign: {...res, owner:this.props.wallet.address, timestamp: job.raw.timestamp}, ...job.raw};
           dispatch({type: 'signByLedger/updateJob', payload: {job, index}})
         }).catch(err => {
           Notification.open({type: 'error', description: err.message})
@@ -227,6 +228,7 @@ class SignByLedger extends React.Component {
           });
           break;
         case 'order':
+          console.log('cancel',job.signed);
           window.RELAY.order.placeOrder(job.signed).then(res => {
             if (!res.error) {
               callback()
