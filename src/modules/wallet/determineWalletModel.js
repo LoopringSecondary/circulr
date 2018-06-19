@@ -117,6 +117,8 @@ export default {
       if (publicKey && chainCode) {
         const addresses = getAddresses({pageSize, publicKey, chainCode, pageNum});
         yield put({type: 'setAddresses', payload: {addresses}});
+      } else {
+        yield put({type: 'setAddresses', payload: {addresses: []}});
       }
       yield put({type: 'setPublicKey', payload: {publicKey}});
       yield put({type: 'setChainCode', payload: {chainCode}});
@@ -145,41 +147,49 @@ export default {
       yield put({type: 'setPageNum', payload: {pageNum}});
       yield put({type: 'setAddresses', payload: {addresses}})
     },
-    * CustomChange({payload}, {put, select}) {
+    * customChange({payload}, {put, select}) {
       const {customPath, dpath, walletType, mnemonic} = yield select((state) => state.determineWallet);
       const path = payload.customPath;
+      debugger;
       if (customPath === dpath) {
-        switch (walletType) {
-          case 'mnemonic':
-            yield put({type: 'setMnemonicWallet', payload: {mnemonic, dpath: path}});
-            break;
-          case 'trezor': {
-            const {publicKey, chainCode} = yield getTrezorPublicKey(path).then(res => {
-              return res.result
-            });
-            yield put({type: 'setHardwareWallet', payload: {publicKey, chainCode, dpath: path, walletType}});
-            break;
-          }
-          case 'ledger':
-            const {publicKey, chainCode} = yield connect().then(res => {
-              if (!res.error) {
-                const ledger = res.result;
-                return getLedgerPublicKey(path, ledger).then(resp => {
-                  if (!resp.error) {
-                    return resp.result;
-                  }
-                });
+        if (path) {
+          switch (walletType) {
+            case 'mnemonic':
+              yield put({type: 'setMnemonicWallet', payload: {mnemonic, dpath: path}});
+              break;
+            case 'trezor': {
+              const {publicKey, chainCode} = yield getTrezorPublicKey(path).then(res => {
+                return res.result
+              });
+              yield put({type: 'setHardwareWallet', payload: {publicKey, chainCode, dpath: path, walletType}});
+              break;
+            }
+            case 'ledger':
+              const res = yield connect().then(res => {
+                if (!res.error) {
+                  const ledger = res.result;
+                  return getLedgerPublicKey(path, ledger).then(resp => {
+                    if (!resp.error) {
+                      return resp.result;
+                    }
+                  });
+                }
+              });
+              if (res) {
+                const {publicKey, chainCode} = res;
+                yield put({type: 'setHardwareWallet', payload: {publicKey, chainCode, dpath: path, walletType}});
+              } else {
+                yield put({type: 'setHardwareWallet', payload: {dpath: path, walletType}});
               }
-            });
-            yield put({type: 'setHardwareWallet', payload: {publicKey, chainCode, dpath: path, walletType}});
-            break;
-          default:
-            yield put({type: 'setDpath', payload: {dpath: path}});
+              break;
+            default:
+              yield put({type: 'setDpath', payload: {dpath: path}});
+          }
+        } else {
+          yield put({type: 'setDpath', payload: {dpath: path}});
         }
       }
-
       yield put({type: 'setCustomChange', payload: {customPath: path}})
-
     }
   }
 }
