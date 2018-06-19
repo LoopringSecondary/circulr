@@ -4,7 +4,7 @@ import {Button, Slider, Form, Input} from 'antd'
 import Notification from '../../common/loopringui/components/Notification'
 import intl from 'react-intl-universal'
 import {toBig, toHex,toNumber} from "LoopringJS/common/formatter";
-
+import storage from 'modules/storage/'
 
 function Resend({resend}) {
   const {tx} = resend;
@@ -25,7 +25,7 @@ function Resend({resend}) {
         window.RELAY.account.notifyTransactionSubmitted({
           txHash: response.result,
           rawTx: tx,
-          from: window.WALLET.address
+          from: storage.wallet.getUnlockedAddress()
         });
       } else {
         Notification.open({

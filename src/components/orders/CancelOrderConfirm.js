@@ -10,6 +10,7 @@ import comFormatter from 'modules/formatter/common'
 import {getLastGas} from 'modules/settings/formatters'
 import GasFee from '../setting/GasFee1'
 import {Containers} from 'modules'
+import storage from 'modules/storage/'
 
 const LoopringProtocol = Contracts.LoopringProtocol;
 
@@ -43,7 +44,7 @@ class CancelOrderConfirm extends React.Component {
     };
     tx.gasLimit = config.getGasLimitByType(type).gasLimit;
     tx.gasPrice = toHex(toBig(getLastGas(this.props.gas).gasPrice).times(1e9));
-    tx.nonce = toHex(await window.STORAGE.wallet.getNonce(window.WALLET.address));
+    tx.nonce = toHex(await window.STORAGE.wallet.getNonce(storage.wallet.getUnlockedAddress()));
     switch (type) {
       case 'cancelOrder':
         const originalOrder = {...order};
@@ -77,8 +78,8 @@ class CancelOrderConfirm extends React.Component {
       _this.setState({loading: false});
       if (!response.error) {
         // window.STORAGE.transactions.addTx({hash: response.result, owner: account.address});
-        window.STORAGE.wallet.setWallet({address: window.WALLET.getAddress(), nonce: tx.nonce});
-        window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: window.WALLET.address})
+        window.STORAGE.wallet.setWallet({address: storage.wallet.getUnlockedAddress(), nonce: tx.nonce});
+        window.RELAY.account.notifyTransactionSubmitted({txHash: response.result, rawTx, from: storage.wallet.getUnlockedAddress()})
         Notification.open({
           message: type === 'cancelOrder' ? intl.get('notifications.title.cancel_order_suc') : intl.get('notifications.title.cancel_all_order_success', {pair: market}),
           type: "success",

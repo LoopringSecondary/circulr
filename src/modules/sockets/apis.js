@@ -5,6 +5,7 @@ import {toBig, toFixed} from 'LoopringJS/common/formatter'
 import routeActions from 'common/utils/routeActions'
 import Notification from 'LoopringUI/components/Notification'
 import intl from 'react-intl-universal';
+import storage from '../storage/'
 
 const updateItems = (items,id)=>{
   const dispatch = require('../../index.js').default._store.dispatch
@@ -71,9 +72,8 @@ const transfromers = {
   transaction:{
     queryTransformer:(payload)=>{
       const {filters,page} = payload;
-      const store = require('../../index.js').default._store
       return JSON.stringify({
-        owner:store.getState().wallet.address,
+        owner:storage.wallet.getUnlockedAddress(),
         symbol:filters.token,
         status:filters.status,
         txType:filters.type,
@@ -95,9 +95,8 @@ const transfromers = {
   latestTransaction:{
     queryTransformer:(payload)=>{
       const {filters,page} = payload;
-      const store = require('../../index.js').default._store
       return JSON.stringify({
-        owner:store.getState().wallet.address,
+        owner:storage.wallet.getUnlockedAddress(),
         symbol:filters.token,
         status:filters.status,
         txType:filters.type,
@@ -116,10 +115,9 @@ const transfromers = {
   },
   balance:{
     queryTransformer:(payload)=>{
-      const store = require('../../index.js').default._store
       return JSON.stringify({
          delegateAddress: config.getDelegateAddress(),
-         owner:store.getState().wallet.address
+         owner:storage.wallet.getUnlockedAddress()
       })
     },
     resTransformer:(id,res)=>{
@@ -136,10 +134,9 @@ const transfromers = {
   orders:{
     queryTransformer:(payload)=>{
       const {filters} = payload;
-      const store = require('../../index.js').default._store
       return JSON.stringify({
          delegateAddress: config.getDelegateAddress(),
-         owner:store.getState().wallet.address,
+         owner:storage.wallet.getUnlockedAddress(),
          market:filters.market,
       })
     },
@@ -306,9 +303,8 @@ const transfromers = {
   },
   pendingTx:{
     queryTransformer:(payload)=>{
-      const store = require('../../index.js').default._store
       return JSON.stringify({
-         owner:store.getState().wallet.address
+         owner:storage.wallet.getUnlockedAddress()
       })
     },
     resTransformer:(id,res)=>{
@@ -325,9 +321,8 @@ const transfromers = {
   circulrNotify:{
     queryTransformer:(payload)=>{
       const {extra} = payload;
-      const store = require('../../index.js').default._store
       return JSON.stringify({
-        owner:store.getState().wallet.address,
+        owner:storage.wallet.getUnlockedAddress(),
       })
     },
     resTransformer:(id,res)=>{

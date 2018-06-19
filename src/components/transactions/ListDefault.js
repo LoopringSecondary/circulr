@@ -7,6 +7,7 @@ import {connect} from "dva";
 import config from '../../common/config'
 import {toBig, toHex, toNumber} from "LoopringJS/common/formatter";
 import Notification from '../../common/loopringui/components/Notification'
+import storage from 'modules/storage/'
 
 const Option = Select.Option;
 
@@ -26,7 +27,7 @@ const Option = Select.Option;
   };
 
   const resendTx  = (item)  => {
-    if(window.WALLET && window.WALLET.unlockType !== 'address') {
+    if(storage.wallet.getUnlockedAddress() && storage.wallet.getUnlockedType() !== 'address') {
       window.RELAY.account.getPendingRawTxByHash(item.txHash).then((res) => {
         if (!res.error) {
           const tx = res.result;
@@ -49,9 +50,9 @@ const Option = Select.Option;
   };
 
   const cancelTx = (item) => {
-    if(window.WALLET && window.WALLET.unlockType !== 'address'){
+    if(storage.wallet.getUnlockedAddress() && storage.wallet.getUnlockedType() !== 'address'){
       const tx = {
-        to:window.WALLET.address,
+        to:storage.wallet.getUnlockedAddress(),
         value:"0x0",
         data:'0x',
         chainId:config.getChainId(),
