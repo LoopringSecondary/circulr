@@ -37,7 +37,7 @@ const PlaceOrderByMetamask = (props) => {
         if(wallet.address !== address) {
           Notification.open({
             message:intl.get('notifications.title.unlock_fail'),
-            description:intl.get('notifications.message5.unlock_diff_address_to_sign'),
+            description:intl.get('notifications.message5.unlock_diff_address_to_sign', {address:wallet.address}),
             type:'error'
           })
           dispatch({type:'metaMask/setLoading',payload:{loading:false}})
