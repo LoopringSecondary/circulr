@@ -1,5 +1,5 @@
 import React from 'react'
-import {Slider, Form} from 'antd'
+import {Slider, Form,Card} from 'antd'
 import Notification from '../../common/loopringui/components/Notification'
 import {toBig, toHex,toNumber} from "LoopringJS/common/formatter";
 import LoopringUI from 'LoopringUI/components'
@@ -24,7 +24,7 @@ function Cancel({cancel,wallet,dispatch}) {
         })).then(res => {
           if (!res.error) {
             dispatch({type: 'signByLoopr/init', payload: {type: 'cancelTx', hash}});
-            dispatch({type: 'layers/hideLayer', payload: {id: 'convertConfirm'}});
+            dispatch({type: 'layers/hideLayer', payload: {id: 'cancel'}});
             dispatch({type: 'layers/showLayer', payload: {id: 'signByLoopr'}});
           } else {
             Notification.open({
@@ -37,16 +37,16 @@ function Cancel({cancel,wallet,dispatch}) {
         break;
       case 'metamask':
         dispatch({type:'signByMetaMask/setJobs',payload:{jobs:[{raw:tx,type:'cancelTx'}]}});
-        dispatch({type: 'layers/hideLayer', payload: {id: 'convertConfirm'}});
+        dispatch({type: 'layers/hideLayer', payload: {id: 'cancel'}});
         dispatch({type: 'layers/showLayer', payload: {id: 'signByMetaMask'}});
         break;
       case 'ledger':
         dispatch({type:'signByLedger/setJobs',payload:{jobs:[{raw:tx,type:'cancelTx'}]}});
-        dispatch({type: 'layers/hideLayer', payload: {id: 'convertConfirm'}});
+        dispatch({type: 'layers/hideLayer', payload: {id: 'cancel'}});
         dispatch({type: 'layers/showLayer', payload: {id: 'signByLedger'}});
         break;
       default:
-        Notification.open({type: 'warning', message: '不存在的钱包类型'})
+        Notification.open({type: 'warning', message: intl.get('notifications.title.invalid_wallet_type')})
     }
   };
 
@@ -80,7 +80,7 @@ function Cancel({cancel,wallet,dispatch}) {
 }
 function mapStateToProps(state) {
   return {
-    wallet: state.wallet.account
+    wallet: state.wallet
   }
 }
 

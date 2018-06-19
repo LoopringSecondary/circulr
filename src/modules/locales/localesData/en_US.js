@@ -97,6 +97,9 @@ const notifications = {
     cancel_all_order_suc:"Cancel all {market} orders successfully",
     cancel_order_failed:"Cancel order failed",
     cancel_all_order_failed:"Cancel all {market} orders failed",
+    sub_failed:"Submit Failed",
+    invalid_wallet_type:'Invalid  Wallet Type',
+    dif_address:'The address you just unlocked is different from your wallet address, please sign with your wallet address'
   },
   message: {
     wallet_locked: 'Your wallet seems locked yet, please unlock first',
@@ -635,7 +638,8 @@ export default {
       sign:'Sign && Send',
       result:'Result'
     },
-    uncomplete_tip:"Please complete signing first"
+    uncomplete_tip:"Please complete signing first",
+    connect_tip:'Please unlock and connect to MetaMask'
   },
    ledger_sign:{
     title:'Sign By Ledger',
@@ -645,6 +649,10 @@ export default {
       result:'Result'
     },
      connect:'Connect to Ledger',
-    uncomplete_tip:"Please complete signing first"
+    uncomplete_tip:"Please complete signing first",
+    current_unlock_address:'Current unlocked wallet address',
+     unlock:{
+       title:'Choose Ledger Address'
+     }
   }
 }

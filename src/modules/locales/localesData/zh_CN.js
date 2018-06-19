@@ -99,6 +99,9 @@ const notifications = {
     cancel_all_order_suc:"取消全部{market}订单成功",
     cancel_order_failed:"取消订单失败",
     cancel_all_order_failed:"取消全部{market}订单失败",
+    sub_failed:"提交失败",
+    invalid_wallet_type:"不存在的钱包类型",
+    dif_address:'您解锁的地址和当前的钱包地址不同，请选择当前钱包的地址进行签名'
   },
   message: {
     wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
@@ -647,7 +650,8 @@ export default {
       sign:'签名并发送',
       result:'结果'
     },
-    uncomplete_tip:'请完成签名以后再提交'
+    uncomplete_tip:'请完成签名以后再提交',
+    connect_tip:'请解锁并连接MetaMask'
   },
   ledger_sign:{
     title:'使用Ledger钱包签名',
@@ -657,7 +661,11 @@ export default {
       result:'结果'
     },
     connect:'连接Ledger',
-    uncomplete_tip:'请完成签名以后再提交'
+    uncomplete_tip:'请完成签名以后再提交',
+    current_unlock_address:'当前解锁地址',
+    unlock:{
+      title:'选择Ledger地址'
+    }
   }
 }
 

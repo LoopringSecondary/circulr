@@ -1,12 +1,14 @@
 import React from 'react'
 import {connect} from "dva";
-import {Form, Input, Slider} from 'antd'
+import {Form, Input, Slider,Card} from 'antd'
 import Notification from '../../common/loopringui/components/Notification'
 import intl from 'react-intl-universal'
 import {toBig, toHex, toNumber} from "LoopringJS/common/formatter";
+import LoopringUI from 'LoopringUI/components'
+import {keccakHash} from "LoopringJS/common/utils";
 
 
-function Resend({resend}) {
+function Resend({resend,wallet,dispatch}) {
   const {tx} = resend;
   const handleGasPrice = (value) => {
     tx.gasPrice = toHex(toBig(value).times(1e9))
@@ -21,8 +23,8 @@ function Resend({resend}) {
           owner: wallet.address
         })).then(res => {
           if (!res.error) {
-            dispatch({type: 'signByLoopr/init', payload: {type: 'cancelTx', hash}});
-            dispatch({type: 'layers/hideLayer', payload: {id: 'convertConfirm'}});
+            dispatch({type: 'signByLoopr/init', payload: {type: 'resend', hash}});
+            dispatch({type: 'layers/hideLayer', payload: {id: 'resend'}});
             dispatch({type: 'layers/showLayer', payload: {id: 'signByLoopr'}});
           } else {
             Notification.open({
@@ -35,16 +37,16 @@ function Resend({resend}) {
         break;
       case 'metamask':
         dispatch({type:'signByMetaMask/setJobs',payload:{jobs:[{raw:tx,type:'cancelTx'}]}});
-        dispatch({type: 'layers/hideLayer', payload: {id: 'convertConfirm'}});
+        dispatch({type: 'layers/hideLayer', payload: {id: 'resend'}});
         dispatch({type: 'layers/showLayer', payload: {id: 'signByMetaMask'}});
         break;
       case 'ledger':
         dispatch({type:'signByLedger/setJobs',payload:{jobs:[{raw:tx,type:'cancelTx'}]}});
-        dispatch({type: 'layers/hideLayer', payload: {id: 'convertConfirm'}});
+        dispatch({type: 'layers/hideLayer', payload: {id: 'resend'}});
         dispatch({type: 'layers/showLayer', payload: {id: 'signByLedger'}});
         break;
       default:
-        Notification.open({type: 'warning', message: '不存在的钱包类型'})
+        Notification.open({type: 'warning', message: intl.get('notifications.title.invalid_wallet_type')})
     }
   };
 
@@ -93,7 +95,7 @@ function Resend({resend}) {
 
 function mapStateToProps(state) {
   return {
-    wallet: state.wallet.account
+    wallet: state.wallet
   }
 }
 

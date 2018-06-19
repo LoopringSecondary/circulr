@@ -5,6 +5,8 @@ import intl from 'react-intl-universal'
 import {getXPubKey as getLedgerPublicKey, connect as connectLedger} from "LoopringJS/ethereum/ledger";
 import {LedgerAccount} from "LoopringJS/ethereum/account";
 import eachLimit from 'async/eachLimit';
+import Notification from '../../../common/loopringui/components/Notification'
+
 
 const steps = [
   {title: intl.get('ledger_sign.steps.qrcode')},
@@ -24,6 +26,10 @@ const JobTitle = ({type, token}) => {
       return intl.get('place_order_sign.type_approve', {token});
     case 'convert':
       return token.toLowerCase() === 'eth' ? intl.get('convert.convert_eth_title') : intl.get('convert.convert_weth_title')
+    case 'cancelTx':
+      return intl.get('tx_actions.cancel_title')
+    case 'resendTx':
+      return intl.get('tx_resend.title')
   }
 };
 
@@ -54,7 +60,7 @@ const JobHeader = ({job, index, sign}) => {
       </div>
     </div>
   )
-}
+};
 const JobContent = ({job, index}) => {
   return (
     <div className="row p5 zb-b-t">
@@ -79,36 +85,72 @@ class SignByLedger extends React.Component {
   state = {
     step: 0,
     account: null,
-    address: '',
     result: ''
   };
 
   componentDidMount() {
     const {wallet} = this.props;
     if (wallet.unlockType === 'ledger') {
-      this.setState({account: wallet.account, address: wallet.address})
+      this.setState({account: wallet.account, step: 1})
     } else {
       connectLedger().then(res => {
         if (!res.error) {
           const ledger = res.result;
-          getLedgerPublicKey(wallet.dpath, ledger).then(resp => {
+          getLedgerPublicKey(dpath, ledger).then(resp => {
             if (!resp.error) {
               const {address} = resp.result;
-              this.setState({account: new LedgerAccount(ledger, dpath.concat('/0')), address})
+              if (address === wallet.address) {
+                this.setState({account: new LedgerAccount(ledger, dpath.concat('/0')), step: 1})
+              }
             }
           });
         }
       });
-
     }
   }
 
+  chooseAddress = (path) => {
+    const {wallet} = this.props;
+    connectLedger().then(res => {
+      if (!res.error) {
+        const ledger = res.result;
+        getLedgerPublicKey(path, ledger).then(resp => {
+          if (!resp.error) {
+            const {address} = resp.result;
+            if (address === wallet.address) {
+              this.setState({account: new LedgerAccount(ledger, path), step: 1})
+            } else {
+              Notification.open({type:'warning',description:intl.get('notifications.title.dif_address')});
+            }
+          }
+        });
+      }
+    });
+  };
   connectToLedger = () => {
     const {account} = this.state;
+    const {dispatch} = this.props;
     if (account) {
       this.setState({step: 1})
-    }else{
-      // TODO connect to Ledger
+    } else {
+      connectLedger().then(res => {
+        if (!res.error) {
+          const ledger = res.result;
+          getLedgerPublicKey(dpath, ledger).then(resp => {
+            if (!resp.error) {
+              const {chainCode, publicKey} = resp.result;
+              dispatch({
+                type: "determineWallet/setHardwareWallet",
+                payload: {chainCode, publicKey, dpath, walletType: 'ledger'}
+              });
+              dispatch({
+                type: 'layers/showLayer',
+                payload: {id: 'chooseLedgerAddress', chooseAddress: this.chooseAddress}
+              });
+            }
+          });
+        }
+      });
     }
   };
 
@@ -126,7 +168,7 @@ class SignByLedger extends React.Component {
             job.signed = res;
             dispatch({type: 'signByLedger/updateJob', payload: {job, index}})
           }
-        }).catch(err=>{
+        }).catch(err => {
           Notification.open({type: 'error', description: err.message})
         });
         break;
@@ -136,13 +178,13 @@ class SignByLedger extends React.Component {
             job.signed = res;
             dispatch({type: 'signByLedger/updateJob', payload: {job, index}})
           }
-        }).catch(err=> {
+        }).catch(err => {
           Notification.open({type: 'error', description: err.message})
         });
         break;
       case 'cancelOrder':
         wallet.signMessage(job.raw.timestamp).then(res => {
-          job.signed = {sign:{...res,owner:wallet.getAddress(),timestamp:job.raw.timestamp},...job.raw};
+          job.signed = {sign: {...res, owner: wallet.getAddress(), timestamp: job.raw.timestamp}, ...job.raw};
           dispatch({type: 'signByLedger/updateJob', payload: {job, index}})
         }).catch(err => {
           Notification.open({type: 'error', description: err.message})
@@ -159,7 +201,7 @@ class SignByLedger extends React.Component {
   };
 
   submit = () => {
-    const {jobs,completed,wallet} = this.props;
+    const {jobs, completed, wallet} = this.props;
     if (!completed) {
       Notification.open({type: 'warning', message: intl.get('ledger_sign.uncomplete_tip')});
       return;
@@ -204,11 +246,15 @@ class SignByLedger extends React.Component {
       }
 
     }, (error) => {
-      if(error){
-        Notification.open({type: 'error',message:'提交失败', description: error.message});
-        this.setState({step:2,result:"failed"})
-      }else{
-        this.setState({step:2,result:"suc"})
+      if (error) {
+        Notification.open({
+          type: 'error',
+          message: intl.get('notifications.title.sub_failed'),
+          description: error.message
+        });
+        this.setState({step: 2, result: "failed"})
+      } else {
+        this.setState({step: 2, result: "suc"})
       }
     })
 
@@ -216,8 +262,8 @@ class SignByLedger extends React.Component {
 
 
   render() {
-    const {step, address, result} = this.state;
-    const {jobs} = this.props;
+    const {step, result} = this.state;
+    const {jobs, wallet} = this.props;
     return (
       <Card title={intl.get('ledger_sign.title')} className="rs">
         <div className="p15">
@@ -230,7 +276,7 @@ class SignByLedger extends React.Component {
             <div className="mt15">
               <div className="zb-b">
                 <div className="text-center p15">
-                  <span className="label">{intl.get('wallet_determine.default_address')}:{address}</span>
+                  <span className="label">{intl.get('ledger_sign.current_unlock_address')}:{wallet.address}</span>
                   <div className="blk"/>
                   <Button className="mt15" type="primary"
                           onClick={this.connectToLedger}>{intl.get('ledger_sign.connect')}</Button>
