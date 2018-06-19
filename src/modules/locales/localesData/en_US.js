@@ -97,6 +97,7 @@ const notifications = {
     cancel_all_order_suc:"Cancel all {market} orders successfully",
     cancel_order_failed:"Cancel order failed",
     cancel_all_order_failed:"Cancel all {market} orders failed",
+    init_failed: "Init failed",
     sub_failed:"Submit Failed",
     invalid_wallet_type:'Invalid  Wallet Type',
     dif_address:'The address you just unlocked is different from your wallet address, please sign with your wallet address'

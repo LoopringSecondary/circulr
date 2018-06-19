@@ -6,6 +6,7 @@ import {setLocale} from "./common/utils/localeSetting";
 import STORAGE from './modules/storage';
 import Eth from 'LoopringJS/ethereum/eth';
 import Relay from 'LoopringJS/relay/relay';
+import './init'
 
 window.STORAGE = STORAGE;
 const host = STORAGE.settings.get().relay.selected;

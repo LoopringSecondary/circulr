@@ -99,6 +99,7 @@ const notifications = {
     cancel_all_order_suc:"取消全部{market}订单成功",
     cancel_order_failed:"取消订单失败",
     cancel_all_order_failed:"取消全部{market}订单失败",
+    init_failed: "初始化数据失败",
     sub_failed:"提交失败",
     invalid_wallet_type:"不存在的钱包类型",
     dif_address:'您解锁的地址和当前的钱包地址不同，请选择当前钱包的地址进行签名'
