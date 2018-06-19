@@ -11,7 +11,7 @@ const PlaceOrderSign = (props) => {
   const {placeOrder, wallet, dispatch} = props
   const {tradeInfo,signed,unsigned} = placeOrder
   let {warn} = tradeInfo || {};
-  const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
+  const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked'
   let actualSigned = signed && wallet ? signed.filter(item => item !== undefined && item !== null) : []
   let submitDatas = signed && unsigned.length === actualSigned.length ? (
     signed.map((item, index) => {
@@ -23,7 +23,7 @@ const PlaceOrderSign = (props) => {
     e.preventDefault()
     e.stopPropagation()
     const account = wallet.account || window.account
-    if(!account || wallet.unlockType === 'address') {
+    if(!account) {
       Notification.open({
         message: intl.get('trade.place_order_failed'),
         type: "error",

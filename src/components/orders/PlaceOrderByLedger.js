@@ -9,6 +9,7 @@ import Notification from 'LoopringUI/components/Notification';
 import {getXPubKey as getLedgerPublicKey,connect as connectLedger} from "LoopringJS/ethereum/ledger";
 import {wallets} from "../../common/config/data";
 import {trimAll} from "LoopringJS/common/utils";
+import {LedgerAccount} from "LoopringJS/ethereum/account";
 
 const PlaceOrderByLedger = (props) => {
   const {wallet, hardwareWallet, placeOrderByLedger, dispatch} = props
@@ -41,8 +42,10 @@ const PlaceOrderByLedger = (props) => {
     }).then(resp =>{
       if(!resp.error){
         const {chainCode, publicKey} = resp.result;
-        dispatch({type: "placeOrderByLedger/connectedChange", payload: {ledger}});
         dispatch({type: "hardwareWallet/setKeyAndCode", payload: {chainCode, publicKey}});
+        dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger, dpath: `${dpath}/0`}});
+        dispatch({type: "placeOrderByLedger/connectedChange", payload: {ledger}});
+        dispatch({type: 'placeOrderByLedger/confirmAddressChange', payload: {confirmed:true}});
       } else {
         console.log(resp.error)
         Notification.open({
@@ -71,9 +74,9 @@ const PlaceOrderByLedger = (props) => {
       return
     }
     if (address && placeOrderByLedger.ledger) {
-      dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger:placeOrderByLedger.ledger, dpath: `${dpath}/0`}});
+      const path = `${dpath}/0`
       dispatch({type: 'hardwareWallet/reset', payload: {}});
-      dispatch({type: 'sockets/unlocked'})
+      dispatch({type: 'placeOrderByLedger/pathChange', payload: {path}});
       dispatch({type: 'placeOrderByLedger/confirmAddressChange', payload: {confirmed:true}});
     } else {
       Notification.open({type: 'error',  description:intl.get('unlock.connect_ledger_tip')})
@@ -84,10 +87,31 @@ const PlaceOrderByLedger = (props) => {
     if (address) {
       dispatch({type: 'determineWallet/setHardwareWallet', payload: {publicKey, chainCode, dpath, walletType}});
       dispatch({type: 'hardwareWallet/reset', payload: {}});
-      dispatch({type:'layers/showLayer',payload:{id:'determineAddress'}});
+      dispatch({type: 'layers/showLayer', payload: {id: 'chooseLedgerAddress', chooseAddress: chooseAddress}});
     } else {
       Notification.open({type: 'error',  description:intl.get('unlock.connect_ledger_tip')})
     }
+  };
+
+  const chooseAddress = (path) => {
+    connectLedger().then(res => {
+      if (!res.error) {
+        const ledger = res.result;
+        getLedgerPublicKey(path, ledger).then(resp => {
+          if (!resp.error) {
+            const {address} = resp.result;
+            if (address.toLowerCase() === wallet.address.toLowerCase()) {
+              dispatch({type: 'wallet/unlockLedgerWallet', payload: {ledger, dpath: path}});
+              dispatch({type: 'placeOrderByLedger/pathChange', payload: {path}});
+              dispatch({type: 'placeOrderByLedger/connectedChange', payload: {ledger}});
+              dispatch({type: 'placeOrderByLedger/confirmAddressChange', payload: {confirmed:true}});
+            } else {
+              Notification.open({type:'warning',description:intl.get('notifications.title.dif_address')});
+            }
+          }
+        });
+      }
+    });
   };
 
   const steps = [{
@@ -120,13 +144,12 @@ const PlaceOrderByLedger = (props) => {
                   <Button className="mt15" type="default" onClick={unlock}> {intl.get('unlock.actions_unlock')} </Button>
                 </div>
               }
-              {placeOrderByLedger.ledger && !placeOrderByLedger.confirmAddressChange &&
+              {placeOrderByLedger.ledger && address !== wallet.address &&
               <div className="text-center p15">
                 <i className={`fs36 icon-ledgerwallet text-primary`}></i>
                 <div className="mt10">{intl.get('place_order_by_ledger.confirm_unlock_address')}</div>
                 <div className="mt10">{address}</div>
-                <Button className="mt15" type="default" onClick={confirmAddress}>{intl.get('actions.confirm')}</Button>
-                <Button className="mt15" type="default" disabled onClick={moreAddress}> {intl.get('wallet_determine.actions_other_address')} </Button>
+                <Button className="mt15" type="default" onClick={moreAddress}> {intl.get('wallet_determine.actions_other_address')} </Button>
               </div>
               }
             </div>
