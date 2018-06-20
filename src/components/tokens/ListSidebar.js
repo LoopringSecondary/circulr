@@ -55,10 +55,9 @@ function ListTokensSidebar(props) {
       selected: item.symbol
     })
     dispatch({
-      type: 'sockets/filtersChange',
+      type: 'sockets/tokenChange',
       payload: {
-        id:'latestTransaction',
-        filters: {token:item.symbol}
+        token:item.symbol
       }
     })
     // dispatch({
