@@ -355,13 +355,14 @@ async function generateSignData({tradeInfo, order, completeOrder, wallet}) {
     unsigned.push({type: 'order', data:order, completeOrder:completeOrder, address:wallet.address})
   }
   const approveWarn = tradeInfo.warn.filter(item => item.type === "AllowanceNotEnough");
-  if (approveWarn) {
+  if (approveWarn && approveWarn.length > 0) {
     const gasLimit = tradeInfo.gasLimit;
     const gasPrice = tradeInfo.gasPrice;
-    let nonce = await window.STORAGE.wallet.getNonce(wallet.address)
-    if(nonce.error) {
-      throw new Error(nonce.error.message)
+    const nonceRes = await window.RELAY.account.getNonce(wallet.address)
+    if(nonceRes.error) {
+      throw new Error(nonceRes.error.message)
     }
+    let nonce = nonceRes.result
     approveWarn.forEach(item => {
       const tokenConfig = config.getTokenBySymbol(item.value.symbol);
       if (item.value.allowance > 0) {
@@ -373,8 +374,6 @@ async function generateSignData({tradeInfo, order, completeOrder, wallet}) {
       unsigned.push({type: 'tx', data:approve, token:item.value.symbol, index:(item.value.allowance > 0 ? 1 : 0), action: 'ApproveAllowance', address:wallet.address})
       nonce = nonce + 1;
     });
-
-    console.log('    unsigned:', unsigned)
     const account = wallet.account || window.account
     if(wallet.unlockType === 'keystore' || wallet.unlockType === 'mnemonic' || wallet.unlockType === 'privateKey'){
       unsigned.forEach(tx=> {
@@ -387,8 +386,9 @@ async function generateSignData({tradeInfo, order, completeOrder, wallet}) {
         }
       })
     }
-    console.log('    signed:', signed)
   }
+  console.log('    unsigned:', unsigned)
+  console.log('    signed:', signed)
   return {order, signed, unsigned}
 }
 

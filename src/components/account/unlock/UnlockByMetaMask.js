@@ -120,7 +120,7 @@ function MetaMask(props) {
   }
 
   return (
-    <div>
+    <div style={{width:"480px"}}>
       <Modal
         title={intl.get('wallet_meta.unlock_steps_title')}
         visible={metaMask.refreshModalVisible}
@@ -145,20 +145,19 @@ function MetaMask(props) {
         </Steps>
       </Modal>
       <h2 className="text-center text-primary">{intl.get('wallet.title_connect',{walletType:'MetaMask'})}</h2>
-      <div className="blk-md"></div>
       <ul className="list list-md text-center">
         <li>
           {!browserType || browserType === 'Others' &&
-            <Button size="large" style={{width:"260px"}} disabled>{intl.get('wallet_meta.browser_tip')}</Button>
+            <Button className="btn btn-primary btn-block btn-xxlg" size="large" disabled>{intl.get('wallet_meta.browser_tip')}</Button>
           }
           {browserSupported && metamaskState === 'locked' &&
-            <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet_meta.unlock_metaMask_tip')}</Button>
+            <Button className="btn btn-primary btn-block btn-xxlg" size="large" onClick={openToRefresh}>{intl.get('wallet_meta.unlock_metaMask_tip')}</Button>
           }
           {browserSupported && metamaskState === 'notInstalled' &&
-            <Button size="large" style={{width:"260px"}} onClick={openToRefresh}>{intl.get('wallet_meta.install_metaMask_tip')}</Button>
+            <Button className="btn btn-primary btn-block btn-xxlg" size="large" onClick={openToRefresh}>{intl.get('wallet_meta.install_metaMask_tip')}</Button>
           }
           {browserSupported && !metamaskState &&
-            <Button onClick={connectToMetamask} size="large" style={{width:"260px"}}> {intl.get('unlock.actions_connect',{walletType:'MetaMask'})}</Button>
+            <Button className="btn btn-primary btn-block btn-xxlg" onClick={connectToMetamask} size="large"> {intl.get('unlock.actions_connect',{walletType:'MetaMask'})}</Button>
           }
         </li>
         <div className="blk-md"/>

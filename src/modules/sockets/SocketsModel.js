@@ -113,6 +113,7 @@ export default {
     *tokenChange({payload},{call,select,put}){
       const {token} = payload
       yield put({type:'filtersChange', payload:{id:'globalTrend', filters:{token}}})
+      yield put({type:'filtersChange', payload:{id:'latestTransaction', filters:{token}}})
       //TODO all other token change dispatch
     },
     *urlChange({payload},{call,select,put}){

@@ -16,8 +16,9 @@ export default class TokensFm{
   }
   getTotalWorth() {
     const filteredTokens = filterTokens(this.tokens)
+    const balanceTokens = setBalancesAndPrices({balances:this.balance.items,prices:this.marketcap.items,tokens:filteredTokens})
     let totalWorth = toBig(0)
-    filteredTokens.forEach(item => {
+    balanceTokens.forEach(item => {
       const worth = calculateWorthInLegalCurrency(this.marketcap.items, item.symbol, item.balance)
       totalWorth = totalWorth.plus(worth)
     })
@@ -57,11 +58,11 @@ export const sortTokens = (tokens)=>{
   // other tokens
   let otherTokens = _tokens.filter(token => (token.symbol !== 'ETH' && token.symbol !== 'WETH' && token.symbol !== 'LRC'))
   otherTokens = otherTokens.map((token, index) => {
-    // let balance = 0
-    // if(token.balance){
-    //   balance = toBig(token.balance).div('1e' + token.digits).toNumber()
-    // }
-    token.sortByBalance = token.balance
+    let balance = 0
+    if(token.balance){
+      balance = toBig(token.balance).div('1e' + token.digits).toNumber()
+    }
+    token.sortByBalance = balance
     return token
   })
   const sorter = (tokenA, tokenB) => {

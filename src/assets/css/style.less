@@ -71,13 +71,13 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .text-color-dark[class^="icon-"], .text-color-dark[class*=" icon-"] { border: 1px solid @dark-color-1 !important; background: transparent !important; color: @text-color-dark-3 !important; }
 .icon-favorites.active { color: @warning-color; }
 .home { height: 100%; background-color: @blue-darker; background-image: url('../images/bg.png'); background-size: cover; }
-.home-content { position: relative; z-index: 100; height: 100vh; padding-bottom: 120px; }
-.home-content.open { &&, .tab-content { display: block !important; }}
+.home-content { position: relative; z-index: 100; height: 100vh; }
+.home-content.open { &&, .tab-content { display: flex !important; justify-content: center; align-items: center; }}
 .home-content.open h1 { display: none }
 .home-content h1 { font-size: 32px; text-align: center; color: @blue-light !important; margin-bottom: 70px !important; }
-.home-content.open .tab-card { padding-top: 90px; }
-.home-content.open .tab-content { width: 620px; background: @transparent; border: 1px solid @transparent; padding: 50px; margin: 0 auto; }
-.home-content.open .tab-content h2 { font-size: 32px; margin: 40px 0 60px; }
+.home-content.open .tab-card { padding-top: 10px; }
+.home-content.open .tab-content { width: 560px; height: 280px; background: @transparent; border: 1px solid @transparent; padding: 0 50px 30px; margin: 0 auto; }
+.home-content.open .tab-content h2 { font-size: 20px; margin: 0px !important; }
 .home-content.open .tab-content li { font-size: 16px; }
 .home-content .password-strong { font-size: 14px; margin: 30px 0; }
 .home-content .tab-card { text-align: center; }
@@ -93,10 +93,9 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .home-content .tab-card .item:hover, .home-content .tab-card .item.active:hover, .home-content .tab-card .item.active { background: fade(@blue-light, 87%) !important }
 .home-content .tab-card .item:hover a, .home-content .tab-card .item.active a, .home-content .tab-card .item:hover h4 { color: @text-color-dark; }
 .home-content .tab-card.inup { text-align: center; }
-.home-content .tab-card.inup .item { position: relative; width: 60px; height: 60px; line-height: 60px; padding: 0; margin: 10px; background-color: fade(@blue-dark, 87%); text-align: center; color: #1C60FF; }
-.home-content .tab-card.inup .item i { font-size: 24px; }
-.home-content .tab-card.inup .item:hover h4 { display: block; position: absolute; width: 120px; margin-top: 10px; margin-left: -30px !important; text-align: center; font-size: 12px; line-height: 1.2; font-weight: normal; }
-.home-content .tab-card.inup .item h4 { display: none; }
+.home-content .tab-card.inup .item { position: relative; width: 100px; height: 120px; line-height: 80px; padding: 0; margin: 10px; background-color: fade(@blue-dark, 87%); text-align: center; color: #1C60FF; }
+.home-content .tab-card.inup .item i { font-size: 32px; }
+.home-content .tab-card.inup .item h4 { position: relative; top: 0px; text-align: center; font-size: 12px; line-height: 1.2; font-weight: normal;}
 .home-content .notice { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 20px; }
 .home-content .notice i { display: block; width: 24px; height: 24px; line-height: 24px; font-size: 16px; }
 .home-content .notice div { padding: 10px; }
@@ -253,3 +252,10 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .account-bar ul li .language .icon { position: relative; top: 6px; left: 2px }
 sup.badge { position: absolute; top: -4px; right: -4px; min-width: 6px; width: 6px; height: 6px; padding: 0; border-radius: 50%; background: #E95A5A; }
 .badge { position: relative; display: inline-block; min-width: 24px; margin-left: 5px; padding: 2px 6px 3px 6px; border-radius: 10px; color: #fff; text-align: center; vertical-align: baseline; text-align: center; white-space: nowrap; font-style: normal; font-size: inherit; line-height: 1;}
+.loopr-qrcode{ background: @dark-color; padding: 40px 20px 20px 40px; text-align: center; }
+.loopr-qrcode span{ color: @text-color; font-size:@font-size-md}
+.loopr-notice{ background: @dark-color; padding: 40px 30px 0 20px; color: @text-color-2; font-size:@font-size-base }
+
+
+
+

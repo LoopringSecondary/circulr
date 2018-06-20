@@ -36,7 +36,7 @@ function UnlockByLoopr(props) {
   }
 
   return (
-    <div className="text-center">
+    <div className="d-flex justify-content-center">
       {
         false && scanAddress.address &&
         <div>
@@ -46,19 +46,19 @@ function UnlockByLoopr(props) {
       }
       {
         !scanAddress.address &&
-        <div>
-          <div style={{width:"320px"}} className="m-auto bg-white text-center p10">
-            {scanAddress && scanAddress.UUID && <QRCode value={JSON.stringify({type:'UUID', value:scanAddress.UUID})} size={300} level='H'/>}
-          </div>
-          <CountDown style={{ fontSize: 20 }} target={targetTime} onEnd={refresh}/>
+        <div className="">
+          <div className="loopr-qrcode">
+            {scanAddress && scanAddress.UUID && <QRCode value={JSON.stringify({type:'UUID', value:scanAddress.UUID})} size={160} level='H'/>}
+            <CountDown style={{ fontSize: 20 }} target={targetTime} onEnd={refresh}/>
+            </div>
         </div>
       }
 
-      <div style={{width:"320px"}} className="pt15 pb15 text-left m-auto" >
-        1. {intl.get('unlock_by_loopr.instruction_download')}
-        <br />
+      <div className="loopr-notice" >
+        <p>1. {intl.get('unlock_by_loopr.instruction_download')}</p>
+        <p>
         2. {intl.get('unlock_by_loopr.instruction_scan')}
-        <br />
+        </p>
         {intl.get('unlock_by_loopr.instruction_warn')}
         <br />
       </div>
