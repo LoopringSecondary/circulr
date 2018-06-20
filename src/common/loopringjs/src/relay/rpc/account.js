@@ -58,6 +58,10 @@ export default class Account
     {
         return getGasPrice(this.host);
     }
+
+    getNonce (owner){
+      return getNonce(this.host,owner)
+    }
 }
 
 /**
@@ -344,4 +348,30 @@ export async function getGasPrice (host)
         method: 'post',
         body
     });
+}
+
+
+/**
+ * Get nonce of given address
+ * @returns {Promise}
+ */
+export async function getNonce (host,owner)
+{
+  try
+  {
+    validator.validate({value: owner, type: 'ETH_ADDRESS'});
+  }
+  catch (e)
+  {
+    return Promise.resolve(new Response(code.PARAM_INVALID.code, code.PARAM_INVALID.msg));
+  }
+  let body = {};
+  body.method = 'loopring_getNonce';
+  body.params = [{owner}];
+  body.id = id();
+  body.jsonrpc = '2.0';
+  return request(host, {
+    method: 'post',
+    body
+  });
 }
