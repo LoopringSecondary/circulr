@@ -19,7 +19,11 @@ class Unlock extends React.Component {
     const param = location.pathname.replace(`${match.path}/`, '')
     if(param){
       //TODO to fix bug, socket not connected
-      this.changeTab(param)
+      if(param === '/unlock') {
+        this.changeTab('loopr')
+      } else {
+        this.changeTab(param)
+      }
     }
   }
 
