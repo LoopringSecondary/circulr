@@ -42,10 +42,10 @@ function Ledgers(props) {
     <div className="form-dark">
       <span className="label">{intl.get('wallet_determine.default_address')}:{address}</span>
       <div className="blk"/>
-      <div>
-        <Button className="btn btn-primary btn-xlg btn-block" onClick={unlock}>{intl.get('unlock.actions_unlock')}</Button>
+      <div style={{width:"460px"}}>
+        <Button className="btn btn-primary btn-xxlg btn-block" onClick={unlock}>{intl.get('unlock.actions_unlock')}</Button>
         <div className="blk"/>
-        <Button className="btn btn-primary btn-xlg btn-block" onClick={moreAddress}>{intl.get('wallet_determine.actions_other_address')}</Button>
+        <Button className="btn btn-primary btn-xxlg btn-block" onClick={moreAddress}>{intl.get('wallet_determine.actions_other_address')}</Button>
       </div>
     </div>
   )
