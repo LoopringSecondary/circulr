@@ -16,8 +16,9 @@ export default class TokensFm{
   }
   getTotalWorth() {
     const filteredTokens = filterTokens(this.tokens)
+    const balanceTokens = setBalancesAndPrices({balances:this.balance.items,prices:this.marketcap.items,tokens:filteredTokens})
     let totalWorth = toBig(0)
-    filteredTokens.forEach(item => {
+    balanceTokens.forEach(item => {
       const worth = calculateWorthInLegalCurrency(this.marketcap.items, item.symbol, item.balance)
       totalWorth = totalWorth.plus(worth)
     })
