@@ -58,11 +58,11 @@ export const sortTokens = (tokens)=>{
   // other tokens
   let otherTokens = _tokens.filter(token => (token.symbol !== 'ETH' && token.symbol !== 'WETH' && token.symbol !== 'LRC'))
   otherTokens = otherTokens.map((token, index) => {
-    // let balance = 0
-    // if(token.balance){
-    //   balance = toBig(token.balance).div('1e' + token.digits).toNumber()
-    // }
-    token.sortByBalance = token.balance
+    let balance = 0
+    if(token.balance){
+      balance = toBig(token.balance).div('1e' + token.digits).toNumber()
+    }
+    token.sortByBalance = balance
     return token
   })
   const sorter = (tokenA, tokenB) => {
