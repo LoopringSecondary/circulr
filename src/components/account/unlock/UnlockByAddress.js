@@ -27,7 +27,7 @@ function UnlockByAddress(props) {
     })
   };
   return (
-    <div className="text-left">
+    <div style={{width:"520px"}}>
       <h2 className="text-center text-primary">{intl.get('address.paste_address_title')}</h2>
       <div className="blk-md"></div>
       <Form layout="horizontal">

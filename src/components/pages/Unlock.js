@@ -78,30 +78,8 @@ class Unlock extends React.Component {
     return (
       <Layout.LayoutHome className="h-full">
         <div className="body home">
-          <div className="home-content d-flex align-items-center justify-content-center open">
+          <div className="home-content open">
             <div>
-              <h1></h1>
-              <ul className="tab tab-card d-flex justify-content-center inup">
-                <li className={`item ${pathname==='/unlock/address' ? 'active':''}`}>
-                  <a data-toggle="tab" onClick={() => this.changeTab('address')}><i className="icon-view"/><h4>{intl.get('wallet_type.address')}</h4>
-                  </a>
-                </li>
-                <li className={`item ${pathname==='/unlock/loopr' ? 'active':''}`}>
-                  <a data-toggle="tab" onClick={() => this.changeTab('loopr')}><i className="icon-qrcode"/>
-                    <h4>Loopr</h4></a>
-                </li>
-                <li className={`item ${pathname==='/unlock/metamask' ? 'active':''}`}>
-                  <a data-toggle="tab"  onClick={() => this.changeTab('metamask')}><i className="icon-metamaskwallet"/><h4>{intl.get('wallet_type.metamask')}</h4></a>
-                </li>
-                <li className={`item ${pathname==='/unlock/ledger' ? 'active':''}`}>
-                  <a  data-toggle="tab" onClick={() => this.unlock('ledger','ledger')}><i className="icon-ledgerwallet"/><h4>{intl.get('wallet_type.ledger')}</h4></a>
-                </li>
-                <li className="item remove" id="inupRemove">
-                  <a href="#"><i className="icon-remove"/></a>
-                </li>
-              </ul>
-            </div>
-
             <Switch>
               <Route path={`${url}/loopr`} exact render={() =>
                 <div className="tab-content">
@@ -171,6 +149,30 @@ class Unlock extends React.Component {
               />
               <Redirect path={`${match.url}/`} to={`${match.url}/generateWallet`}/>
             </Switch>
+              <h1></h1>
+              <ul className="tab tab-card d-flex justify-content-center inup">
+               
+                <li className={`item ${pathname==='/unlock/loopr' ? 'active':''}`}>
+                  <a data-toggle="tab" onClick={() => this.changeTab('loopr')}><i className="icon-qrcode"/>
+                    <h4>Loopr</h4></a>
+                </li>
+                <li className={`item ${pathname==='/unlock/address' ? 'active':''}`}>
+                  <a data-toggle="tab" onClick={() => this.changeTab('address')}><i className="icon-view"/><h4>{intl.get('wallet_type.address')}</h4>
+                  </a>
+                </li>
+                <li className={`item ${pathname==='/unlock/metamask' ? 'active':''}`}>
+                  <a data-toggle="tab"  onClick={() => this.changeTab('metamask')}><i className="icon-metamaskwallet"/><h4>{intl.get('wallet_type.metamask')}</h4></a>
+                </li>
+                <li className={`item ${pathname==='/unlock/ledger' ? 'active':''}`}>
+                  <a  data-toggle="tab" onClick={() => this.unlock('ledger','ledger')}><i className="icon-ledgerwallet"/><h4>{intl.get('wallet_type.ledger')}</h4></a>
+                </li>
+                {/*<li className="item remove" id="inupRemove">
+                  <a href="#"><i className="icon-remove"/></a>
+                </li>*/}
+              </ul>
+            </div>
+
+            
           </div>
         </div>
         <div className="overlay" data-overlay="54"></div>
