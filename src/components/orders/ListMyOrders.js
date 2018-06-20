@@ -37,7 +37,6 @@ const ListHeader = (props) => {
     }else{
       Notification.open({type: 'warning', message: intl.get('order_cancel.no_orders')})
     }
-
   };
   return (
     <div className="form-inline form-dark">

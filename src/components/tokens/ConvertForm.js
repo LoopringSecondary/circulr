@@ -59,7 +59,7 @@ function ConvertForm(props) {
           gasPrice: toHex(toBig(gasPrice).times(1e9)),
           chainId: config.getChainId(),
           value,
-          nonce: toHex(await window.STORAGE.wallet.getNonce(address))
+          nonce: toHex(await window.RELAY.account.getNonce(address))
       };
 
         dispatch({type:'convertConfirm/init',payload:{tx,amount,token}});
