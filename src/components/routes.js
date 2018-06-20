@@ -19,8 +19,6 @@ const UnLogged = ()=>{
   }else{
     return (
       <Switch>
-        <Route path="/" exact component={Pages.Home} />
-        <Route path="/home" component={Pages.Home} />
         <Route path="/unlock" component={Pages.Unlock} />
       </Switch>
     )
@@ -37,7 +35,7 @@ const Logged = ()=>{
       </Switch>
     )
   }else{
-    return <Redirect to="/home" />
+    return <Redirect to="/unlock" />
   }
 }
 
@@ -49,12 +47,12 @@ export default class Routes extends React.Component {
     return (
       <div>
           <Switch>
-            <Route path="/" exact component={UnLogged} />
-            <Route path="/home" component={UnLogged} />
             <Route path="/unlock" component={UnLogged} />
             <Route path="/wallet" render={Logged} />
             <Route path="/trade" render={Logged} />
             <Route path="/dev" exact component={Pages.Test} />
+            <Redirect form="/" to="/unlock"  />
+            <Redirect form="/home" to="/unlock"  />
           </Switch>
           <Orders.Modals />
           <Fills.Modals />

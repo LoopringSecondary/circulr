@@ -147,11 +147,11 @@ class Unlock extends React.Component {
                   <Account.UnlockByAddress/>
                 </div>}
               />
-              <Redirect path={`${match.url}/`} to={`${match.url}/generateWallet`}/>
+              <Redirect path={`${match.url}`} to={`${match.url}/loopr`}/>
             </Switch>
               <h1></h1>
               <ul className="tab tab-card d-flex justify-content-center inup">
-               
+
                 <li className={`item ${pathname==='/unlock/loopr' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('loopr')}><i className="icon-qrcode"/>
                     <h4>Loopr</h4></a>
@@ -172,7 +172,7 @@ class Unlock extends React.Component {
               </ul>
             </div>
 
-            
+
           </div>
         </div>
         <div className="overlay" data-overlay="54"></div>
