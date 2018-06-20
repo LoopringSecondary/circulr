@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'dva'
 import {TickersFm,TickerFm} from 'modules/tickers/formatters'
+import routeActions from 'common/utils/routeActions'
 import storage from '../../modules/storage'
 import intl from 'react-intl-universal'
 
@@ -63,62 +64,13 @@ function ListAllTickers(props) {
     })
   }
   const selectTicker= (item)=>{
-    dispatch({
-      type:'sockets/filtersChange',
-      payload:{
-        id:'tickers',
-        filters:{market:item.market}
-      }
-    })
-    dispatch({
-      type:'sockets/filtersChange',
-      payload:{
-        id:'depth',
-        filters:{market:item.market}
-      }
-    })
-    dispatch({
-      type:'sockets/filtersChange',
-      payload:{
-        id:'trades',
-        filters:{market:item.market}
-      }
-    })
-    dispatch({
-      type:'sockets/extraChange',
-      payload:{
-        id:'loopringTickers',
-        extra:{current:item.market}
-      }
-    })
-    dispatch({
-      type:'orders/filtersChange',
-      payload:{
-        id:'MyOpenOrders',
-        filters:{market:item.market}
-      }
-    })
-    dispatch({
-      type:'fills/filtersChange',
-      payload:{
-        id:'MyFills',
-        filters:{market:item.market}
-      }
-    });
-
-    dispatch({
-      type:'placeOrder/pairChange',
-      payload:{
-        pair:item.market
-      }
-    })
+    routeActions.gotoPath(`/trade/${item.market}`)
     storage.markets.setRecent(item.market)
   }
   const actions = {
     selectTicker,
     toggleTickerFavored
   }
-
   return (
     <div>
 	    <div className="token-select">

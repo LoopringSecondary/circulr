@@ -109,13 +109,6 @@ export default {
           filters:{market:market}
         }
       })
-      yield put({
-        type:'extraChange',
-        payload:{
-          id:'loopringTickers',
-          extra:{current:market} // for current page
-        }
-      })
     },
     *tokenChange({payload},{call,select,put}){
       const {token} = payload
