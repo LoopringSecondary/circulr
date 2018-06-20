@@ -262,6 +262,7 @@ export default {
     order_expired_tip: "This order is already expired",
     actions_wait_expire: 'Wait for expiring automatically',
     auto_expire_title: 'Order expired costs no gas',
+    no_orders:'no orders to cancel'
   },
   settings: {
     title: 'Settings',
