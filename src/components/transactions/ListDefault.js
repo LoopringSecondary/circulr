@@ -115,9 +115,9 @@ const Option = Select.Option;
               <tr>
                 <th className="text-left">{intl.get('tx.type')}</th>
                 <th className="text-left">{intl.get('tx.gas')}</th>
-                <th className="text-left">{intl.get('tx.block')}</th>
+                {false && <th className="text-left">{intl.get('tx.block')}</th>}
                 <th className="text-left">{intl.get('tx.nonce')}</th>
-                <th className="text-left">{intl.get('tx.txHash')}</th>
+                {false && <th className="text-left">{intl.get('tx.txHash')}</th>}
                 <th className="text-left">{intl.get('tx.created')}</th>
                 <th className="text-left">{intl.get('tx.status')}</th>
               </tr>
@@ -135,9 +135,9 @@ const Option = Select.Option;
                     <tr key={index} className="cursor-pointer" onClick={actions.gotoDetail}>
                       <td className="text-left">{renders.type(txFm)}</td>
                       <td className="text-left">{renders.gas(txFm)}</td>
-                      <td className="text-left">{item.blockNumber}</td>
+                      {false && <td className="text-left">{item.blockNumber}</td>}
                       <td className="text-left">{item.nonce}</td>
-                      <td className="text-left">{renders.txHash(txFm, actions)}</td>
+                      {false && <td className="text-left">{renders.txHash(txFm, actions)}</td>}
                       <td className="text-left">{renders.createTime(txFm)}</td>
                       <td className="">{renders.status(txFm,actions,index)}</td>
                     </tr>
