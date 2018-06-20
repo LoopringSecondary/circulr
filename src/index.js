@@ -6,7 +6,9 @@ import {setLocale} from "./common/utils/localeSetting";
 import STORAGE from './modules/storage';
 import Eth from 'LoopringJS/ethereum/eth';
 import Relay from 'LoopringJS/relay/relay';
-import './init'
+import {init} from './init'
+import Notification from 'LoopringUI/components/Notification'
+import intl from 'react-intl-universal'
 
 window.STORAGE = STORAGE;
 const host = STORAGE.settings.get().relay.selected;
@@ -46,4 +48,35 @@ app.start('#root')
 // window.STORE = app._store
 
 export const store = app._store
+
+init().then(res=>{
+  const tokens = new Array()
+  tokens.push({
+    "symbol": "ETH",
+    "digits": 18,
+    "address": "",
+    "precision": 6,
+  })
+  res.result.forEach(item=>{
+    if(!item.deny) {
+      const digit = Math.log10(item.decimals)
+      tokens.push({
+        "symbol": item.symbol,
+        "digits": digit,
+        "address": item.protocol,
+        "precision": Math.min(digit, 6),
+      })
+    }
+  })
+  STORAGE.settings.setTokensConfig(tokens)
+  store.dispatch({type:'tokens/itemsChange', payload:{items:tokens}})
+}).catch(error=> {
+  console.log(error)
+  Notification.open({
+    message:intl.get('notifications.title.init_failed'),
+    description:intl.get('notifications.message.failed_fetch_data_from_server'),
+    type:'error'
+  })
+})
+
 export default app

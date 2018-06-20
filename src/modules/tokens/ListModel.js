@@ -63,7 +63,10 @@ export default {
       }
     },
     itemsChange(state,{payload}){
-
+      return {
+        ...state,
+        ...payload,
+      }
     },
     itemChange(state,{payload}){
     },
