@@ -64,29 +64,10 @@ const PlaceOrderByLedger = (props) => {
     });
   };
 
-  const confirmAddress = () => {
-    if(wallet.address !== address) {
-      Notification.open({
-        message:intl.get('notifications.title.unlock_fail'),
-        description:intl.get('notifications.message5.unlock_diff_address_to_sign', {address:wallet.address}),
-        type:'error'
-      })
-      return
-    }
-    if (address && placeOrderByLedger.ledger) {
-      const path = `${dpath}/0`
-      dispatch({type: 'hardwareWallet/reset', payload: {}});
-      dispatch({type: 'placeOrderByLedger/pathChange', payload: {path}});
-      dispatch({type: 'placeOrderByLedger/confirmAddressChange', payload: {confirmed:true}});
-    } else {
-      Notification.open({type: 'error',  description:intl.get('unlock.connect_ledger_tip')})
-    }
-  }
-
   const moreAddress = () => {
     if (address) {
       dispatch({type: 'determineWallet/setHardwareWallet', payload: {publicKey, chainCode, dpath, walletType}});
-      dispatch({type: 'hardwareWallet/reset', payload: {}});
+      // dispatch({type: 'hardwareWallet/reset', payload: {}});
       dispatch({type: 'layers/showLayer', payload: {id: 'chooseLedgerAddress', chooseAddress: chooseAddress}});
     } else {
       Notification.open({type: 'error',  description:intl.get('unlock.connect_ledger_tip')})

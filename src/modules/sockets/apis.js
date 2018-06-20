@@ -171,7 +171,7 @@ const transfromers = {
     queryTransformer:(payload)=>{
       const {filters} = payload
       return JSON.stringify({
-         "currency": filters.currency,
+         "currency": filters.currency || storage.settings.get().preference.currency,
       })
     },
     resTransformer:(id,res)=>{
