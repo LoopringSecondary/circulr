@@ -25,14 +25,19 @@ const ListHeader = (props) => {
   };
 
   const cancelAll = () => {
-    const {market} = orders.filters;
-    const type = market ? 4 : 2;
-    if (wallet.unlockType) {
-      dispatch({type: 'flexCancelOrder/init', payload: {type, market}});
-      dispatch({type: 'layers/showLayer', payload: {id: 'flexCancelOrder'}})
-    } else {
-      Notification.open({type: 'warning', message: intl.get('notifications.title.unlock_first')})
+    if(orders && orders.length >0){
+      const {market} = orders.filters;
+      const type = market ? 4 : 2;
+      if (wallet.unlockType) {
+        dispatch({type: 'flexCancelOrder/init', payload: {type, market}});
+        dispatch({type: 'layers/showLayer', payload: {id: 'flexCancelOrder'}})
+      } else {
+        Notification.open({type: 'warning', message: intl.get('notifications.title.unlock_first')})
+      }
+    }else{
+      Notification.open({type: 'warning', message: intl.get('order_cancel.no_orders')})
     }
+
   };
   return (
     <div className="form-inline form-dark">

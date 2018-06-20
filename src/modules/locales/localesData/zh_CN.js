@@ -263,7 +263,8 @@ export default {
     order_validity:'订单有效期',
     order_expired_tip:"该订单已经过期",
     actions_wait_expire:'等待订单自动失效',
-    auto_expire_title:'订单自动失效不会消耗ETH Gas'
+    auto_expire_title:'订单自动失效不会消耗ETH Gas',
+    no_orders:'没有订单需要取消'
 
   },
   settings: {
