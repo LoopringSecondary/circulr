@@ -25,7 +25,7 @@ const ListHeader = (props) => {
   };
 
   const cancelAll = () => {
-    if(orders && orders.length >0){
+    if(orders&& orders.items && orders.items.length >0 && orders.items.find(item => item.status === 'open')){
       const {market} = orders.filters;
       const type = market ? 4 : 2;
       if (wallet.unlockType) {
