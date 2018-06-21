@@ -66,7 +66,7 @@ function Preference(props) {
             </Select>
           )}
         </Form.Item>
-        <Form.Item label={intl.get('settings.timezone')} colon={false}>
+        {false && <Form.Item label={intl.get('settings.timezone')} colon={false}>
           {form.getFieldDecorator('timezone', {
             initialValue:settings.preference.timezone,
             rules:[]
@@ -84,7 +84,7 @@ function Preference(props) {
               )}
             </Select>
           )}
-        </Form.Item>
+        </Form.Item>}
         <div className="blk"></div>
         <Button className="btn btn-o-dark btn-block btn-xlg" onClick={handleReset}>{intl.get('actions.reset')}</Button>
     </div>
