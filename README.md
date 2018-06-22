@@ -7,4 +7,4 @@ Circular is a Loopring DEX frontend without accessing to users' private-keys. Us
 Circulr is not responsive and is designed for desktop browsers only. You can try it out on https://circulr.loopring.io.
 
 ### Documentations
-For more information regarding this project, please checkout its [github pages](https://loopring.github.io/circular).
+For more information regarding this project, please checkout its [github pages](https://loopring.github.io/circulr).
