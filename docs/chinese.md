@@ -19,8 +19,6 @@
 
 ## start
 
-```
-
 1. npm install
 2. cd common/loopringjs & npm install 
 
@@ -32,4 +30,26 @@
 4. npm start
 5. 访问 https://localhost:8000 (注意: https)
 
+## 部署
 
+1. clone 项目到本地
+
+2. build项目
+
+   ```
+   npm run build
+   ```
+
+3. [注册](https://firebase.google.com/)firebase account(如果已经有账号，请继续下一步)
+
+4. 安装 firebase-cli  
+
+  ```
+  npm install -g firebase-tools
+  ```
+
+5. deploy
+
+   ```
+   firebase  deploy
+   ```

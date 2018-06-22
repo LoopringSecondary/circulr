@@ -20,9 +20,8 @@
 - Dva: Lightweight front-end framework based on redux, redux-saga and react-router. [Link](https://github.com/dvajs/dva)
 
 
-## start
+## Start
 
-```
 1. npm install
 2. cd common/loopringjs & npm install 
 
@@ -34,5 +33,26 @@
 4. npm start
 5. vist https://localhost:8000 (Note: https)
 
+## Deploy
 
+1. clone our project to local and cd the directory
 
+2. build project
+
+   ```
+   npm run build
+   ```
+   
+3. [sign up](https://firebase.google.com/) for your firebase account(if you already have one, please continue to step 4)
+
+4. install firebase-cli  
+
+  ```
+  npm install -g firebase-tools
+  ```
+
+5. deploy
+
+  ```
+  firebase  deploy
+  ```
