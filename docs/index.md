@@ -27,8 +27,11 @@ Circulr is not responsive and is designed for desktop browsers only. You can try
 
 ## Start
 
-1. npm install
-2. cd common/loopringjs & npm install 
+```
+npm install
+cd common/loopringjs
+npm install
+```
 
 ## run for develop with a https dev server
 
@@ -44,9 +47,9 @@ Circulr is not responsive and is designed for desktop browsers only. You can try
 
 2. build project
 
-   ```
-   npm run build
-   ```
+  ```
+  npm run build
+  ```
    
 3. [sign up](https://firebase.google.com/) for your firebase account(if you already have one, please continue to step 4)
 
