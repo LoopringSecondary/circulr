@@ -1,1 +1,2 @@
-theme: jekyll-theme-minimal
+remote_theme: dong77/minimal
+description: Circulr is a Loopring DEX frontend.
