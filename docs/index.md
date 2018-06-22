@@ -1,6 +1,6 @@
 ## Documents in Other Languages
 
-- [中文文档（Chinese）](chinese)
+- [Chinese (中文文档)](chinese.md)
 
 ## About
 Circular is a Loopring DEX frontend without accessing to users' private-keys. Users can trade ERC20 tokens with others by scaning order QR code.
