@@ -44,9 +44,9 @@
 
 4. 安装 firebase-cli  
 
-  ```
-  npm install -g firebase-tools
-  ```
+   ```
+   npm install -g firebase-tools
+   ```
 
 5. deploy
 
