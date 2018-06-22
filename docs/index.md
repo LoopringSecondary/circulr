@@ -3,6 +3,9 @@
 - [中文文档（Chinese）](chinese)
 
 ## About
+Circular is a Loopring DEX frontend without accessing to users' private-keys. Users can trade ERC20 tokens with others by scaning order QR code.
+
+Circulr is not responsive and is designed for desktop browsers only. You can try it out on https://circulr.loopring.io.
 
 ## Features
 - Loopring protocol: A web-based dex with Loopring protocol integration
