@@ -34,8 +34,9 @@
 npm run build 
 
 ##  deploy
+- npm run build
+- npm run deploy( need firebase account )
 
-todo
 ```
 
 

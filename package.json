@@ -3,6 +3,7 @@
   "scripts": {
     "start": "roadhog server",
     "build": "roadhog build",
+    "deploy": "firebase deploy",
     "lint": "eslint --ext .js src test"
   },
   "theme": "./theme.js",

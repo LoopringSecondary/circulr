@@ -13,3 +13,4 @@ package-lock.json
 # misc
 .DS_Store
 npm-debug.log*
+firebase-debug.log
