@@ -1,4 +1,4 @@
-# Circulr - Loopring ERC20 Wallet DEX
+# Circulr - Loopring DEX
 
 ### Development 
 
