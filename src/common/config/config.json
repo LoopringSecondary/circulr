@@ -42,6 +42,10 @@
   ],
   "relays": [
     {
+      "value": "//bootstrap.loopring.io",
+      "name": "Pre-Production Relay"
+    },
+    {
       "value": "//pre-relay1.loopring.io",
       "name": "Pre-Production Relay"
     },
