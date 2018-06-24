@@ -28,9 +28,9 @@ Circulr is not responsive and is designed for desktop browsers only. You can try
 ## Start
 
 ```
-npm install
-cd common/loopringjs
-npm install
+1. npm install
+2. cd src/common/loopringjs & npm install
+3. cd project path and then run 'npm run start'
 ```
 
 ## run for develop with a https dev server
