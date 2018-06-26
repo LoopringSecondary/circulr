@@ -8,7 +8,7 @@ import config from 'common/config'
 import {Currency} from 'modules/containers'
 import {FormatAmount} from 'modules/formatter/FormatNumber'
 import routeActions from 'common/utils/routeActions'
-import {getDisplaySymbol} from 'LoopringJS/common/formatter'
+import {toFixed, getDisplaySymbol} from 'LoopringJS/common/formatter'
 
 function ListTokensSidebar(props) {
   console.log('ListTokensSidebar component render',props)
@@ -126,7 +126,7 @@ function ListTokensSidebar(props) {
     <span className="">
         {totalWorth && totalWorth.gt(0) &&
         <span>{getDisplaySymbol(settings.preference.currency)}
-          {FormatAmount({value:totalWorth.toString(10), precision:2, tooptip:false})}
+          {toFixed(totalWorth, 2).toString(10)}
           </span>
         }
       {(!totalWorth || !totalWorth.gt(0)) &&
