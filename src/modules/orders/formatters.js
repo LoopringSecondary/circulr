@@ -88,7 +88,7 @@ export function formatAmountByMarket(amount, tokenConfig, marketConfig) {
 
 export function calculateWorthInLegalCurrency(marketcapItems, symbol, amount) {
   const price = getPriceBySymbol({prices:marketcapItems, symbol})
-  return amount.times(price.price)
+  return fm.toBig(amount).times(price.price)
 }
 
 export function calculateLrcFeeInEth(marketcapItems, totalWorth, milliLrcFee) {
