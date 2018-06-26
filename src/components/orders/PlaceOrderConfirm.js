@@ -33,7 +33,7 @@ function PlaceOrderConfirm(props) {
   const signedOrder = signed.find(item => item && item.type === 'order')
   let qrCodeData = ''
   if(tradeInfo.orderType === 'p2p_order' && unsignedOrder.completeOrder && unsignedOrder.completeOrder.authPrivateKey && signedOrder && signedOrder.orderHash) {
-    qrCodeData = JSON.stringify({type:'p2p_order', data:{authPrivateKey:unsignedOrder.completeOrder.authPrivateKey, orderHash:signedOrder.orderHash}})
+    qrCodeData = JSON.stringify({type:'p2p_order', value:{authPrivateKey:unsignedOrder.completeOrder.authPrivateKey, orderHash:signedOrder.orderHash}})
   }
 
   async function doSubmit() {
