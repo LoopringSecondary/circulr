@@ -20,8 +20,8 @@
 ## start
 
 1. npm install
-2. cd common/loopringjs & npm install 
-3. 回到项目目录后，npm run start
+2. cd src/common/loopringjs && npm install 
+3. cd ../../ && npm run start
 
 ## 以开发模式启动https服务
 
