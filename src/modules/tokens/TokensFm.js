@@ -11,8 +11,8 @@ export default class TokensFm{
   }
   getList(){
     const filteredTokens = filterTokens(this.tokens)
-    const sortedTokens = sortTokens(filteredTokens)
-    return setBalancesAndPrices({balances:this.balance.items,prices:this.marketcap.items,tokens:sortedTokens})
+    const balanceTokens = setBalancesAndPrices({balances:this.balance.items,prices:this.marketcap.items,tokens:filteredTokens})
+    return sortTokens(balanceTokens)
   }
   getTotalWorth() {
     const filteredTokens = filterTokens(this.tokens)
@@ -57,22 +57,14 @@ export const sortTokens = (tokens)=>{
   const lrcToken = _tokens.find(token => token.symbol === 'LRC')
   // other tokens
   let otherTokens = _tokens.filter(token => (token.symbol !== 'ETH' && token.symbol !== 'WETH' && token.symbol !== 'LRC'))
-  otherTokens = otherTokens.map((token, index) => {
-    let balance = 0
-    if(token.balance){
-      balance = toBig(token.balance).div('1e' + token.digits).toNumber()
-    }
-    token.sortByBalance = balance
-    return token
-  })
   const sorter = (tokenA, tokenB) => {
-    if(tokenA !== undefined && tokenB !== undefined && tokenA.sortByBalance !== undefined && tokenB.sortByBalance !== undefined) {
-      const pa = toBig(tokenA.sortByBalance);
-      const pb = toBig(tokenB.sortByBalance);
+    if(tokenA !== undefined && tokenB !== undefined && tokenA.balance !== undefined && tokenB.balance !== undefined) {
+      const pa = tokenA.balance;
+      const pb = tokenB.balance;
       if (pa.eq(pb)) {
         return tokenA.symbol.toUpperCase() < tokenB.symbol.toUpperCase() ? -1 : 1;
       } else {
-        return pb.gt(pa);
+        return pb.minus(pa);
       }
     }
   };
