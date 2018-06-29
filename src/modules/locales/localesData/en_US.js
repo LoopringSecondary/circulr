@@ -57,6 +57,7 @@ const words = {
   },
   slow:'Slow',
   fast:'Fast',
+  expired:'Expired'
 }
 const types = {
   trade_side: {
@@ -632,6 +633,11 @@ export default {
       qrcode:'Scan QRCode',
       sign:'Sign && Send',
       result:'Result'
+    },
+    tips:{
+      download:'Download Loopr-IOS',
+      scan: 'Open your Loopr wallet, scan the QRcode and submit',
+      warn: 'Please scan as soon as possible. When expired, please place an new order to generate new QRcode',
     }
   },
   metamask_sign:{

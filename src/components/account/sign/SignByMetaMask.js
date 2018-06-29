@@ -96,11 +96,10 @@ class SignByMetaMask extends React.Component {
     if(!(window.web3 && window.web3.eth.accounts[0])){
       Notification.open({type:'warning',message:intl.get('metamask_sign.connect_tip')})
       return;
-    }else if(window.web3.eth.accounts[0] !==   this.props.wallet.address){
+    }else if(window.web3.eth.accounts[0].toLowerCase() !==  this.props.wallet.address.toLowerCase()){
       Notification.open({type:'warning',description:intl.get('notifications.title.dif_address')});
       return;
     }
-
     const wallet = new MetaMaskAccount(window.web3);
     switch (job.type) {
       case 'convert':
@@ -263,9 +262,7 @@ class SignByMetaMask extends React.Component {
               </div>
             </div>}
             {step ===2 && <div>
-
               {result === 'suc' ? '成功' :'失败'}
-
             </div>}
           </div>
       </Card>

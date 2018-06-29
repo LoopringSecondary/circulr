@@ -44,7 +44,7 @@ class CancelOrderConfirm extends React.Component {
     };
     tx.gasLimit = config.getGasLimitByType(type).gasLimit;
     tx.gasPrice = toHex(toBig(getLastGas(this.props.gas).gasPrice).times(1e9));
-    tx.nonce = toHex(await window.STORAGE.wallet.getNonce(storage.wallet.getUnlockedAddress()));
+    tx.nonce = toHex((await window.RELAY.account.getNonce(storage.wallet.getUnlockedAddress())).result);
     switch (type) {
       case 'cancelOrder':
         const originalOrder = {...order};

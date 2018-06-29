@@ -43,7 +43,8 @@ function TransferConfirm(props) {
     let result = {...tx, extraData}
     //To test Ledger
     //tx.chainId = 1
-    window.STORAGE.wallet.getNonce(wallet.address).then(nonce => {
+    window.RELAY.account.getNonce(wallet.address).then(res => {
+      let nonce  = res.result;
       tx.nonce = fm.toHex(nonce)
       let toConfirmWarn = '';
       if (wallet.wallet === 'Ledger') {
@@ -75,7 +76,6 @@ function TransferConfirm(props) {
         })
       } else {
         extraData.txHash = response.result
-        window.STORAGE.wallet.setWallet({address:wallet.address, nonce:tx.nonce})
         window.RELAY.account.notifyTransactionSubmitted({tx,txHash:response.result,from:wallet.address});
         Notification.open({
           message:intl.get('notifications.title.send_succ'),
