@@ -100,6 +100,7 @@ const notifications = {
     cancel_all_order_failed:"Cancel all {market} orders failed",
     init_failed: "Init failed",
     sub_failed:"Submit Failed",
+    sub_suc:'Submit Successfully',
     invalid_wallet_type:'Invalid  Wallet Type',
     dif_address:'The address you just unlocked is different from your wallet address, please sign with your wallet address'
   },
@@ -638,7 +639,7 @@ export default {
       download:'Download Loopr-IOS',
       scan: 'Open your Loopr wallet, scan the QRcode and submit',
       warn: 'Please scan as soon as possible. When expired, please place an new order to generate new QRcode',
-    }
+    },
   },
   metamask_sign:{
     title:'Sign By MetaMask',

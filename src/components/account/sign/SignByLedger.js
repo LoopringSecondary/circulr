@@ -85,7 +85,7 @@ class SignByLedger extends React.Component {
   state = {
     step: 0,
     account: null,
-    result: ''
+    result: 0
   };
 
   componentDidMount() {
@@ -254,9 +254,9 @@ class SignByLedger extends React.Component {
           message: intl.get('notifications.title.sub_failed'),
           description: error.message
         });
-        this.setState({step: 2, result: "failed"})
+        this.setState({step: 2, result: 2})
       } else {
-        this.setState({step: 2, result: "suc"})
+        this.setState({step: 2, result: 1})
       }
     })
 
@@ -305,8 +305,21 @@ class SignByLedger extends React.Component {
                       type="primary" onClick={this.submit}> {intl.get('actions.submit')} </Button>
             </div>
           </div>}
-          {step === 2 && <div>
-            {result === 'suc' ? '成功' : '失败'}
+          {step === 2 && <div className="zb-b">
+            {
+              result === 1 &&
+              <div className="text-center p35">
+                <i className={`fs50 icon-success`}></i>
+                <div className="fs18 color-black-1">{intl.get('notifications.title.sub_suc')}</div>
+              </div>
+            }
+            {
+              result === 2 &&
+              <div className="text-center p35">
+                <Icon type="close-circle" className="fs50 text-error" />
+                <div className="fs18 color-black-1 mt15 mb10">{intl.get('notifications.title.sub_failed')}</div>
+              </div>
+            }
           </div>}
         </div>
       </Card>
