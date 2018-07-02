@@ -25,8 +25,8 @@ export default {
       yield put({ type: 'confirmButtonStateChange',payload:{buttonState:1}});
       yield put({ type: 'payWithChange',payload:{payWith:''}});
       yield put({ type: 'tradeInfoChange',payload:{tradeInfo:null}});
-      yield put({ type: 'unsignedChange',payload:{unsigned:null}});
-      yield put({ type: 'signedChange',payload:{signed:null}});
+      //yield put({ type: 'unsignedChange',payload:{unsigned:null}});
+      //yield put({ type: 'signedChange',payload:{signed:null}});
       yield put({ type: 'resultMsgChange',payload:{resultMsg:''}});
     },
     *pairChangeEffects({ payload={} }, { put }) {
