@@ -39,9 +39,9 @@ function ConvertForm(props) {
   };
 
   const toConvert =  async () => {
-    form.validateFields(async  (err,values) => {
-      convert.setLoading({loading:true})
+    form.validateFields(async (err,values) => {
       if(!err){
+        convert.setLoading({loading:true});
         let data = '';
         let value = '';
         if (token.toLowerCase() === 'Eth') {
@@ -59,7 +59,7 @@ function ConvertForm(props) {
           gasPrice: toHex(toBig(gasPrice).times(1e9)),
           chainId: config.getChainId(),
           value,
-          nonce: toHex(await window.RELAY.account.getNonce(address))
+          nonce: toHex((await window.RELAY.account.getNonce(address)).result)
       };
 
         dispatch({type:'convertConfirm/init',payload:{tx,amount,token}});

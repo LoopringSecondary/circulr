@@ -78,12 +78,20 @@ export function formatPriceByMarket(price, marketConfig) {
 }
 
 export function formatAmountByMarket(amount, tokenConfig, marketConfig) {
-  const amountPrecision = tokenConfig.precision - marketConfig.pricePrecision
-  if (amountPrecision > 0) {
-    return fm.toFixed(amount, amountPrecision, false)
-  } else {
-    return Math.floor(amount)
+  if(amount && amount.toString() !== '0') {
+    const amountPrecision = tokenConfig.precision - marketConfig.pricePrecision
+    if (amountPrecision > 0) {
+      const amountArr = amount.toString().split(".")
+      if(amountArr.length === 2) {
+        if(isValidInteger(amountArr[0]) && isValidInteger(amountArr[1]) && amountArr[1].length > amountPrecision) {
+          return fm.toFixed(fm.toBig(amount.toString()), amountPrecision, false)
+        }
+      }
+    } else {
+      return Math.floor(amount)
+    }
   }
+  return amount
 }
 
 export function calculateWorthInLegalCurrency(marketcapItems, symbol, amount) {

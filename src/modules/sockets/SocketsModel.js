@@ -112,7 +112,13 @@ export default {
     },
     *tokenChange({payload},{call,select,put}){
       const {token} = payload
-      yield put({type:'filtersChange', payload:{id:'globalTrend', filters:{token}}})
+      if(token) {
+        if(token === 'ETH') {
+          yield put({type:'filtersChange', payload:{id:'globalTrend', filters:{token:'WETH'}}})
+        } else {
+          yield put({type:'filtersChange', payload:{id:'globalTrend', filters:{token}}})
+        }
+      }
       yield put({type:'filtersChange', payload:{id:'latestTransaction', filters:{token}}})
       //TODO all other token change dispatch
     },

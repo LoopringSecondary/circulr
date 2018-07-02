@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'dva';
-import {Card, Steps} from 'antd';
+import {Card, Steps,Icon,Alert} from 'antd';
 import intl from 'react-intl-universal';
 import QRCode from 'qrcode.react';
 import CountDown from 'LoopringUI/components/CountDown';
@@ -9,7 +9,7 @@ class SignByLoopr extends React.Component {
 
   state = {
     step: 0,
-    result: ''
+    result: 0
   };
 
   componentWillReceiveProps(nextProps) {
@@ -24,7 +24,7 @@ class SignByLoopr extends React.Component {
           this.setState({step: 1});
           return;
         }
-        this.setState({step: 2, result: status === 'accept' ? '成功' : '失败'})
+        this.setState({step: 2, result: status === 'accept' ? 1 : 2})
       }
     }
   }
@@ -53,7 +53,7 @@ class SignByLoopr extends React.Component {
         {step === 0 && <div className="text-center p15">
           {!expired &&
           <div><QRCode value={JSON.stringify({type, value: hash})} size={320} level='H'/></div>}
-          {expired && <div><p className='p15'>已失效</p></div>}
+          {expired && <div><p className='p15'>{intl.get('common.expired')}</p></div>}
           <div><CountDown style={{fontSize: 20}} target={from + validity} onEnd={overdue}/></div>
           <div className="pt10 pb10 color-black-2 text-left fs12 " style={{width: '320px', margin: '0 auto'}}>
             1. {intl.get('loopr_sign.tips.download')}
@@ -63,11 +63,32 @@ class SignByLoopr extends React.Component {
             3. {intl.get('loopr_sign.tips.warn')}
           </div>
         </div>}
-        {step === 1 && <div className="text-center p15">
-          <p className='p15'>扫码成功</p>
-        </div>}
-        {step === 2 && <div className="text-center p15">
-          <p className='p15'>{result}</p>
+        {
+          step === 1 &&
+          <div className="mt15">
+            <div className="zb-b">
+              <div className="text-center p35">
+                <Icon type="clock-circle" className="fs36 text-warning" />
+                <div className="mt15">{intl.get('place_order_by_loopr.waiting_sign')}</div>
+              </div>
+            </div>
+          </div>
+        }
+        {step === 2 && <div className="zb-b">
+          {
+            result === 1 &&
+            <div className="text-center p35">
+              <i className={`fs50 icon-success`}></i>
+              <div className="fs18 color-black-1">{intl.get('notifications.title.sub_suc')}</div>
+            </div>
+          }
+          {
+            result === 2 &&
+            <div className="text-center p35">
+              <Icon type="close-circle" className="fs50 text-error" />
+              <div className="fs18 color-black-1 mt15 mb10">{intl.get('notifications.title.sub_failed')}</div>
+            </div>
+          }
         </div>}
       </Card>
     )

@@ -57,7 +57,8 @@ const words = {
     no_data:'暂无数据',
   },
   slow:'慢',
-  fast:'快'
+  fast:'快',
+  expired:'已过期'
 }
 
 const types = {

@@ -20,7 +20,7 @@ function PlaceOrderConfirm(props) {
   let {price, amount, total, validSince,validUntil, marginSplit, lrcFee, warn, orderType} = tradeInfo || {};
   let {unsigned, signed, confirmButtonState} = placeOrder || {}
   let actualSigned = signed && wallet ? signed.filter(item => item !== undefined && item !== null) : []
-  let submitDatas = signed && unsigned.length === actualSigned.length ? (
+  let submitDatas = signed && unsigned && unsigned.length === actualSigned.length ? (
     signed.map((item, index) => {
       return {signed: item, unsigned:unsigned[index], index}
     })
@@ -29,11 +29,11 @@ function PlaceOrderConfirm(props) {
   const hash = keccakHash(JSON.stringify(unsigned))
 
   const isUnlocked =  wallet.address && wallet.unlockType && wallet.unlockType !== 'locked' && wallet.unlockType !== 'address'
-  const unsignedOrder = unsigned.find(item => item.type === 'order')
+  const unsignedOrder = unsigned ? unsigned.find(item => item.type === 'order') : {}
   const signedOrder = signed.find(item => item && item.type === 'order')
   let qrCodeData = ''
   if(tradeInfo.orderType === 'p2p_order' && unsignedOrder.completeOrder && unsignedOrder.completeOrder.authPrivateKey && signedOrder && signedOrder.orderHash) {
-    qrCodeData = JSON.stringify({type:'p2p_order', value:{authPrivateKey:unsignedOrder.completeOrder.authPrivateKey, orderHash:signedOrder.orderHash}})
+    qrCodeData = JSON.stringify({type:'p2p_order', data:{authPrivateKey:unsignedOrder.completeOrder.authPrivateKey, orderHash:signedOrder.orderHash}})
   }
 
   async function doSubmit() {
@@ -231,7 +231,7 @@ function PlaceOrderConfirm(props) {
           </div>
         }
         {
-          isUnlocked && unsigned.length !== actualSigned.length &&
+          isUnlocked && unsigned && unsigned.length !== actualSigned.length &&
           <div>
             <div className="mb15"></div>
             <Alert type="info" title={<div className="color-black-1">{intl.get('sign.not_signed')} <a onClick={toSign}>{intl.get('sign.to_sign')}<Icon type="right" /></a></div>} theme="light" size="small" />
