@@ -3,6 +3,7 @@ import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs} from 'antd'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'
 import Alert from 'LoopringUI/components/Alert'
+import {toBig, toNumber} from 'LoopringJS/common/formatter'
 
 const LRCFeeForm = (props) => {
 
@@ -27,7 +28,7 @@ const LRCFeeForm = (props) => {
 
   const customShow = (
     <div className="fs14 color-black-1">
-      {intl.get('setting_lrcfee.custom')}:{lrcFee.lrcFeeSlider}‰
+      {intl.get('setting_lrcfee.custom')}:{toNumber(lrcFee.lrcFeeSlider)/10}％
     </div>
   )
 
