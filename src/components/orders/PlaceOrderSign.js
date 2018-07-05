@@ -267,7 +267,7 @@ const PlaceOrderSign = (props) => {
         }
       </Collapse>
       <div className="p10">
-        <Button className="w-100 d-block" size="large" type="primary" onClick={handelSubmit} disabled={!signed || !unsigned || unsigned.length !== actualSigned.length}> {intl.get('actions.submit_order')} </Button>
+        {tradeInfo && tradeInfo.orderType !== 'p2p_order' && <Button className="w-100 d-block" size="large" type="primary" onClick={handelSubmit} disabled={!signed || !unsigned || unsigned.length !== actualSigned.length}> {intl.get('actions.submit_order')} </Button>}
       </div>
 
     </div>

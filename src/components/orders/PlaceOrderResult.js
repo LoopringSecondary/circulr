@@ -58,7 +58,7 @@ const PlaceOrderResult = (props) => {
           <div className="text-center p35">
             <Icon type="close-circle" className="fs50 text-error" />
             <div className="fs18 color-black-1 mt15 mb10">{intl.get('place_order_result.submit_failed')}</div>
-            <Alert message={placeOrder.resultMsg} size="small" type="error" theme="light" icon={false}/>
+            {placeOrder.resultMsg && <Alert message={placeOrder.resultMsg} size="small" type="error" theme="light" icon={false}/>}
             <div className="mt10">
               <Button className="m5" type="default" onClick={gotToTrade}> {intl.get('place_order_result.back_to_trade')} </Button>
             </div>
