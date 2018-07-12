@@ -1,52 +1,10 @@
 # Circulr - Loopring DEX
 
-### Development 
+### Introduction
 
-##### Stack
+Circular is a Loopring DEX frontend without accessing to users' private-keys. Users can trade ERC20 tokens with others by scaning order QR code.
 
-- React
-- React-Router
-- Redux
-- Redux-saga: An alternative side effect model for Redux apps [Link](https://github.com/redux-saga/redux-saga)
-- Roadhog: Cli tool for creating react apps, configurable version of create-react-app. [Link](https://github.com/sorrycc/roadhog)
-- Antd: A react UI componnets library. [Link](https://github.com/ant-design/ant-design)
-- Dva: Lightweight front-end framework based on redux, redux-saga and react-router. [Link](https://github.com/dvajs/dva)
+Circulr is not responsive and is designed for desktop browsers only. You can try it out on https://circulr.loopring.io.
 
-
-#### start
-
-```
-## install  dependencies
-
-1. npm install
-2. cd common/loopringjs & npm install 
-
-## run for develop with a https dev server
-
-1. cd node_modules/af-webpack/lib/dev.js 
-2. find serverConfig at 84 line 
-3. add https: true in serverConfig 
-4. npm start
-5. vist https://localhost:8000 (Note: https)
-
-## run for production
-
-npm run build 
-
-##  deploy
-- npm run build
-- npm run deploy( need firebase account )
-
-```
-
-
-
-
-
-
-
-
-
-
-
-
+### Documentations
+For more information regarding this project, please checkout its [github pages](https://loopring.github.io/circulr).
