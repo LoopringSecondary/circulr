@@ -413,6 +413,11 @@ const onEvent = (payload) => {
   socket.on(`${id}_res`, transfromer.bind(this, id))
 }
 
+const hasListener = (payload) => {
+  const {id, socket} = payload;
+  return socket.hasListeners(`${id}_res`)
+}
+
 const connect = (payload) => {
   const {url} = payload
   let options = {
@@ -438,6 +443,7 @@ export default {
   onEvent,
   emitEvent,
   connect,
+  hasListener
 }
 
 
