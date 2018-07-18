@@ -147,7 +147,7 @@ function getMarkets() {
   tokens.filter(item => item.symbol !== 'ETH' && item.symbol !== 'WETH').forEach(token=> {
     supportedMarktesR.forEach(marketR => {
       if(marketR !== token.symbol) {
-        const tokenConfig = getTokenBySymbol(token.symbol)
+        const tokenConfig = tokens.find(t=>t.symbol.toLowerCase()===token.symbol.toLowerCase()) || {}
         markets.push({
           "tokenx": token.symbol,
           "tokeny": marketR,
