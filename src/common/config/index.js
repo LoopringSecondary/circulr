@@ -47,6 +47,7 @@ function getTokens(){
     "precision": 6,
   }, ...STORAGE.settings.getTokensConfig().map(item=>{
     item.icon = tokensIcons[item.symbol]
+    item.precision = item.digits > 6 ? 6 : item.digits
     return item
   })].filter(item=>{
     return !config.ignoreTokens || !config.ignoreTokens.includes(item.symbol)
@@ -146,10 +147,11 @@ function getMarkets() {
   tokens.filter(item => item.symbol !== 'ETH' && item.symbol !== 'WETH').forEach(token=> {
     supportedMarktesR.forEach(marketR => {
       if(marketR !== token.symbol) {
+        const tokenConfig = getTokenBySymbol(token.symbol)
         markets.push({
           "tokenx": token.symbol,
           "tokeny": marketR,
-          "pricePrecision": 8
+          "pricePrecision": tokenConfig.digits > 8 ? 8 : tokenConfig.digits
         })
       }
     })
