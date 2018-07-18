@@ -141,22 +141,28 @@ function getTokenSupportedMarkets(token) {
 }
 
 function getMarkets() {
-  const tokens = getTokens();
-  const supportedMarktesR = getSupportedMarketsTokenR()
-  let markets = new Array()
-  tokens.filter(item => item.symbol !== 'ETH' && item.symbol !== 'WETH').forEach(token=> {
-    supportedMarktesR.forEach(marketR => {
-      if(marketR !== token.symbol) {
-        const tokenConfig = tokens.find(t=>t.symbol.toLowerCase()===token.symbol.toLowerCase()) || {}
-        markets.push({
-          "tokenx": token.symbol,
-          "tokeny": marketR,
-          "pricePrecision": tokenConfig.digits > 8 ? 8 : tokenConfig.digits
-        })
-      }
-    })
+  const markets = STORAGE.settings.getMarketsConfig().map(item=>{
+    //const tokenx = getTokenBySymbol(item.tokenx)
+    //item.pricePrecision = tokenx.digits > 8 ? 8 : tokenx.digits
+    return item
   })
   return markets
+  // const tokens = getTokens();
+  // const supportedMarktesR = getSupportedMarketsTokenR()
+  // let markets = new Array()
+  // tokens.filter(item => item.symbol !== 'ETH' && item.symbol !== 'WETH').forEach(token=> {
+  //   supportedMarktesR.forEach(marketR => {
+  //     if(marketR !== token.symbol) {
+  //       const tokenConfig = tokens.find(t=>t.symbol.toLowerCase()===token.symbol.toLowerCase()) || {}
+  //       markets.push({
+  //         "tokenx": token.symbol,
+  //         "tokeny": marketR,
+  //         "pricePrecision": tokenConfig.digits > 8 ? 8 : tokenConfig.digits
+  //       })
+  //     }
+  //   })
+  // })
+  // return markets
 }
 
 function getGasLimitByType(type) {
