@@ -18,6 +18,11 @@ if(latestVersion > oldVersion) {
   STORAGE.setLocalStorageVersion(latestVersion)
 }
 
+
+window.updateData = (data) => {
+
+};
+
 window.STORAGE = STORAGE;
 const host = STORAGE.settings.get().relay.selected;
 
