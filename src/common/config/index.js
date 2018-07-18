@@ -84,7 +84,9 @@ function isSupportedMarket(market) {
   if(!market) return false
   const pair = market.split('-')
   if(pair.length !== 2) return false
-  return getMarkets().includes(market)
+  return getMarkets().find(m=> {
+    return (m.tokenx === pair[0].toUpperCase() && m.tokeny === pair[1].toUpperCase()) || (m.tokenx === pair[1].toUpperCase() && m.tokeny === pair[0].toUpperCase())
+  })
 }
 
 function getMarketBySymbol(tokenx, tokeny) {
