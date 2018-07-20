@@ -276,13 +276,13 @@ class PlaceOrderForm extends React.Component {
           let currency = settings.preference.currency;
           let priceSymbol = fm.getDisplaySymbol(currency)
           if(currency === 'USD') {
-            priceSymbol = '100' + priceSymbol
-            if(totalWorth.gt(100)) {
+            priceSymbol = '10' + priceSymbol
+            if(totalWorth.gt(10)) {
               allowed = true
             }
           } else {
-            priceSymbol = '500' + priceSymbol
-            if(totalWorth.gt(500)) {
+            priceSymbol = '50' + priceSymbol
+            if(totalWorth.gt(50)) {
               allowed = true
             }
           }
