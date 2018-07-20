@@ -17,7 +17,7 @@ export class TickersFm{
     return getAllTickers(this.tickers)
   }
   getTickersBySymbol(symbol){
-    return this.tickers.items.filter(ticker=>ticker.market.indexOf(symbol) > -1)
+    return this.tickers.items.filter(ticker=>ticker.market.startsWith(`${symbol}-`) || ticker.market.endsWith(`-${symbol}`))
   }
 }
 export const sortTickers = (items)=>{
