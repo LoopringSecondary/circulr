@@ -23,6 +23,15 @@ function LayoutHome(props) {
     })
   }
 
+  const getIcon = (value) => {
+
+    if(value.toLowerCase().indexOf('cn')) {
+      return "cn"
+    }
+
+    return 'en'
+  };
+
   return (
     <div>
     	<div className="home-header clearfix">
@@ -34,7 +43,7 @@ function LayoutHome(props) {
                 <Select className="col-auto language dropdown"  showArrow={false} dropdownMatchSelectWidth={false} defaultValue={locale} onChange={localeChange}>
                   {locales.map(item => {
                   return (
-                    <Select.Option value={item.value} key={item.value}> <i className="icon en"/> {item.name}</Select.Option>
+                    <Select.Option value={item.value} key={item.value}> <i className= {`icon ${getIcon(item.value)}`}/> {item.name}</Select.Option>
                   )
                   })}
                 </Select>
