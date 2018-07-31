@@ -198,7 +198,7 @@ function ListMyOrders(props) {
           </table>
         </Spin>
       </div>
-      <ListPagination list={orders} className="mt40 " props={{size:'small'}}/>
+      <ListPagination list={orders} className="darkPagination" showSizeChanger props={{size:'small'}}/>
     </div>
   )
 }

@@ -70,7 +70,7 @@ function ListOrderBook(props) {
   };
   return (
     <div>
-	    <div className="card dark" style={{height:"-webkit-calc(100vh - 40px)"}}>
+	    <div className="card dark" style={{height:"100vh"}}>
 	    	<div className="card-header card-header-dark bordered">
 	    	    <h4>{intl.get('order_list.order_book')}</h4>
 	    	</div>
@@ -88,7 +88,7 @@ function ListOrderBook(props) {
 			    	        <span style={{textAlign:'right'}}>{intl.get('order.LRCFee')}</span>
 		    	        </li>
 		    	    </ul>
-	    	    <div style={{height: "-webkit-calc(50% - 85px)",marginTop:"5px",marginBottom:"0",paddiongBottom:"10" }}>
+	    	    <div className="height-control" style={{height: "-webkit-calc(50% - 85px)",marginTop:"5px",marginBottom:"0",paddiongBottom:"10" }}>
               <Spin spinning={list.loading}>
                 <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0px" }}>
                       {
@@ -109,7 +109,7 @@ function ListOrderBook(props) {
                   </ul>
               </Spin>
 	    	    </div>
-	    	    <div style={{height: "-webkit-calc(50% - 85px)",paddingTop:"0",paddingBottom:"0",marginTop:"50px",marginBottom:"0"}}>
+	    	    <div className="height-control" style={{height: "-webkit-calc(50% - 85px)",paddingTop:"0",paddingBottom:"0",marginTop:"50px",marginBottom:"0"}}>
               <Spin spinning={list.loading}>
   	            <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0" }}>
   	                {
