@@ -44,11 +44,7 @@ function ListOrderBook(props) {
   let sell = [], buy = []
   if(list && list.item) {
     if(list.item.sell) {
-      if(list.item.sell.length > 14) {
-        sell = list.item.sell.slice(list.item.sell.length - 14, list.item.sell.length).reverse()
-      } else {
         sell = list.item.sell.reverse()
-      }
       // sell = Array(8-list.item.sell.length).fill([]).concat(list.item.sell)
     }
     if(list.item.buy) {

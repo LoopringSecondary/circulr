@@ -25,7 +25,7 @@ function LayoutHome(props) {
 
   const getIcon = (value) => {
 
-    if(value.toLowerCase().indexOf('cn')) {
+    if(value.toLowerCase().indexOf('cn') !== -1) {
       return "cn"
     }
 
