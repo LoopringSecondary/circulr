@@ -23,6 +23,8 @@
 2. cd src/common/loopringjs && npm install 
 3. cd ../../ && npm run start
 
+注意：node 版本 必须小于 10.0.0 
+
 ## 以开发模式启动https服务
 
 1. 进入 node_modules/af-webpack/lib/dev.js 
