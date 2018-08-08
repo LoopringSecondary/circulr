@@ -29,8 +29,8 @@ function UserCenter(props) {
   const quit = () => {
     dispatch({type:'wallet/lock'});
     storage.wallet.clearUnlockedAddress();
-    window.WALLET = {}
-    window.account = null
+    window.WALLET = {};
+    window.account = null;
     userCenter.hideLayer();
     routeActions.gotoPath('/unlock')
   };

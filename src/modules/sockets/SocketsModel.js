@@ -127,8 +127,10 @@ export default {
       yield put({type:'connect',payload})
     },
     *connect({payload},{call,select,put}){
-      const {url} = yield select(({ [namespace]:model }) => model )
-      const socket = yield call(apis.connect, {url})
+      let {url,socket} = yield select(({ [namespace]:model }) => model )
+      if(!socket){
+        socket = yield call(apis.connect, {url})
+      }
       yield put({type:'socketChange',payload:{socket}})
       yield put({type:'fetch',payload:{id:'marketcap'}})
       yield put({type:'fetch',payload:{id:'depth'}})
@@ -142,7 +144,18 @@ export default {
       if(STORAGE.wallet.getUnlockedAddress()){
         yield put({type:'unlocked'})
       }
+      if(!window.emitEvents) window.emitEvents = []
+      for (var i =  window.emitEvents.length - 1; i >= 0; i--) {
+        yield put(window.emitEvents[i])
+      }
+      delete window.emitEvents
+      if(!window.onEvents) window.onEvents = []
+      for (var i =  window.onEvents.length - 1; i >= 0; i--) {
+        yield put(window.onEvents[i])
+      }
+      delete window.onEvents
     },
+
     *unlocked({payload},{call,select,put}){
       yield put({type:'fetch',payload:{id:'transaction'}})
       yield put({type:'fetch',payload:{id:'latestTransaction'}})
@@ -152,8 +165,8 @@ export default {
       yield put({type:'fetch',payload:{id:'circulrNotify'}})
     },
     *fetch({payload},{call,select,put}){
-      yield put({type:'onEvent',payload})
       yield put({type:'emitEvent',payload})
+      yield put({type:'onEvent',payload})
     },
     *pageChange({payload},{call,select,put}){
       yield put({type:'pageChangeStart',payload})
@@ -175,14 +188,17 @@ export default {
     },
     *emitEvent({ payload={} },{call,select,put}) {
       let {id} = payload
-      // todo idValidator
       const {socket,[id]:{page,filters,sort,extra}} = yield select(({ [namespace]:model }) => model )
       console.log('filtersChange emitEvent',id,filters,extra)
       if(socket){
         let new_payload = {page,filters,sort,socket,id,extra}
         yield call(apis.emitEvent, new_payload)
       }else{
-        console.log('socket is not connected!')
+        if(!window.emitEvents) window.emitEvents = []
+        window.emitEvents.push({
+          type:'emitEvent',
+          payload
+        })
       }
     },
     *onEvent({ payload={} }, { call, select, put }) {
@@ -190,10 +206,17 @@ export default {
       // todo idValidator
       const {socket,[id]:{page,filters,sort,extra}} = yield select(({ [namespace]:model }) => model )
       if(socket){
-        let new_payload = {page,filters,sort,socket,id,extra}
-        yield call(apis.onEvent, new_payload)
+        let new_payload = {page,filters,sort,socket,id,extra};
+        const hasListener = yield call(apis.hasListener, new_payload);
+        if(!hasListener){
+          yield call(apis.onEvent, new_payload)
+        }
       }else{
-        console.log('socket is not connected!')
+        if(!window.onEvents) window.onEvents = []
+        window.onEvents.push({
+          type:'onEvent',
+          payload
+        })
       }
     },
   },
