@@ -19,7 +19,7 @@ function UnlockByAddress(props) {
         props.dispatch({type:"wallet/unlockAddressWallet",payload:{address}});
         Notification.open({type:'success',message:intl.get('notifications.title.unlock_suc')});
         props.dispatch({type: 'sockets/unlocked'});
-        routeActions.gotoPath('/wallet');
+        routeActions.gotoPath('/trade');
         props.dispatch({type:'layers/hideLayer', payload:{id:'unlock'}})
       }else {
         Notification.open({type:'error',message:intl.get('notifications.title.unlock_fail'),description:intl.get('wallet.invalid_address_tip')});

@@ -14,6 +14,7 @@ import {createWallet} from 'LoopringJS/ethereum/account';
 import {getLastGas, getEstimateGas} from 'modules/settings/formatters'
 import {FormatAmount} from 'modules/formatter/FormatNumber'
 import {getFormattedTime} from 'modules/formatter/common'
+import styles from './ullist.css'
 
 var _ = require('lodash');
 
@@ -36,6 +37,7 @@ const MenuItem = (prop)=>{
     </div>
   )
 }
+
 class PlaceOrderForm extends React.Component {
 
   render() {
@@ -121,7 +123,7 @@ class PlaceOrderForm extends React.Component {
     function validateAmount(value) {
       return value > 0
     }
-
+{/*}
     function amountSliderChange(e) {
       let availableAmount = 0
       if(side === 'buy') {
@@ -143,11 +145,13 @@ class PlaceOrderForm extends React.Component {
 
     const amountSliderField = form.getFieldDecorator('amountSlider', {
       initialValue: 0,
-      rules: []
+      rules: [] 
     })(
       <Slider className="place-order-amount-percentage" min={0} max={100} marks={marks} onChange={amountSliderChange.bind(this)}
               tipFormatter={null} disabled={placeOrder.side === 'sell' ? fm.toBig(sell.availableAmount).lt(0) : fm.toBig(buy.availableAmount).lt(0)}/>
     )
+  */}
+    
 
     const totalDisplay = (
       <span>
@@ -380,8 +384,9 @@ class PlaceOrderForm extends React.Component {
 
     return (
       <div>
-        <div className="card-body form-dark">
-          <div className="p10 mb15" style={{border:"1px solid rgba(255,255,255,0.07)"}}>
+        <div className="card-body form-dark" style={{borderRadius:"5px", marginTop:"30px"}}>
+        {/*
+          <div className="p10 mb15" style={{border:'1px solid rgba(255,255,255,0.07)',borderRadius:"5px"}}>
             <div className="row pb10">
               <div className="col-auto fs14">{left.symbol}</div>
               <div className="col fs14 text-right">
@@ -395,23 +400,26 @@ class PlaceOrderForm extends React.Component {
               </div>
             </div>
           </div>
+        */}
+            <span style={{fontSize:'14px', fontWeight:'600', paddingLeft:'10px', position:'relative', top:'10px'}}>
+              {intl.get('common.order_form')}
+            </span>
           {placeOrder.side === 'buy' &&
-          <ul className="token-tab">
+          <ul className="token-tab" style={{width:'32%', marginBottom:'13px'}}>
             <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')} {left.symbol}</a></li>
             <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')} {left.symbol}</a></li>
           </ul>
           }
           {placeOrder.side === 'sell' &&
-          <ul className="token-tab">
+          <ul className="token-tab" style={{width:'32%'}}>
             <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')} {left.symbol}</a></li>
             <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')} {left.symbol}</a></li>
           </ul>
           }
           <div className="tab-content">
-            <div className="blk-sm"></div>
+
             <div className="" id="b1">
-              {false && sell && <small className="balance">{sell.token.symbol} {intl.get('balance')}: <span>{FormatAmount({value:sell.token.balance.toString(10), precision:marketConfig.pricePrecision})}</span></small>}
-              <div className="blk-sm"></div>
+             {false && sell && <small className="balance">{sell.token.symbol} {intl.get('balance')}: <span>{FormatAmount({value:sell.token.balance.toString(10), precision:marketConfig.pricePrecision})}</span></small>}
               <Form.Item label={null} colon={false}>
                 {form.getFieldDecorator('price', {
                   initialValue: placeOrder.priceInput,
@@ -421,8 +429,8 @@ class PlaceOrderForm extends React.Component {
                   }]
                 })(
                   <Input placeholder="" size="large"
-                         prefix={intl.get('common.price')}
-                         suffix={<span className="fs14 color-black-3">{right.symbol}</span>}
+                         prefix={<span style={{color:"white"}}>{intl.get('common.price')}</span>}
+                         suffix={<span style={{color:"white"}}>{right.symbol}</span>}
                          onChange={inputChange.bind(this, 'price')}
                          onFocus={() => {
                            const price = form.getFieldValue("price")
@@ -440,7 +448,7 @@ class PlaceOrderForm extends React.Component {
               </Form.Item>
               <Form.Item label={null} colon={false} extra={
                 <div>
-                  <div>{amountSliderField}</div>
+                {/*}  <div>{amountSliderField}</div> */}
                 </div>
               }>
                 {form.getFieldDecorator('amount', {
@@ -451,8 +459,8 @@ class PlaceOrderForm extends React.Component {
                   }]
                 })(
                   <Input placeholder="" size="large"
-                         prefix={intl.get('common.amount')}
-                         suffix={<span className="fs14 color-black-3">{left.symbol}</span>}
+                         prefix={<span style={{color:"white"}}>{intl.get('common.amount')}</span>}
+                         suffix={<span style={{color:"white"}}>{left.symbol}</span>}
                          onChange={inputChange.bind(this, 'amount')}
                          onFocus={() => {
                             const amount = form.getFieldValue("amount")
@@ -468,17 +476,20 @@ class PlaceOrderForm extends React.Component {
                          }}/>
                 )}
               </Form.Item>
+              <div style={{height:"30px", position:"absolute"}}>
+                        <MenuItem  action={<span onClick={setLRCFee} style={{cursor:"pointer", padding:"10px 84px", backgroundColor:"#46789ebb", borderRadius:"5px", position:"absolute", bottom:"16px", left:"0px"}}> <p style={{width:"100px", marginBottom:"0px"}} className="col-auto fs14">{intl.get('common.gas_slow')}</p></span>}  />
+                    <div className="fs14 color-black-1">
+                    </div>
+              </div>
               <div className="pt5 pb5" style={{border:'0px solid rgba(255,255,255,0.07)',margin:'0px 0px'}}>
                 <MenuItem label={intl.get('common.total')} value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>}  />
-                <MenuItem label={intl.get('common.lrc_fee')} action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFeeValue} LRC <Icon type="right" className="" /></div>}  />
-                <MenuItem label={intl.get('common.ttl')} action={<div onClick={setTTL} className="cursor-pointer">{ttlShow} <Icon type="right" className="" /></div>}  />
               </div>
               <div className="mb15"></div>
               {
-                  side === 'buy' && <Button className="btn btn-block btn-success btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>{intl.get('actions.place_buy_order')}</Button>
+                  side === 'buy' && <Button className="btn btn-block btn-success btn-xlg" style={{borderRadius:"5px"}} onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>{intl.get('actions.place_buy_order')}</Button>
                 }
                 {
-                  side === 'sell' && <Button className="btn btn-block btn-danger btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>{intl.get('actions.place_sell_order')}</Button>
+                  side === 'sell' && <Button className="btn btn-block btn-danger btn-xlg" style={{borderRadius:"5px"}} onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>{intl.get('actions.place_sell_order')}</Button>
                 }
             </div>
           </div>

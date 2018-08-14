@@ -25,14 +25,14 @@ class DepthChart extends React.Component {
     sourceSell = [{"price":89,"vol":21},{"price":92,"vol":33},{"price":102,"vol":45},{"price":121,"vol":53},{"price":131,"vol":54},{"price":141,"vol":78},{"price":155,"vol":90},{"price":158,"vol":92},{"price":190,"vol":98},{"price":195,"vol":101},{"price":200,"vol":111}]
 
     return (
-      <div className="row ml0 mr0">
-        <div className="col-6 pl0 pr0">
-          <Chart forceFit height={140} data={sourceBuy} padding={[0,0,15,0]} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
-            <Tooltip crosshairs={{ type: 'line' }} />
-            <Axis dataKey="price" label={{formatter:(value)=>value,offset:10,textStyle:{fontSize:'10px'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} />
-            <Axis dataKey="vol" position="left" label={{formatter:(value)=>value,offset:10,textStyle:{fontSize:'10px'}}} grid={{lineStyle:{stroke: 'rgba(255,255,255,0.1)'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}}/>
-            <Line position="price*vol" color='#2fc25b' size="2"/>
-            <Area position="price*vol" color="#2fc25b"/>
+      <div className="row ml0 mr0" style={{color:'#000000'}}>
+        <div className="col-6 pl0 pr0" style={{color:'#000000'}}>
+          <Chart style={{color:'#000000'}} forceFit height={140} data={sourceBuy} padding={[0,0,15,0]} background={{fill:''}} plotBackground={{fill:'transparent'}}>
+            <Tooltip style={{color:'#000000'}} crosshairs={{ type: 'line' }} />
+            <Axis style={{color:'#000000'}} dataKey="price" label={{formatter:(value)=>value,offset:10,textStyle:{fontSize:'10px'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} />
+            <Axis style={{color:'#000000'}} dataKey="vol" position="left" label={{formatter:(value)=>value,offset:10,textStyle:{fontSize:'10px'}}} grid={{lineStyle:{stroke: 'rgba(255,255,255,0.1)'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}}/>
+				<Line style={{color:'#000000'}} position="price*vol" color='#2fc25b' size="2"/>
+				<Area style={{color:'#000000'}} position="price*vol" color="#2fc25b"/>
           </Chart>
         </div>
         <div className="col-6 pl0 pr0">

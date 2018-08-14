@@ -4,6 +4,7 @@ import {TickersFm,TickerFm} from 'modules/tickers/formatters'
 import routeActions from 'common/utils/routeActions'
 import storage from '../../modules/storage'
 import intl from 'react-intl-universal'
+import Search from '../../../node_modules/antd/lib/input/Search';
 
 const TickItem = ({item,actions})=>{
     if(!item){ return null }
@@ -74,9 +75,9 @@ function ListAllTickers(props) {
   return (
     <div>
 	    <div className="token-select">
-	        <div className="token-select-header">
-              <input value={keywords && keywords.toUpperCase()} onChange={searchTicker} />
-              <i className="icon-search" />
+	        <div className="token-select-header" style={{backgroundColor:"#101C27"}}>
+              <input placeholder = {"Search.."} style={{backgroundColor:"#101C27", color:"white"}} value={keywords && keywords.toUpperCase()} onChange={searchTicker} />
+              <i className="icon-search" style={{color:"white"}}/>
               <i hidden className="icon-star icon-favorites active" />
 	        </div>
 	        <div className="token-select-body" style={{height: "400px"}}>

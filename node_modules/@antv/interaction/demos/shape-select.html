@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height">
+    <title>多条折线图</title>
+    <style>::-webkit-scrollbar{display:none;}html,body{overflow:hidden;height:100%;margin:0;}</style>
+</head>
+<body>
+<div id="mountNode"></div>
+<script>/* Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;
+</script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.2.0-beta.6/dist/g2.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.8.9/dist/data-set.min.js"></script>
+<script src="../build/interaction.js"></script>
+<script>
+  Interaction.helper.bindInteraction(G2, G2.Chart);
+  G2.registerInteraction('shape-select', Interaction.ShapeSelect);
+</script>
+<script>
+const data = [{
+  year: '1951 年',
+  sales: 38
+}, {
+  year: '1952 年',
+  sales: 52
+}, {
+  year: '1956 年',
+  sales: 61
+}, {
+  year: '1957 年',
+  sales: 145
+}, {
+  year: '1958 年',
+  sales: 48
+}, {
+  year: '1959 年',
+  sales: 38
+}, {
+  year: '1960 年',
+  sales: 38
+}, {
+  year: '1962 年',
+  sales: 38
+}];
+const chart = new G2.Chart({
+  container: 'mountNode',
+  forceFit: true,
+  height: window.innerHeight
+});
+
+chart.source(data, {
+  sales: {
+    tickCount: 5
+  }
+});
+chart.tooltip(false);
+chart.interval().position('year*sales').active(false);
+chart.render();
+
+chart.interaction('shape-select', {
+  selectStyle: {
+    stroke: '#000',
+    opacity: 1,
+    lineWidth: 1
+  }
+});
+</script>
+</body>
+</html>

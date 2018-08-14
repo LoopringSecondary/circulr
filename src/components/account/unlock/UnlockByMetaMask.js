@@ -74,7 +74,7 @@ function MetaMask(props) {
         props.dispatch({type:'wallet/unlockMetaMaskWallet',payload:{address}});
         Notification.open({type:'success',message:intl.get('notifications.title.unlock_suc')});
         props.dispatch({type: 'sockets/unlocked'});
-        routeActions.gotoPath('/wallet');
+        routeActions.gotoPath('/trade');
         metaMask.setLoading({loading:false});
         props.dispatch({type:'layers/hideLayer', payload:{id:'unlock'}})
 

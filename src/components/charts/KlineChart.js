@@ -137,11 +137,11 @@ class KlineChart extends React.Component {
               }]}
               tooltip={['time*start*end*max*min', (time, start, end, max, min) => {
                 return {
-                  name: time,
-                  value: '<br><span style="padding-left: 16px">开盘价：' + start + '</span><br/>'
-                  + '<span style="padding-left: 16px">收盘价：' + end + '</span><br/>'
-                  + '<span style="padding-left: 16px">最高价：' + max + '</span><br/>'
-                  + '<span style="padding-left: 16px">最低价：' + min + '</span>'
+                  name: '<span style="color: #000000;">Date: ' + time + ' </span>',
+                  value: '<br><span style="padding-left: 16px; color: #000000">Starting Price: ' + start + '</span><br/>'
+                  + '<span style="padding-left: 16px; color: #000000">Ending Price: ' + end + '</span><br/>'
+                  + '<span style="padding-left: 16px; color: #000000">Max Price: ' + max + '</span><br/>'
+                  + '<span style="padding-left: 16px; color: #000000">Min Price: ' + min + '</span>'
                 };
               }]}
             />
@@ -157,8 +157,8 @@ class KlineChart extends React.Component {
               }]}
               tooltip={['time*volumn', (time, volumn) => {
                 return {
-                  name: time,
-                  value: '<br/><span style="padding-left: 16px">成交量：' + volumn + '</span><br/>'
+                  name: '<span style="color: #000000;">Date: ' + time + ' </span>',
+                  value: '<br/><span style="padding-left: 16pxc; color: #000000"">Volume: ' + volumn + '</span><br/>'
                 };
               }]}
             />

@@ -20,7 +20,7 @@ function Ledgers(props) {
           Notification.open({type: 'success', message: intl.get('notifications.title.unlock_suc'),});
           hardwareWallet.reset();
           dispatch({type: 'sockets/unlocked'})
-          routeActions.gotoPath('/wallet')
+          routeActions.gotoPath('/trade')
           dispatch({type:'layers/hideLayer', payload:{id:'unlock'}})
         }
       });

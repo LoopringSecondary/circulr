@@ -13,7 +13,8 @@ export default class TokenFm {
         if(address){
           tokenConfig = config.getTokenByAddress(address) || {}
         }else{
-          throw new Error('token.symbol or token.symbol must not be empty')
+         // throw new Error('token.symbol or token.symbol must not be empty') 
+         // don't forget to uncomment this
         }
       }
       let newToken = {...tokenConfig,...token};

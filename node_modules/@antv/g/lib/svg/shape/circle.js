@@ -1,0 +1,29 @@
+var Util = require('../../util/index');
+var Shape = require('../core/shape');
+
+var Circle = function Circle(cfg) {
+  Circle.superclass.constructor.call(this, cfg);
+};
+
+Circle.ATTRS = {
+  x: 0,
+  y: 0,
+  r: 0,
+  lineWidth: 1
+};
+
+Util.extend(Circle, Shape);
+
+Util.augment(Circle, {
+  canFill: true,
+  canStroke: true,
+  type: 'circle',
+  getDefaultAttrs: function getDefaultAttrs() {
+    return {
+      lineWidth: 1,
+      fill: 'none'
+    };
+  }
+});
+
+module.exports = Circle;

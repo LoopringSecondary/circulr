@@ -4,8 +4,8 @@
     header
 -----------------------*/
 header { position: fixed; z-index: 1000; width: 100%; border-bottom: 4px solid @blue-darker; }
-header .bg { height: 70px; padding: 15px 20px; }
-header .w-control { margin-left: 280px; }
+header .bg { height: 70px; padding: 15px 60px; }
+// header .w-control { margin-left: 280px; }
 header h2 { font-size: 18px; opacity: .87; }
 header h2 span { padding-left: 5px; font-weight: normal; vertical-align: middle; opacity: .54; }
 header .account { position: relative; }
@@ -18,10 +18,12 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 -----------------------*/
 .side { position: absolute; height: 100%; }
 .side-fixed { position: fixed; height: 100%; }
-.m-container { overflow: hidden; padding-top: 74px; }
+.m-container { overflow: hidden; padding-top: 94px; }
 .h-full { height: 100vh; }
+.h-half { height: 55vh; }
+.h-half1 { height: 65vh;}
 .loopring-brand { height: 70px; text-align: center; padding-top: 10px; }
-.loopring-brand .img { width: 134px; height: 40px; vertical-align: middle }
+.loopring-brand .img { width: 149px; height: 39px; vertical-align: middle; margin-left: 10px; margin-top: 5px }
 .token-total { text-align: center; padding: 0 0 20px; }
 .token-total h3 { font-family: "DINPro", "Helvetica Neue", "Helvetica", "Arial", "Verdana", "sans-serif"; font-size: 20px; }
 .token-total small { opacity: .27 }
@@ -139,26 +141,28 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 #back i { font-size: 32px; }
 #back:hover { background: @light-color-1; }
 .tradeHeaderEle { display: flex; }
-.tradeHeaderEle .pair-select { width: 215px; font-size: 18px; font-weight: 600; margin-left: 15px; }
+.tradeHeaderEle .pair-select { width: 215px; font-size: 14px; font-weight: 600; }
 .tradeHeaderEle .pair-select .caret { position: relative; top: 2px; }
-.tradeHeaderEle .token-last-quotes { margin-left: 15px; }
+.tradeHeaderEle .token-last-quotes { margin-left: 85px; }
 .pair-price { padding: 5px 10px; border: 1px solid @dark-color-2; margin: 10px 0 20px; }
 .pair-price>li { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
 .pair-price>li .token-price { display: inline-block; width: 100px; text-align: left; }
 .pair-price>li h4 { font-size: 14px; font-weight: 600; width: 50px; color: @text-color-dark-2 }
-.token-tab { display: flex; justify-content: space-between }
+.token-tab { display: flex; justify-content: space-between; float: right; width: "35%" }
 .token-tab li { list-style: none; width: 100%; }
 .token-tab li a { display: block; height: 40px; background: @dark-color-2; color: @text-color-dark-3; font-size: 16px; font-weight: bold; text-align: center; line-height: 40px; }
 .token-tab li.active a { color: @text-color-dark; }
 .token-tab li.buy.active a { background: @success-color; }
 .token-tab li.sell.active a { background: @error-color; }
+.gas-switcher ul li { width: 150px; font-weight: 600; }
+.gas-switcher li { width: 100px; font-weight: 400; }
 .balance { }
-.token-select { background-color: @white; color: @text-color-1; }
+.token-select { background-color: @white; color: @text-color-1; height: 100%}
 .token-select .token-select-header { display: flex; justify-content: space-between; align-items: center; height: 71px; padding: 0 30px; border-bottom: 1px solid @light-color-2 }
 .token-select .token-select-header input { border: 0; height: 70px; width: 100%; padding-right: 60px; font-size: 20px; font-weight: 800; vertical-align: top; }
 .token-select .token-select-header input:focus { outline: 0; }
 .token-select .icon-star, .token-select .token-select-header h2 { font-size: 18px; }
-.token-select .token-select-body { padding: 20px 0; max-height: 400px; overflow: auto; }
+.token-select .token-select-body { padding: 20px 0; max-height: 400px; overflow: auto; margin-bottom: 90px}
 .token-select .token-select-body .item { font-size: 13px; }
 .token-select .token-select-body .item li { display: flex; justify-content: flex-start; align-items: center; padding: 0 30px; line-height: 40px; }
 .token-select .token-select-body .item li.active, .token-select .token-select-body .item li.active:hover { background: @blue-dark; }
@@ -169,12 +173,12 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .token-select .token-select-body .item li>span:nth-child(3) { display: block; width: 160px; }
 .token-select .token-select-body .item li>span:nth-child(4) { display: block; width: 85px; }
 .token-select .token-select-body .item li>span:nth-child(5) { display: block; width: 120px; }
-.token-select .token-select-body .title { height: 20px; color: @text-color-3; padding: 0 30px; font-weight: 600; line-height: 20px; }
+.token-select .token-select-body .title { height: 20px; color: #000000; padding: 0 30px; font-weight: 600; line-height: 20px; }
 .token-select .token-select-body .item li span i { font-size: 12px; color: @text-color-2 }
 .token-select .token-select-body .item li span i:active, .token-select .token-select-body .item li span i.active { color: @warning-color; }
 .token-select .token-select-body .item li>span { display: block; text-align: left; }
 .trade-list { position: relative; }
-.trade-list .trade-list-header { color: @text-color-dark-3; line-height: 30px; display: flex; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid @dark-color-3; }
+.trade-list .trade-list-header { color: @text-color-dark-3; line-height: 30px; display: flex; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid @dark-color-3; padding-right: 35px;}
 .trade-list li { display: flex; justify-content: space-between; padding: 0 20px; line-height: 20px; font-weight: 600; color: @text-color-dark-2 }
 .trade-list li:hover { background: @dark-color-2 }
 .trade-list li>span { display: block; width: 70px; text-align: left;}
@@ -191,7 +195,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .tab-order.tabs li.active a { color: @text-color-dark-1 }
 .order-filter { border-bottom: 1px solid @dark-color-2; padding: 10px 20px; }
 .market-chart { border-bottom: 4px solid @blue-darker }
-.market-chart>div { height: 100%; overflow: hidden; padding: 10px 15px; }
+.market-chart>div { height: 100%; overflow: hidden; padding: 0px 15px; }
 .market-chart img { width: 100%; height: 100%; }
 // #account { position: fixed; top: 0; right: -300px; z-index: 1000; width: 300px; height: 100%; -webkit-transition: right .3s; transition: right .3s; transition-delay: 0.2s; }
 // #account.open { right: 0; }
@@ -246,7 +250,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .account-bar ul li .logo { width: 40px; height: 40px; padding: 5px; background: @blue-light; line-height: 30px; }
 .account-bar ul li .logo img { width: 100%; }
 .account-bar ul li:nth-child(1) { display: inline-flex; justify-content: space-between; align-items: center; }
-.account-bar ul li .account-address { width: 170px; padding: 0 5px 0 10px; text-align: left; color: @text-color-dark-2; word-wrap: break-word; line-height: 1.2; }
+.account-bar ul li .account-address { width: 260px; padding: 0 5px 0 10px; text-align: left; color: @text-color-dark-2; word-wrap: break-word; line-height: 1.2; }
 .account-bar ul li i { font-size: 20px; margin:0; }
 .account-bar ul li:nth-child(n+2):hover { background: @dark-color-1; cursor: pointer; }
 .account-bar ul li .language .icon { position: relative; top: 6px; left: 2px }
