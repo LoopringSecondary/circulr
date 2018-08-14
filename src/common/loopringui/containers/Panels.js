@@ -4,7 +4,7 @@ import './Panels.less'
 const PanelsWrapper = (props)=>{
   const {
     children,id,
-    docked,width='40vw',position='left',sidebarClassName='panel-default-theme',className='',
+    docked,width='30vw',position='left',sidebarClassName='panel-default-theme',className='',
     ...rest
   } = props
   const {[id]:layer={}} = props

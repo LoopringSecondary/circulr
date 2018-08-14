@@ -41,7 +41,7 @@ function ListOrderBook(props) {
   }
   return (
     <div>
-      <div className="card dark" style={{height:"-webkit-calc(100vh - 40px)", borderRadius:"5px"}}>
+      <div className="card dark" style={{height:"-webkit-calc(100vh - 40px)"}}>
         <div className="card-header card-header-dark bordered">
             <h4>Order Book</h4>
         </div>

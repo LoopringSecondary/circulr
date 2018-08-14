@@ -70,12 +70,12 @@ function ListOrderBook(props) {
   };
   return (
     <div>
-	    <div className="card dark" style={{height:"-webkit-calc(100vh - 40px)", borderRadius:"5px"}}>
+	    <div className="card dark" style={{height:"-webkit-calc(100vh - 40px)"}}>
 	    	<div className="card-header card-header-dark bordered">
 	    	    <h4>{intl.get('order_list.order_book')}</h4>
 	    	</div>
 	    	<div className="trade-list" style={{height:"-webkit-calc(100% - 31px)"}}>
-    	    	    <div className="bg" style={{ position: "absolute", top:"26%", marginTop:"-45px", zIndex: "100", width: "100%", height: "40px", lineHeight: "38px", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0", fontSize: "16px"}}>
+    	    	    <div className="bg" style={{ position: "absolute", top:"50%", marginTop:"-45px", zIndex: "100", width: "100%", height: "40px", lineHeight: "38px", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0", fontSize: "16px"}}>
                   {trades.length >0 && isIncresse() &&	<div className="text-up text-center cursor-pointer" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}>{trades[0] && trades[0].price}<span className="offset-md"><i className="icon-arrow-up"></i></span></div>}
                   {trades.length >0 && !isIncresse() &&	<div className="text-down text-center cursor-pointer" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}>{trades[0] && trades[0].price}<span className="offset-md"><i className="icon-arrow-down"></i></span></div>}
                 </div>
@@ -90,7 +90,7 @@ function ListOrderBook(props) {
 		    	    </ul>
 	    	    <div style={{height: "-webkit-calc(50% - 85px)",marginTop:"5px",marginBottom:"0",paddiongBottom:"10" }}>
               <Spin spinning={list.loading}>
-                <ul style={{height: "120px", overflow:"scroll", overflowX:"hidden", paddingTop:"0",marginBottom:"0px" }}>
+                <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0px" }}>
                       {
                         sell.map((item,index)=>
                           <Popover placement="right" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>
@@ -109,9 +109,9 @@ function ListOrderBook(props) {
                   </ul>
               </Spin>
 	    	    </div>
-	    	    <div style={{height: "-webkit-calc(50% - 85px)",paddingTop:"0",paddingBottom:"0",marginTop:"-138px",marginBottom:"0"}}>
+	    	    <div style={{height: "-webkit-calc(50% - 85px)",paddingTop:"0",paddingBottom:"0",marginTop:"50px",marginBottom:"0"}}>
               <Spin spinning={list.loading}>
-  	            <ul style={{height: "120px", overflow:"scroll", overflowX:"hidden", paddingTop:"0",marginBottom:"0" }}>
+  	            <ul style={{height: "100%", overflow:"auto",paddingTop:"0",marginBottom:"0" }}>
   	                {
                       buy.map((item,index)=>
                         <Popover placement="right" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>

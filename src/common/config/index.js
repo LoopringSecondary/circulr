@@ -6,6 +6,18 @@ const data = require('./data')
 const config = data.configs
 const tokensIcons = require('./tokens_icons.json');
 
+let tokens = [{
+  "symbol": "ETH",
+  "digits": 18,
+  "address": "",
+  "precision": 6,
+}, ...STORAGE.settings.getTokensConfig().map(item=>{
+  item.icon = tokensIcons[item.symbol]
+  return item
+})].filter(item=>{
+  return !config.ignoreTokens || !config.ignoreTokens.includes(item.symbol)
+})
+const markets = config.markets
 const txs = config.txs;
 const projects =  data.projects;
 
@@ -23,35 +35,25 @@ async function  isinWhiteList(address) {
 
 function getChainId(){
   return config.chainId
+
 }
 
 function getTokenBySymbol(symbol){
   if(!symbol){ return {} }
-  return getTokens().find(token=>token.symbol.toLowerCase()===symbol.toLowerCase()) || {}
+  return tokens.find(token=>token.symbol.toLowerCase()===symbol.toLowerCase()) || {}
 }
 
 function getTokenByAddress(address){
   if(!address){ return {} }
-  return getTokens().find(token=>token.address.toLowerCase()===address.toLowerCase())
+  return tokens.find(token=>token.address.toLowerCase()===address.toLowerCase())
 }
 
 function getCustomTokens(){
-  return getTokens().filter(token=>token.custom)
+  return tokens.filter(token=>token.custom)
 }
 
 function getTokens(){
-  return [{
-    "symbol": "ETH",
-    "digits": 18,
-    "address": "",
-    "precision": 6,
-  }, ...STORAGE.settings.getTokensConfig().map(item=>{
-    item.icon = tokensIcons[item.symbol]
-    item.precision = item.digits > 6 ? 6 : item.digits
-    return item
-  })].filter(item=>{
-    return !config.ignoreTokens || !config.ignoreTokens.includes(item.symbol)
-  })
+  return tokens
 }
 
 function getMarketByPair(pair) {
@@ -85,16 +87,17 @@ function isSupportedMarket(market) {
   if(!market) return false
   const pair = market.split('-')
   if(pair.length !== 2) return false
-  return getMarkets().find(m=> {
+  return markets.find(m=> {
     return (m.tokenx === pair[0].toUpperCase() && m.tokeny === pair[1].toUpperCase()) || (m.tokenx === pair[1].toUpperCase() && m.tokeny === pair[0].toUpperCase())
   })
 }
 
 function getMarketBySymbol(tokenx, tokeny) {
   if (tokenx && tokeny) {
-    return getMarkets().find(market=> {
-      return (market.tokenx === tokenx && market.tokeny === tokeny) || (market.tokenx === tokeny && market.tokeny === tokenx)
-    }) || {
+    return markets.find(market=> {
+        return (market.tokenx === tokenx && market.tokeny === tokeny) || (market.tokenx === tokeny && market.tokeny === tokenx)
+      }
+    ) || {
       "pricePrecision": 8
     }
   }else{
@@ -105,11 +108,11 @@ function getMarketBySymbol(tokenx, tokeny) {
 }
 
 function getMarketsByTokenR(token) {
-  return getMarkets().filter(item=>item.tokeny === token)
+  return config.markets.filter(item=>item.tokeny === token)
 }
 
 function getMarketsByTokenL(token) {
-  return getMarkets().filter(item=>item.tokenx === token)
+  return config.markets.filter(item=>item.tokenx === token)
 }
 
 function getTokenSupportedMarket(token) {
@@ -141,28 +144,7 @@ function getTokenSupportedMarkets(token) {
 }
 
 function getMarkets() {
-  const markets = STORAGE.settings.getMarketsConfig().map(item=>{
-    //const tokenx = getTokenBySymbol(item.tokenx)
-    //item.pricePrecision = tokenx.digits > 8 ? 8 : tokenx.digits
-    return item
-  })
-  return markets
-  // const tokens = getTokens();
-  // const supportedMarktesR = getSupportedMarketsTokenR()
-  // let markets = new Array()
-  // tokens.filter(item => item.symbol !== 'ETH' && item.symbol !== 'WETH').forEach(token=> {
-  //   supportedMarktesR.forEach(marketR => {
-  //     if(marketR !== token.symbol) {
-  //       const tokenConfig = tokens.find(t=>t.symbol.toLowerCase()===token.symbol.toLowerCase()) || {}
-  //       markets.push({
-  //         "tokenx": token.symbol,
-  //         "tokeny": marketR,
-  //         "pricePrecision": tokenConfig.digits > 8 ? 8 : tokenConfig.digits
-  //       })
-  //     }
-  //   })
-  // })
-  // return markets
+  return markets;
 }
 
 function getGasLimitByType(type) {

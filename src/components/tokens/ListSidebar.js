@@ -136,7 +136,7 @@ function ListTokensSidebar(props) {
   )
 
   return (
-    <div style={{marginTop:'5px', backgroundColor:"#101C27"}}>
+    <div>
     	<div className="token-total">
           <h3 className="text-success">{totalWorthDisplay}</h3><small>{intl.get('token.assets_title')}</small>
       </div>

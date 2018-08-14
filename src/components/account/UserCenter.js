@@ -36,7 +36,7 @@ function UserCenter(props) {
   };
 
   return (
-    <div style={{width:"345px"}}>
+    <div>
     	<div id="account">
     	    <div className="account-side">
             {wallet.address && <div>

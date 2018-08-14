@@ -191,7 +191,6 @@
       "pricePrecision": 8
     }
   ],
-  "newMarkets": [],
   "txs": [
     {
       "type":"eth_transfer",

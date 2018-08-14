@@ -1,9 +1,5 @@
 const words = {
-  gas_slow: 'Set Gas Fee',
-  gas_medium: 'Medium',
-  gas_fast: 'Fast',
   all: 'All',
-  order_form: 'Order Form',
   time: 'Time',
   status: 'Status',
   statuses: 'Statuses',
@@ -79,7 +75,6 @@ const validation_messages = {
 
 const notifications = {
   title: {
-    place_order_form: "Order Form",
     place_order_failed: "Whoops, order submission somehow failed!",
     place_order_success: "Order placed successfully.",
     place_order_warn: "Your order can not be fully filled.",
@@ -125,7 +120,7 @@ const notifications = {
     not_allowed_place_order_worth: 'Due to your total worth less than {worth}, you could not place this order',
     eth_is_required: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
     lrcfee_is_required: 'LRC is required to pay trade fees, added on your history orders need LRC, totally required {required} LRC.',
-    unlock_by_cookie_address: 'Dexlab has switched your account to the watch-only mode, and your private-key is no longer available to the browser.  You\'ll need to unlock your wallet again to perform some operations.',
+    unlock_by_cookie_address: 'Circular has switched your account to the watch-only mode, and your private-key is no longer available to the browser.  You\'ll need to unlock your wallet again to perform some operations.',
     address_change:'Address changed from {add1} to {add2}',
     ledger_connect_failed: "Failed to connect with your Ledger device, you could follow these advices and have a try later. 1、Make sure your Ledger device has connected with your computer and unlocked. 2、Set this to 'yes': Settings->Browser support 3、Enter into Ethereum app",
     unlock_diff_address_to_sign: "Please unlock with address {address} to finish signing"
@@ -202,9 +197,8 @@ export default {
     buy: words.buy,
   },
   order_list: {
-    order_form: 'Order Form',
     actions_cancel_all: 'Cancel All',
-    my_open_orders: 'Your Open Orders',
+    my_open_orders: 'Open Orders',
     my_all_orders: 'All Orders',
     order_book: 'Order Book',
   },
@@ -228,7 +222,7 @@ export default {
     step_sign: 'Sign Order On Loopr',
     step_result: 'Result',
     qrcode_overdue: 'QRcode is overdue, please place order again',
-    instruction_download: 'Download Dexlab-IOS',
+    instruction_download: 'Download Loopr-IOS',
     instruction_scan: 'Open your Loopr wallet, scan the QRcode and submit',
     instruction_warn: '* The QRcode is valid for 24 hours, please scan as soon as possible. When expired, please place an new order to generate new QRcode',
     waiting_sign: 'Waiting for your operations on Loopr Wallet to sign and submit',
@@ -422,7 +416,7 @@ export default {
     created: 'Created',
   },
   fill_list: {
-    my_recent_fills: 'Your Past Orders',
+    my_recent_fills: 'Recent Fills',
     my_all_fills: 'All Fills',
     trade_history: 'Trade History',
   },
@@ -524,8 +518,8 @@ export default {
     error_invalid_tip: 'Invalid Information',
   },
   unlock_by_loopr: {
-    instruction_download: 'Download Dexlab-IOS',
-    instruction_scan: 'Open your Dexlab wallet，scan the QRcode and confirm',
+    instruction_download: 'Download Loopr-IOS',
+    instruction_scan: 'Open your Loopr wallet，scan the QRcode and confirm',
     instruction_warn: '* The QRcode is valid for 10 minute, please scan as soon as possible. When expired, please scan the new QRcode generated automatically',
   },
   password: {
@@ -629,10 +623,7 @@ export default {
     tip: 'Circular doesn\'t keep a copy of your private key, keystore file, or mnemonic words. Make sure you back up these information immediately.',
   },
   kline_chart: {
-    kline_chart: 'Cline Chart',
-  },
-  depth_chart: {
-    depth_chart: 'Depth Chart',
+    kline_chart: 'Kline Chart',
   },
   price_chart: {
     price_chart: 'Price Chart',
@@ -645,7 +636,7 @@ export default {
       result:'Result'
     },
     tips:{
-      download:'Download Dexlab-IOS',
+      download:'Download Loopr-IOS',
       scan: 'Open your Loopr wallet, scan the QRcode and submit',
       warn: 'Please scan as soon as possible. When expired, please place an new order to generate new QRcode',
     },

@@ -158,7 +158,7 @@ class Unlock extends React.Component {
 
                 <li className={`item ${pathname==='/unlock/loopr' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('loopr')}><i className="icon-qrcode"/>
-                    <h4>Dexlab</h4></a>
+                    <h4>Loopr</h4></a>
                 </li>
                 <li className={`item ${pathname==='/unlock/address' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('address')}><i className="icon-view"/><h4>{intl.get('wallet_type.address')}</h4>
