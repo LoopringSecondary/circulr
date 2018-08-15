@@ -83,7 +83,7 @@ function ListTradesHistory(props) {
   };
   return (
     <div>
-      <div className="card dark h-full">
+      <div className="card dark h-full" style={{top: "20px", borderRadius:"5px"}}>
         <div className="card-header card-header-dark bordered">
           <h4>{intl.get('fill_list.trade_history')}</h4>
         </div>

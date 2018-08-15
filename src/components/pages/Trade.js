@@ -8,6 +8,8 @@ import { Containers } from 'modules';
 import { connect } from 'dva';
 import {AccountMenu} from './Wallet';
 import intl from 'react-intl-universal';
+import {TickerFm} from 'modules/tickers/formatters';
+import routeActions from 'common/utils/routeActions';
 
 function Trade(props) {
   const { children, match } = props
@@ -24,8 +26,9 @@ function Trade(props) {
                 </Containers.Wallet>
             </div>
         </header>
-  	    <div className="side-fixed" style={{ top:"0", left:"0", width:"320px", paddingTop:"74px" }}>
-              <div className="card h-full">
+
+  	    <div className="side-fixed" style={{ top:"85px", left:"60px", width:"300px", paddingTop:"94px"}}>
+              <div className="card h-full" style={{borderRadius:"5px"}}>
                 <Containers.PlaceOrder initState={{pair:market}}>
                   <Containers.Settings>
                     <Containers.Sockets id="balance">
@@ -47,43 +50,44 @@ function Trade(props) {
                 </Containers.PlaceOrder>
               </div>
   	    </div>
-  	    <div className="m-container h-full relative" style={{marginLeft: "324px"}}>
-  	        <div className="side" style={{left:"0",width: "320px"}}>
-  	            <div className="card h-full">
+  	    <div className="m-container h-full relative" style={{marginLeft: "380px", marginRight: "50px"}}>
+  	        <div className="side" style={{left:"0",width: "305px", borderRadius:"5px"}}>
+  	            <div className="card h-full" style={{borderRadius:"5px"}}>
   	                <Orders.ListOrderBook />
   	            </div>
   	        </div>
   	        <div className="fulid-container" style={{marginLeft:"324px", marginRight: "324px", height: "100%" }}>
-  	            <div className="card dark h-full">
+  	            <div className="card dark h-full" style={{borderRadius:"5px"}}>
       	            <div style={{position: "relative", height: "-webkit-calc(50% - 40px)", overflow:"hidden" }}>
         	              <div className="card-header card-header-dark bordered">
         		               <h4>{intl.get('kline_chart.kline_chart')}</h4>
         		            </div>
                         <div style={{height:"-webkit-calc(100% - 40px)"}}>
-            		            <div className="market-chart" style={{height: "60%" }}>
+            		            <div className="market-chart" style={{height: "50%"}}>
             		               <Charts.KlineChart />
             		            </div>
-            	               <div className="market-chart" style={{height: "40%" }}>
+            	               <div className="market-chart" style={{height: "50%", borderBottom:"20px solid #273e4f"}}>
+        		                    <h4 style={{padding:"10px 20px", color:"#ffffff", fontSize:"16px"}}>{intl.get('depth_chart.depth_chart')}</h4>
                                 <Charts.DepthChart />
                             </div>
                         </div>
                     </div>
-      	            <div className="orders" style={{position: "relative", height:"50%", paddingTop:"0"}}>
-          	            <Tabs defaultActiveKey="1"  type="card">
+      	            <div className="orders" style={{position:"relative", right:"320px", top:"15px", height:"50%", paddingTop:"0", width:"138%", backgroundColor:"#182C3E", borderRadius:"5px", marginTop: "-15px"}}>
+          	            <Tabs defaultActiveKey="1"  type="card" >
           	                <TabPane tab={intl.get('order_list.my_open_orders')} key="1">
                               <Containers.Orders id="MyOpenOrders" alias="orders"  >
-                                <Orders.ListMyOrders style={{height:"100%",overflow:"auto"}} />
+                                <Orders.ListMyOrders style={{height:"100%",overflow:"auto", position: "absolute", right:"185px"}} />
                               </Containers.Orders>
                             </TabPane>
           	                <TabPane tab={intl.get('fill_list.my_recent_fills')} key="2">
                               <Containers.Fills id="MyFills" alias="fills"  >
-                                <Fills.ListMyFills style={{height:"100%",overflow:"auto"}} />
+                                <Fills.ListMyFills style={{height:"100%",overflow:"auto", position: "absolute", right:"185px"}} />
                               </Containers.Fills>
                             </TabPane>
           	            </Tabs>
       	            </div>
   	            </div>
-    		        <div className="side" style={{top:"74px", right:"0", width: "320px"}}>
+    		        <div className="side" style={{top:"74px", right:"-8px", width: "320px"}}>
     		            <Fills.ListTradesHistory />
     		        </div>
   	        </div>

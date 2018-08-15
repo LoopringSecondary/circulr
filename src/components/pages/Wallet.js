@@ -41,6 +41,7 @@ function Wallet(props) {
     <div>
         <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000"}}>
             <div className="bg text-color-dark-1 w-control d-flex justify-content-between align-items-center">
+              <div className="loopring-brand"><img src={require('../../assets/images/logo.png')} className="img" /></div>
                 <h2>{token.toUpperCase()}</h2>
               <Containers.Wallet>
                 <AccountMenu />
@@ -48,25 +49,28 @@ function Wallet(props) {
 
             </div>
         </header>
-        <div className="side-fixed" style={{top:"0",left: "0",width: "280px",padding: "20px 0"}} id="tokenSide">
-            <div className="loopring-brand"><img src={require('../../assets/images/logo.png')} className="img" /></div>
-              <Containers.Tokens>
-                  <Containers.Settings>
-                    <Tokens.ListSidebar />
-                  </Containers.Settings>
-              </Containers.Tokens>
-        </div>
-        <div className="m-container h-full" style={{marginLeft: "280px", marginRight: "454px"}} id="transactions">
-            <div className="card dark h-full">
-                <Transactions.ListDefault />
+        <div style={{display:"inline-block", width:"100%"}}>
+            <div className="m-container h-full" style={{position:"fixed", marginLeft: "70px", marginRight: "975px", width:"45%", top:"0px"}} id="transactions">
+                <div className="card dark h-full" style={{borderRadius:"5px"}}>
+                    <Transactions.ListDefault />
+                </div>
             </div>
-        </div>
-        <div className="side-fixed" style={{top:"0",right: "0",width: "450px",paddingTop:"74px"}} id="sideMarkets">
-            <div className="card dark h-full">
-                <Charts.PriceChart />
-                <Tickers.ListTokenTickers />
+            <div className="m-container h-fulld" style={{position:"fixed", top:"0",right: "395px",width: "29%",paddingTop:"94px"}} id="sideMarkets">
+                <div className="card dark h-full" style={{borderRadius:"5px"}}>
+                    <Charts.PriceChart />
+                    <Tickers.ListTokenTickers />
+                </div>
             </div>
-        </div>
+            <div className="m-container h-full" style={{position:"fixed", top:"70px",left: "81%",width: "16%",padding: "20px 0", borderRadius:"5px"}} id="tokenSide">
+                <div className="card dark h-full" style={{borderRadius:"5px"}}>
+                  <Containers.Tokens>
+                      <Containers.Settings>
+                        <Tokens.ListSidebar />
+                      </Containers.Settings>
+                  </Containers.Tokens>
+                </div>
+          </div>
+      </div>
     </div>
   )
 }

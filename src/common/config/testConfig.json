@@ -216,18 +216,7 @@
     }
   ],
   "supportedTokenRInMarkets":["WETH", "BAR"],
-  "markets": [
-    {
-      "tokenx": "LRC",
-      "tokeny": "WETH",
-      "pricePrecision": 8
-    },
-    {
-      "tokenx": "FOO",
-      "tokeny": "BAR",
-      "pricePrecision": 4
-    }
-  ],
+  "newMarkets": ["FOO-WETH", "BAR-WETH"],
   "whiteList": [
     "0x80679a2c82ab82f1e73e14c4bec4ba1992f9f25a",
     "0x8311804426a24495bd4306daf5f595a443a52e32",
