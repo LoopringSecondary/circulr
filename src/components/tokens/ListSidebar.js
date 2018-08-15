@@ -164,11 +164,11 @@ function ListTokensSidebar(props) {
                     <Tooltip title={intl.get('tokens.hide_small_balances')}>
                       {
                         filters.ifHideSmallBalance &&
-                        <i className="icon-eye" onClick={toggleSmallBalance.bind(this)} />
+                        <i className="icon-wallet" onClick={toggleSmallBalance.bind(this)} />
                       }
                       {
                         !filters.ifHideSmallBalance &&
-                        <i className="icon-eye-o" onClick={toggleSmallBalance.bind(this)} />
+                        <i className="icon-wallet" onClick={toggleSmallBalance.bind(this)} />
                       }
                     </Tooltip>
                   </div>

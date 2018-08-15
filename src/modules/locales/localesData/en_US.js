@@ -1,6 +1,6 @@
 const words = {
-  gas_slow: 'Set Gas Fee',
-  gas_medium: 'Medium',
+  gas_slow: 'Slow',
+  gas_standard: 'Standard',
   gas_fast: 'Fast',
   all: 'All',
   order_form: 'Order Form',
