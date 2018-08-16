@@ -16,7 +16,6 @@ import {getLastGas, getEstimateGas} from 'modules/settings/formatters'
 function TransferForm(props) {
   const {transfer, balance, wallet, marketcap, form, gas, dispatch} = props
   const { TextArea } = Input;
-
   let tokenSelected = {}
   if(transfer.assignedToken) {
     tokenSelected = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:transfer.assignedToken, toUnit:true})
@@ -188,7 +187,7 @@ function TransferForm(props) {
     const gas = fm.toBig(value).times(fm.toNumber(gasLimit)).div(1e9).toString()
     return gas + " ETH";
   }
-  const setGas = ()=>{
+  const setGas = () => {
     dispatch({type:"gas/fixedGasLimitChange",payload:{fixedGasLimit:gasLimit}})
     dispatch({type:"layers/showLayer",payload:{id:'gasFee', advanced:true}})
   }

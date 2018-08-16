@@ -248,20 +248,6 @@ class PlaceOrderForm extends React.Component {
           }
           dispatch({type:'placeOrder/submitButtonLoadingChange', payload:{submitButtonLoading:true}})
 
-          //TODO mock
-          // const lrcBalance = tokenFormatter.getBalanceBySymbol({balances:balance.items, symbol:'LRC', toUnit:true})
-          // if(!lrcBalance || lrcBalance.balance.lt(900)){
-          //   // TODO !await config.isinWhiteList(window.WALLET.getAddress())
-          //   if(config.getChainId() !== 7107171){
-          //     Notification.open({
-          //       type:'warning',
-          //       message:intl.get('trade.not_inWhiteList'),
-          //       description:intl.get('trade.not_allow')
-          //     });
-          //     return
-          //   }
-          // }
-
           const totalWorth = orderFormatter.calculateWorthInLegalCurrency(marketcap.items, right.symbol, tradeInfo.total)
           if(!totalWorth.gt(0)) {
             Notification.open({
@@ -298,7 +284,6 @@ class PlaceOrderForm extends React.Component {
           try {
             await orderFormatter.tradeVerification(balance.items, wallet, tradeInfo, sell.token, buy.token, left.symbol, right.symbol, side, pendingTx.items, gasPrice)
           } catch(e) {
-            console.log(e)
             Notification.open({
               message:intl.get('notifications.title.place_order_failed'),
               description:e.message,

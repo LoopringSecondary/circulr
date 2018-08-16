@@ -75,21 +75,21 @@ class SignByLoopr extends React.Component {
           </div>
         }
         {step === 2 && <div className="zb-b">
-          {
-            result === 1 &&
-            <div className="text-center p35">
-              <i className={`fs50 icon-success`}></i>
-              <div className="fs18 color-black-1">{intl.get('notifications.title.sub_suc')}</div>
-            </div>
-          }
-          {
-            result === 2 &&
-            <div className="text-center p35">
-              <Icon type="close-circle" className="fs50 text-error" />
-              <div className="fs18 color-black-1 mt15 mb10">{intl.get('notifications.title.sub_failed')}</div>
-            </div>
-          }
-        </div>}
+        {
+          result === 1 &&
+          <div className="text-center p35">
+            <i className={`fs50 icon-success`}></i>
+            <div className="fs18 color-black-1">{intl.get('notifications.title.sub_suc')}</div>
+          </div>
+        }
+        {
+          result === 2 &&
+          <div className="text-center p35">
+            <Icon type="close-circle" className="fs50 text-error" />
+            <div className="fs18 color-black-1 mt15 mb10">{intl.get('notifications.title.sub_failed')}</div>
+          </div>
+        }
+      </div>}
       </Card>
     )
   }

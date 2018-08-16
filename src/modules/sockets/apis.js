@@ -126,7 +126,9 @@ const transfromers = {
       // console.log(id,'res',res)
       let items = []
       if (!res.error && res.data && isArray(res.data.tokens)) {
-        items = [...res.data.tokens]
+        const balance_items = [...res.data.tokens];
+        const cor_items =  balance_items.filter(item => !!item.symbol)
+        items = [...cor_items]
       }
       updateItems(items, id)
     },

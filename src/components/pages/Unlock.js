@@ -18,7 +18,7 @@ class Unlock extends React.Component {
     const {match, location,dispatch} = this.props;
     const param = location.pathname.replace(`${match.path}/`, '')
     if (param === '/unlock' || param === 'loopr') {
-      const uuid = uuidv4()
+      const uuid = uuidv4();
       dispatch({type: 'scanAddress/uuidChanged', payload: {UUID: uuid.substring(0, 8)}})
       dispatch({
         type: 'sockets/extraChange',
