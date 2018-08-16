@@ -50,10 +50,10 @@ class ExportKeyStore extends React.Component{
     const visibleIcon = (
       <div>
         {visible &&
-        <i className="icon-eye" onClick={this.togglePassword}/>
+        <i className="icon-wallet" onClick={this.togglePassword}/>
         }
         {!visible &&
-        <i className="icon-eye-slash" onClick={this.togglePassword}/>
+        <i className="icon-wallet-slash" onClick={this.togglePassword}/>
         }
       </div>
     );

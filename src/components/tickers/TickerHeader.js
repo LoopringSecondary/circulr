@@ -40,7 +40,7 @@ function TickerHeader(props) {
         </div>
         <div className="pair-select d-flex justify-content-between tokenselect" style={{marginTop:"106px", position:"absolute", width:"300px", backgroundColor:"#182C3E", padding:"10px", borderRadius:"5px", cursor:'pointer'}} onClick={showAllTickers}>
           <div style={{paddingBottom:'50px', marginLeft:'15px'}}>Market</div>
-              <div style={{position:'absolute', width:'93%', marginTop:"30px", backgroundColor:'#1C1917', borderRadius:"3px", padding:'7px 0'}}>
+              <div style={{position:'absolute', width:'93%', marginTop:"30px", backgroundColor:'#101e2b', borderRadius:"3px", padding:'7px 0'}}>
               <i style={{backgroundColor:'#1C1917', borderRadius:"3px", position:'relative', left:'255px'}} className="icon-chevron-down" />
                 {props.tickers.filters.market} <b className="caret"></b>
               </div>

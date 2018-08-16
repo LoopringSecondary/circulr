@@ -39,10 +39,10 @@ export  default class BackupWallet extends React.Component {
     const visibleIcon = (
       <div className="fs14 pl5 pr5">
         {visible &&
-        <i className="icon-eye" onClick={this.togglePassword}/>
+        <i className="icon-wallet" onClick={this.togglePassword}/>
         }
         {!visible &&
-        <i className="icon-eye-slash" onClick={this.togglePassword}/>
+        <i className="icon-wallet-slash" onClick={this.togglePassword}/>
         }
       </div>
     );

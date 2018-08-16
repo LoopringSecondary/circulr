@@ -20,7 +20,7 @@ export const AccountMenu = (props)=>{
       <ul>
         <li onMouseOver={showUserCenter}>
           <div className="logo">
-            {wallet && wallet.unlockType === 'address' && <Tooltip title={'Watch Only Wallet'}><i className="icon-eye" /> </Tooltip>}
+            {wallet && wallet.unlockType === 'address' && <Tooltip title={'Watch Only Wallet'}><i className="icon-wallet" /> </Tooltip>}
             {wallet && wallet.unlockType === 'metamask' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-metamaskwallet" /> </Tooltip>}
             {wallet && wallet.unlockType === 'ledger' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-ledgerwallet" /> </Tooltip>}
             {wallet && wallet.unlockType === 'trezor' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-trezorwallet" /> </Tooltip>}
