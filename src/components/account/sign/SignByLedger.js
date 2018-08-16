@@ -30,6 +30,8 @@ const JobTitle = ({type, token}) => {
       return intl.get('tx_actions.cancel_title')
     case 'resendTx':
       return intl.get('tx_resend.title')
+    case 'transfer':
+      return intl.get('common.send') + ` ${token}`
   }
 };
 
@@ -158,6 +160,7 @@ class SignByLedger extends React.Component {
     const {dispatch} = this.props;
     const wallet = this.state.account;
     switch (job.type) {
+      case 'transfer':
       case 'convert':
       case 'resendTx':
       case 'approve':
@@ -209,6 +212,7 @@ class SignByLedger extends React.Component {
     }
     eachLimit(jobs, 1, async (job, callback) => {
       switch (job.type) {
+        case 'transfer':
         case 'convert':
         case 'resendTx':
         case 'approve':

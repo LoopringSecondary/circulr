@@ -155,6 +155,7 @@ class SignByMetaMask extends React.Component {
     }
     eachLimit(jobs, 1, async (job, callback) => {
       switch (job.type) {
+        case 'transfer':
         case 'convert':
         case 'resendTx':
         case 'approve':
