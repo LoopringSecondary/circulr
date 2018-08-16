@@ -12,6 +12,7 @@ import * as orderFormatter from 'modules/orders/formatters'
 import GasFee from '../setting/GasFee1'
 import {Containers} from 'modules'
 import {getLastGas, getEstimateGas} from 'modules/settings/formatters'
+import {toHex} from "../../common/loopringjs/src/common/formatter";
 
 function TransferForm(props) {
   const {transfer, balance, wallet, marketcap, form, gas, dispatch} = props
@@ -94,13 +95,14 @@ function TransferForm(props) {
   }
 
   function handleSubmit() {
-    form.validateFields((err, values) => {
+    form.validateFields(async(err, values) => {
       if (!err) {
         if(wallet.address) {
           const tx = {};
           tx.chainId = datas.configs.chainId
           tx.gasPrice = fm.toHex(fm.toBig(gasPrice).times(1e9))
-          tx.gasLimit = fm.toHex(gasLimit)
+          tx.gasLimit = fm.toHex(gasLimit);
+          tx.nonce = toHex((await window.RELAY.account.getNonce(wallet.address)).result)
           if(tokenSelected.symbol === "ETH") {
             tx.to = values.to;
             tx.value = fm.toHex(fm.toBig(values.amount).times(1e18))

@@ -27,6 +27,8 @@ const JobTitle = ({type, token}) => {
       return intl.get('tx_actions.cancel_title');
     case 'resendTx':
       return intl.get('tx_resend.title')
+    case 'transfer':
+      return intl.get('common.send') + ` ${token}`
   }
 };
 
@@ -106,6 +108,7 @@ class SignByMetaMask extends React.Component {
       case 'resendTx':
       case 'approve':
       case 'approveZero':
+      case 'transfer':
       case 'cancelTx':
         wallet.signEthereumTx(job.raw).then(res => {
           if (!res.error) {

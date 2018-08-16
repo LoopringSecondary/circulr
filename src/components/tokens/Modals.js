@@ -6,7 +6,7 @@ import Transfer from './TransferForm'
 import Convert from './ConvertForm'
 import TransferConfirm from './TransferConfirm'
 import ConvertConfirm from './ConvertConfirm'
-
+import TransferSign from './TransferSign'
 
 function Modals(props) {
   return (
@@ -55,6 +55,11 @@ function Modals(props) {
           <UiContianers.Modals id="convertConfirm"  className="rs" wrapClassName="theme-blue">
             <ConvertConfirm/>
           </UiContianers.Modals>
+      </Containers.Layers>
+      <Containers.Layers id="transferSign">
+        <UiContianers.Modals id="transferSign"  className="rs" wrapClassName="theme-blue">
+          <TransferSign/>
+        </UiContianers.Modals>
       </Containers.Layers>
     </div>
   )
