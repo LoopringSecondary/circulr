@@ -406,15 +406,15 @@ class PlaceOrderForm extends React.Component {
               {intl.get('common.order_form')}
             </span>
             {placeOrder.side === 'sell' &&
-          <ul className="token-tab" style={{width:'45%', marginBottom:'13px'}}>
-            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')} {left.symbol}</a></li>
-            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')} {left.symbol}</a></li>
+          <ul className="token-tab" >
+            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')} </a></li>
+            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')} </a></li>
           </ul>
           }
           {placeOrder.side === 'buy' &&
-          <ul className="token-tab" style={{width:'45%', marginBottom:'13px'}}>
-            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')} {left.symbol}</a></li>
-            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')} {left.symbol}</a></li>
+          <ul className="token-tab" >
+            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')} </a></li>
+            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')} </a></li>
           </ul>
           }
           <div className="tab-content">
