@@ -69,7 +69,7 @@ const getLocalConfig = () => {
 config.getRemoteConfig().then(res=>{
 //getLocalConfig().then(res=>{
   if(res) {
-    window.REMOTE_CONFIG = res
+    STORAGE.settings.setConfigs(res)
     app._store.dispatch({type:'tokens/itemsChange', payload:{items:res.tokens}})
   }
 }).catch(error=> {

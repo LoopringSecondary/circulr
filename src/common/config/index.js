@@ -40,8 +40,9 @@ function getCustomTokens(){
 }
 
 function getTokens(){
-  if(window.REMOTE_CONFIG && window.REMOTE_CONFIG.tokens) {
-    return window.REMOTE_CONFIG.tokens
+  const cacheConfigs = STORAGE.settings.getConfigs()
+  if(cacheConfigs && cacheConfigs.tokens) {
+    return cacheConfigs.tokens
   }
   return []
   // return [{
@@ -83,8 +84,9 @@ function getProjectByLrx(lrx) {
 
 function getSupportedMarketsTokenR() {
   // return config.supportedTokenRInMarkets
-  if(window.REMOTE_CONFIG && window.REMOTE_CONFIG.supportedTokenRInMarkets) {
-    return window.REMOTE_CONFIG.supportedTokenRInMarkets
+  const cacheConfigs = STORAGE.settings.getConfigs()
+  if(cacheConfigs && cacheConfigs.supportedTokenRInMarkets) {
+    return cacheConfigs.supportedTokenRInMarkets
   }
   return []
 }
@@ -149,8 +151,9 @@ function getTokenSupportedMarkets(token) {
 }
 
 function getMarkets() {
-  if(window.REMOTE_CONFIG && window.REMOTE_CONFIG.markets && window.REMOTE_CONFIG.newMarkets) {
-    return window.REMOTE_CONFIG.markets.concat(window.REMOTE_CONFIG.newMarkets)
+  const cacheConfigs = STORAGE.settings.getConfigs()
+  if(cacheConfigs && cacheConfigs.markets && cacheConfigs.newMarkets) {
+    return cacheConfigs.markets.concat(cacheConfigs.newMarkets)
   }
   return []
 }
@@ -159,7 +162,6 @@ function getGasLimitByType(type) {
   if(type){
     return txs.find(tx => type === tx.type)
   }
-
 }
 
 function getWalletAddress() {
