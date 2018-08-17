@@ -1,5 +1,4 @@
 import config from 'common/config'
-import * as datas from 'common/config/data'
 import * as orderFormatter from './formatters'
 import * as apis from './apis'
 
