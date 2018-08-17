@@ -1,5 +1,4 @@
 import storage from 'modules/storage'
-import {configs} from 'common/config/data'
 
 const namespace = 'gas'
 
