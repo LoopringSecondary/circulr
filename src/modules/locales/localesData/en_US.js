@@ -2,6 +2,7 @@ const words = {
   gas_slow: 'Slow',
   gas_standard: 'Standard',
   gas_fast: 'Fast',
+  buy_max: 'BUY MAX',
   all: 'All',
   order_form: 'Order Form',
   time: 'Time',
@@ -58,6 +59,7 @@ const words = {
   canceling: 'Canceling',
   list: {
     no_data: 'No Data',
+    spread: 'SPREAD',
   },
   slow:'Slow',
   fast:'Fast',

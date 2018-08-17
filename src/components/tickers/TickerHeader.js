@@ -3,6 +3,7 @@ import {connect} from 'dva'
 import {TickerFm} from 'modules/tickers/formatters'
 import routeActions from 'common/utils/routeActions'
 import intl from 'react-intl-universal'
+import {Input,Icon,Tooltip,Spin,Popover,Button} from 'antd'
 
 function TickerHeader(props) {
   console.log('TickerHeader render',props)
@@ -21,6 +22,7 @@ function TickerHeader(props) {
     e.preventDefault()
     props.dispatch({type:'placeOrder/priceChange', payload:{priceInput:value}})
   }
+
   const looprTickerFm = new TickerFm(props.tickers.item.loopr || {})
   const tokens = looprTickerFm.getTokens()
   return (
@@ -40,7 +42,8 @@ function TickerHeader(props) {
         </div>
         <div className="pair-select d-flex justify-content-between tokenselect" style={{marginTop:"106px", position:"absolute", width:"300px", backgroundColor:"#182C3E", padding:"10px", borderRadius:"5px", cursor:'pointer'}} onClick={showAllTickers}>
           <div style={{paddingBottom:'50px', marginLeft:'15px'}}>Market</div>
-              <div style={{position:'absolute', width:'93%', marginTop:"30px", backgroundColor:'#101e2b', borderRadius:"3px", padding:'7px 0'}}>
+              <div className="marketSearch">
+            {/*}  <div className="icon"><i className={`icon-${item.symbol} icon-token`}/></div> */}
               <i style={{backgroundColor:'#1C1917', borderRadius:"3px", position:'relative', left:'255px'}} className="icon-chevron-down" />
                 {props.tickers.filters.market} <b className="caret"></b>
               </div>
