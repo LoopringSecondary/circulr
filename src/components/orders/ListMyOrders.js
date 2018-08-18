@@ -99,7 +99,7 @@ const ListHeader = (props) => {
           </span>
         </div>
         <div>
-          <span><button className="btn btn-primary"
+          <span><button className="btn btn-cancelAll"
                         onClick={cancelAll}>{intl.get('order_list.actions_cancel_all')}</button></span>
         </div>
       </div>

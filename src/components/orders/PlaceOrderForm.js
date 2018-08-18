@@ -389,7 +389,7 @@ class PlaceOrderForm extends React.Component {
 
     return (
       <div>
-        <div className="card-body form-dark" style={{borderRadius:"5px", marginTop:"30px"}}>
+        <div className="card-body form-dark" style={{borderRadius:"5px", marginTop:"60px"}}>
         {/*}
           <div className="p10 mb15" style={{border:'1px solid rgba(255,255,255,0.07)',borderRadius:"5px"}}>
             <div className="row pb10">
@@ -406,7 +406,7 @@ class PlaceOrderForm extends React.Component {
             </div>
           </div>
     */}
-            <span style={{fontSize:'14px', fontWeight:'600', paddingLeft:'10px', position:'relative', top:'10px'}}>
+            <span style={{fontSize:'16px', fontWeight:'600', paddingLeft:'10px', position:'relative', top:'5px'}}>
               {intl.get('common.order_form')}
             </span>
             {placeOrder.side === 'sell' &&
@@ -480,10 +480,10 @@ class PlaceOrderForm extends React.Component {
                          }}/>
                 )}
               </Form.Item>
-              <div className="pt5 pb5" style={{border:'0px solid rgba(255,255,255,0.07)',margin:'15px 0px'}}>
-                  <button class="btn btn-fee" onClick={setLRCFeeInstant.bind(this, 10)} >{intl.get('common.gas_slow')}</button>
-                  <button class="btn btn-fee" onClick={setLRCFeeInstant.bind(this, 30)} >{intl.get('common.gas_standard')}</button>
-                  <button class="btn btn-fee" onClick={setLRCFeeInstant.bind(this, 50)} >{intl.get('common.gas_fast')}</button>
+              <div className="pt5 pb5" style={{border:'0px solid rgba(255,255,255,0.07)',margin:'15px 0px', paddingLeft:'3px'}}>
+                  <button class="btn btn-fee-slow" onClick={setLRCFeeInstant.bind(this, 10)} >{intl.get('common.gas_slow')}</button>
+                  <button class="btn btn-fee-standard" onClick={setLRCFeeInstant.bind(this, 30)} >{intl.get('common.gas_standard')}</button>
+                  <button class="btn btn-fee-fast" onClick={setLRCFeeInstant.bind(this, 50)} >{intl.get('common.gas_fast')}</button>
                 <div className="mt70">
                 <MenuItem label={intl.get('common.total')} value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>} />
                 <MenuItem label={intl.get('common.lrc_fee')} action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFeeValue} LRC <Icon type="right" className="" /></div>}  />

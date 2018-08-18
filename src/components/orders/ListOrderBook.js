@@ -85,7 +85,7 @@ function ListOrderBook(props) {
 	    	            <li className="trade-list-header">
 			    	        <span>{intl.get('order.price')} {tokens.right}</span>
 			    	        <span style={{textAlign:'right'}}>{intl.get('order.amount')} {tokens.left} </span>
-			    	        <span style={{textAlign:'right'}}>{intl.get('order.LRCFee')}</span>
+			    	        <span style={{textAlign:'center'}}>{intl.get('order.LRCFee')}</span>
 		    	        </li>
 		    	    </ul>
 	    	    <div style={{height: "-webkit-calc(50% - 85px)",marginTop:"5px",marginBottom:"0",paddiongBottom:"10" }}>

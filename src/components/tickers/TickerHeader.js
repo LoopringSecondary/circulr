@@ -40,7 +40,7 @@ function TickerHeader(props) {
                 <li><small>{intl.get('ticker.vol')}</small><em>{looprTickerFm.getVol()} {tokens.right}</em></li>
             </ul>
         </div>
-        <div className="pair-select d-flex justify-content-between tokenselect" style={{marginTop:"106px", position:"absolute", width:"300px", backgroundColor:"#182C3E", padding:"10px", borderRadius:"5px", cursor:'pointer'}} onClick={showAllTickers}>
+        <div className="pair-select d-flex justify-content-between tokenselect" style={{marginTop:"120px", position:"absolute", width:"300px", height:"120px", backgroundColor:"#182C3E", padding:"10px", borderRadius:"5px", cursor:'pointer'}} onClick={showAllTickers}>
           <div style={{paddingBottom:'50px', marginLeft:'15px'}}>Market</div>
               <div className="marketSearch">
             {/*}  <div className="icon"><i className={`icon-${item.symbol} icon-token`}/></div> */}

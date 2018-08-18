@@ -20,7 +20,7 @@ export const AccountMenu = (props)=>{
       <ul>
         <li onMouseOver={showUserCenter}>
           <div className="logo">
-            {wallet && wallet.unlockType === 'address' && <Tooltip title={'Watch Only Wallet'}><i className="icon-wallet" /> </Tooltip>}
+            {wallet && wallet.unlockType === 'address' && <Tooltip title={'Watch Only Wallet'}><img src={require('../../assets/images/walldex.png')} className="img" /> </Tooltip>}
             {wallet && wallet.unlockType === 'metamask' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-metamaskwallet" /> </Tooltip>}
             {wallet && wallet.unlockType === 'ledger' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-ledgerwallet" /> </Tooltip>}
             {wallet && wallet.unlockType === 'trezor' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-trezorwallet" /> </Tooltip>}
@@ -29,6 +29,9 @@ export const AccountMenu = (props)=>{
             {wallet && wallet.unlockType === 'privateKey' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-key" /> </Tooltip>}
           </div>
           <div className="account-address">{wallet && wallet.address}</div>
+        </li>
+        <li onMouseOver={showUserCenter}>
+          <img src={require('../../assets/images/profile.png')} className="img" />
         </li>
       </ul>
     </div>

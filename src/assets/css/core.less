@@ -27,7 +27,7 @@ ol ol, ul ul, ol ul, ul ol { margin-bottom: 0; }
 .text-success, .text-up { color: @success-color !important; }
 .text-link{ color: @blue-light !important }
 .text-left { text-align: left; }
-.text-spread {color: #ffffff !important; font-size: 12px; margin: 0px 20px; background-color: rgb(16, 30, 43); padding-right: 20px; border-radius: 5px}
+.text-spread {color: #ffffff !important; font-size: 12px; margin: 0px 20px; background-color: rgb(16, 30, 43); padding-right: 20px; border-radius: 5px; font-weight: 600; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
 .text-sm-control { display: inline-block; max-width: 80px; }
@@ -180,36 +180,49 @@ section { }
 .table.text-right-last tr>td:last-child, .table.text-right-last tr>th:last-child { text-align: right !important }
 
 /* btn */
-.btn { display: inline-block; font-weight: normal; border:0 !important; text-align: center; white-space: nowrap; vertical-align: middle; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; border: 0; padding: 0 12px; line-height: 30px; transition: all 0.45s ease-in-out; cursor: pointer }
+.btn { display: inline-block; font-weight: normal; border:0; border-radius:5px !important; text-align: center; white-space: nowrap; vertical-align: middle; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; border: 0; padding: 0 12px; line-height: 30px; transition: all 0.45s ease-in-out; cursor: pointer }
 .btn:focus, .btn:hover { text-decoration: none; }
 .btn:focus, .btn.focus { outline: 0;    /*box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);*/ }
 .btn.disabled, .btn:disabled, .disabled .btn { opacity: .65; box-shadow: none; cursor: not-allowed; }
 a.btn.disabled, fieldset[disabled] a.btn { pointer-events: none; }
+.btn-cancelAll {color: @blue-light-dex-color; background-color: transparent; }
+.btn-cancelAll:hover { color: @text-color-dark !important}
 .btn-primary { color: @text-color-dark !important; background-color: @blue-light !important; border:0 !important;  }
 .btn-primary:hover { color: @text-color-dark  !important; background-color: fade(@blue-light, 54%) !important; }
 .btn-primary.disabled, .btn-primary:disabled { background-color: fade(@blue-light, 27%)  !important; }
 .btn-secondary { background-color: @light-color-1; }
 .btn-secondary:hover { color: @text-color-dark-1; background-color: fade(@light-color-1, 54%) }
 .btn-secondary.disabled, .btn-secondary:disabled { background-color: fade(@light-color-1, 27%) }
-.btn-success { color: @text-color-dark  !important; background-color: @success-color  !important; }
+.btn-success { color: @text-color-dark  !important; background-color: @success-color  !important; border-radius: 5px !important; border: 0 !important;;}
 .btn-success:hover { color: @text-color-dark !important; background-color: fade(@success-color, 54%)  !important; }
 .btn-success.disabled, .btn-success:disabled { background-color: fade(@success-color, 27%) !important; }
-.btn-danger { color: @text-color-dark !important; background-color: @error-color !important; border:0 !important;  }
+.btn-danger { color: @text-color-dark !important; background-color: @error-color !important; border-radius:5px !important; border: 0 !important;;}
 .btn-danger:hover { color: @text-color-dark!important; background-color: fade(@error-color, 54%)!important; }
 .btn-danger.disabled, .btn-danger:disabled { background-color: fade(@error-color, 27%)!important; }
 .btn-lg{ height: 30px; line-height: 30px; padding: 0 20px; font-size: 16px; line-height: 1.5; }
-.btn-xlg { height: 40px !important; padding: 0 20px; font-size: 16px !important; line-height: 40px !important; font-weight: bold !important }
+.btn-xlg { height: 40px !important; padding: 0 20px; font-size: 16px !important; line-height: 40px !important; font-weight: bold !important; border-radius: 5px; }
 .btn-xxlg { height: 60px !important; padding: 0 20px; font-size: 20px !important; line-height: 60px !important; font-weight: bold !important }
 .btn-sm, .btn-group-sm>.btn { padding: 4px 12px; font-size: @font-size-sm; line-height: 1.5; }
-.btn-block { display: block; width: 100% }
+.btn-block { display: block; width: 100%; border-radius: 5px }
 .btn-block+.btn-block { margin-top: 2px; }
 .btn-o-dark { border: 1px solid @dark-color-1 !important; background: @transparent !important; color: @text-color-dark !important; }
 .btn-o-dark:hover { background-color: @dark-color !important; color: @primary-color !important }
-.btn-fee { color: @text-color-light-blue !important; background-color: @fee-background-color !important; font-size: 13px !important; border:0.5px solid #97979733 !important; border-radius: 5px; padding:0px 26px; }
-.btn-fee:hover {background-color:@fee-hover-bk-color !important}
-.btn-fee:focus {background-color:@fee-hover-bk-color !important}
-.btn-fee:target {background-color:@fee-hover-bk-color !important}
-.btn-buy-max {height: 30px; color: rgba(255, 255, 255, 0.77) !important; background-color: #1B1917 !important; font-size: 9px !important; border:0.5px solid #1B1917 !important; border-radius: 5px; margin-left: 35px; position: relative; left: 7px;}
+.btn-fee-slow { color: @text-color-light-blue !important; background-color: @fee-background-color !important; font-size: 13px !important; border:0.5px solid #97979733 !important; border-radius: 5px !important; border-top-right-radius: 0px !important; border-bottom-right-radius: 0px !important; padding:0px 26px; }
+.btn-fee-slow:hover {background-color:@fee-hover-bk-color !important}
+.btn-fee-slow:focus {background-color:@fee-hover-bk-color !important}
+.btn-fee-slow:target {background-color:@fee-hover-bk-color !important}
+
+.btn-fee-standard { color: @text-color-light-blue !important; background-color: @fee-background-color !important; font-size: 13px !important; border:0.5px solid #97979733 !important; border-radius: 0px !important; padding:0px 26px; }
+.btn-fee-standard:hover {background-color:@fee-hover-bk-color !important}
+.btn-fee-standard:focus {background-color:@fee-hover-bk-color !important}
+.btn-fee-standard:target {background-color:@fee-hover-bk-color !important}
+
+.btn-fee-fast { color: @text-color-light-blue !important; background-color: @fee-background-color !important; font-size: 13px !important; border:0.5px solid #97979733 !important; border-radius: 5px !important; border-top-left-radius: 0px !important; border-bottom-left-radius: 0px !important; padding:0px 26px; }
+.btn-fee-fast:hover {background-color:@fee-hover-bk-color !important}
+.btn-fee-fast:focus {background-color:@fee-hover-bk-color !important}
+.btn-fee-fast:target {background-color:@fee-hover-bk-color !important}
+
+.btn-buy-max {height: 30px; color: rgba(255, 255, 255, 0.77) !important; background-color: #1B1917 !important; font-size: 9px !important; border:0.5px solid #1B1917 !important; border-radius: 5px !important; margin-left: 35px; position: relative; left: 7px;}
 
 .orderFormStl { color: rgba(255, 255, 255, 0.54); }
 .container { margin-right: auto; margin-left: auto; padding-right: 15px; padding-left: 15px; width: 1200px; }

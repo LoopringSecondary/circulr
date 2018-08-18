@@ -67,7 +67,7 @@ function Trade(props) {
             		               <Charts.KlineChart />
             		            </div>
             	               <div className="market-chart" style={{height: "50%", borderBottom:"20px solid #273e4f"}}>
-        		                    <h4 style={{padding:"10px 20px", color:"#ffffff", fontSize:"16px"}}>{intl.get('depth_chart.depth_chart')}</h4>
+        		                    <h4 style={{padding:"10px 20px", color:"rgba(255, 255, 255, 0.87)", fontSize:"16px", fontWeight:"600"}}>{intl.get('depth_chart.depth_chart')}</h4>
                                 <Charts.DepthChart />
                             </div>
                         </div>
