@@ -75,12 +75,6 @@ function ListOrderBook(props) {
 	    	    <h4>{intl.get('order_list.order_book')}</h4>
 	    	</div>
 	    	<div className="trade-list" style={{height:"-webkit-calc(100% - 31px)"}}>
-    	    	    <div className="bg" style={{ position: "absolute", top:"23%", marginTop:"-19px", zIndex: "100", width: "100%", height: "40px", lineHeight: "38px", fontSize: "16px", borderRadius:"5px"}}>
-                  {trades.length >0 && isIncresse() &&	<div className="text-spread" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}> <span style={{paddingRight:'25px', paddingLeft:'15px'}}> {intl.get('common.list.spread')} </span> {trades[0] && trades[0].price}<span className="offset-md"></span></div>}
-                  {trades.length >0 && !isIncresse() &&	<div className="text-spread" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}> <span style={{paddingRight:'25px', paddingLeft:'15px'}}> {intl.get('common.list.spread')} </span> {trades[0] && trades[0].price}<span className="offset-md"></span></div>}
-                </div>
-	    	    	{/*<div className="bg blockbar" style={{ position: "absolute", bottom:"40px", zIndex: "100", width: "100%", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0 0", fontSize: "16px"}}>*/}
-	    	    	{/*</div>*/}
     	        <ul className="mr-0">
 	    	            <li className="trade-list-header">
 			    	        <span>{intl.get('order.price')} {tokens.right}</span>
@@ -90,7 +84,8 @@ function ListOrderBook(props) {
 		    	    </ul>
 	    	    <div style={{height: "-webkit-calc(50% - 85px)",marginTop:"5px",marginBottom:"0",paddiongBottom:"10" }}>
               <Spin spinning={list.loading}>
-                <ul style={{height: "140px", overflowX:"hidden", paddingTop:"0",marginBottom:"0px" }}>
+              <div style={{display:'block'}}>
+                <ul style={{height: "calc(25vh - 93px)", overflowX:"hidden", paddingTop:"0",marginBottom:"0px" }}>
                       {
                         sell.map((item,index)=>
                           <Popover placement="right" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>
@@ -107,27 +102,33 @@ function ListOrderBook(props) {
                         <li className="text-center">{intl.get('common.list.no_data')}</li>
                       }
                   </ul>
+                </div>
               </Spin>
-	    	    </div>
-	    	    <div style={{height: "-webkit-calc(50% - 85px)",paddingTop:"0",paddingBottom:"0",marginTop:"-165px",marginBottom:"0"}}>
-              <Spin spinning={list.loading}>
-  	            <ul style={{height: "140px", overflowX:"hidden", paddingTop:"0",marginBottom:"0" }}>
-  	                {
-                      buy.map((item,index)=>
-                        <Popover placement="right" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>
-                          <li key={index}>
-                            <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),8))}>{toFixed(Number(item.price),8)}</span>
-                            <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, toFixed(Number(item.amount),4))}>{toFixed(Number(item.amount),4)}</span>
-                            <span style={{textAlign:'right'}}>{toFixed(Number(item.lrcFee),8)}</span></li>
-                        </Popover>
-                      )
-                    }
-                    {
-                      buy.length === 0 &&
-                          <li className="text-center" >{intl.get('common.list.no_data')}</li>
-                    }
-  	            </ul>
-              </Spin>
+              <div className="bg" style={{zIndex: "100", width: "100%", lineHeight: "38px", fontSize: "16px", borderRadius:"5px", marginTop:"7px", marginBottom:"12px"}}>
+                  {trades.length >0 && isIncresse() &&	<div className="text-spread" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}> <span style={{paddingRight:'25px', paddingLeft:'15px'}}> {intl.get('common.list.spread')} </span> {trades[0] && trades[0].price}<span className="offset-md"></span></div>}
+                  {trades.length >0 && !isIncresse() &&	<div className="text-spread" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}> <span style={{paddingRight:'25px', paddingLeft:'15px'}}> {intl.get('common.list.spread')} </span> {trades[0] && trades[0].price}<span className="offset-md"></span></div>}
+              </div>
+              
+              <div style={{height: "-webkit-calc(50%)",paddingTop:"0",paddingBottom:"0",marginTop:"-175px",marginBottom:"0",position:'relative',top:'170px'}}>
+                <Spin spinning={list.loading}>
+                  <ul style={{height: "calc(25vh - 92px)", overflowX:"hidden", paddingTop:"0",marginBottom:"0" }}>
+                      {
+                        buy.map((item,index)=>
+                          <Popover placement="right" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>
+                            <li key={index}>
+                              <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),8))}>{toFixed(Number(item.price),8)}</span>
+                              <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, toFixed(Number(item.amount),4))}>{toFixed(Number(item.amount),4)}</span>
+                              <span style={{textAlign:'right'}}>{toFixed(Number(item.lrcFee),8)}</span></li>
+                          </Popover>
+                        )
+                      }
+                      {
+                        buy.length === 0 &&
+                            <li className="text-center" >{intl.get('common.list.no_data')}</li>
+                      }
+                  </ul>
+                </Spin>
+              </div>
 	    	    </div>
 	        </div>
 	    </div>

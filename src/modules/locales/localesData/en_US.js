@@ -331,8 +331,8 @@ export default {
     token_balance: 'Token Balance',
     order_detail: 'Order Detail',
     generate_order: 'Generate Order',
-    instruction: '<h4>当您希望与指定的人成交时，可以使用P2P交易模式，中继服务只会展示您的订单但无法完成撮合，因为订单成交的关键信息只有您指定的人能获得。</h4>1. 以您希望的兑换率生成一个订单，把不包含鉴权数据的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方使用Circulr移动端扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗以太坊油费。',
-    notice: '* P2P订单不需要支付LRC手续费</br>',
+    instruction: '<h4> When you want to deal with a designated person, you can use the P2P transaction mode. The relay service will only display your order but cannot complete the match, because the key information of the order transaction is only available to the person you specify.</h4>1. Generate an order at the exchange rate you want, submit the order information that does not contain the authentication data to the relay, and generate the QR code of the generated order hash and authentication information.</br>2. You can send this QR code to your friends. Anyone who gets this QR code may eat your order. Please pay attention to it in a safe way.</br>3. The other party uses Circulr mobile to scan the QR code, the next one that exactly matches your purchase and sale, and sends the Ethereum transaction to eat the order, so the unilateral party needs to consume the Ethereum fuel.',
+    notice: '*L2 handling fee is not required for P2P orders',
     user_center_p2p: 'P2P Trade',
   },
   sign: {

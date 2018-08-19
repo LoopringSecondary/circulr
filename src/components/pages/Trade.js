@@ -62,11 +62,11 @@ function Trade(props) {
         	              <div className="card-header card-header-dark bordered">
         		               <h4>{intl.get('kline_chart.kline_chart')}</h4>
         		            </div>
-                        <div style={{height:"-webkit-calc(100% - 40px)"}}>
+                        <div style={{height:"-webkit-calc(90% - 5px)"}}>
             		            <div className="market-chart" style={{height: "50%"}}>
             		               <Charts.KlineChart />
             		            </div>
-            	               <div className="market-chart" style={{height: "50%", borderBottom:"20px solid #273e4f"}}>
+            	               <div className="market-chart" style={{height: "53%", borderBottom:"20px solid #273e4f"}}>
         		                    <h4 style={{padding:"10px 20px", color:"rgba(255, 255, 255, 0.87)", fontSize:"16px", fontWeight:"600"}}>{intl.get('depth_chart.depth_chart')}</h4>
                                 <Charts.DepthChart />
                             </div>
@@ -87,7 +87,7 @@ function Trade(props) {
           	            </Tabs>
       	            </div>
   	            </div>
-    		        <div className="side" style={{top:"74px", right:"-8px", width: "320px"}}>
+    		        <div className="side" style={{top:"74px", right:"-8px", width: "320px", paddingLeft: "5px"}}>
     		            <Fills.ListTradesHistory />
     		        </div>
   	        </div>

@@ -433,7 +433,7 @@ class PlaceOrderForm extends React.Component {
                   }]
                 })(
                   <Input className="orderContainer" placeholder="" size="large"
-                         prefix={<span className="orderFormStl" >{intl.get('common.price')}</span>}
+                         prefix={<span className="orderFormStl">{intl.get('common.price')}</span>}
                          suffix={<span className="orderFormStl" style={{paddingRight:"102px"}}>{right.symbol}</span>}
                          onChange={inputChange.bind(this, 'price')}
                          onFocus={() => {
