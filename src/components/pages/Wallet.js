@@ -9,6 +9,11 @@ import {connect} from 'dva'
 
 export const AccountMenu = (props)=>{
   const {wallet} = props
+  let walletAdress = wallet.address;  
+  let firstHalf = walletAdress.slice(0, walletAdress.length / 6);
+  let otherHalf = walletAdress.slice(walletAdress.length / 2, walletAdress.length)
+  let truncateAddress = firstHalf + '...' + otherHalf;
+
   const showUserCenter = ()=>{
     props.dispatch({
       type:'layers/showLayer',
@@ -20,7 +25,7 @@ export const AccountMenu = (props)=>{
       <ul>
         <li onMouseOver={showUserCenter}>
           <div className="logo">
-            {wallet && wallet.unlockType === 'address' && <Tooltip title={'Watch Only Wallet'}><i className="icon-wallet" /> </Tooltip>}
+            {wallet && wallet.unlockType === 'address' && <Tooltip title={'Watch Only Wallet'}><img src={require('../../assets/images/walldex.png')} className="img" /> </Tooltip>}
             {wallet && wallet.unlockType === 'metamask' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-metamaskwallet" /> </Tooltip>}
             {wallet && wallet.unlockType === 'ledger' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-ledgerwallet" /> </Tooltip>}
             {wallet && wallet.unlockType === 'trezor' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-trezorwallet" /> </Tooltip>}
@@ -28,7 +33,10 @@ export const AccountMenu = (props)=>{
             {wallet && wallet.unlockType === 'mnemonic' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-mnemonic" /> </Tooltip>}
             {wallet && wallet.unlockType === 'privateKey' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-key" /> </Tooltip>}
           </div>
-          <div className="account-address">{wallet && wallet.address}</div>
+          <div className="account-address">{wallet && truncateAddress}</div>
+        </li>
+        <li onMouseOver={showUserCenter}>
+          <img src={require('../../assets/images/profile.png')} className="img" />
         </li>
       </ul>
     </div>

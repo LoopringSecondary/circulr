@@ -379,13 +379,17 @@ class PlaceOrderForm extends React.Component {
     const setLRCFeeInstant = (feeValue) => {
       dispatch({type:'lrcFee/lrcFeeSliderChange', payload:{lrcFeeSlider:feeValue}})
     }
+    const setMaxAmount = (feeValue) => {
+      console.log("max amount");
+      dispatch({type:'amountSliderChange', payload:{amountSliderChange:feeValue}})
+    }
     const setTTL = ()=>{
       dispatch({type:'layers/showLayer', payload: {id: 'placeOrderTTL', side, pair}})
     }
 
     return (
       <div>
-        <div className="card-body form-dark" style={{borderRadius:"5px", marginTop:"30px"}}>
+        <div className="card-body form-dark" style={{borderRadius:"5px", marginTop:"60px"}}>
         {/*}
           <div className="p10 mb15" style={{border:'1px solid rgba(255,255,255,0.07)',borderRadius:"5px"}}>
             <div className="row pb10">
@@ -402,23 +406,22 @@ class PlaceOrderForm extends React.Component {
             </div>
           </div>
     */}
-            <span style={{fontSize:'14px', fontWeight:'600', paddingLeft:'10px', position:'relative', top:'10px'}}>
+            <span style={{fontSize:'16px', fontWeight:'600', paddingLeft:'10px', position:'relative', top:'5px'}}>
               {intl.get('common.order_form')}
             </span>
             {placeOrder.side === 'sell' &&
           <ul className="token-tab" style={{width:'45%', marginBottom:'13px'}}>
-            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')} {left.symbol}</a></li>
-            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')} {left.symbol}</a></li>
+            <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')}</a></li>
+            <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')}</a></li>
           </ul>
           }
           {placeOrder.side === 'buy' &&
           <ul className="token-tab" style={{width:'45%', marginBottom:'13px'}}>
-            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')} {left.symbol}</a></li>
-            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')} {left.symbol}</a></li>
+            <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')}</a></li>
+            <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')}</a></li>
           </ul>
           }
           <div className="tab-content">
- 
             <div className="" id="b1">
              {false && sell && <small className="balance">{sell.token.symbol} {intl.get('balance')}: <span>{FormatAmount({value:sell.token.balance.toString(10), precision:marketConfig.pricePrecision})}</span></small>}
               <Form.Item label={null} colon={false}>
@@ -429,9 +432,9 @@ class PlaceOrderForm extends React.Component {
                     validator: (rule, value, cb) => validatePirce(value) ? cb() : cb(true)
                   }]
                 })(
-                  <Input placeholder="" size="large"
-                         prefix={<span style={{color:"white"}}>{intl.get('common.price')}</span>}
-                         suffix={<span style={{color:"white"}}>{right.symbol}</span>}
+                  <Input className="orderContainer" placeholder="" size="large"
+                         prefix={<span className="orderFormStl">{intl.get('common.price')}</span>}
+                         suffix={<span className="orderFormStl" style={{paddingRight:"102px"}}>{right.symbol}</span>}
                          onChange={inputChange.bind(this, 'price')}
                          onFocus={() => {
                            const price = form.getFieldValue("price")
@@ -445,11 +448,11 @@ class PlaceOrderForm extends React.Component {
                              form.setFieldsValue({"price": '0'})
                            }
                          }}/>
-                )}
+                )}  
               </Form.Item>
               <Form.Item label={null} colon={false} extra={
                 <div>
-                {/*  <div>{amountSliderField}</div> */}
+                  {/*<div>{amountSliderField}</div>*/}
                  </div>
               }>
                 {form.getFieldDecorator('amount', {
@@ -459,9 +462,9 @@ class PlaceOrderForm extends React.Component {
                     validator: (rule, value, cb) => validateAmount(value) ? cb() : cb(true)
                   }]
                 })(
-                  <Input placeholder="" size="large"
-                         prefix={<span style={{color:"white"}}>{intl.get('common.amount')}</span>}
-                         suffix={<span style={{color:"white"}}>{left.symbol}</span>}
+                  <Input className="orderContainer" placeholder="" size="large"
+                         prefix={<span className="orderFormStl">{intl.get('common.amount')}</span>}
+                         suffix={<span className="orderFormStl">{left.symbol} <button class="btn btn-buy-max" onClick={setMaxAmount.bind(this, 100)} >{intl.get('common.buy_max')}</button> </span>}
                          onChange={inputChange.bind(this, 'amount')}
                          onFocus={() => {
                             const amount = form.getFieldValue("amount")
@@ -477,11 +480,11 @@ class PlaceOrderForm extends React.Component {
                          }}/>
                 )}
               </Form.Item>
-              <div className="pt5 pb5" style={{border:'0px solid rgba(255,255,255,0.07)',margin:'15px 0px'}}>
-                  <button class="btn btn-fee" onClick={setLRCFeeInstant.bind(this, 10)} >{intl.get('common.gas_slow')}</button>
-                  <button class="btn btn-fee" onClick={setLRCFeeInstant.bind(this, 30)} >{intl.get('common.gas_standard')}</button>
-                  <button class="btn btn-fee" onClick={setLRCFeeInstant.bind(this, 50)} >{intl.get('common.gas_fast')}</button>
-                <div style={{marginTop:"15px"}}>
+              <div className="pt5 pb5" style={{border:'0px solid rgba(255,255,255,0.07)',margin:'15px 0px', paddingLeft:'3px'}}>
+                  <button class="btn btn-fee-slow" onClick={setLRCFeeInstant.bind(this, 10)} >{intl.get('common.gas_slow')}</button>
+                  <button class="btn btn-fee-standard" onClick={setLRCFeeInstant.bind(this, 30)} >{intl.get('common.gas_standard')}</button>
+                  <button class="btn btn-fee-fast" onClick={setLRCFeeInstant.bind(this, 50)} >{intl.get('common.gas_fast')}</button>
+                <div className="mt70">
                 <MenuItem label={intl.get('common.total')} value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>} />
                 <MenuItem label={intl.get('common.lrc_fee')} action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFeeValue} LRC <Icon type="right" className="" /></div>}  />
                 </div>

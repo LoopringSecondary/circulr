@@ -55,8 +55,8 @@ const tooltipOpts = {
 class KlineChart extends React.Component {
 
   state = {
-    start: '2015-07-07',
-    end: '2015-10-25',
+    start: '2018-07-17',
+    end: '2018-08-20',
   }
 
   render() {
