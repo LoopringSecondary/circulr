@@ -70,7 +70,7 @@ function ListOrderBook(props) {
   };
   return (
     <div>
-	    <div className="card dark" style={{height:"-webkit-calc(100vh - 40px)", borderRadius:"5px"}}>
+	    <div className="card dark" style={{height:"-webkit-calc(48vh - 40px)", borderRadius:"5px"}}>
 	    	<div className="card-header card-header-dark bordered">
 	    	    <h4>{intl.get('order_list.order_book')}</h4>
 	    	</div>
@@ -109,7 +109,7 @@ function ListOrderBook(props) {
                   {trades.length >0 && !isIncresse() &&	<div className="text-spread" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}> <span style={{paddingRight:'25px', paddingLeft:'15px'}}> {intl.get('common.list.spread')} </span> {trades[0] && trades[0].price}<span className="offset-md"></span></div>}
               </div>
               
-              <div style={{height: "-webkit-calc(50%)",paddingTop:"0",paddingBottom:"0",marginTop:"-175px",marginBottom:"0",position:'relative',top:'170px'}}>
+              <div style={{height: "-webkit-calc(50%)",paddingTop:"0",paddingBottom:"0",marginTop:"-180px",marginBottom:"0",position:'relative',top:'170px'}}>
                 <Spin spinning={list.loading}>
                   <ul style={{height: "calc(25vh - 92px)", overflowX:"hidden", paddingTop:"0",marginBottom:"0" }}>
                       {

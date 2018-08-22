@@ -20,7 +20,7 @@ var _ = require('lodash');
 
 const MenuItem = (prop)=>{
   return (
-    <div className="row pt5 pb5 align-items-center">
+    <div style={{fontFamily:"Open Sans"}} className="row align-items-center">
       <div className="col">
         <span className="fs14 color-white-1 pr10">{prop.label}</span>
       </div>
@@ -482,8 +482,8 @@ class PlaceOrderForm extends React.Component {
               </Form.Item>
               <div className="pt5 pb5" style={{border:'0px solid rgba(255,255,255,0.07)',margin:'15px 0px', paddingLeft:'3px'}}>
                   <button class="btn btn-fee-slow" onClick={setLRCFeeInstant.bind(this, 10)} >{intl.get('common.gas_slow')}</button>
-                  <button class="btn btn-fee-standard" onClick={setLRCFeeInstant.bind(this, 30)} >{intl.get('common.gas_standard')}</button>
-                  <button class="btn btn-fee-fast" onClick={setLRCFeeInstant.bind(this, 50)} >{intl.get('common.gas_fast')}</button>
+                  <button id="defaultChecked" class="btn btn-fee-standard" onClick={setLRCFeeInstant.bind(this, 30)} >{intl.get('common.gas_standard')}</button>
+                  <button class="btn btn-fee-fast" onClick={setLRCFeeInstant.bind(this, 50)} >{intl.get('common.gas_fast')}</button>                
                 <div className="mt70">
                 <MenuItem label={intl.get('common.total')} value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>} />
                 <MenuItem label={intl.get('common.lrc_fee')} action={<div onClick={setLRCFee} className="cursor-pointer">{lrcFeeValue} LRC <Icon type="right" className="" /></div>}  />
@@ -495,7 +495,7 @@ class PlaceOrderForm extends React.Component {
                   side === 'sell' && <Button className="btn btn-block btn-danger btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>{intl.get('actions.place_sell_order')}</Button>
                 }
                 {
-                  side === 'buy' && <Button className="btn btn-block btn-success btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>{intl.get('actions.place_buy_order')}</Button>
+                  side === 'buy' && <Button className="btn btn-block btn-danger btn-xlg" onClick={handleSubmit.bind(this, 'market_order')} loading={placeOrder.submitButtonLoading}>{intl.get('actions.place_buy_order')}</Button>
 
                 }
             </div>

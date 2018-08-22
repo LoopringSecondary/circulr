@@ -80,7 +80,7 @@ function ListAllTickers(props) {
               <i className="icon-search" style={{color:"white"}}/>
               <i hidden className="icon-star icon-favorites active" />
 	        </div>
-	        <div className="token-select-body" style={{height: "400px"}}>
+	        <div className="token-select-body" style={{height: "655px"}}>
 	            <div className="content-scroll">
 	                {
 	                  recentTickers.length >0 && !keywords &&

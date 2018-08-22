@@ -55,8 +55,8 @@ const tooltipOpts = {
 class KlineChart extends React.Component {
 
   state = {
-    start: '2018-07-17',
-    end: '2018-08-20',
+    start: '2017-07-17',
+    end: '2017-08-20',
   }
 
   render() {
@@ -105,7 +105,7 @@ class KlineChart extends React.Component {
     }
     const sliderOpts = {
       container:"kline",
-      width: 'auto',
+      width: '100px',
       height: 26,
       padding: [ 20, 40, 20, 40 ],
       start, // 和状态量对应
@@ -126,7 +126,7 @@ class KlineChart extends React.Component {
       <div id="kline">
         <Chart forceFit height={235} animate={false} padding={[ 10,0,20,0 ]}  data={dv} scale={scale1} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
           <Tooltip {...tooltipOpts}/>
-          <Axis dataKey="time" grid={null} show={false} />
+          <Axis dataKey="time" grid={null} show={true} />
           <Axis dataKey="range" position="right" grid={{lineStyle:{stroke: 'rgba(255,255,255,0.1)'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}}/>
           <View data={dv} end={{x: 1, y: 0.68}}  guide={()=>null}>
             <Candle
@@ -146,7 +146,7 @@ class KlineChart extends React.Component {
               }]}
             />
           </View>
-          <View data={dv} scale={[{dataKey: 'volumn',tickCount: 2}]} start={{x: 0, y: 0.68}}>
+          <View data={dv} scale={[{dataKey: 'volumn',tickCount: 2}]} start={{x: 0, y: 2}}>
             <Axis dataKey="time" line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} label={{formatter:(value)=>moment(value,'YYYY-MM-DD').format('MM-DD'),offset:10,textStyle:{fontSize:'10px'}}}/>
             <Axis dataKey="volumn" position="right" grid={{lineStyle:{stroke: 'rgba(255,255,255,0.1)'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}}/>
             <Bar

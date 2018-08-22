@@ -23,7 +23,7 @@ export const AccountMenu = (props)=>{
   return (
     <div className="account-bar">
       <ul>
-        <li onMouseOver={showUserCenter}>
+        <li onClick={showUserCenter}>
           <div className="logo">
             {wallet && wallet.unlockType === 'address' && <Tooltip title={'Watch Only Wallet'}><img src={require('../../assets/images/walldex.png')} className="img" /> </Tooltip>}
             {wallet && wallet.unlockType === 'metamask' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-metamaskwallet" /> </Tooltip>}
@@ -35,7 +35,7 @@ export const AccountMenu = (props)=>{
           </div>
           <div className="account-address">{wallet && truncateAddress}</div>
         </li>
-        <li onMouseOver={showUserCenter}>
+        <li onClick={showUserCenter}>
           <img src={require('../../assets/images/profile.png')} className="img" />
         </li>
       </ul>
@@ -58,18 +58,18 @@ function Wallet(props) {
             </div>
         </header>
         <div style={{display:"inline-block", width:"100%"}}>
-            <div className="m-container h-full" style={{position:"fixed", marginLeft: "70px", marginRight: "975px", width:"45%", top:"0px"}} id="transactions">
+            <div className="m-container h-full" style={{position:"fixed", marginLeft: "275px", marginRight: "978px", width:"24%", top:"0px"}} id="transactions">
                 <div className="card dark h-full" style={{borderRadius:"5px"}}>
                     <Transactions.ListDefault />
                 </div>
             </div>
-            <div className="m-container h-fulld" style={{position:"fixed", top:"0",right: "395px",width: "29%",paddingTop:"94px"}} id="sideMarkets">
+            <div className="m-container h-fulld" style={{position:"fixed", top:"0",right: "697px",width: "24%",paddingTop:"94px"}} id="sideMarkets">
                 <div className="card dark h-full" style={{borderRadius:"5px"}}>
                     <Charts.PriceChart />
                     <Tickers.ListTokenTickers />
                 </div>
             </div>
-            <div className="m-container h-full" style={{position:"fixed", top:"70px",left: "81%",width: "16%",padding: "20px 0", borderRadius:"5px"}} id="tokenSide">
+            <div className="m-container h-full" style={{position:"fixed", top:"70px",left: "65%",width: "16%",padding: "20px 0", borderRadius:"5px"}} id="tokenSide">
                 <div className="card dark h-full" style={{borderRadius:"5px"}}>
                   <Containers.Tokens>
                       <Containers.Settings>
