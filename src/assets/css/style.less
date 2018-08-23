@@ -4,7 +4,7 @@
     header
 -----------------------*/
 header { position: fixed; z-index: 1000; width: 100%; border-bottom: 4px solid @blue-darker; }
-header .bg { height: 70px; padding: 15px 270px; padding-right: 365px}
+header .bg { height: 70px; margin-left: 17%; margin-right: 17%;}
 // header .w-control { margin-left: 280px; }
 header h2 { font-size: 18px; opacity: .87; }
 header h2 span { padding-left: 5px; font-weight: normal; vertical-align: middle; opacity: .54; }
@@ -19,7 +19,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .side { position: absolute; height: 100%; }
 .sideOrderBook {position: absolute; height: 44%;}
 .side-fixed { position: fixed; height: 100%; }
-.m-container { overflow: hidden; padding-top: 94px; }
+.m-container { overflow: hidden; padding-top: 86px; }
 .h-full { height: 100vh; }
 .h-half { height: 44vh; }
 .h-half1 { height: 65vh;}
@@ -137,7 +137,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 .token-last-quotes ul { margin: 0; }
 .token-last-quotes ul>li>em { display: block; font-style: normal; font-weight: 600; }
-.token-last-quotes ul>li>small { color: @text-color-dark-3; font-size: @font-size-base; }
+.token-last-quotes ul>li>small { color: @text-color-dark-3; font-size: @font-size-sm; }
 .token-last-quotes ul>li { padding-left: 37px; font-weight: 400; }
 #back { width: 40px; height: 40px; text-align: center; line-height: 40px; background: @dark-color-2; color: @text-color-dark-1 }
 #back i { font-size: 32px; }
@@ -145,14 +145,14 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .tradeHeaderEle { display: flex; }
 .tradeHeaderEle .pair-select { width: 215px; font-size: 14px; font-weight: 600; }
 .tradeHeaderEle .pair-select .caret { position: relative; top: 2px; }
-.tradeHeaderEle .token-last-quotes { margin-left: 12%; }
+.tradeHeaderEle .token-last-quotes { margin-left: 12%; @media only screen and (max-width: 1550px) { margin-left: 4%} }
 .pair-price { padding: 5px 10px; border: 1px solid @dark-color-2; margin: 10px 0 20px; }
 .pair-price>li { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
 .pair-price>li .token-price { display: inline-block; width: 100px; text-align: left; }
 .pair-price>li h4 { font-size: 14px; font-weight: 600; width: 50px; color: @text-color-dark-2 }
 .token-tab { display: flex; justify-content: space-between; float: right; width: "45%"; margin-bottom: 13px; }
 .token-tab li { list-style: none; width: 100%; }
-.token-tab li a { display: block; padding: 0px 10px; background: @dark-color-2; color: @text-color-dark-3; font-size: 16px; font-weight: bold; text-align: center; line-height: 40px; }
+.token-tab li a { display: block; padding: 0px 10px; background: @dark-color-2; color: @text-color-dark-3; font-size: 14px; font-weight: bold; text-align: center; line-height: 40px; }
 .token-tab li.active a { color: @text-color-dark; }
 .token-tab li.buy.active a { background: @buy-color; border-radius: 5px;}
 .token-tab li.sell.active a { background: @sell-color; border-radius: 5px;}
@@ -180,7 +180,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .token-select .token-select-body .item li span i:active, .token-select .token-select-body .item li span i.active { color: @warning-color; }
 .token-select .token-select-body .item li>span { display: block; text-align: left; }
 .trade-list { position: relative; }
-.trade-list .trade-list-header { color: @text-color-dark-3; line-height: 30px; display: flex; justify-content: space-between;}
+.trade-list .trade-list-header { color: @text-color-dark-3; line-height: 25px; display: flex; justify-content: space-between;}
 .trade-list li { display: flex; justify-content: space-between; padding: 2px 20px; line-height: 20px; font-weight: 600; color: @text-color-dark-2 }
 .trade-list li:hover { background: @dark-color-2 }
 .trade-list li>span { display: block; width: 70px; text-align: left;}
@@ -196,7 +196,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .tab-order.tabs li a { color: @text-color-dark-3 }
 .tab-order.tabs li.active a { color: @text-color-dark-1 }
 .order-filter { border-bottom: 1px solid @dark-color-2; padding: 10px 20px; }
-.market-chart { border-bottom: 4px solid @blue-darker }
+// .market-chart { border-bottom: 4px solid @blue-darker }
 .market-chart>div { height: 100%; overflow: hidden; padding: 0px 15px; }
 .market-chart img { width: 100%; height: 100%; }
 // #account { position: fixed; top: 0; right: -300px; z-index: 1000; width: 300px; height: 100%; -webkit-transition: right .3s; transition: right .3s; transition-delay: 0.2s; }
@@ -251,9 +251,9 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .account-bar ul { display: flex; justify-content: space-between; align-items: center; cursor: pointer;}
 .account-bar ul li { background: @dark-prof-user; min-width: 40px; height: 40px; line-height: 38px; text-align: center; border-radius: 5px}
 .account-bar ul li .logo { height: 40px; padding-top:4px; background: @dark-prof-user; line-height: 30px; border-radius: 5px}
-.account-bar ul li .logo img { width: 100%; }
+.account-bar ul li .logo img { width: 55%; }
 .account-bar ul li:nth-child(1) { display: inline-flex; justify-content: space-between; align-items: center; }
-.account-bar ul li .account-address { width: 205px; padding: 0 5px 0 -5px; text-align: left; margin-left:25px; color: #608fb8 !important; line-height: 1.2; white-space: nowrap !important;}
+.account-bar ul li .account-address { padding: 0 5px 0 -5px; text-align: left; margin-left:-5px; margin-right:5px; color: #608fb8 !important; line-height: 1.2; white-space: nowrap !important; font-size: 13px; @media only screen and (max-width: 1550px) { font-size: 9.5px}}
 .account-bar ul li .account-address:after { content: attr(data-truncate); position: absolute; left: 100%; top: 0; white-space: nowrap;}
 .account-bar ul li i { font-size: 20px; margin:0; }
 .account-bar ul li:nth-child(n+2):hover { background: @dark-color-1; cursor: pointer; }

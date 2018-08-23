@@ -144,7 +144,7 @@ const actions = {
   transfer_cancel: "No, Cancel It",
   transfer_send: "Yes, Send Now",
   place_buy_order: "SEND BUY ORDER",
-  place_sell_order: "SEND SELL OORDER",
+  place_sell_order: "SEND SELL ORDER",
   view_result_etherscan: "View transaction on Etherscan.io",
   cancel_tx:'Cancel Tx',
   confirm: 'Confirm',

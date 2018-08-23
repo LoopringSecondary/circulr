@@ -38,13 +38,13 @@ function TickerHeader(props) {
                 <li><small>{intl.get('ticker.vol')}</small><em>{looprTickerFm.getVol()} {tokens.right}</em></li>
             </ul>
         </div>
-        <div className="pair-select d-flex justify-content-between tokenselect" style={{marginTop:"121px", height:"120px", marginLeft:"8px", position:"absolute", width:"15.5%", backgroundColor:"#182C3E", padding:"10px", borderRadius:"5px", cursor:'pointer'}} onClick={showAllTickers}>
+        <div className="pair-select d-flex justify-content-between tokenselect" style={{marginTop:"111px", height:"120px", position:"absolute", width:"15.5%", backgroundColor:"#182C3E", padding:"10px 15px", borderRadius:"5px", cursor:'pointer'}} onClick={showAllTickers}>
           <div style={{paddingBottom:'50px', marginLeft:'15px'}}>Market</div>
-              <div style={{position:'absolute', width:'93%', marginTop:"50px", backgroundColor:'#101e2b', borderRadius:"3px", padding:'7px 0'}}>
+              <div style={{position:'absolute', width:'90%', marginTop:"50px", backgroundColor:'#101e2b', borderRadius:"3px", padding:'7px 0'}}>
                 <i style={{marginLeft:'10px'}} className={`icon-${looprTickerFm.getTokens().left} icon-token`}/>
                 {props.tickers.filters.market} <b className="caret"></b>
                 <i className={`icon-${looprTickerFm.getTokens().right} icon-token`}/>
-                <i style={{backgroundColor:'#1C1917', borderRadius:"3px", position:'relative', left:'80px'}} className="icon-chevron-down" />
+                <i style={{backgroundColor:'#1C1917', borderRadius:"3px", position:'absolute', left:'85%', top:'25%'}} className="icon-chevron-down" />
               </div>
           </div>
     </div>

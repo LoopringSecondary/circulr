@@ -12,7 +12,7 @@ export const AccountMenu = (props)=>{
   let walletAdress = wallet.address;  
   let firstHalf = walletAdress.slice(0, walletAdress.length / 6);
   let otherHalf = walletAdress.slice(walletAdress.length / 2, walletAdress.length)
-  let truncateAddress = firstHalf + '...' + otherHalf;
+  let truncateAddress = firstHalf + '....' + otherHalf;
 
   const showUserCenter = ()=>{
     props.dispatch({
@@ -25,7 +25,7 @@ export const AccountMenu = (props)=>{
       <ul>
         <li onClick={showUserCenter}>
           <div className="logo">
-            {wallet && wallet.unlockType === 'address' && <Tooltip title={'Watch Only Wallet'}><img src={require('../../assets/images/walldex.png')} className="img" /> </Tooltip>}
+            {wallet && wallet.unlockType === 'address' && <Tooltip title={'Watch Only Wallet'}><img src={require('../../assets/images/walletdex.png')} className="img" /> </Tooltip>}
             {wallet && wallet.unlockType === 'metamask' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-metamaskwallet" /> </Tooltip>}
             {wallet && wallet.unlockType === 'ledger' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-ledgerwallet" /> </Tooltip>}
             {wallet && wallet.unlockType === 'trezor' && <Tooltip title={wallet.unlockType + 'Wallet'}><i className="icon-trezorwallet" /> </Tooltip>}
@@ -35,8 +35,8 @@ export const AccountMenu = (props)=>{
           </div>
           <div className="account-address">{wallet && truncateAddress}</div>
         </li>
-        <li onClick={showUserCenter}>
-          <img src={require('../../assets/images/profile.png')} className="img" />
+        <li onClick={showUserCenter} style={{marginLeft:"10px"}}>
+          <img className="profileimg" src={require('../../assets/images/profile.png')} />
         </li>
       </ul>
     </div>

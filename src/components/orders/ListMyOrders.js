@@ -144,7 +144,7 @@ function ListMyOrders(props) {
   return (
     <div className="">
       <ListHeader orders={orders} dispatch={props.dispatch} wallet={wallet}/>
-      <div style={{height: "160px", overflow: "auto"}}>
+      <div style={{height: "225px", overflow: "auto"}}>
         <Spin spinning={orders.loading}>
           <table style={{overflow: 'auto'}}
                  className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2">
