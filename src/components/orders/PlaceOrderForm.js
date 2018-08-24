@@ -16,6 +16,7 @@ import {FormatAmount} from 'modules/formatter/FormatNumber'
 import {getFormattedTime} from 'modules/formatter/common'
 import $ from 'jquery'
 
+
 $( document ).ready(function() {
   $( "#standardClick" ).trigger( "click" );
       $("#standardClick").removeClass('btn btn-fee-standard');

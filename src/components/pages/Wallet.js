@@ -58,18 +58,18 @@ function Wallet(props) {
             </div>
         </header>
         <div style={{display:"inline-block", width:"100%"}}>
-            <div className="m-container h-full" style={{position:"fixed", marginLeft: "275px", marginRight: "978px", width:"24%", top:"0px"}} id="transactions">
+            <div className="m-container h-full" style={{position:"fixed", marginLeft: "17%", marginRight: "978px", width:"24%", top:"10px"}} id="transactions">
                 <div className="card dark h-full" style={{borderRadius:"5px"}}>
                     <Transactions.ListDefault />
                 </div>
             </div>
-            <div className="m-container h-fulld" style={{position:"fixed", top:"0",right: "697px",width: "24%",paddingTop:"94px"}} id="sideMarkets">
+            <div className="m-container h-fulld" style={{position:"fixed", top:"0",right: "34%",width: "24%",paddingTop:"94px"}} id="sideMarkets">
                 <div className="card dark h-full" style={{borderRadius:"5px"}}>
                     <Charts.PriceChart />
                     <Tickers.ListTokenTickers />
                 </div>
             </div>
-            <div className="m-container h-full" style={{position:"fixed", top:"70px",left: "65%",width: "16%",padding: "20px 0", borderRadius:"5px"}} id="tokenSide">
+            <div className="m-container h-full" style={{position:"fixed", top:"70px",left: "67%",width: "16%",padding: "20px 0", borderRadius:"5px"}} id="tokenSide">
                 <div className="card dark h-full" style={{borderRadius:"5px"}}>
                   <Containers.Tokens>
                       <Containers.Settings>
