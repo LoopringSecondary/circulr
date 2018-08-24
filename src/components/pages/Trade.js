@@ -18,7 +18,7 @@ function Trade(props) {
   const TabPane = Tabs.TabPane;
   return (
     <div>
-        <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000", backgroundColor:"#182c3e" }}>
+        <header id="header">
             <div className="bg d-flex justify-content-between align-items-center">
                 <Tickers.TickerHeader />
                 <Containers.Wallet>
@@ -27,8 +27,8 @@ function Trade(props) {
             </div>
         </header>
 
-  	    <div className="side-fixed" style={{ top:"85px", left:"17%", width:"15.5%", paddingTop:"94px"}}>
-              <div className="card h-full" style={{borderRadius:"5px"}}>
+  	    <div className="side-fixed">
+              <div className="card h-full">
                 <Containers.PlaceOrder initState={{pair:market}}>
                   <Containers.Settings>
                     <Containers.Sockets id="balance">
@@ -50,14 +50,14 @@ function Trade(props) {
                 </Containers.PlaceOrder>
               </div>
   	    </div>
-  	    <div className="m-container h-full relative" style={{marginLeft: "33.5%", marginRight: "17%"}}>
-  	        <div className="sideOrderBook" style={{left:"0",width: "32%", borderRadius:"5px"}}>
-  	            <div className="card h-half" style={{borderRadius:"5px"}}>
+  	    <div className="m-container h-full relative" style={{marginLeft: "33.4%", marginRight: "17%"}}>
+  	        <div className="sideOrderBook">
+  	            <div className="card h-half">
   	                <Orders.ListOrderBook />
   	            </div>
   	        </div>
-  	        <div className="fulid-container" style={{marginLeft:"34%", marginRight: "34%", height: "50%" }}>
-  	            <div className="card dark h-half" style={{borderRadius:"5px"}}>
+  	        <div className="fulid-container" style={{marginLeft:"33.7%", marginRight: "34%", height: "50%" }}>
+  	            <div className="card dark h-half">
       	            <div style={{position: "relative", height: "-webkit-calc(105% - 40px)", overflow:"hidden" }}>
         	              <div className="card-header card-header-dark bordered">
         		               <h4>{intl.get('kline_chart.kline_chart')}</h4>
@@ -72,7 +72,7 @@ function Trade(props) {
                             </div>
                         </div>
                     </div>
-      	            <div className="orders" style={{position:"relative", right:"108%", top:"54px", height:"105%", paddingTop:"0", width:"208%", backgroundColor:"#182C3E", borderRadius:"5px", marginTop: "-15px"}}>
+      	            <div className="orders" style={{position:"relative", right:"106%", top:"50px", height:"105%", paddingTop:"0", width:"206%", backgroundColor:"#182C3E", borderRadius:"5px", marginTop: "-15px"}}>
           	            <Tabs defaultActiveKey="1"  type="card" >
           	                <TabPane tab={intl.get('order_list.my_open_orders')} key="1">
                               <Containers.Orders id="MyOpenOrders" alias="orders"  >
@@ -87,7 +87,7 @@ function Trade(props) {
           	            </Tabs>
       	            </div>
   	            </div>
-    		        <div className="side" style={{top:"66px", right:"-1.5px", width: "33%", paddingLeft: "5px"}}>
+    		        <div className="side">
     		            <Fills.ListTradesHistory />
     		        </div>
   	        </div>

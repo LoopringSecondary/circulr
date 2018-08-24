@@ -21,6 +21,7 @@ function UnlockByAddress(props) {
         props.dispatch({type: 'sockets/unlocked'});
         routeActions.gotoPath('/trade');
         props.dispatch({type:'layers/hideLayer', payload:{id:'unlock'}})
+        window.location.reload();
       }else {
         Notification.open({type:'error',message:intl.get('notifications.title.unlock_fail'),description:intl.get('wallet.invalid_address_tip')});
       }

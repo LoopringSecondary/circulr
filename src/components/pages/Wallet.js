@@ -47,7 +47,7 @@ function Wallet(props) {
  const {token} = props;
   return (
     <div>
-        <header id="header" style={{ position:"fixed",width:"100%",zIndex:"1000"}}>
+        <header id="header">
             <div className="bg text-color-dark-1 w-control d-flex justify-content-between align-items-center">
               <div className="loopring-brand"><img src={require('../../assets/images/logo.png')} className="img" /></div>
                 <h2>{token.toUpperCase()}</h2>

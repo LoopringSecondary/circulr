@@ -405,7 +405,7 @@ class PlaceOrderForm extends React.Component {
 
     return (
       <div>
-        <div className="card-body form-dark" style={{borderRadius:"5px", marginTop:"42px"}}>
+        <div className="card-body form-dark" style={{borderRadius:"5px", marginTop:"43px"}}>
         {/*}
           <div className="p10 mb15" style={{border:'1px solid rgba(255,255,255,0.07)',borderRadius:"5px"}}>
             <div className="row pb10">
@@ -426,13 +426,13 @@ class PlaceOrderForm extends React.Component {
               {intl.get('common.order_form')}
             </span>
             {placeOrder.side === 'sell' &&
-          <ul className="token-tab" style={{width:'45%', marginBottom:'13px'}}>
+          <ul className="token-tab">
             <li className="sell active"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')}</a></li>
             <li className="buy"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')}</a></li>
           </ul>
           }
           {placeOrder.side === 'buy' &&
-          <ul className="token-tab" style={{width:'45%', marginBottom:'13px'}}>
+          <ul className="token-tab">
             <li className="sell"><a data-toggle="tab"onClick={sideChange.bind(this, 'sell')}>{intl.get('common.sell')}</a></li>
             <li className="buy active"><a data-toggle="tab" onClick={sideChange.bind(this, 'buy')}>{intl.get('common.buy')}</a></li>
           </ul>
@@ -497,7 +497,7 @@ class PlaceOrderForm extends React.Component {
                 )}
               </Form.Item>
               <div className="pt5 pb5" style={{border:'0px solid rgba(255,255,255,0.07)',margin:'15px 0px', paddingLeft:'3px'}}>
-                <div style={{width:"100%", textAlign:"center"}}>
+                <div className="buttonsFee">
                   <button id="lowClick" class="btn btn-fee-slow" onClick={setLRCFeeInstant.bind(this, 10)} >{intl.get('common.gas_slow')}</button>
                   <button id="standardClick" class="btn btn-fee-standard" onClick={setLRCFeeInstant.bind(this, 30)} >{intl.get('common.gas_standard')}</button>
                   <button id="fastClick" class="btn btn-fee-fast" onClick={setLRCFeeInstant.bind(this, 50)} >{intl.get('common.gas_fast')}</button>                

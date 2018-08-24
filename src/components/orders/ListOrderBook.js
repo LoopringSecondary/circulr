@@ -70,7 +70,7 @@ function ListOrderBook(props) {
   };
   return (
     <div>
-	    <div className="card dark" style={{height:"-webkit-calc(48vh - 40px)", borderRadius:"5px"}}>
+	    <div className="card dark" style={{height:"-webkit-calc(48vh - 40px)"}}>
 	    	<div className="card-header card-header-dark bordered">
 	    	    <h4>{intl.get('order_list.order_book')}</h4>
 	    	</div>
@@ -105,8 +105,8 @@ function ListOrderBook(props) {
                 </div>
               </Spin>
               <div className="bg" style={{zIndex: "100", width: "100%", lineHeight: "38px", fontSize: "16px", borderRadius:"5px", marginTop:"7px", marginBottom:"12px"}}>
-                  {trades.length >0 && isIncresse() &&	<div className="text-spread" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}> <span style={{paddingRight:'25px', paddingLeft:'15px'}}> {intl.get('common.list.spread')} </span> {trades[0] && trades[0].price}<span className="offset-md"></span></div>}
-                  {trades.length >0 && !isIncresse() &&	<div className="text-spread" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}> <span style={{paddingRight:'25px', paddingLeft:'15px'}}> {intl.get('common.list.spread')} </span> {trades[0] && trades[0].price}<span className="offset-md"></span></div>}
+                  {trades.length >0 && isIncresse() &&	<div className="text-spread" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}> <span style={{paddingRight:'45px', paddingLeft:'15px'}}> {intl.get('common.list.spread')} </span> {trades[0] && trades[0].price}<span className="offset-md"></span></div>}
+                  {trades.length >0 && !isIncresse() &&	<div className="text-spread" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}> <span style={{paddingRight:'45px', paddingLeft:'15px'}}> {intl.get('common.list.spread')} </span> {trades[0] && trades[0].price}<span className="offset-md"></span></div>}
               </div>
               
               <div style={{height: "-webkit-calc(50%)",paddingTop:"0",paddingBottom:"0",marginTop:"-180px",marginBottom:"0",position:'relative',top:'170px'}}>

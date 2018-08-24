@@ -105,7 +105,7 @@ class KlineChart extends React.Component {
     }
     const sliderOpts = {
       container:"kline",
-      width: '100px',
+      width: 'auto',
       height: 26,
       padding: [ 20, 40, 20, 40 ],
       start, // 和状态量对应
@@ -126,7 +126,7 @@ class KlineChart extends React.Component {
       <div id="kline">
         <Chart forceFit height={235} animate={false} padding={[ 10,0,20,0 ]}  data={dv} scale={scale1} background={{fill:'transparent'}} plotBackground={{fill:'transparent'}}>
           <Tooltip {...tooltipOpts}/>
-          <Axis dataKey="time" grid={null} show={true} />
+          <Axis dataKey="time" grid={null} show={false} />
           <Axis dataKey="range" position="right" grid={{lineStyle:{stroke: 'rgba(255,255,255,0.1)'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}}/>
           <View data={dv} end={{x: 1, y: 0.68}}  guide={()=>null}>
             <Candle

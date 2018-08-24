@@ -3,7 +3,7 @@
 /*---------------------
     header
 -----------------------*/
-header { position: fixed; z-index: 1000; width: 100%; border-bottom: 4px solid @blue-darker; }
+header { position: fixed; z-index: 1000; width: 100%; border-bottom: 4px solid @blue-darker; background-color:#182c3e}
 header .bg { height: 70px; margin-left: 17%; margin-right: 17%;}
 // header .w-control { margin-left: 280px; }
 header h2 { font-size: 18px; opacity: .87; }
@@ -16,12 +16,12 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 /*---------------------
     custom 
 -----------------------*/
-.side { position: absolute; height: 100%; }
-.sideOrderBook {position: absolute; height: 44%;}
-.side-fixed { position: fixed; height: 100%; }
+.side { position: absolute; height: 100%; top: 66px; right: -1.5px; width: 33%; padding-left: 5px;}
+.sideOrderBook {position: absolute; height: 44%; left:0; width: 32%; border-radius:5px; }
+.side-fixed { position: fixed; height: 100%; top:85px; left:17%; width:15.5%; padding-top:94px }
 .m-container { overflow: hidden; padding-top: 86px; }
-.h-full { height: 100vh; }
-.h-half { height: 44vh; }
+.h-full { height: 100vh; border-radius: 5px; }
+.h-half { height: 44vh; border-radius: 5px; }
 .h-half1 { height: 65vh;}
 .marketSearch {width: 93%;  height: 48px; position: absolute; margin-top: 45px; background-color: #101e2b; border:0.5px solid #97979733; border-radius: 5px; padding: 10px 0px}
 .loopring-brand { height: 70px; text-align: center; padding-top: 10px; }
@@ -150,7 +150,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .pair-price>li { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
 .pair-price>li .token-price { display: inline-block; width: 100px; text-align: left; }
 .pair-price>li h4 { font-size: 14px; font-weight: 600; width: 50px; color: @text-color-dark-2 }
-.token-tab { display: flex; justify-content: space-between; float: right; width: "45%"; margin-bottom: 13px; }
+.token-tab { display: flex; justify-content: space-between; float: right; width: 45%; margin-bottom: 13px; margin-bottom: 13px;}
 .token-tab li { list-style: none; width: 100%; }
 .token-tab li a { display: block; padding: 0px 10px; background: @dark-color-2; color: @text-color-dark-3; font-size: 14px; font-weight: bold; text-align: center; line-height: 40px; }
 .token-tab li.active a { color: @text-color-dark; }
@@ -158,6 +158,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .token-tab li.sell.active a { background: @sell-color; border-radius: 5px;}
 .gas-switcher ul li { width: 150px; font-weight: 600; }
 .gas-switcher li { width: 100px; font-weight: 400; }
+.buttonsFee {width:100%; text-align:center}
 .balance { }
 .token-select { background-color: @white; color: @text-color-1; height: 100%}
 .token-select .token-select-header { display: flex; justify-content: space-between; align-items: center; height: 71px; padding: 0 30px; border-bottom: 1px solid @light-color-2 }
@@ -233,7 +234,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .Receive-qrcode { text-align: center; margin: 15px; }
 .Receive-qrcode canvas { padding: 20px; width: 160px; height: 160px; background: @white; }
 .ant-input.mnemonic { font-size: 16px !important; }
-.block-dark-filter { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-bottom: 1px solid @dark-color-3 }
+.block-dark-filter { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid @dark-color-3 }
 .dpath { background: @dark-color; }
 .dpath .ant-radio-wrapper { margin-right: 0 !important }
 .dpath .dpath-header, .account-addresses .account-addresses-header { padding: 20px 20px 0; color: @text-color-1 }
