@@ -31,11 +31,11 @@ function TickerHeader(props) {
         </div>
         <div className="token-last-quotes">
             <ul className="d-flex justify-content-between align-items-center">
-              <li><small>{intl.get('ticker.last')}</small><em><span className="text-up"><span className="cursor-pointer" onClick={priceSelected.bind(this, looprTickerFm.getLast())}> {looprTickerFm.getLast()} </span> {tokens.right}</span> <span hidden>$0.34</span></em></li>
+              <li><small>{intl.get('ticker.last')}</small><em><span className="text-up"><span className="cursor-pointer" onClick={priceSelected.bind(this, looprTickerFm.getLast())}> {looprTickerFm.getLast()} </span>{tokens.right}</span> <span hidden>$0.34</span></em></li>
                 <li><small>{intl.get('ticker.change')}</small><em><span className="text-down">{looprTickerFm.getChange()}</span></em></li>
               <li><small>{intl.get('ticker.high')}</small><em><span className="cursor-pointer" onClick={priceSelected.bind(this, looprTickerFm.getHigh())}> {looprTickerFm.getHigh()} </span> {tokens.right}</em></li>
               <li><small>{intl.get('ticker.low')}</small><em><span className="cursor-pointer" onClick={priceSelected.bind(this, looprTickerFm.getLow())}> {looprTickerFm.getLow()} </span> {tokens.right}</em></li>
-                <li><small>{intl.get('ticker.vol')}</small><em>{looprTickerFm.getVol()} {tokens.right}</em></li>
+                <li><small>{intl.get('ticker.vol')}</small><em><div>{looprTickerFm.getVol()} {tokens.right}</div></em></li>
             </ul>
         </div>
         <div className="pair-select d-flex justify-content-between tokenselect" style={{marginTop:"111px", height:"120px", position:"absolute", width:"15.5%", backgroundColor:"#182C3E", padding:"10px 15px", borderRadius:"5px", cursor:'pointer'}} onClick={showAllTickers}>

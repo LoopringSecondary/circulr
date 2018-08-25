@@ -90,9 +90,9 @@ function ListOrderBook(props) {
                         sell.map((item,index)=>
                           <Popover placement="right" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>
                             <li >
-                              <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),8))}>{toFixed(Number(item.price),8)}</span>
+                              <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),6))}>{toFixed(Number(item.price),6)}</span>
                               <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, toFixed(Number(item.amount),4))}>{toFixed(Number(item.amount),4)}</span>
-                              <span style={{textAlign:'right'}}>{toFixed(Number(item.lrcFee),8)}</span>
+                              <span style={{textAlign:'right'}}>{toFixed(Number(item.lrcFee),4)}</span>
                             </li>
                           </Popover>
                         )
@@ -116,9 +116,9 @@ function ListOrderBook(props) {
                         buy.map((item,index)=>
                           <Popover placement="right" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>
                             <li key={index}>
-                              <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),8))}>{toFixed(Number(item.price),8)}</span>
+                              <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),6))}>{toFixed(Number(item.price),6)}</span>
                               <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, toFixed(Number(item.amount),4))}>{toFixed(Number(item.amount),4)}</span>
-                              <span style={{textAlign:'right'}}>{toFixed(Number(item.lrcFee),8)}</span></li>
+                              <span style={{textAlign:'right'}}>{toFixed(Number(item.lrcFee),4)}</span></li>
                           </Popover>
                         )
                       }
