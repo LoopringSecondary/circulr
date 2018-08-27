@@ -40,18 +40,23 @@ function getCustomTokens(){
 }
 
 function getTokens(){
-  return [{
-    "symbol": "ETH",
-    "digits": 18,
-    "address": "",
-    "precision": 6,
-  }, ...STORAGE.settings.getTokensConfig().map(item=>{
-    item.icon = tokensIcons[item.symbol]
-    item.precision = item.digits > 6 ? 6 : item.digits
-    return item
-  })].filter(item=>{
-    return !config.ignoreTokens || !config.ignoreTokens.includes(item.symbol)
-  })
+  const cacheConfigs = STORAGE.settings.getConfigs()
+  if(cacheConfigs && cacheConfigs.tokens) {
+    return cacheConfigs.tokens
+  }
+  return []
+  // return [{
+  //   "symbol": "ETH",
+  //   "digits": 18,
+  //   "address": "",
+  //   "precision": 6,
+  // }, ...STORAGE.settings.getTokensConfig().map(item=>{
+  //   item.icon = tokensIcons[item.symbol]
+  //   item.precision = item.digits > 6 ? 6 : item.digits
+  //   return item
+  // })].filter(item=>{
+  //   return !config.ignoreTokens || !config.ignoreTokens.includes(item.symbol)
+  // })
 }
 
 function getMarketByPair(pair) {
@@ -78,7 +83,12 @@ function getProjectByLrx(lrx) {
 }
 
 function getSupportedMarketsTokenR() {
-  return config.supportedTokenRInMarkets
+  // return config.supportedTokenRInMarkets
+  const cacheConfigs = STORAGE.settings.getConfigs()
+  if(cacheConfigs && cacheConfigs.supportedTokenRInMarkets) {
+    return cacheConfigs.supportedTokenRInMarkets
+  }
+  return []
 }
 
 function isSupportedMarket(market) {
@@ -141,35 +151,17 @@ function getTokenSupportedMarkets(token) {
 }
 
 function getMarkets() {
-  const markets = STORAGE.settings.getMarketsConfig().map(item=>{
-    //const tokenx = getTokenBySymbol(item.tokenx)
-    //item.pricePrecision = tokenx.digits > 8 ? 8 : tokenx.digits
-    return item
-  })
-  return markets
-  // const tokens = getTokens();
-  // const supportedMarktesR = getSupportedMarketsTokenR()
-  // let markets = new Array()
-  // tokens.filter(item => item.symbol !== 'ETH' && item.symbol !== 'WETH').forEach(token=> {
-  //   supportedMarktesR.forEach(marketR => {
-  //     if(marketR !== token.symbol) {
-  //       const tokenConfig = tokens.find(t=>t.symbol.toLowerCase()===token.symbol.toLowerCase()) || {}
-  //       markets.push({
-  //         "tokenx": token.symbol,
-  //         "tokeny": marketR,
-  //         "pricePrecision": tokenConfig.digits > 8 ? 8 : tokenConfig.digits
-  //       })
-  //     }
-  //   })
-  // })
-  // return markets
+  const cacheConfigs = STORAGE.settings.getConfigs()
+  if(cacheConfigs && cacheConfigs.markets && cacheConfigs.newMarkets) {
+    return cacheConfigs.markets.concat(cacheConfigs.newMarkets)
+  }
+  return []
 }
 
 function getGasLimitByType(type) {
   if(type){
     return txs.find(tx => type === tx.type)
   }
-
 }
 
 function getWalletAddress() {
@@ -184,6 +176,22 @@ function getWallets() {
   return data.wallets
 }
 
+function getRemoteConfig() {
+  return fetch("https://config.loopring.io/circulr/config.json", {
+    method:'get',
+    mode: 'cors',
+    headers: {
+      'Accept': 'application/json'
+    }
+  })
+    .then(res => {
+      return res.json()
+    })
+    .then(res => {
+      console.log(`https://config.loopring.io/circulr/config.json response:`, res);
+      return res
+    })
+}
 
 export default {
   getTokenBySymbol,
@@ -206,5 +214,6 @@ export default {
   getWalletAddress,
   getDelegateAddress,
   getWallets,
-  getCustomTokens
+  getCustomTokens,
+  getRemoteConfig
 }

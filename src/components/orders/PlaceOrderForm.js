@@ -3,7 +3,6 @@ import {connect} from 'dva'
 import {Form,InputNumber,Button,Icon,Modal,Input,Radio,Select,Checkbox,Slider,Collapse,Tooltip,Popconfirm,Popover,DatePicker} from 'antd';
 import intl from 'react-intl-universal';
 import config from 'common/config'
-import * as datas from 'common/config/data'
 import * as fm from 'LoopringJS/common/formatter'
 import * as orderFormatter from 'modules/orders/formatters'
 import * as tokenFormatter from 'modules/tokens/TokenFm'
