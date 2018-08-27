@@ -23,9 +23,7 @@ const MetaItem = (props) => {
 const ItemMore=({item,tokens})=>{
   return (
     <div>
-      {/*<MetaItem label={intl.get('order.status')} value="TODO" />*/}
       <MetaItem label={intl.get('order.total')} value={`${item.size} ${tokens.right}` } />
-      {/*<MetaItem label={intl.get('order.validSince')} value={getFormatTime()} />*/}
       <MetaItem label={intl.get('order.validUntil')} value={getFormatTime(toNumber(item.validUntil)*1e3,'MM-DD hh:mm')} />
     </div>
   )
@@ -44,8 +42,7 @@ function ListOrderBook(props) {
   let sell = [], buy = []
   if(list && list.item) {
     if(list.item.sell) {
-        sell = list.item.sell.reverse()
-      // sell = Array(8-list.item.sell.length).fill([]).concat(list.item.sell)
+        sell = [...list.item.sell].reverse()
     }
     if(list.item.buy) {
       buy = [...list.item.buy].map(item=>{
@@ -75,8 +72,6 @@ function ListOrderBook(props) {
                   {trades.length >0 && isIncresse() &&	<div className="text-up text-center cursor-pointer" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}>{trades[0] && trades[0].price}<span className="offset-md"><i className="icon-arrow-up"></i></span></div>}
                   {trades.length >0 && !isIncresse() &&	<div className="text-down text-center cursor-pointer" onClick={priceSelected.bind(this, trades[0] ? trades[0].price.toString() : '0')}>{trades[0] && trades[0].price}<span className="offset-md"><i className="icon-arrow-down"></i></span></div>}
                 </div>
-	    	    	{/*<div className="bg blockbar" style={{ position: "absolute", bottom:"40px", zIndex: "100", width: "100%", border:"1px solid rgba(255,255,255,.07)", borderWidth: "1px 0 0", fontSize: "16px"}}>*/}
-	    	    	{/*</div>*/}
     	        <ul className="mr-0">
 	    	            <li className="trade-list-header">
 			    	        <span>{intl.get('order.price')} {tokens.right}</span>
