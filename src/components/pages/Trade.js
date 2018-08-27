@@ -50,7 +50,7 @@ function Trade(props) {
                 </Containers.PlaceOrder>
               </div>
   	    </div>
-  	    <div className="m-container h-full relative" style={{marginLeft: "33.4%", marginRight: "17%"}}>
+  	    <div className="m-container h-full relative" style={{marginLeft: "23.4%", marginRight: "7%"}}>
   	        <div className="sideOrderBook">
   	            <div className="card h-half">
   	                <Orders.ListOrderBook />
