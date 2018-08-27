@@ -50,13 +50,13 @@ function Trade(props) {
                 </Containers.PlaceOrder>
               </div>
   	    </div>
-  	    <div className="m-container h-full relative" style={{marginLeft: "33.4%", marginRight: "17%"}}>
+  	    <div className="m-container h-full relative" style={{marginLeft: "623px", marginRight: "335px"}}>
   	        <div className="sideOrderBook">
   	            <div className="card h-half">
   	                <Orders.ListOrderBook />
   	            </div>
   	        </div>
-  	        <div className="fulid-container" style={{marginLeft:"33.7%", marginRight: "34%", height: "50%" }}>
+  	        <div className="fulid-container" style={{marginLeft:"344px", marginRight: "309px", height: "50%" }}>
   	            <div className="card dark h-half">
       	            <div style={{position: "relative", height: "-webkit-calc(105% - 40px)", overflow:"hidden" }}>
         	              <div className="card-header card-header-dark bordered">
@@ -66,13 +66,13 @@ function Trade(props) {
             		            <div className="market-chart" style={{height: "50%"}}>
             		               <Charts.KlineChart />
             		            </div>
-            	               <div className="market-chart" style={{height: "50%", borderTop:"15px solid #273e4f"}}>
+            	               <div className="market-chart" style={{height: "50%", borderTop:"17px solid #273e4f"}}>
         		                    <h4 style={{padding:"10px 20px", color:"rgba(255, 255, 255, 0.87)", fontSize:"14px", fontWeight:"600"}}>{intl.get('depth_chart.depth_chart')}</h4>
                                 <Charts.DepthChart />
                             </div>
                         </div>
                     </div>
-      	            <div className="orders" style={{position:"relative", right:"106%", top:"50px", height:"105%", paddingTop:"0", width:"206%", backgroundColor:"#182C3E", borderRadius:"5px", marginTop: "-15px"}}>
+      	            <div className="orders">
           	            <Tabs defaultActiveKey="1"  type="card" >
           	                <TabPane tab={intl.get('order_list.my_open_orders')} key="1">
                               <Containers.Orders id="MyOpenOrders" alias="orders"  >

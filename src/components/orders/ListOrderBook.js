@@ -70,7 +70,7 @@ function ListOrderBook(props) {
   };
   return (
     <div>
-	    <div className="card dark" style={{height:"-webkit-calc(48vh - 40px)"}}>
+	    <div className="card dark" style={{height:"-webkit-calc(48vh - 80px)"}}>
 	    	<div className="card-header card-header-dark bordered">
 	    	    <h4>{intl.get('order_list.order_book')}</h4>
 	    	</div>
@@ -85,14 +85,14 @@ function ListOrderBook(props) {
 	    	    <div style={{height: "-webkit-calc(50% - 85px)",marginTop:"5px",marginBottom:"0",paddiongBottom:"10" }}>
               <Spin spinning={list.loading}>
               <div style={{display:'block'}}>
-                <ul style={{height: "calc(25vh - 93px)", overflowX:"hidden", paddingTop:"0",marginBottom:"0px" }}>
+                <ul style={{height: "calc(25vh - 96px)", overflowX:"hidden", paddingTop:"0",marginBottom:"0px" }}>
                       {
                         sell.map((item,index)=>
                           <Popover placement="right" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>
                             <li >
-                              <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),6))}>{toFixed(Number(item.price),6)}</span>
+                              <span className="text-down cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),8))}>{toFixed(Number(item.price),8)}</span>
                               <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, toFixed(Number(item.amount),4))}>{toFixed(Number(item.amount),4)}</span>
-                              <span style={{textAlign:'right'}}>{toFixed(Number(item.lrcFee),4)}</span>
+                              <span style={{textAlign:'right'}}>{toFixed(Number(item.lrcFee),8)}</span>
                             </li>
                           </Popover>
                         )
@@ -111,14 +111,14 @@ function ListOrderBook(props) {
               
               <div style={{height: "-webkit-calc(50%)",paddingTop:"0",paddingBottom:"0",marginTop:"-180px",marginBottom:"0",position:'relative',top:'170px'}}>
                 <Spin spinning={list.loading}>
-                  <ul style={{height: "calc(25vh - 92px)", overflowX:"hidden", paddingTop:"0",marginBottom:"0" }}>
+                  <ul style={{height: "calc(25vh - 96px)", overflowX:"hidden", paddingTop:"0",marginBottom:"0" }}>
                       {
                         buy.map((item,index)=>
                           <Popover placement="right" content={<ItemMore item={item} tokens={tokens}/>} title={null} key={index}>
                             <li key={index}>
-                              <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),6))}>{toFixed(Number(item.price),6)}</span>
+                              <span className="text-up cursor-pointer" onClick={priceSelected.bind(this, toFixed(Number(item.price),8))}>{toFixed(Number(item.price),8)}</span>
                               <span className="cursor-pointer" style={{textAlign:'right'}} onClick={amountSelected.bind(this, toFixed(Number(item.amount),4))}>{toFixed(Number(item.amount),4)}</span>
-                              <span style={{textAlign:'right'}}>{toFixed(Number(item.lrcFee),4)}</span></li>
+                              <span style={{textAlign:'right'}}>{toFixed(Number(item.lrcFee),8)}</span></li>
                           </Popover>
                         )
                       }

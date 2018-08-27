@@ -114,9 +114,9 @@ export class TxFm{
   getGas(){
    if(this.tx.status && this.tx.gas_price && this.tx.gas_limit ){
       if(this.tx.status.toLowerCase() === 'pending'){
-        return toFixed(toBig(this.tx.gas_price).times(this.tx.gas_limit).div('1e18'),4,true)
+        return toFixed(toBig(this.tx.gas_price).times(this.tx.gas_limit).div('1e18'),8,true)
       }else{
-        return toFixed(toBig(this.tx.gas_price).times(this.tx.gas_used).div('1e18'),4,true)
+        return toFixed(toBig(this.tx.gas_price).times(this.tx.gas_used).div('1e18'),8,true)
       }
    }
   }
@@ -131,7 +131,7 @@ export class TxFm{
    return this.tx.nonce && toNumber(this.tx.nonce)
   }
   getValue(){
-   return this.tx.value && toFixed(toBig(this.tx.value).div(1e18).toNumber(),4)
+   return this.tx.value && toFixed(toBig(this.tx.value).div(1e18).toNumber(),8)
   }
   getFilledAmountOfSell(){
    return this.fill && this.fill.symbol_b && getValues(this.fill.symbol_b,this.fill.amount_b) + '' + this.fill.symbol_b

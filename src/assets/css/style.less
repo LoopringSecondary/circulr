@@ -4,7 +4,7 @@
     header
 -----------------------*/
 header { position: fixed; z-index: 1000; width: 100%; border-bottom: 4px solid @blue-darker; background-color:#182c3e}
-header .bg { height: 70px; margin-left: 17%; margin-right: 17%;}
+header .bg { height: 70px; margin-left: 335px; margin-right: 335px;}
 // header .w-control { margin-left: 280px; }
 header h2 { font-size: 18px; opacity: .87; }
 header h2 span { padding-left: 5px; font-weight: normal; vertical-align: middle; opacity: .54; }
@@ -16,16 +16,16 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 /*---------------------
     custom 
 -----------------------*/
-.side { position: absolute; height: 100%; top: 66px; right: -1.5px; width: 33%; padding-left: 5px;}
-.sideOrderBook {position: absolute; height: 44%; left:0; width: 32%; border-radius:5px; }
-.side-fixed { position: fixed; height: 100%; top:85px; left:17%; width:15.5%; padding-top:94px }
+.side { position: absolute; height: 100%; top: 66px; right: -1.5px; width: 300px; padding-left: 5px;}
+.sideOrderBook {position: absolute; height: 44%; left:28px; width: 300px; border-radius:5px; }
+.side-fixed { position: fixed; height: 100%; top:85px; left:335px; width: 300px; padding-top:94px }
 .m-container { overflow: hidden; padding-top: 86px; }
 .h-full { height: 100vh; border-radius: 5px; }
 .h-half { height: 44vh; border-radius: 5px; }
 .h-half1 { height: 65vh;}
 .marketSearch {width: 93%;  height: 48px; position: absolute; margin-top: 45px; background-color: #101e2b; border:0.5px solid #97979733; border-radius: 5px; padding: 10px 0px}
 .loopring-brand { height: 70px; text-align: center; padding-top: 10px; }
-.loopring-brand .img { width: 149px; height: 30px; vertical-align: middle; margin-left: 10px; margin-top: 10px }
+.loopring-brand .img { width: 149px; height: 30px; vertical-align: middle; margin-top: 10px }
 .token-total { text-align: center; padding: 0 0 20px; }
 .token-total h3 { font-family: "DINPro", "Helvetica Neue", "Helvetica", "Arial", "Verdana", "sans-serif"; font-size: 20px; }
 .token-total small { opacity: .27 }
@@ -138,14 +138,14 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .token-last-quotes ul { margin: 0; }
 .token-last-quotes ul>li>em { display: block; font-style: normal; font-weight: 600; }
 .token-last-quotes ul>li>small { color: @text-color-dark-3; font-size: @font-size-sm; }
-.token-last-quotes ul>li { font-weight: 400; width: 115px; }
+.token-last-quotes ul>li { padding-left: 37px; font-weight: 400; }
 #back { width: 40px; height: 40px; text-align: center; line-height: 40px; background: @dark-color-2; color: @text-color-dark-1 }
 #back i { font-size: 32px; }
 #back:hover { background: @light-color-1; }
 .tradeHeaderEle { display: flex; }
 .tradeHeaderEle .pair-select { width: 215px; font-size: 14px; font-weight: 600; }
 .tradeHeaderEle .pair-select .caret { position: relative; top: 2px; }
-.tradeHeaderEle .token-last-quotes { margin-left: 16%; @media only screen and (max-width: 1550px) { margin-left: 7%; font-size: 9.5px;} }
+.tradeHeaderEle .token-last-quotes { margin-left: 130px; @media only screen and (max-width: 1550px) { margin-left: 28.3px} }
 .pair-price { padding: 5px 10px; border: 1px solid @dark-color-2; margin: 10px 0 20px; }
 .pair-price>li { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
 .pair-price>li .token-price { display: inline-block; width: 100px; text-align: left; }
@@ -253,7 +253,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .account-bar ul li { background: @dark-prof-user; min-width: 40px; height: 40px; line-height: 38px; text-align: center; border-radius: 5px}
 .account-bar ul li .logo { height: 40px; padding-top:4px; background: @dark-prof-user; line-height: 30px; border-radius: 5px}
 .account-bar ul li .logo img { width: 55%; }
-.account-bar ul li:nth-child(1) { display: inline-flex; justify-content: space-between; align-items: center; }
+.account-bar ul li:nth-child(1) { display: inline-flex; justify-content: space-between; align-items: center; width: 245px}
 .account-bar ul li .account-address { padding: 0 5px 0 -5px; text-align: left; margin-left:-5px; margin-right:5px; color: #608fb8 !important; line-height: 1.2; white-space: nowrap !important; font-size: 13px; @media only screen and (max-width: 1550px) { font-size: 9.5px}}
 .account-bar ul li .account-address:after { content: attr(data-truncate); position: absolute; left: 100%; top: 0; white-space: nowrap;}
 .account-bar ul li i { font-size: 20px; margin:0; }
