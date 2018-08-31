@@ -33,7 +33,6 @@ const TickItem = ({item,actions})=>{
 }
 
 function ListAllTickers(props) {
-  console.log('ListAllTickers render',props)
   const {loopringTickers:list,dispatch} = props
   const tickersFm = new TickersFm(list)
   const {extra:{favored={},keywords}} = list
@@ -65,7 +64,13 @@ function ListAllTickers(props) {
   }
   const selectTicker= (item)=>{
     routeActions.gotoPath(`/trade/${item.market}`)
-    storage.markets.setRecent(item.market)
+    storage.markets.setRecent(item.market);
+    dispatch({
+      type:"layers/hideLayer",
+      payload:{
+        id:'ListAllTickers',
+      }
+    })
   }
   const actions = {
     selectTicker,

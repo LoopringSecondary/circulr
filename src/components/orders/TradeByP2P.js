@@ -339,10 +339,11 @@ const TradeByP2P = (props) => {
       </div>
       <div className="mb15"></div>
       <Button type="primary" size="large" className="d-block w-100" onClick={handleSubmit} loading={p2pOrder.loading}>{intl.get('p2p_order.generate_order')}</Button>
-      { false && <Alert type="info" title={<div className="color-black-1">分享给指定的人</div>} theme="light" size="small"/> }
-      <div className="row pt10 pl0 pr0 pb10">
-        {intl.getHTML('p2p_order.instruction')}
-        <div className="pt5">{intl.getHTML('p2p_order.notice')}</div>
+      <div className="row p10">
+        <div className="fs13 lh20">
+          {intl.getHTML('p2p_order.instruction')}
+        </div>
+        <div className="fs13 lh20">{intl.getHTML('p2p_order.notice')}</div>
       </div>
     </div>
   );

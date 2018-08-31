@@ -18,9 +18,9 @@ export default class Ring
         return getRings(this.host, filter);
     }
 
-    getRingMinedDetail ({ringIndex, protocolAddress})
+    getRingMinedDetail (filter)
     {
-        return getRingMinedDetail(this.host, {ringIndex, protocolAddress});
+        return getRingMinedDetail(this.host, filter);
     }
 
     getFills (filter)
@@ -76,11 +76,11 @@ export function getRings (host, filter)
  * @param protocolAddress
  * @returns {Promise}
  */
-export function getRingMinedDetail (host, {ringIndex, protocolAddress})
+export function getRingMinedDetail (host, {ringIndex, delegateAddress})
 {
     try
     {
-        validator.validate({value: protocolAddress, type: 'ETH_ADDRESS'});
+        validator.validate({value: delegateAddress, type: 'ETH_ADDRESS'});
     }
     catch (e)
     {
@@ -89,7 +89,7 @@ export function getRingMinedDetail (host, {ringIndex, protocolAddress})
     ringIndex = toHex(toBig(ringIndex));
     const body = {};
     body.method = 'loopring_getRingMinedDetail';
-    body.params = [{ringIndex, protocolAddress}];
+    body.params = [{ringIndex, delegateAddress}];
     body.id = id();
     body.jsonrpc = '2.0';
     return request(host, {

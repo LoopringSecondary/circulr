@@ -323,8 +323,8 @@ export default {
     token_balance: 'Token Balance',
     order_detail: 'Order Detail',
     generate_order: 'Generate Order',
-    instruction: '<h4>当您希望与指定的人成交时，可以使用P2P交易模式，中继服务只会展示您的订单但无法完成撮合，因为订单成交的关键信息只有您指定的人能获得。</h4>1. 以您希望的兑换率生成一个订单，把不包含鉴权数据的订单信息提交给relay，同时将生成的订单hash和鉴权信息生成二维码。</br>2. 您可以把这个二维码发送给您的朋友，任何人拿到这个二维码都有可能吃掉您的订单，请注意以安全的方式传播。</br>3. 对方使用Circulr移动端扫描二维码，下一个与您买入卖出量完全匹配的对手单，发送以太坊交易吃掉这个订单，因此吃单方需要消耗以太坊油费。',
-    notice: '* P2P订单不需要支付LRC手续费</br>',
+    instruction: 'When you need to trade with designated parties, please use P2P orders.',
+    notice: '* No trading fee is required for P2P orders</br>* Relay backend is unable to mine your P2P orders.</br>',
     user_center_p2p: 'P2P Trade',
   },
   sign: {
@@ -460,14 +460,14 @@ export default {
   // token
   // -----------
   token_list: {
-    total_value: '总资产',
+    total_value: 'Total Asset',
     actions_hide_small_balance: 'Hide tokens with small balance',
     actions_show_my_favorites: 'Only show my favorites',
     actions_send: words.send,
     actions_receive: words.receive,
     actions_trade: words.trade,
-    actions_convert_eth_to_weth: '转换 ETH 为 WETH',
-    actions_convert_weth_to_eth: '转换 WETH 为 ETH',
+    actions_convert_eth_to_weth: 'Convert ETH to WETH',
+    actions_convert_weth_to_eth: 'Convert WETH to ETH',
   },
   // -----------
   // transfer

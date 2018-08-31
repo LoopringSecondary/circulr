@@ -14,8 +14,9 @@ export default class RingDetail extends React.Component{
     const {ringDetail} = this.props;
     const fill = ringDetail.fill;
     const  _this = this;
+    console.log(fill)
     if(fill && fill.ringIndex){
-      window.RELAY.ring.getRingMinedDetail({ringIndex:fill.ringIndex,protocolAddress:fill.protocol}).then(res => {
+      window.RELAY.ring.getRingMinedDetail({ringIndex:fill.ringIndex,delegateAddress:fill.delegateAddress}).then(res => {
         if(!res.error){
           _this.setState({ring:res.result,loading:false})
         }else {
