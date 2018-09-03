@@ -4,13 +4,15 @@ import ListPagination from 'LoopringUI/components/ListPagination'
 import SelectContainer from 'LoopringUI/components/SelectContainer'
 import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'
 import {OrderFm} from 'modules/orders/OrderFm'
-import {getShortAddress} from 'modules/formatter/common'
+import {getShortAddress, getFormattedTime} from 'modules/formatter/common'
 import config from 'common/config'
 import intl from 'react-intl-universal'
 import Notification from '../../common/loopringui/components/Notification'
 import moment from 'moment';
 import {connect} from 'dva';
-import {toHex} from "LoopringJS/common/formatter";
+import {toHex,toNumber} from "LoopringJS/common/formatter";
+import TokenFm from 'modules/tokens/TokenFm'
+
 
 const ListHeader = (props) => {
   const {orders, dispatch, wallet} = props;
@@ -25,7 +27,7 @@ const ListHeader = (props) => {
   };
 
   const cancelAll = () => {
-    if(orders && orders.items && orders.items.length >0 && orders.items.find(item => item.status.toLowerCase() === 'order_opened')){
+    if (orders && orders.items && orders.items.length > 0 && orders.items.find(item => item.status.toLowerCase() === 'order_opened')) {
       const {market} = orders.filters;
       const type = market ? 4 : 2;
       if (wallet.unlockType) {
@@ -34,7 +36,7 @@ const ListHeader = (props) => {
       } else {
         Notification.open({type: 'warning', message: intl.get('notifications.title.unlock_first')})
       }
-    }else{
+    } else {
       Notification.open({type: 'warning', message: intl.get('order_cancel.no_orders')})
     }
   };
@@ -121,12 +123,37 @@ const MetaItem = (props) => {
   )
 }
 const ItemMore = ({item}) => {
+  const itemRenders = {
+    status: (value) => {
+      switch (value) {
+        case 'ORDER_OPENED':
+          return intl.get('order_status.opened');
+        case "ORDER_FINISHED":
+          return intl.get('order_status.completed');
+        case "ORDER_CANCELLED":
+          return intl.get('order_status.canceled');
+        case "ORDER_CUTOFF":
+          return intl.get('order_status.canceled');
+        case "ORDER_EXPIRE":
+          return intl.get('order_status.expired');
+      }
+    },
+    total: (order) => {
+      console.log(order.market)
+      const tokens = order.market.split('-')[1];
+      const tf = new TokenFm({symbol: tokens});
+      const amount = order.side === 'sell' ? order.amountS : order.amountB
+      return toNumber(tf.toPricisionFixed(tf.getUnitAmount(amount))) + ` ${tokens}`
+    }
+  }
+
+
   return (
     <div>
-      <MetaItem label={intl.get('order.status')} value="TODO"/>
-      <MetaItem label={intl.get('order.total')} value="1.1 WETH"/>
-      <MetaItem label={intl.get('order.validSince')} value="2018-08-01 10:22"/>
-      <MetaItem label={intl.get('order.validUntil')} value="2018-08-01 10:22"/>
+      <MetaItem label={intl.get('order.status')} value={itemRenders['status'](item.status)}/>
+      <MetaItem label={intl.get('order.total')} value={itemRenders['total'](item.originalOrder)}/>
+      <MetaItem label={intl.get('order.validSince')} value={getFormattedTime(toNumber(item.originalOrder.validSince))}/>
+      <MetaItem label={intl.get('order.validUntil')} value={getFormattedTime(toNumber(item.originalOrder.validUntil))}/>
     </div>
   )
 }
@@ -198,7 +225,7 @@ function ListMyOrders(props) {
           </table>
         </Spin>
       </div>
-      <ListPagination list={orders} className="darkPagination"    props={{size:'small'}}/>
+      <ListPagination list={orders} className="darkPagination" props={{size: 'small'}}/>
     </div>
   )
 }
