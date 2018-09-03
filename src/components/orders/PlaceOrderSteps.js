@@ -217,9 +217,9 @@ const PlaceOrderSteps = (props) => {
             {false && <div className="col-4 zb-b-r">
               <WalletItem icon="trezorwallet" title="TREZOR" />
             </div>}
-            <div hidden={signed && signed.length >0 && placeOrder.payWith !== 'more'} className="col-4 zb-b-r cursor-pointer" onClick={chooseType.bind(this, 'more')}>
+            {false  && <div hidden={signed && signed.length >0 && placeOrder.payWith !== 'more'} className="col-4 zb-b-r cursor-pointer" onClick={chooseType.bind(this, 'more')}>
               <WalletItem icon="key" title="More Wallets" />
-            </div>
+            </div>}
           </div>
         </div>
       </div>
