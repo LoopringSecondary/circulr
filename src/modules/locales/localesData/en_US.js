@@ -44,6 +44,7 @@ const words = {
   format_amount: "{amount,number}",
   back: 'Return',
   cancel: 'Cancel',
+  ok:"OK",
   previous_page: 'Previous Page',
   next_page: 'Next Page',
   import: "Import",
@@ -102,9 +103,12 @@ const notifications = {
     sub_failed:"Submit Failed",
     sub_suc:'Submit Successfully',
     invalid_wallet_type:'Invalid  Wallet Type',
-    dif_address:'The address you just unlocked is different from your wallet address, please sign with your wallet address'
+    dif_address:'The address you just unlocked is different from your wallet address, please sign with your wallet address',
+    place_order_price_confirm:"Are you sure you want to continue ?",
   },
   message: {
+    place_order_price_high:"Your price is 20% higher than the market price.",
+    place_order_price_low:"Your price is 20% lower than the market price.",
     wallet_locked: 'Your wallet seems locked yet, please unlock first',
     failed_fetch_data_from_server: 'Failed fetch data from server, you could wait a moment and come back later',
     eth_is_required_when_place_order: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',

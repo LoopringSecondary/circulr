@@ -45,6 +45,7 @@ const words = {
   format_amount: "{amount,number}",
   back: '返回',
   cancel: "取消",
+  ok:"确认",
   previous_page: '前一页',
   next_page: '后一页',
   import: "导入",
@@ -103,9 +104,12 @@ const notifications = {
     init_failed: "初始化数据失败",
     sub_failed:"提交失败",
     invalid_wallet_type:"不存在的钱包类型",
-    dif_address:'您解锁的地址和当前的钱包地址不同，请选择当前钱包的地址进行签名'
+    dif_address:'您解锁的地址和当前的钱包地址不同，请选择当前钱包的地址进行签名',
+    place_order_price_confirm:'您确定要要继续下单吗?',
   },
   message: {
+    place_order_price_high:"您当前的价格高于市场价20%",
+    place_order_price_low:"您当前的价格低于市场价20%",
     wallet_locked: '您的钱包还未解锁，请先解锁后再继续操作',
     failed_fetch_data_from_server: '从服务器获取数据失败, 请稍后在尝试',
     eth_is_required_when_place_order: '由于需要支付ETH油费, 根据您当前订单需要发送的以太坊交易计算，还需要 {required} ETH',
