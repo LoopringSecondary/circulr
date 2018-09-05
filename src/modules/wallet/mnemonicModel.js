@@ -1,5 +1,5 @@
 import {isValidateMnemonic} from "LoopringJS/ethereum/mnemonic";
-import {fromMnemonic} from "../../common/loopringjs/src/ethereum/account";
+import {fromMnemonic} from "LoopringJS/ethereum/account";
 
 
 export default {

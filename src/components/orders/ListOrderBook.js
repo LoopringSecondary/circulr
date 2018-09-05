@@ -3,7 +3,7 @@ import intl from 'react-intl-universal'
 import {connect} from 'dva'
 import {getTokensByMarket} from 'modules/formatter/common'
 import {Popover,Spin} from 'antd'
-import {toFixed, toNumber} from "../../common/loopringjs/src/common/formatter";
+import {toFixed, toNumber} from "LoopringJS/common/formatter";
 import {getFormatTime} from "../../modules/formatter/common";
 
 const MetaItem = (props) => {

@@ -1,7 +1,6 @@
 import React from 'react';
-import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps} from 'antd'
+import {Button, Form, Icon, Input, Select} from 'antd'
 import intl from 'react-intl-universal'
-import Alert from 'LoopringUI/components/Alert'
 import {connect} from 'dva'
 import * as tokenFormatter from 'modules/tokens/TokenFm'
 import * as orderFormatter from 'modules/orders/formatters'
@@ -10,7 +9,7 @@ import * as fm from 'LoopringJS/common/formatter'
 import moment from 'moment'
 import config from 'common/config'
 import Notification from 'LoopringUI/components/Notification'
-import {getLastGas, getEstimateGas} from 'modules/settings/formatters'
+import {getEstimateGas, getLastGas} from 'modules/settings/formatters'
 import {FormatAmount} from 'modules/formatter/FormatNumber'
 
 const MenuItem = (prop)=>{

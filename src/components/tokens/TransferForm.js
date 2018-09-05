@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Form, Icon, Input, Popover, Select, Slider, Switch } from 'antd';
+import {Button, Form, Icon, Input, Select, Switch} from 'antd';
 import intl from 'react-intl-universal';
 import config from 'common/config'
 import * as datas from 'common/config/data'
@@ -7,12 +7,10 @@ import * as fm from 'LoopringJS/common/formatter'
 import {calculateGas} from 'LoopringJS/common/utils'
 import * as tokenFormatter from 'modules/tokens/TokenFm'
 import contracts from 'LoopringJS/ethereum/contracts/Contracts'
-import Currency from 'modules/settings/CurrencyContainer'
 import * as orderFormatter from 'modules/orders/formatters'
-import GasFee from '../setting/GasFee1'
 import {Containers} from 'modules'
-import {getLastGas, getEstimateGas} from 'modules/settings/formatters'
-import {toHex} from "../../common/loopringjs/src/common/formatter";
+import {getEstimateGas, getLastGas} from 'modules/settings/formatters'
+import {toHex} from "LoopringJS/common/formatter";
 
 function TransferForm(props) {
   const {transfer, balance, wallet, marketcap, form, gas, dispatch} = props

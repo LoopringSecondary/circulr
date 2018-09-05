@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form,Select,Badge,Spin} from 'antd'
+import {Select, Spin} from 'antd'
 import ListPagination from 'LoopringUI/components/ListPagination'
 import SelectContainer from 'LoopringUI/components/SelectContainer'
 import {getSupportedMarket} from 'LoopringJS/relay/rpc/market'

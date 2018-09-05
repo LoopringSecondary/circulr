@@ -1,6 +1,5 @@
 import React from 'react';
-import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps,Collapse} from 'antd'
-import Alert from 'LoopringUI/components/Alert'
+import {Button, Collapse, Form, Icon, Input} from 'antd'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'
 import Notification from 'LoopringUI/components/Notification'

@@ -1,10 +1,9 @@
 import React from 'react';
-import {Icon} from 'antd';
-import {toNumber,toBig} from "LoopringJS/common/formatter";
+import {toBig, toFixed, toNumber} from "LoopringJS/common/formatter";
 import config from "common/config";
 import commonFm from "../formatter/common";
 import TokenFm from "../tokens/TokenFm";
-import {toFixed} from "../../common/loopringjs/src/common/formatter";
+
 
 export class FillFm{
   constructor(fill={}){

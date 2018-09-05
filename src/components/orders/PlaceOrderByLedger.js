@@ -1,12 +1,11 @@
 import React from 'react';
-import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps} from 'antd'
+import {Button, Card, Steps} from 'antd'
 import intl from 'react-intl-universal'
-import Alert from 'LoopringUI/components/Alert'
 import PlaceOrderSign from './PlaceOrderSign'
 import PlaceOrderResult from './PlaceOrderResult'
 import {connect} from 'dva'
 import Notification from 'LoopringUI/components/Notification';
-import {getXPubKey as getLedgerPublicKey,connect as connectLedger} from "LoopringJS/ethereum/ledger";
+import {connect as connectLedger, getXPubKey as getLedgerPublicKey} from "LoopringJS/ethereum/ledger";
 import {wallets} from "../../common/config/data";
 import {trimAll} from "LoopringJS/common/utils";
 import {LedgerAccount} from "LoopringJS/ethereum/account";

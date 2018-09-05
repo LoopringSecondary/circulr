@@ -7,7 +7,7 @@ import {OrderFm} from 'modules/orders/OrderFm'
 import {getShortAddress, getFormattedTime} from 'modules/formatter/common'
 import config from 'common/config'
 import intl from 'react-intl-universal'
-import Notification from '../../common/loopringui/components/Notification'
+import Notification from 'LoopringUI/components/Notification'
 import moment from 'moment';
 import {connect} from 'dva';
 import {toHex,toNumber} from "LoopringJS/common/formatter";

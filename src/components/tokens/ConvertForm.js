@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Form, Icon, Input} from 'antd';
 import TokenFormatter, {getBalanceBySymbol, getWorthBySymbol, isValidNumber} from "../../modules/tokens/TokenFm";
 import Contracts from 'LoopringJS/ethereum/contracts/Contracts'
-import {toBig, toHex} from "../../common/loopringjs/src/common/formatter";
+import {toBig, toHex} from "LoopringJS/common/formatter";
 import config from '../../common/config'
 import Currency from 'modules/settings/CurrencyContainer'
 import {connect} from "dva";

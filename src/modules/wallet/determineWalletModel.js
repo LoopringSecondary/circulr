@@ -1,6 +1,6 @@
 import {fromMnemonic, getAddresses} from "LoopringJS/ethereum/account";
 import {getXPubKey as getTrezorPublicKey} from "LoopringJS/ethereum/trezor";
-import {getXPubKey as getLedgerPublicKey, connect} from "../../common/loopringjs/src/ethereum/ledger";
+import {getXPubKey as getLedgerPublicKey, connect} from "LoopringJS/ethereum/ledger";
 
 export default {
   namespace: 'determineWallet',
