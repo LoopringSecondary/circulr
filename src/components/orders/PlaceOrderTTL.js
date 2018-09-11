@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Popover,Collapse,DatePicker} from 'antd'
+import {Card, DatePicker, Form, Input, Radio, Select, Tabs} from 'antd'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'
 import moment from 'moment'

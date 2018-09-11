@@ -1,4 +1,3 @@
-import config from 'common/config'
 import {toBig} from 'LoopringJS/common/formatter'
 
 const MODULES = 'p2pOrder'

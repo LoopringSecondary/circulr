@@ -3,7 +3,7 @@ import {Button, Card, Input, Radio} from 'antd'
 import {paths} from '../../../common/config/data'
 import routeActions from 'common/utils/routeActions'
 import {getXPubKey as getTrezorPublicKey} from "LoopringJS/ethereum/trezor";
-import {getXPubKey as getLedgerPublicKey,connect} from "../../../common/loopringjs/src/ethereum/ledger";
+import {getXPubKey as getLedgerPublicKey,connect} from "LoopringJS/ethereum/ledger";
 import intl from 'react-intl-universal'
 import Notification from '../../../common/loopringui/components/Notification'
 

@@ -6,7 +6,7 @@ import {isApproving} from '../transactions/formatters'
 import contracts from 'LoopringJS/ethereum/contracts/Contracts'
 import {createWallet} from 'LoopringJS/ethereum/account';
 import * as tokenFormatter from 'modules/tokens/TokenFm'
-import {toFixed, toNumber} from "../../common/loopringjs/src/common/formatter";
+import {toFixed, toNumber} from "LoopringJS/common/formatter";
 
 const integerReg = new RegExp("^[0-9]*$")
 const amountReg = new RegExp("^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$")

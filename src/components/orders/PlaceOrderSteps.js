@@ -1,21 +1,14 @@
 import React from 'react';
-import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps,Spin} from 'antd'
+import {Button, Card, Form, Icon, Spin} from 'antd'
 import {connect} from 'dva'
-import {toBig, toHex, clearHexPrefix} from 'LoopringJS/common/formatter'
-import config from 'common/config'
+import {clearHexPrefix, toBig, toHex} from 'LoopringJS/common/formatter'
 import intl from 'react-intl-universal';
-import eachLimit from 'async/eachLimit';
-import * as orderFormatter from 'modules/orders/formatters'
 import Notification from 'LoopringUI/components/Notification'
 import {createWallet} from 'LoopringJS/ethereum/account';
 import * as uiFormatter from 'modules/formatter/common'
-import * as fm from 'LoopringJS/common/formatter'
-import QRCode from 'qrcode.react';
-import Alert from 'LoopringUI/components/Alert'
-import {keccakHash} from 'LoopringJS/common/utils'
-import {getXPubKey as getLedgerPublicKey,connect as connectLedger} from "LoopringJS/ethereum/ledger";
+import {keccakHash, trimAll} from 'LoopringJS/common/utils'
+import {connect as connectLedger, getXPubKey as getLedgerPublicKey} from "LoopringJS/ethereum/ledger";
 import {wallets} from "../../common/config/data";
-import {trimAll} from "LoopringJS/common/utils";
 import moment from 'moment'
 
 const OrderMetaItem = (props) => {

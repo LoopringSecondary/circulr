@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Icon, Alert} from 'antd'
+import {Alert, Button, Icon} from 'antd'
 // import Alert from 'LoopringUI/components/Alert'
 import intl from 'react-intl-universal'
 import {connect} from 'dva'

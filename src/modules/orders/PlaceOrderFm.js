@@ -1,5 +1,4 @@
 import React from 'react';
-import {Icon} from 'antd';
 
 export default class PlaceOrderFm {
   constructor(input){

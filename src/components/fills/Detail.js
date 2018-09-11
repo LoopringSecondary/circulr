@@ -1,7 +1,7 @@
 import React from 'react'
-import {Tabs, Spin} from 'antd'
+import {Spin} from 'antd'
 import {Link} from 'dva/router'
-import {DetailHeader, MetaList, MetaItem} from 'LoopringUI/components/DetailPage'
+import {DetailHeader, MetaItem, MetaList} from 'LoopringUI/components/DetailPage'
 import intl from 'react-intl-universal';
 import {RingFm} from 'modules/rings/formatters'
 

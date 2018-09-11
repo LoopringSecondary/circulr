@@ -1,7 +1,6 @@
 import React from 'react';
-import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps} from 'antd'
+import {Button, Card, Icon, Steps} from 'antd'
 import intl from 'react-intl-universal'
-import Alert from 'LoopringUI/components/Alert'
 import PlaceOrderResult from './PlaceOrderResult'
 import {connect} from 'dva'
 import QRCode from 'qrcode.react';

@@ -20,8 +20,7 @@
 ## start
 
 1. npm install
-2. cd src/common/loopringjs && npm install 
-3. cd ../../ && npm run start
+2. npm run start
 
 注意：node 版本 必须小于 10.0.0 
 
