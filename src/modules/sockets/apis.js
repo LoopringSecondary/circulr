@@ -68,6 +68,10 @@ const isArray = (obj) => {
   return Object.prototype.toString.call(obj) === '[object Array]'
 }
 
+const sorter = (a, b)=>{
+  return a.start - b.start;
+};
+
 const transfromers = {
   transaction: {
     queryTransformer: (payload) => {
@@ -224,6 +228,22 @@ const transfromers = {
         items = [...res.data]
       }
       updateItems(items, id)
+      if(window.TrendCallBack) {
+        console.log('trends socket callback...')
+        const sorted = items.sort(sorter)
+        const last = sorted[sorted.length - 1]
+        const data = {
+          close:last.close,
+          high:last.high,
+          //isBarClosed: true,
+          //isLastBar: false,
+          low:last.low,
+          open:last.open,
+          time:last.start * 1000,
+          volume:last.vol
+        }
+        window.TrendCallBack(data)
+      }
     },
   },
   orderBook: {
