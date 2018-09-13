@@ -107,8 +107,8 @@ const notifications = {
     place_order_price_confirm:"Are you sure you want to continue ?",
   },
   message: {
-    place_order_price_high:"Your price is 20% higher than the market price.",
-    place_order_price_low:"Your price is 20% lower than the market price.",
+    place_order_price_high:"Your price is 5% higher than the market price.",
+    place_order_price_low:"Your price is 5% lower than the market price.",
     wallet_locked: 'Your wallet seems locked yet, please unlock first',
     failed_fetch_data_from_server: 'Failed fetch data from server, you could wait a moment and come back later',
     eth_is_required_when_place_order: 'ETH is required to pay Ethereum transaction fees, calculated with your current order cost that need to send Ethereum transactions, totally required {required} ETH.',
