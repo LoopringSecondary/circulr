@@ -48,7 +48,30 @@ function Trade(props) {
               </div>
   	    </div>
   	    <div className="m-container h-full relative" style={{marginLeft: "324px"}}>
-          <Charts.KlineTradingview />
+  	        <div className="fulid-container" style={{height: "100%" }}>
+  	            <div className="card dark h-full">
+      	            <div style={{position: "relative", height: "-webkit-calc(60% - 40px)", overflow:"hidden" }}>
+                      <Charts.KlineTradingview />
+                    </div>
+      	            <div className="orders" style={{position: "relative", height:"50%", paddingTop:"0"}}>
+          	            <Tabs defaultActiveKey="1"  type="card">
+          	                <TabPane tab={intl.get('order_list.my_open_orders')} key="1">
+                              <Containers.Orders id="MyOpenOrders" alias="orders"  >
+                                <Orders.ListMyOrders style={{height:"100%",overflow:"auto"}} />
+                              </Containers.Orders>
+                            </TabPane>
+          	                <TabPane tab={intl.get('fill_list.my_recent_fills')} key="2">
+                              <Containers.Fills id="MyFills" alias="fills"  >
+                                <Fills.ListMyFills style={{height:"100%",overflow:"auto"}} />
+                              </Containers.Fills>
+                            </TabPane>
+          	            </Tabs>
+      	            </div>
+  	            </div>
+    		        <div className="side" style={{top:"74px", right:"0", width: "320px"}}>
+    		            <Fills.ListTradesHistory />
+    		        </div>
+  	        </div>
         </div>
     </div>
   )

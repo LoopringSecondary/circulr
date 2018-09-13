@@ -34,7 +34,7 @@ class TVChartContainer extends React.PureComponent {
 	initChart(symbol) {
 	  const _this = this
 		const widgetOptions = {
-			debug: true,
+			debug: false,
 			symbol: symbol,
 			datafeed: {
         onReady: cb => {
@@ -137,17 +137,24 @@ class TVChartContainer extends React.PureComponent {
         "border_around_the_chart",
         // "control_bar",
         "timeframes_toolbar",
-        "left_toolbar"
+        "left_toolbar",
       ],
-			enabled_features: ['move_logo_to_main_pane'],
+			enabled_features: [
+			  'move_logo_to_main_pane',
+      ],
 			charts_storage_url: 'https://saveload.tradingview.com',
 			charts_storage_api_version: '1.1',
 			client_id: 'tradingview.com',
 			user_id: 'public_user_id',
+      width: '76%',
+      height: '60%',
 			fullscreen: false,
-			autosize:true,
-			overrides: {
-        "volumePaneSize": "large",
+			autosize:false,
+      loading_screen: {
+        backgroundColor: "#08274c"
+      },
+      overrides: {
+        "volumePaneSize": "medium",
 				"mainSeriesProperties.showCountdown": true,
 				"paneProperties.background": "#08274c",
 				"paneProperties.vertGridProperties.color": "#363c4e",
@@ -158,7 +165,7 @@ class TVChartContainer extends React.PureComponent {
 				"mainSeriesProperties.candleStyle.wickDownColor": '#7f323f',
         "paneProperties.topMargin": 20,
         "paneProperties.bottomMargin": 40,
-			}
+      },
 		};
     const tvWidget = new window.TradingView.widget(widgetOptions);
     this.tvWidget = tvWidget
