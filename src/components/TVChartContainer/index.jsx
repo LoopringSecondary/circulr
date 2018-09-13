@@ -1,10 +1,7 @@
 import * as React from 'react';
 import './index.css';
-//import Datafeed from './api/'
 import {connect} from "dva";
-import {Datafeed} from './api'
 import historyProvider from "./api/historyProvider";
-import stream from "./api/stream";
 
 function getLanguageFromURL() {
 	const regex = new RegExp('[\\?&]lang=([^&#]*)');
@@ -14,31 +11,31 @@ function getLanguageFromURL() {
 
 class TVChartContainer extends React.PureComponent {
 
-	static defaultProps = {
-		symbol: 'LRC-WETH',
-		containerId: 'tv_chart_container',
-		libraryPath: '/charting_library/',
-		chartsStorageUrl: 'https://saveload.tradingview.com',
-		chartsStorageApiVersion: '1.1',
-		clientId: 'tradingview.com',
-		userId: 'public_user_id',
-		fullscreen: false,
-		studiesOverrides: {},
-	};
-
 	state = {
+    containerId: 'tv_chart_container',
 	  barsLoaded: false
   }
 
+  tvWidget = null;
+
   componentDidMount() {
-	  this.initChart()
+    //const param = location.pathname.replace(`${match.path}/`, '')
+    const symbol = window.location.hash.replace('#/trade/', '')
+	  this.initChart(symbol)
   }
 
-	initChart() {
+  componentWillUnmount() {
+    if (this.tvWidget !== null) {
+      this.tvWidget.remove();
+      this.tvWidget = null;
+    }
+  }
+
+	initChart(symbol) {
 	  const _this = this
 		const widgetOptions = {
-			debug: false,
-			symbol: this.props.symbol,
+			debug: true,
+			symbol: symbol,
 			datafeed: {
         onReady: cb => {
           console.log('=====onReady running')
@@ -55,6 +52,7 @@ class TVChartContainer extends React.PureComponent {
           console.log('====Search Symbols running')
         },
         resolveSymbol: (symbolName, onSymbolResolvedCallback, onResolveErrorCallback) => {
+          window.SYMBOLE_CHANGE = onSymbolResolvedCallback
           setTimeout(() => {
             onSymbolResolvedCallback({
               name: symbolName,
@@ -99,6 +97,7 @@ class TVChartContainer extends React.PureComponent {
         subscribeBars: (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) => {
           console.log('=====subscribeBars runnning')
           window.TrendCallBack = onRealtimeCallback
+          //TODO mock
           let time = 1536745511000
           setInterval(() => {
             const mock = {
@@ -111,7 +110,7 @@ class TVChartContainer extends React.PureComponent {
               time:time,
               volume:12
             }
-            time = time + 1000
+            time = time + 3600000
             //onRealtimeCallback(mock)
           }, 1000)
           //stream.subscribeBars(symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback)
@@ -127,8 +126,8 @@ class TVChartContainer extends React.PureComponent {
       interval: '60',
       timeframe: '60',
       toolbar_bg: "#1d2337",
-			container_id: this.props.containerId,
-			library_path: this.props.libraryPath,
+			container_id: this.state.containerId,
+			library_path: '/charting_library/',
 			locale: getLanguageFromURL() || 'en',
       disabled_features: [
         "use_localstorage_for_settings",
@@ -141,16 +140,16 @@ class TVChartContainer extends React.PureComponent {
         "left_toolbar"
       ],
 			enabled_features: ['move_logo_to_main_pane'],
-			charts_storage_url: this.props.chartsStorageUrl,
-			charts_storage_api_version: this.props.chartsStorageApiVersion,
-			client_id: this.props.clientId,
-			user_id: this.props.userId,
-			fullscreen: this.props.fullscreen,
+			charts_storage_url: 'https://saveload.tradingview.com',
+			charts_storage_api_version: '1.1',
+			client_id: 'tradingview.com',
+			user_id: 'public_user_id',
+			fullscreen: false,
 			autosize:true,
 			overrides: {
-        volumePaneSize: "large",
+        "volumePaneSize": "large",
 				"mainSeriesProperties.showCountdown": true,
-				"paneProperties.background": "#131722",
+				"paneProperties.background": "#08274c",
 				"paneProperties.vertGridProperties.color": "#363c4e",
 				"paneProperties.horzGridProperties.color": "#363c4e",
 				"symbolWatermarkProperties.transparency": 90,
@@ -161,19 +160,17 @@ class TVChartContainer extends React.PureComponent {
         "paneProperties.bottomMargin": 40,
 			}
 		};
-		window.TradingView.onready(() => {
-			const widget = window.tvWidget = new window.TradingView.widget(widgetOptions);
-
-			widget.onChartReady(() => {
-				console.log('Chart has loaded!')
-			});
-		});
+    const tvWidget = new window.TradingView.widget(widgetOptions);
+    this.tvWidget = tvWidget
+    tvWidget.onChartReady(() => {
+      console.log('Chart has loaded!', tvWidget)
+    });
 	}
 
 	render() {
 		return (
 			<div
-				id={ this.props.containerId }
+				id={ this.state.containerId }
 				className={ 'TVChartContainer' }
 			/>
 		);

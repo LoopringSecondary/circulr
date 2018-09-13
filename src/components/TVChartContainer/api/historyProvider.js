@@ -56,7 +56,7 @@ export default {
 			})
   },
   getLoopringBars: async function(symbolInfo, resolution, from, to, first, limit) {
-    const res = await window.RELAY.market.getTrend({market:'LRC-WETH', interval:'1Hr'})
+    const res = await window.RELAY.market.getTrend({market:symbolInfo.name, interval:'1Hr'})
     console.log("trends  .....  ", res)
     if(res.result && res.result.length > 0) {
       const bars = res.result.sort(sorter).map(trend=> {

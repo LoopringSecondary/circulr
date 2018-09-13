@@ -9,7 +9,7 @@ const config = {
   supports_marks: true,
   exchanges: [],
   symbolsTypes: [],
-  supported_resolutions: ["1", "15", "60", "240", "D"]
+  supported_resolutions: supportedResolutions
 }; 
 
 export default {
@@ -24,7 +24,7 @@ export default {
 		// expects a symbolInfo object in response
 		console.log('======resolveSymbol running:', symbolName)
 		// console.log('resolveSymbol:',{symbolName})
-		var split_data = symbolName.split(/[:/]/)
+		// var split_data = symbolName.split(/[:/]/)
 		// console.log({split_data})
 		var symbol_stub = {
 			name: symbolName,
@@ -33,7 +33,7 @@ export default {
 			session: '24x7',
 			timezone: 'Etc/UTC',
 			ticker: symbolName,
-			exchange: split_data[0],
+			//exchange: split_data[0],
 			minmov: 1,
 			pricescale: 100000000,
 			has_intraday: true,
@@ -41,11 +41,8 @@ export default {
 			supported_resolution:  supportedResolutions,
 			volume_precision: 8,
 			data_status: 'streaming',
-		}
-
-		if (split_data[2].match(/USD|EUR|JPY|AUD|GBP|KRW|CNY/)) {
-			symbol_stub.pricescale = 100
-		}
+      has_no_volume: false,
+    }
 		setTimeout(function() {
 			onSymbolResolvedCallback(symbol_stub)
 			console.log('Resolving that symbol....', symbol_stub)
