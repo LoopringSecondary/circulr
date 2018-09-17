@@ -26,6 +26,13 @@ class DepthChart extends React.Component {
         value: fm.toNumber(item[0])
       }
     }).reverse();
+    if(sourceBuy.length === 0) {
+      sourceBuy.push({
+        bidstotalvolume: 0,
+        bidsvolume: 0,
+        value: 0
+      })
+    }
     let sellVol = 0
     let sourceSell = depth.sell.reverse().map((item) => {
       const current = fm.toNumber(item[1])
@@ -37,6 +44,13 @@ class DepthChart extends React.Component {
         value: fm.toNumber(item[0])
       }
     })
+    if(sourceSell.length === 0) {
+      sourceSell.push({
+        askstotalvolume: 0,
+        asksvolume: 0,
+        value: 0
+      })
+    }
 
     function balloon(item, graph) {
       var txt;
@@ -66,7 +80,8 @@ class DepthChart extends React.Component {
 
     const configs = {
       "type": "serial",
-      "theme": "light",
+      "theme": "dark",
+      "autoResize":true,
       "dataProvider": [
         ...sourceBuy,
         ...sourceSell
@@ -185,7 +200,7 @@ class DepthChart extends React.Component {
         "textAlign": "left"
       },
       "valueAxes": [{
-        //"title": "Volume"
+        //"title": "Volume",
         "color":'#fefeff',
         //"labelsEnabled": false
       }],
