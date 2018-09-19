@@ -7,7 +7,6 @@ import * as fm from 'LoopringJS/common/formatter'
 import 'amcharts3/amcharts/amcharts';
 import 'amcharts3/amcharts/serial';
 import 'amcharts3/amcharts/themes/light';
-
 import 'amcharts3/amcharts/plugins/dataloader';
 import 'amcharts3/amcharts/plugins/export';
 import AmCharts from "@amcharts/amcharts3-react"
@@ -80,7 +79,7 @@ class DepthChart extends React.Component {
 
     const configs = {
       "type": "serial",
-      "theme": "dark",
+      "theme": "light",
       "autoResize":true,
       "dataProvider": [
         ...sourceBuy,
@@ -201,12 +200,18 @@ class DepthChart extends React.Component {
       },
       "valueAxes": [{
         //"title": "Volume",
-        "color":'#fefeff',
+        "color":'#e6e6e6',
+        "inside": true,
+        "gridColor":'#e6e6e6',
+        //"axisColor":'#e6e6e6',
         //"labelsEnabled": false
       }],
       "categoryAxis": {
         //"title": "Price (BTC/ETH)",
-        "color":'#fefeff',
+        "color":'#e6e6e6',
+        "gridColor":'#e6e6e6',
+        //"axisColor":'#e6e6e6',
+        "gridAlpha":0.05,
         "minHorizontalGap": 100,
         "startOnAxis": true,
         "showFirstLabel": false,
