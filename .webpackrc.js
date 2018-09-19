@@ -5,7 +5,7 @@ export default {
   disableCSSModules: true,
   hash:true,
 	"alias":{
-    "LoopringJS":`${__dirname}/src/common/loopringjs/src`,
+    "LoopringJS":`loopring.js/lib`,
     "LoopringUI":`${__dirname}/src/common/loopringui/`,
     "common":`${__dirname}/src/common`,
     "modules":`${__dirname}/src/modules`,

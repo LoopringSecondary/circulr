@@ -1,6 +1,5 @@
 import {getOrders} from 'LoopringJS/relay/rpc/order'
 import config from 'common/config'
-import eachLimit from 'async/eachLimit';
 import storage from 'modules/storage/'
 
 export async function fetchList(payload){

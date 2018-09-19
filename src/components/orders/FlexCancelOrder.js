@@ -7,7 +7,7 @@ import {toHex, toNumber} from "LoopringJS/common/formatter";
 import moment from 'moment';
 import LoopringUI from 'LoopringUI/components'
 import Notification from '../../common/loopringui/components/Notification'
-import {MetaMaskAccount} from '../../common/loopringjs/src/ethereum/account'
+import {MetaMaskAccount} from 'LoopringJS/ethereum/account'
 import storage from 'modules/storage/'
 
 const computeHash = ({type, timestamp, orderHash, tokenS, tokenB}) => {

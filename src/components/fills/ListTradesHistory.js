@@ -6,7 +6,7 @@ import {FormatAmount} from 'modules/formatter/FormatNumber'
 import {toBig} from "LoopringJS/common/formatter";
 import {Popover, Spin} from 'antd'
 import TokenFm from 'modules/tokens/TokenFm'
-import {toNumber} from "../../common/loopringjs/src/common/formatter";
+import {toNumber} from "LoopringJS/common/formatter";
 
 const MetaItem = (props) => {
   const {label, value, render} = props

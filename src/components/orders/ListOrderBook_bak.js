@@ -1,5 +1,4 @@
 import React from 'react'
-import intl from 'react-intl-universal'
 import {connect} from 'dva'
 import {getTokensByMarket} from 'modules/formatter/common'
 import {Popover} from 'antd'

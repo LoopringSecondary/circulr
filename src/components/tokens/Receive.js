@@ -1,14 +1,12 @@
 import React from 'react';
-import { Input,Button} from 'antd';
+import {Button, Input} from 'antd';
 import QRCode from 'qrcode.react';
 import copy from 'copy-to-clipboard';
 import Notification from '../../common/loopringui/components/Notification'
 import intl from 'react-intl-universal';
-import {toBig,toFixed} from "LoopringJS/common/formatter";
-import {getBalanceBySymbol} from "../../modules/tokens/TokenFm";
-import TokenFormatter from '../../modules/tokens/TokenFm';
+import {toBig, toFixed} from "LoopringJS/common/formatter";
+import TokenFormatter, {getBalanceBySymbol} from "../../modules/tokens/TokenFm";
 import config from '../../common/config'
-import {connect} from 'dva'
 import routeActions from 'common/utils/routeActions'
 import storage from 'modules/storage/'
 

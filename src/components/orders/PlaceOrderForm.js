@@ -398,7 +398,7 @@ class PlaceOrderForm extends React.Component {
       }
       const currentPrice = getMarketPrice(marketcap.items, pair.split('-')[0], pair.split('-')[1]);
       let isContinue = true;
-      if (side === 'buy' && fm.toNumber(priceInput) > 1.2 * currentPrice) {
+      if (side === 'buy' && fm.toNumber(priceInput) > 1.05 * currentPrice) {
         confirm({
           title: intl.get('notifications.title.place_order_price_confirm'),
           content:intl.get('notifications.message.place_order_price_high'),
@@ -411,7 +411,7 @@ class PlaceOrderForm extends React.Component {
             isContinue = false;
           },
         });
-      } else if (side === 'sell' && fm.toNumber(priceInput) < 0.8 * currentPrice) {
+      } else if (side === 'sell' && fm.toNumber(priceInput) < 0.95 * currentPrice) {
         confirm({
           title: intl.get('notifications.title.place_order_price_confirm'),
           content:intl.get('notifications.message.place_order_price_low'),

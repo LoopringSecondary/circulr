@@ -1,12 +1,10 @@
 import React from 'react';
-import {Button, Form, Input, Select, Slider,Card,Icon,Radio,Tabs,Steps} from 'antd'
+import {Button, Card, Form, Steps} from 'antd'
 import intl from 'react-intl-universal'
-import Alert from 'LoopringUI/components/Alert'
 import PlaceOrderSign from './PlaceOrderSign'
 import PlaceOrderResult from './PlaceOrderResult'
 import {connect} from 'dva'
 import {MetaMaskAccount,} from "LoopringJS/ethereum/account";
-import routeActions from 'common/utils/routeActions'
 import Notification from 'LoopringUI/components/Notification'
 
 const PlaceOrderByMetamask = (props) => {

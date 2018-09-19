@@ -1,6 +1,5 @@
 import React from 'react';
-import {Icon} from 'antd';
-import {toNumber,toBig} from "LoopringJS/common/formatter";
+import {toBig, toNumber} from "LoopringJS/common/formatter";
 import config from "common/config";
 import commonFm from "../formatter/common";
 

@@ -1,14 +1,11 @@
 import React from 'react';
-import { Input,Button,Icon } from 'antd';
-import {toBig, toHex, clearHexPrefix} from 'LoopringJS/common/formatter'
-import config from 'common/config'
+import {Button, Icon} from 'antd';
+import {clearHexPrefix, toBig, toHex} from 'LoopringJS/common/formatter'
 import intl from 'react-intl-universal';
 import eachLimit from 'async/eachLimit';
-import * as orderFormatter from 'modules/orders/formatters'
 import Notification from 'LoopringUI/components/Notification'
 import {createWallet} from 'LoopringJS/ethereum/account';
 import * as uiFormatter from 'modules/formatter/common'
-import * as fm from 'LoopringJS/common/formatter'
 import QRCode from 'qrcode.react';
 import Alert from 'LoopringUI/components/Alert'
 import {keccakHash} from 'LoopringJS/common/utils'
