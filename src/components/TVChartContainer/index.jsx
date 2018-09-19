@@ -65,6 +65,7 @@ class TVChartContainer extends React.PureComponent {
               session: '24x7',
               pricescale: 1000000,
               has_no_volume: false,
+              volume_precision:5
               // expired: true,
               // expiration_date: 1527379200000
             })
@@ -72,8 +73,6 @@ class TVChartContainer extends React.PureComponent {
         },
         getBars: function(symbolInfo, resolution, from, to, onHistoryCallback, onErrorCallback, firstDataRequest) {
           console.log('=====getBars running', _this.state.barsLoaded)
-          // console.log('function args',arguments)
-          // console.log(`Requesting bars between ${new Date(from * 1000).toISOString()} and ${new Date(to * 1000).toISOString()}`)
           if (_this.state.barsLoaded) {
             setTimeout(() => {
               onHistoryCallback([], {noData: true})
@@ -81,7 +80,6 @@ class TVChartContainer extends React.PureComponent {
           } else {
             historyProvider.getLoopringBars(symbolInfo, resolution, from, to, firstDataRequest)
               .then(bars => {
-                console.log('...getLoopringBars...', from, to, bars)
                 _this.setState({barsLoaded: true})
                 if (bars.length) {
                   onHistoryCallback(bars, {noData: false})
@@ -138,9 +136,11 @@ class TVChartContainer extends React.PureComponent {
         // "control_bar",
         "timeframes_toolbar",
         "left_toolbar",
+        "volume_force_overlay"
       ],
 			enabled_features: [
 			  'move_logo_to_main_pane',
+        'hide_last_na_study_output'
       ],
 			charts_storage_url: 'https://saveload.tradingview.com',
 			charts_storage_api_version: '1.1',
@@ -154,7 +154,7 @@ class TVChartContainer extends React.PureComponent {
         backgroundColor: "#08274c"
       },
       overrides: {
-        "volumePaneSize": "medium",
+        "volumePaneSize": "small",
 				"mainSeriesProperties.showCountdown": true,
 				"paneProperties.background": "#08274c",
 				"paneProperties.vertGridProperties.color": "#363c4e",
@@ -163,8 +163,8 @@ class TVChartContainer extends React.PureComponent {
 				"scalesProperties.textColor" : "#AAA",
 				"mainSeriesProperties.candleStyle.wickUpColor": '#336854',
 				"mainSeriesProperties.candleStyle.wickDownColor": '#7f323f',
-        "paneProperties.topMargin": 20,
-        "paneProperties.bottomMargin": 40,
+        //"paneProperties.topMargin": 20,
+        //"paneProperties.bottomMargin": 40,
       },
 		};
     const tvWidget = new window.TradingView.widget(widgetOptions);
