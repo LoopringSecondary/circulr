@@ -25,7 +25,7 @@ function TickerHeader(props) {
   const tokens = looprTickerFm.getTokens()
   return (
     <div className="tradeHeaderEle justify-content-between align-items-center" style={{display: "flex"}}>
-        <div id="back" onClick={gotoWallet}><i className="icon-chevron-left"></i></div>
+        {/* <div id="back" onClick={gotoWallet}><i className="icon-chevron-left"></i></div> */}
         <div className="loopring-brand">
           <img src={require('../../assets/images/logo.png')} className="img" /> 
         </div>
@@ -38,7 +38,7 @@ function TickerHeader(props) {
                 <li><small>{intl.get('ticker.vol')}</small><em><div>{looprTickerFm.getVol()} {tokens.right}</div></em></li>
             </ul>
         </div>
-        <div className="pair-select d-flex justify-content-between tokenselect" style={{marginTop:"111px", height:"120px", position:"absolute", width:"15.5%", backgroundColor:"#182C3E", padding:"10px 15px", borderRadius:"5px", cursor:'pointer'}} onClick={showAllTickers}>
+        <div className="pair-select d-flex justify-content-between tokenselect" style={{marginTop:"111px", height:"120px", position:"absolute", width:"18.5%", backgroundColor:"#182C3E", padding:"10px 15px", borderRadius:"5px", cursor:'pointer'}} onClick={showAllTickers}>
           <div style={{paddingBottom:'50px', marginLeft:'15px'}}>Market</div>
               <div style={{position:'absolute', width:'90%', marginTop:"50px", backgroundColor:'#101e2b', borderRadius:"3px", padding:'7px 0'}}>
                 <i style={{marginLeft:'10px'}} className={`icon-${looprTickerFm.getTokens().left} icon-token`}/>

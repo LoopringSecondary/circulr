@@ -15,7 +15,7 @@ import storage from 'modules/storage/'
 const UnLogged = ()=>{
   const isLogged = !!storage.wallet.getUnlockedAddress()
   if(isLogged){
-    return <Redirect to="/wallet" />
+    return <Redirect to="/trade" />
   }else{
     return (
       <Switch>
@@ -29,7 +29,7 @@ const Logged = ()=>{
   if(isLogged){
     return (
       <Switch>
-        <Route path={`/wallet`} component={Pages.Wallet} />
+        {/* <Route path={`/wallet`} component={Pages.Wallet} /> */}
         <Route path="/trade/:market" component={Pages.Trade} />
         <Route path="/trade" exact component={Pages.Trade} />
       </Switch>

@@ -78,6 +78,7 @@ function getProjectByLrx(lrx) {
 }
 
 function getSupportedMarketsTokenR() {
+  console.log('config', config)
   return config.supportedTokenRInMarkets
 }
 
