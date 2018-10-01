@@ -128,6 +128,8 @@ const ItemMore = ({item}) => {
       switch (value) {
         case 'ORDER_OPENED':
           return intl.get('order_status.opened');
+        case 'ORDER_WAIT_SUBMIT_RING':
+          return intl.get('order_status.matching');
         case "ORDER_FINISHED":
           return intl.get('order_status.completed');
         case "ORDER_CANCELLED":
@@ -264,6 +266,10 @@ export const renders = {
     if (status === 'ORDER_OPENED') {
       statusNode = <Badge className="text-color-dark-1" status="processing"
                           text={<span className="color-white-1">{intl.get('order_status.opened')}</span>}/>
+    }
+    if (status === 'ORDER_WAIT_SUBMIT_RING') {
+      statusNode = <Badge className="text-color-dark-1" status="processing"
+                          text={<span className="color-white-1">{intl.get('order_status.matching')}</span>}/>
     }
     if (status === 'ORDER_FINISHED') {
       statusNode = <Badge className="text-color-dark-1" status="success"
