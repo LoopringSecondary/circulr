@@ -192,6 +192,7 @@ export default {
   },
   order_status: {
     opened: 'Open',
+    matching: 'Matching',
     completed: 'Completed',
     canceled: 'Canceled',
     expired: 'Expired',
