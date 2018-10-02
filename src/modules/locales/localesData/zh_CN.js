@@ -194,6 +194,7 @@ export default {
   order_status: {
     opened: '挂单中',
     matching: '撮合中',
+    pending: '打包中',
     completed: '已完成',
     canceled: '已取消',
     expired: '已过期',
