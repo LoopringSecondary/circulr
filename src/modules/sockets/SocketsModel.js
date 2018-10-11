@@ -33,6 +33,7 @@ export default {
     'orders':{...initState,filters:{market:'LRC-WETH'}},
     'estimatedGasPrice':{...initState,filters:{}},
     'loopringTickers':{...initState},
+    'tickersOfSource':{...initState,filters:{tickerSource:'coinmarketcap', mode:'rank'}},
     'pendingTx':{...initState},
     'circulrNotify':{...initState},
     'addressUnlock':{...initState},
@@ -141,6 +142,7 @@ export default {
       yield put({type:'fetch',payload:{id:'orderBook'}})
       yield put({type:'fetch',payload:{id:'estimatedGasPrice'}})
       yield put({type:'fetch',payload:{id:'globalTrend'}})
+      yield put({type:'fetch',payload:{id:'tickersOfSource'}})
       if(STORAGE.wallet.getUnlockedAddress()){
         yield put({type:'unlocked'})
       }

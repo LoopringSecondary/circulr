@@ -10,6 +10,7 @@ import Notification from 'LoopringUI/components/Notification'
 import intl from 'react-intl-universal'
 import {configs} from './common/config/data'
 import config from "./common/config";
+import {getSupportedToken} from './init'
 
 const latestVersion = Number(configs.localStorageVersion)
 const oldVersion = Number(STORAGE.getLocalStorageVersion())
@@ -62,15 +63,28 @@ app.start('#root')
 
 export const store = app._store
 
-const getLocalConfig = () => {
-  return Promise.resolve(configs)
-}
-
-config.getRemoteConfig().then(res=>{
-//getLocalConfig().then(res=>{
-  if(res) {
-    STORAGE.settings.setConfigs(res)
-    app._store.dispatch({type:'tokens/itemsChange', payload:{items:res.tokens}})
+getSupportedToken().then(res=>{
+  if(res.result) {
+    const tokens = []
+    tokens.push({
+      "symbol": "ETH",
+      "digits": 18,
+      "address": "",
+      "precision": 6,
+    })
+    res.result.forEach(item=>{
+      if(!item.deny) {
+        const digit = Math.log10(item.decimals)
+        tokens.push({
+          "symbol": item.symbol,
+          "digits": digit,
+          "address": item.protocol,
+          "precision": Math.min(digit, 6),
+        })
+      }
+    })
+    STORAGE.settings.setTokensConfig(tokens)
+    store.dispatch({type:'tokens/itemsChange', payload:{items:tokens}})
   }
 }).catch(error=> {
   console.log(error)

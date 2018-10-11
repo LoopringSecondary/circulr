@@ -311,6 +311,37 @@ const transfromers = {
       updateItems(items, id)
     },
   },
+  tickersOfSource:{
+    queryTransformer:(payload)=>{
+      const {filters} = payload
+      return JSON.stringify({
+        ...filters
+      })
+    },
+    resTransformer:(id,res)=>{
+      if(!res) return null
+      res = JSON.parse(res)
+      //console.log(id,'res',res)
+      let items =[]
+      if(!res.error && isArray(res.data)){
+        items = res.data
+      }
+      updateItems(items,id)
+      const marketR = {}
+      const markets = items.map(item=>{
+        const m = item.market.split("-")
+        marketR[m[1]] = true
+        return {
+          "tokenx": m[0],
+          "tokeny": m[1],
+          "market": item.market,
+          "pricePrecision": item.decimals || 8
+        }
+      })
+      storage.settings.setMarketPairs(markets)
+      storage.settings.setMarketR(Object.keys(marketR))
+    },
+  },
   pendingTx: {
     queryTransformer: (payload) => {
       return JSON.stringify({
