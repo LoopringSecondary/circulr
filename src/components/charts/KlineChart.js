@@ -55,8 +55,8 @@ const tooltipOpts = {
 class KlineChart extends React.Component {
 
   state = {
-    start: '2015-07-07',
-    end: '2015-10-25',
+    start: '2017-07-17',
+    end: '2017-08-20',
   }
 
   render() {
@@ -146,7 +146,7 @@ class KlineChart extends React.Component {
               }]}
             />
           </View>
-          <View data={dv} scale={[{dataKey: 'volumn',tickCount: 2}]} start={{x: 0, y: 0.68}}>
+          <View data={dv} scale={[{dataKey: 'volumn',tickCount: 2}]} start={{x: 0, y: 2}}>
             <Axis dataKey="time" line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}} label={{formatter:(value)=>moment(value,'YYYY-MM-DD').format('MM-DD'),offset:10,textStyle:{fontSize:'10px'}}}/>
             <Axis dataKey="volumn" position="right" grid={{lineStyle:{stroke: 'rgba(255,255,255,0.1)'}}} line={{stroke:'rgba(255,255,255,0.1)'}} tickLine={{stroke:'rgba(255,255,255,0.1)'}}/>
             <Bar

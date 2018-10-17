@@ -3,8 +3,8 @@
 /*---------------------
     header
 -----------------------*/
-header { position: fixed; z-index: 1000; width: 100%; border-bottom: 4px solid @blue-darker; }
-header .bg { height: 70px; padding: 15px 60px; }
+header { position: fixed; z-index: 1000; width: 100%; border-bottom: 4px solid @blue-darker; background-color:#182c3e}
+header .bg { height: 70px; margin-left: 7%; margin-right: 7%;}
 // header .w-control { margin-left: 280px; }
 header h2 { font-size: 18px; opacity: .87; }
 header h2 span { padding-left: 5px; font-weight: normal; vertical-align: middle; opacity: .54; }
@@ -16,12 +16,14 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 /*---------------------
     custom 
 -----------------------*/
-.side { position: absolute; height: 100%; }
-.side-fixed { position: fixed; height: 100%; }
-.m-container { overflow: hidden; padding-top: 94px; }
-.h-full { height: 100vh; }
-.h-half { height: 55vh; }
+.side { position: absolute; height: 100%; top: 66px; right: -1.5px; width: 33%; padding-left: 5px;}
+.sideOrderBook {position: absolute; height: 44%; left:0; width: 32%; border-radius:5px; }
+.side-fixed { position: fixed; height: 100%; top:85px; left:7%; width:18.5%; padding-top:94px }
+.m-container { overflow: hidden; padding-top: 86px; }
+.h-full { height: 100vh; border-radius: 5px; }
+.h-half { height: 44vh; border-radius: 5px; }
 .h-half1 { height: 65vh;}
+.marketSearch {width: 93%;  height: 48px; position: absolute; margin-top: 45px; background-color: #101e2b; border:0.5px solid #97979733; border-radius: 5px; padding: 10px 0px}
 .loopring-brand { height: 70px; text-align: center; padding-top: 10px; }
 .loopring-brand .img { width: 149px; height: 30px; vertical-align: middle; margin-left: 10px; margin-top: 10px }
 .token-total { text-align: center; padding: 0 0 20px; }
@@ -49,7 +51,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .token-list .item:hover { background: @dark-color-3; }
 .token-list .item.active, .token-list .item.active:hover { background: @blue-dark; border-color:transparent ; }
 .token-list .item.active h3, .token-list .item:hover h3 { opacity: .87; }
-.icon-token { display: inline-block; width: 32px; height: 32px; border: 1px solid @text-color-dark-3; border-radius: 16px; font-size: 22px; text-align: center; line-height: 30px; color: @text-color-dark-1 }
+.icon-token { display: inline-block; width: 32px; height: 32px; border-radius: 16px; font-size: 22px; text-align: center; line-height: 30px; color: @text-color-dark-1 }
 .icon-token-md { display: inline-block; width: 48px; height: 48px; border: 1px solid @text-color-dark-3; border-radius: 24px; font-size: 32px; text-align: center; line-height: 46px; color: @text-color-dark-1 }
 .icon-success { background: @success-color; text-align: center; color: @text-color-dark; border-radius: 60px; }
 .icon-warning { background: @warning-color; text-align: center; color: @text-color-dark; border-radius: 60px; }
@@ -97,7 +99,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .home-content .tab-card.inup { text-align: center; }
 .home-content .tab-card.inup .item { position: relative; width: 100px; height: 120px; line-height: 80px; padding: 0; margin: 10px; background-color: fade(@blue-dark, 87%); text-align: center; color: #1C60FF; }
 .home-content .tab-card.inup .item i { font-size: 32px; }
-.home-content .tab-card.inup .item h4 { position: relative; top: 0px; text-align: center; font-size: 12px; line-height: 1.2; font-weight: normal;}
+.home-content .tab-card.inup .item h4 { position: relative; top: 0px; text-align: center; font-size: 12px; line-height: 1.2; }
 .home-content .notice { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 20px; }
 .home-content .notice i { display: block; width: 24px; height: 24px; line-height: 24px; font-size: 16px; }
 .home-content .notice div { padding: 10px; }
@@ -135,34 +137,35 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 .token-last-quotes ul { margin: 0; }
 .token-last-quotes ul>li>em { display: block; font-style: normal; font-weight: 600; }
-.token-last-quotes ul>li>small { color: @text-color-dark-3; font-size: @font-size-base; }
-.token-last-quotes ul>li { padding-left: 40px; font-weight: 400; }
+.token-last-quotes ul>li>small { color: @text-color-dark-3; font-size: @font-size-sm; }
+.token-last-quotes ul>li { font-weight: 400; width: 115px; }
 #back { width: 40px; height: 40px; text-align: center; line-height: 40px; background: @dark-color-2; color: @text-color-dark-1 }
 #back i { font-size: 32px; }
 #back:hover { background: @light-color-1; }
 .tradeHeaderEle { display: flex; }
 .tradeHeaderEle .pair-select { width: 215px; font-size: 14px; font-weight: 600; }
 .tradeHeaderEle .pair-select .caret { position: relative; top: 2px; }
-.tradeHeaderEle .token-last-quotes { margin-left: 85px; }
+.tradeHeaderEle .token-last-quotes { margin-left: 16%; @media only screen and (max-width: 1550px) { margin-left: 7%; font-size: 9.5px;} }
 .pair-price { padding: 5px 10px; border: 1px solid @dark-color-2; margin: 10px 0 20px; }
 .pair-price>li { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
 .pair-price>li .token-price { display: inline-block; width: 100px; text-align: left; }
 .pair-price>li h4 { font-size: 14px; font-weight: 600; width: 50px; color: @text-color-dark-2 }
-.token-tab { display: flex; justify-content: space-between; float: right; width: "35%" }
+.token-tab { display: flex; justify-content: space-between; float: right; width: 45%; margin-bottom: 13px; margin-bottom: 13px;}
 .token-tab li { list-style: none; width: 100%; }
-.token-tab li a { display: block; height: 40px; background: @dark-color-2; color: @text-color-dark-3; font-size: 16px; font-weight: bold; text-align: center; line-height: 40px; }
+.token-tab li a { display: block; padding: 0px 10px; background: @dark-color-2; color: @text-color-dark-3; font-size: 14px; font-weight: bold; text-align: center; line-height: 40px; }
 .token-tab li.active a { color: @text-color-dark; }
-.token-tab li.buy.active a { background: @buy-color; }
-.token-tab li.sell.active a { background: @sell-color; }
+.token-tab li.buy.active a { background: @buy-color; border-radius: 5px;}
+.token-tab li.sell.active a { background: @sell-color; border-radius: 5px;}
 .gas-switcher ul li { width: 150px; font-weight: 600; }
 .gas-switcher li { width: 100px; font-weight: 400; }
+.buttonsFee {width:100%; text-align:center}
 .balance { }
 .token-select { background-color: @white; color: @text-color-1; height: 100%}
 .token-select .token-select-header { display: flex; justify-content: space-between; align-items: center; height: 71px; padding: 0 30px; border-bottom: 1px solid @light-color-2 }
 .token-select .token-select-header input { border: 0; height: 70px; width: 100%; padding-right: 60px; font-size: 20px; font-weight: 800; vertical-align: top; }
 .token-select .token-select-header input:focus { outline: 0; }
 .token-select .icon-star, .token-select .token-select-header h2 { font-size: 18px; }
-.token-select .token-select-body { padding: 20px 0; max-height: 400px; overflow: auto; margin-bottom: 90px}
+.token-select .token-select-body { padding: 20px 0; max-height: 655px; overflow: auto; }
 .token-select .token-select-body .item { font-size: 13px; }
 .token-select .token-select-body .item li { display: flex; justify-content: flex-start; align-items: center; padding: 0 30px; line-height: 40px; }
 .token-select .token-select-body .item li.active, .token-select .token-select-body .item li.active:hover { background: @blue-dark; }
@@ -178,8 +181,8 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .token-select .token-select-body .item li span i:active, .token-select .token-select-body .item li span i.active { color: @warning-color; }
 .token-select .token-select-body .item li>span { display: block; text-align: left; }
 .trade-list { position: relative; }
-.trade-list .trade-list-header { color: @text-color-dark-3; line-height: 30px; display: flex; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid @dark-color-3; padding-right: 35px;}
-.trade-list li { display: flex; justify-content: space-between; padding: 0 20px; line-height: 20px; font-weight: 600; color: @text-color-dark-2 }
+.trade-list .trade-list-header { color: @text-color-dark-3; line-height: 25px; display: flex; justify-content: space-between;}
+.trade-list li { display: flex; justify-content: space-between; padding: 2px 20px; line-height: 20px; font-weight: 600; color: @text-color-dark-2 }
 .trade-list li:hover { background: @dark-color-2 }
 .trade-list li>span { display: block; width: 70px; text-align: left;}
 .trade-list li>span:nth-child(2) { width: 85px; text-align: right; }
@@ -194,11 +197,12 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .tab-order.tabs li a { color: @text-color-dark-3 }
 .tab-order.tabs li.active a { color: @text-color-dark-1 }
 .order-filter { border-bottom: 1px solid @dark-color-2; padding: 10px 20px; }
-.market-chart { border-bottom: 4px solid @blue-darker }
+// .market-chart { border-bottom: 4px solid @blue-darker }
 .market-chart>div { height: 100%; overflow: hidden; padding: 0px 15px; }
 .market-chart img { width: 100%; height: 100%; }
 // #account { position: fixed; top: 0; right: -300px; z-index: 1000; width: 300px; height: 100%; -webkit-transition: right .3s; transition: right .3s; transition-delay: 0.2s; }
 // #account.open { right: 0; }
+.account-userCenter {width: 345px; }
 .account-side { position: absolute; top: 0; /*right: 0;*/ z-index: 2000; width: 300px; height: 100%; background: @blue-light; padding: 40px 0; text-align: center }
 .account-side .poweroff { display: inline-block; }
 .account-side .poweroff h5 { font-size: 14px; font-weight: normal; margin-top: 10px; }
@@ -230,7 +234,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .Receive-qrcode { text-align: center; margin: 15px; }
 .Receive-qrcode canvas { padding: 20px; width: 160px; height: 160px; background: @white; }
 .ant-input.mnemonic { font-size: 16px !important; }
-.block-dark-filter { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-bottom: 1px solid @dark-color-3 }
+.block-dark-filter { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid @dark-color-3 }
 .dpath { background: @dark-color; }
 .dpath .ant-radio-wrapper { margin-right: 0 !important }
 .dpath .dpath-header, .account-addresses .account-addresses-header { padding: 20px 20px 0; color: @text-color-1 }
@@ -245,12 +249,13 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .dpath label { display: flex !important; padding: 5px 20px !important; justify-content: flex-start !important; align-items: center; padding: 5px 0; }
 .dpath label:hover, .account-addresses li:hover { background: @light-color-3 }
 .ant-radio { }
-.account-bar ul { display: flex; justify-content: space-between; align-items: center; }
-.account-bar ul li { background: @dark-color-2; min-width: 40px; height: 40px; line-height: 38px; text-align: center; margin-left: 1px; }
-.account-bar ul li .logo { width: 40px; height: 40px; padding: 5px; background: @blue-light; line-height: 30px; }
-.account-bar ul li .logo img { width: 100%; }
+.account-bar ul { display: flex; justify-content: space-between; align-items: center; cursor: pointer;}
+.account-bar ul li { background: @dark-prof-user; min-width: 40px; height: 40px; line-height: 38px; text-align: center; border-radius: 5px}
+.account-bar ul li .logo { height: 40px; padding-top:4px; background: @dark-prof-user; line-height: 30px; border-radius: 5px}
+.account-bar ul li .logo img { width: 55%; }
 .account-bar ul li:nth-child(1) { display: inline-flex; justify-content: space-between; align-items: center; }
-.account-bar ul li .account-address { width: 260px; padding: 0 5px 0 10px; text-align: left; color: @text-color-dark-2; word-wrap: break-word; line-height: 1.2; }
+.account-bar ul li .account-address { padding: 0 5px 0 -5px; text-align: left; margin-left:10px; margin-right:10px; color: #608fb8 !important; line-height: 1.2; white-space: nowrap !important; font-size: 13px; @media only screen and (max-width: 1550px) { font-size: 9.5px}}
+.account-bar ul li .account-address:after { content: attr(data-truncate); position: absolute; left: 100%; top: 0; white-space: nowrap;}
 .account-bar ul li i { font-size: 20px; margin:0; }
 .account-bar ul li:nth-child(n+2):hover { background: @dark-color-1; cursor: pointer; }
 .account-bar ul li .language .icon { position: relative; top: 6px; left: 2px }
@@ -258,7 +263,7 @@ sup.badge { position: absolute; top: -4px; right: -4px; min-width: 6px; width: 6
 .badge { position: relative; display: inline-block; min-width: 24px; margin-left: 5px; padding: 2px 6px 3px 6px; border-radius: 10px; color: #fff; text-align: center; vertical-align: baseline; text-align: center; white-space: nowrap; font-style: normal; font-size: inherit; line-height: 1;}
 .loopr-qrcode{ background: @dark-color; padding: 40px 20px 20px 40px; text-align: center; }
 .loopr-qrcode span{ color: @text-color; font-size:@font-size-md}
-.loopr-notice{ background: @dark-color; padding: 40px 30px 0 20px; color: @text-color-2; font-size:@font-size-base }
+.loopr-notice{ background: @dark-color; padding: 40px 30px 0 20px; color: @text-color-dex; font-size:@font-size-base; font-weight:@font-weight600 }
 
 
 

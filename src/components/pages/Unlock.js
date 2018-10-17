@@ -20,7 +20,7 @@ class Unlock extends React.Component {
     if(param){
       //TODO to fix bug, socket not connected
       if(param === '/unlock') {
-        this.changeTab('loopr')
+        this.changeTab('address')
       } else {
         this.changeTab(param)
       }
@@ -156,10 +156,10 @@ class Unlock extends React.Component {
               <h1></h1>
               <ul className="tab tab-card d-flex justify-content-center inup">
 
-                <li className={`item ${pathname==='/unlock/loopr' ? 'active':''}`}>
+                {/* <li className={`item ${pathname==='/unlock/loopr' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('loopr')}><i className="icon-qrcode"/>
                     <h4>Dexlab</h4></a>
-                </li>
+                </li> */}
                 <li className={`item ${pathname==='/unlock/address' ? 'active':''}`}>
                   <a data-toggle="tab" onClick={() => this.changeTab('address')}><i className="icon-view"/><h4>{intl.get('wallet_type.address')}</h4>
                   </a>

@@ -64,7 +64,7 @@ export default function ListMyFills(props) {
     <div className="">
         <ListHeader fills={fills} />
         <Spin spinning={fills.loading}>
-          <div style={{height:"160px",overflow:"auto"}}>
+          <div style={{height:"225px",overflow:"auto"}}>
             <table style={{overflow:'auto'}} className="table table-dark table-hover table-striped table-inverse table-nowrap table-responsive text-center text-left-col1 text-left-col2" >
               <thead>
                   <tr>
