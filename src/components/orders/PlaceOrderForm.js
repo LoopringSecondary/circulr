@@ -24,7 +24,7 @@ $( document ).ready(function() {
 
       $("#lowClick").click(function () {
             $("#standardClick").removeClass('btn btn-button-clicked');
-            $("#standardClick").addClass('btn btn-fee-standard');    
+            $("#standardClick").addClass('btn btn-fee-standard');
         });
 
       $("#fastClick").click( function() {
@@ -162,7 +162,7 @@ class PlaceOrderForm extends React.Component {
 
     const amountSliderField = form.getFieldDecorator('amountSlider', {
       initialValue: 0,
-      rules: [] 
+      rules: []
     })(
       <Slider className="place-order-amount-percentage" min={0} max={100} marks={marks} onChange={amountSliderChange.bind(this)}
               tipFormatter={null} disabled={placeOrder.side === 'sell' ? fm.toBig(sell.availableAmount).lt(0) : fm.toBig(buy.availableAmount).lt(0)}/>
@@ -465,7 +465,7 @@ class PlaceOrderForm extends React.Component {
                              form.setFieldsValue({"price": '0'})
                            }
                          }}/>
-                )}  
+                )}
               </Form.Item>
               <Form.Item label={null} colon={false} extra={
                 <div>
@@ -481,7 +481,7 @@ class PlaceOrderForm extends React.Component {
                 })(
                   <Input className="orderContainer" placeholder="" size="large"
                          prefix={<span className="orderFormStl">{intl.get('common.amount')}</span>}
-                         suffix={<span className="orderFormStl">{left.symbol} <button class="btn btn-buy-max" onClick={setMaxAmount.bind(this, 100)} >{intl.get('common.buy_max')}</button> </span>}
+                         suffix={<span className="orderFormStl">{left.symbol} <button class="btn btn-buy-max" onClick={setMaxAmount.bind(this, 100)} >{intl.get('common.sell_max')}</button> </span>}
                          onChange={inputChange.bind(this, 'amount')}
                          onFocus={() => {
                             const amount = form.getFieldValue("amount")
@@ -501,7 +501,7 @@ class PlaceOrderForm extends React.Component {
                 <div className="buttonsFee">
                   <button id="lowClick" class="btn btn-fee-slow" onClick={setLRCFeeInstant.bind(this, 10)} >{intl.get('common.gas_slow')}</button>
                   <button id="standardClick" class="btn btn-fee-standard" onClick={setLRCFeeInstant.bind(this, 30)} >{intl.get('common.gas_standard')}</button>
-                  <button id="fastClick" class="btn btn-fee-fast" onClick={setLRCFeeInstant.bind(this, 50)} >{intl.get('common.gas_fast')}</button>                
+                  <button id="fastClick" class="btn btn-fee-fast" onClick={setLRCFeeInstant.bind(this, 50)} >{intl.get('common.gas_fast')}</button>
                 </div>
                 <div className="mt70">
                 <MenuItem label={intl.get('common.total')} value={<div>{totalDisplay} {right.symbol} {totalWorthDisplay}</div>} />

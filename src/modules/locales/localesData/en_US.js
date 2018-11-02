@@ -2,6 +2,7 @@ const words = {
   gas_slow: 'Slow',
   gas_standard: 'Standard',
   gas_fast: 'Fast',
+  sell_max: 'SELL MAX',
   buy_max: 'BUY MAX',
   all: 'All',
   order_form: 'Order Form',
