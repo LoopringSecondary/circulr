@@ -1,6 +1,45 @@
 @font-face { font-family: 'iconfont-token'; src: url('iconfont-token.ttf?myy73y') format('truetype'), url('iconfont-token.woff?myy73y') format('woff'), url('iconfont-token.svg?myy73y#iconfont-token') format('svg'); font-weight: normal; font-style: normal; }
 [class^="icon-token"], [class*=" icon-token"] {  /* use !important to prevent issues with browser extensions that change fonts */
 font-family: 'iconfont-token' !important; speak: none; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1;  /* Better Font Rendering =========== */ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.icon-MOOLYA:before { content: "\e909"; }
+.icon-MOT:before { content: "\e9be"; }
+.icon-INK:before { content: "\e9bf"; }
+.icon-MOOLYA1:before { content: "\e9c0"; }
+.icon-NCU:before { content: "\e9c1"; }
+.icon-IBT:before { content: "\e9c2"; }
+.icon-SMDX:before { content: "\e9c3"; }
+.icon-CDCC:before { content: "\e9c4"; }
+.icon-WEB:before { content: "\e9c5"; }
+.icon-HDL:before { content: "\e9c6"; }
+.icon-RDEX:before { content: "\e9c7"; }
+.icon-R:before { content: "\e9c8"; }
+.icon-HAND:before { content: "\e9c9"; }
+.icon-GPT:before { content: "\e9ca"; }
+.icon-FOTC:before { content: "\e9cb"; }
+.icon-BITS:before { content: "\e9cc"; }
+.icon-GUSD:before { content: "\e9cd"; }
+.icon-MOTE:before { content: "\e9ce"; }
+.icon-MRL:before { content: "\e9cf"; }
+.icon-RTE:before { content: "\e9d0"; }
+.icon-BRM:before { content: "\e9d1"; }
+.icon-CEN:before { content: "\e9d2"; }
+.icon-BOE:before { content: "\e9d3"; }
+.icon-QUBE:before { content: "\e9d4"; }
+.icon-SET:before { content: "\e9d5"; }
+.icon-TCT:before { content: "\e9d6"; }
+.icon-ECT:before { content: "\e9d7"; }
+.icon-XMRC:before { content: "\e9d8"; }
+.icon-EPH:before { content: "\e9d9"; }
+.icon-NTK:before { content: "\e9da"; }
+.icon-JNT:before { content: "\e9db"; }
+.icon-ATN:before { content: "\e9dc"; }
+.icon-MT:before { content: "\e9dd"; }
+.icon-HVN:before { content: "\e9de"; }
+.icon-QCH:before { content: "\e9df"; }
+.icon-CVH:before { content: "\e9e0"; }
+.icon-CYBER:before { content: "\e9e1"; }
+.icon-TRUE:before { content: "\e9e2"; }
+.icon-TUSD:before { content: "\e9e3"; }
 .icon-HT:before { content: "\e9b8"; }
 .icon-CND:before { content: "\e9b9"; }
 .icon-BKX:before { content: "\e9ba"; }
@@ -15,7 +54,6 @@ font-family: 'iconfont-token' !important; speak: none; font-style: normal; font-
 .icon-YOYOW:before { content: "\e906"; }
 .icon-FUEL:before { content: "\e907"; }
 .icon-AMB:before { content: "\e908"; }
-.icon-INK:before { content: "\e909"; }
 .icon-BOS:before { content: "\e90a"; }
 .icon-TRAC:before { content: "\e90b"; }
 .icon-INSUR:before { content: "\e90c"; }
