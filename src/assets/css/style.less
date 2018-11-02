@@ -224,6 +224,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 	0% { left: 100vw; }
 	100% { right: 0; }
 }
+
 .sidebar { width: 450px !important; }
 .sidebar .webui-popover { position: fixed; z-index: 10000; top: 0 !important; bottom: 0 !important; left: auto !important; right: 0; width: 450px !important; height: 100%; background: @blue-light; -webkit-transform: translate(100%, 0) !important; transform: translate(100%, 0) !important; -webkit-transition: .5s; transition: .5s; color: @text-color-dark; }
 .sidebar .webui-popover.in { -webkit-transform: translate(100%, 0) !important; transform: translate(0, 0) !important }
@@ -265,7 +266,19 @@ sup.badge { position: absolute; top: -4px; right: -4px; min-width: 6px; width: 6
 .loopr-qrcode{ background: @dark-color; padding: 40px 20px 20px 40px; text-align: center; }
 .loopr-qrcode span{ color: @text-color; font-size:@font-size-md}
 .loopr-notice{ background: @dark-color; padding: 40px 30px 0 20px; color: @text-color-dex; font-size:@font-size-base; font-weight:@font-weight600 }
-
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: @white !important;
+  -webkit-box-shadow: 0 0 0px 1000px #000 inset !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
 
 
 
