@@ -37,7 +37,7 @@ function Trade(props) {
                           <Containers.Wallet>
                             <Containers.Gas>
                               <Containers.Ttl>
-                                <Containers.LrcFee>
+                               <Containers.LrcFee>
                                   <Orders.PlaceOrderForm />
                                 </Containers.LrcFee>
                               </Containers.Ttl>
