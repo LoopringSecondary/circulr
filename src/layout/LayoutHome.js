@@ -29,7 +29,7 @@ function LayoutHome(props) {
     	    <div className="container relative">
     	        <div className="row justify-content-between">
     	            <div className="col-auto">
-    	                <div className="brand"><a href="index.html"><img src={require('../assets/images/logo.png')} /></a></div>
+    	                <div className="brand"><a href="index.html"><img src={require('../assets/images/dexexlogo.png')} /></a></div>
     	            </div>
                 <Select className="col-auto language dropdown"  showArrow={false} dropdownMatchSelectWidth={false} defaultValue={locale} onChange={localeChange}>
                   {locales.map(item => {

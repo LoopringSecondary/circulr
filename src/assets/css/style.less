@@ -74,7 +74,7 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .side-fixed .table.table-inverse thead th, .side-fixed .table.table-inverse tbody td { padding: 10px 20px; }
 .text-color-dark[class^="icon-"], .text-color-dark[class*=" icon-"] { border: 1px solid @dark-color-1 !important; background: transparent !important; color: @text-color-dark-3 !important; }
 .icon-favorites.active { color: @warning-color; }
-.home { height: 100%; background-color: @blue-darker; background-image: url('../images/bg.png'); background-size: cover; }
+.home { height: 100%; background-color: @blue-darker; background-image: url('../images/bg.jpg'); background-size: cover; }
 .home-content { position: relative; z-index: 100; height: 100vh; }
 .home-content.open { &&, .tab-content { display: flex !important; justify-content: center; align-items: center; }}
 .home-content.open h1 { display: none }
@@ -92,12 +92,12 @@ header .account .msg i { display: inline-block; transform: scale(0.6, 0.6); vert
 .home-content.open .tab-card .item.remove a i { color: @dark-color-1; -webkit-text-decoration-skip: objects; transition: all 0.45s ease-in-out; }
 .home-content.open .tab-card .item.remove:hover a i { color: @text-color-dark-3 }
 .home-content .tab-card .item i { font-size: 48px; }
-.home-content .tab-card .item h4 { margin-top: 30px; font-size: 16px; font-weight: 900; color: @primary-color }
+.home-content .tab-card .item h4 { margin-top: 30px; font-size: 16px; font-weight: 400; color: #fff; }
 .home-content .tab-card .item a { display: block; color: @blue-light }
 .home-content .tab-card .item:hover, .home-content .tab-card .item.active:hover, .home-content .tab-card .item.active { background: fade(@blue-light, 87%) !important }
 .home-content .tab-card .item:hover a, .home-content .tab-card .item.active a, .home-content .tab-card .item:hover h4 { color: @text-color-dark; }
 .home-content .tab-card.inup { text-align: center; }
-.home-content .tab-card.inup .item { position: relative; width: 100px; height: 120px; line-height: 80px; padding: 0; margin: 10px; background-color: fade(@blue-dark, 87%); text-align: center; color: #1C60FF; }
+.home-content .tab-card.inup .item { position: relative; width: 100px; height: 120px; line-height: 80px; padding: 0; margin: 10px; background-color: rgba(117, 179, 231, 0.27); text-align: center; color: #1C60FF; }
 .home-content .tab-card.inup .item i { font-size: 32px; }
 .home-content .tab-card.inup .item h4 { position: relative; top: 0px; text-align: center; font-size: 12px; line-height: 1.2; }
 .home-content .notice { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 20px; }
