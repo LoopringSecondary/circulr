@@ -67,8 +67,8 @@ function UserCenter(props) {
                     {false && wallet.address && (wallet.unlockType==='privateKey'|| wallet.unlockType==='keystore' || wallet.unlockType==='mnemonic') &&  <li><a onClick={() => dispatch({type:'layers/showLayer',payload:{id:'export'}})}><i className="icon-export"/><span>{intl.get('export_keystore.title')}</span></a></li>}
                     <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'setting',symbol:null}) }} className="side-settings"><i className="icon-cog-o"/><span>{intl.get('settings.title')}</span></a></li>
                     <li hidden><a className="side-airdrop"><i className="icon-gift-o"/><span>Airdrop</span></a></li>
-                    <li><a className="side-help"><i className="icon-question-o"/><span>{intl.get('common.help')}</span></a></li>
-                    <li><a className="side-feedback"><i className="icon-pencil"/><span>{intl.get('common.feedback')}</span></a></li>
+                    <li><a className="side-help" href="https://t.me/joindexlab"><i className="icon-question-o"/><span>{intl.get('common.help')}</span></a></li>
+                    <li><a className="side-feedback" href="mailto:dev@dexlab.io"><i className="icon-pencil"/><span>{intl.get('common.feedback')}</span></a></li>
     	            </ul>
     	        </div>
     	    </div>
