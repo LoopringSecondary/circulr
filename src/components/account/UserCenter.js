@@ -62,13 +62,13 @@ function UserCenter(props) {
     	            <ul>
                     {false && wallet.address && <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'receiveToken',symbol:null}) }} className="side-receive" ><i className="icon-receive"/><span>{intl.get('user_center.receive')}</span></a></li>}
                     {false && wallet.address &&  <li><a onClick={transfer} className="side-send"><i className="icon-send"/><span>{intl.get('user_center.send')}</span></a></li>}
-                    {/* {wallet.address &&  <li><Link to="/trade"><i className="icon-trade"/><span>{intl.get('common.market')}</span></Link></li>} */}
                     {wallet.address &&  <li><a onClick={() => dispatch({type:'layers/showLayer',payload:{id:'tradeByP2P'}})}><i className="icon-trade"/><span>{intl.get('p2p_order.user_center_p2p')}</span></a></li>}
                     {false && wallet.address && (wallet.unlockType==='privateKey'|| wallet.unlockType==='keystore' || wallet.unlockType==='mnemonic') &&  <li><a onClick={() => dispatch({type:'layers/showLayer',payload:{id:'export'}})}><i className="icon-export"/><span>{intl.get('export_keystore.title')}</span></a></li>}
                     <li><a onClick={() =>{userCenter.hideLayer();userCenter.showLayer({id:'setting',symbol:null}) }} className="side-settings"><i className="icon-cog-o"/><span>{intl.get('settings.title')}</span></a></li>
                     <li hidden><a className="side-airdrop"><i className="icon-gift-o"/><span>Airdrop</span></a></li>
                     <li><a className="side-help" href="https://t.me/joindexlab"><i className="icon-question-o"/><span>{intl.get('common.help')}</span></a></li>
                     <li><a className="side-feedback" href="mailto:dev@dexlab.io"><i className="icon-pencil"/><span>{intl.get('common.feedback')}</span></a></li>
+                    {/* {wallet.address &&  <li><Link to="/trade"><i className="icon-trade"/><span>{intl.get('common.market')}</span></Link></li>} */}
     	            </ul>
     	        </div>
     	    </div>
