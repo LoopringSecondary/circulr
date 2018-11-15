@@ -102,9 +102,9 @@ function ListAllTickers(props) {
                     </div>
                   }
 	                <div className="item">
-	                    <div className="title">{intl.get('common.all')} {intl.get('common.markets')}</div>
+	                    {/* <div className="title">{intl.get('common.all')} {intl.get('common.markets')}</div> */}
                       <ul>
-                      <li><span></span><span></span><span style={{fontWeight: 600}}>{intl.get('ticker.last')}</span><span style={{fontWeight: 600}}>{intl.get('ticker.change')}</span><span style={{fontWeight: 600}}>{intl.get('ticker.vol')}</span></li>
+                      <li><span></span><span style={{fontWeight: 600}}>{intl.get('common.all')} {intl.get('common.markets')}</span><span style={{fontWeight: 600}}>{intl.get('ticker.last')}</span><span style={{fontWeight: 600}}>{intl.get('ticker.change')}</span><span style={{fontWeight: 600}}>{intl.get('ticker.vol')}</span></li>
                       {allTickers.map((item,index)=><TickItem key={index} item={item} actions={actions} />)}
                       </ul>
 	                </div>
