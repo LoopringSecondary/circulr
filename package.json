@@ -10,7 +10,7 @@
   "theme": "./theme.js",
   "dependencies": {
     "@antv/data-set": "0.8.9",
-    "@babel/polyfill": "7.0.0-beta.46",
+    "@babel/polyfill": "7.2.5",
     "antd": "3.2.2",
     "async": "2.6.0",
     "copy-to-clipboard": "3.0.8",
