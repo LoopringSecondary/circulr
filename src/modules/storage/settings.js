@@ -90,13 +90,24 @@ const getTokensConfig = ()=>{
   }
 }
 
-const setMarketsConfig = (markets)=>{
+const setMarketPairs = (markets)=>{
   localStorage.marketsConfig = JSON.stringify(markets)
 }
 
-const getMarketsConfig = ()=>{
+const getMarketPairs = ()=>{
   if(localStorage.marketsConfig){
     return JSON.parse(localStorage.marketsConfig)
+  }else{
+    return []
+  }
+}
+
+const setMarketR = (markets)=>{
+  localStorage.marketR = JSON.stringify(markets)
+}
+const getMarketR = ()=>{
+  if(localStorage.marketR){
+    return JSON.parse(localStorage.marketR)
   }else{
     return []
   }
@@ -123,8 +134,10 @@ export default {
   getContractVersion,
   setTokensConfig,
   getTokensConfig,
-  setMarketsConfig,
-  getMarketsConfig,
+  setMarketPairs,
+  getMarketPairs,
+  setMarketR,
+  getMarketR,
   setConfigs,
   getConfigs
 }

@@ -81,6 +81,8 @@ const ListHeader = (props) => {
             >
               <Select.Option value="">{intl.get('common.all')}&nbsp;{intl.get('common.statuses')} </Select.Option>
               <Select.Option value="ORDER_OPENED">{intl.get('order_status.opened')}</Select.Option>
+              {false && <Select.Option value="ORDER_WAIT_SUBMIT_RING">{intl.get('order_status.matching')}</Select.Option>}
+              <Select.Option value="ORDER_PENDING">{intl.get('order_status.pending')}</Select.Option>
               <Select.Option value="ORDER_FINISHED">{intl.get('order_status.completed')}</Select.Option>
               <Select.Option value="ORDER_CANCELLED">{intl.get('order_status.canceled')}</Select.Option>
               <Select.Option value="ORDER_EXPIRE">{intl.get('order_status.expired')}</Select.Option>
@@ -128,6 +130,10 @@ const ItemMore = ({item}) => {
       switch (value) {
         case 'ORDER_OPENED':
           return intl.get('order_status.opened');
+        case 'ORDER_WAIT_SUBMIT_RING':
+          return intl.get('order_status.matching');
+        case 'ORDER_PENDING':
+          return intl.get('order_status.pending');
         case "ORDER_FINISHED":
           return intl.get('order_status.completed');
         case "ORDER_CANCELLED":
@@ -265,6 +271,14 @@ export const renders = {
       statusNode = <Badge className="text-color-dark-1" status="processing"
                           text={<span className="color-white-1">{intl.get('order_status.opened')}</span>}/>
     }
+    if (status === 'ORDER_WAIT_SUBMIT_RING') {
+      statusNode = <Badge className="text-color-dark-1" status="processing"
+                          text={<span className="color-white-1">{intl.get('order_status.matching')}</span>}/>
+    }
+    if (status === 'ORDER_PENDING') {
+      statusNode = <Badge className="text-color-dark-1" status="processing"
+                          text={<span className="color-white-1">{intl.get('order_status.pending')}</span>}/>
+    }
     if (status === 'ORDER_FINISHED') {
       statusNode = <Badge className="text-color-dark-1" status="success"
                           text={<span className="text-up">{intl.get('order_status.completed')}</span>}/>
@@ -283,7 +297,7 @@ export const renders = {
     }
     return (
       <div className="d-flex text-nowrap text-left">
-        {statusNode} {status === 'ORDER_OPENED' && cancleBtn}
+        {statusNode} {(status === 'ORDER_OPENED' || status === 'ORDER_WAIT_SUBMIT_RING') && cancleBtn}
       </div>
     )
   },

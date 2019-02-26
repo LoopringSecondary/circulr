@@ -6,7 +6,7 @@ import intl from 'react-intl-universal'
 import { Button,Spin } from 'antd'
 
 function ListTokenTickers(props) {
-  const {loopringTickers:list,dispatch,token,tickers} = props;
+  const {tickersOfSource:list,dispatch,token,tickers} = props;
   const tickersFm = new TickersFm(list);
   const listedTickers = tickersFm.getTickersBySymbol(token);
   const gotoTrade = (item)=>{
@@ -83,7 +83,7 @@ function ListTokenTickers(props) {
 function mapStateToProps(state) {
 
   return {
-    loopringTickers:state.sockets.loopringTickers,
+    tickersOfSource:state.sockets.tickersOfSource,
     token:state.tokens.selected,
     tickers:state.sockets.tickers
   }

@@ -1,6 +1,7 @@
 //const config = require('./config.json');
 import fetch from 'dva/fetch';
 import STORAGE from 'modules/storage';
+import moment from 'moment';
 
 const data = require('./data')
 const config = data.configs
@@ -40,23 +41,7 @@ function getCustomTokens(){
 }
 
 function getTokens(){
-  const cacheConfigs = STORAGE.settings.getConfigs()
-  if(cacheConfigs && cacheConfigs.tokens) {
-    return cacheConfigs.tokens
-  }
-  return []
-  // return [{
-  //   "symbol": "ETH",
-  //   "digits": 18,
-  //   "address": "",
-  //   "precision": 6,
-  // }, ...STORAGE.settings.getTokensConfig().map(item=>{
-  //   item.icon = tokensIcons[item.symbol]
-  //   item.precision = item.digits > 6 ? 6 : item.digits
-  //   return item
-  // })].filter(item=>{
-  //   return !config.ignoreTokens || !config.ignoreTokens.includes(item.symbol)
-  // })
+  return STORAGE.settings.getTokensConfig()
 }
 
 function getMarketByPair(pair) {
@@ -83,12 +68,7 @@ function getProjectByLrx(lrx) {
 }
 
 function getSupportedMarketsTokenR() {
-  // return config.supportedTokenRInMarkets
-  const cacheConfigs = STORAGE.settings.getConfigs()
-  if(cacheConfigs && cacheConfigs.supportedTokenRInMarkets) {
-    return cacheConfigs.supportedTokenRInMarkets
-  }
-  return []
+  return STORAGE.settings.getMarketR()
 }
 
 function isSupportedMarket(market) {
@@ -103,7 +83,7 @@ function isSupportedMarket(market) {
 function getMarketBySymbol(tokenx, tokeny) {
   if (tokenx && tokeny) {
     return getMarkets().find(market=> {
-      return (market.tokenx === tokenx && market.tokeny === tokeny) || (market.tokenx === tokeny && market.tokeny === tokenx)
+      return (market.tokenx.toUpperCase() === tokenx.toUpperCase() && market.tokeny.toUpperCase() === tokeny.toUpperCase()) || (market.tokenx.toUpperCase() === tokeny.toUpperCase() && market.tokeny.toUpperCase() === tokenx.toUpperCase())
     }) || {
       "pricePrecision": 8
     }
@@ -115,11 +95,11 @@ function getMarketBySymbol(tokenx, tokeny) {
 }
 
 function getMarketsByTokenR(token) {
-  return getMarkets().filter(item=>item.tokeny === token)
+  return getMarkets().filter(item=>item.tokeny.toUpperCase() === token.toUpperCase())
 }
 
 function getMarketsByTokenL(token) {
-  return getMarkets().filter(item=>item.tokenx === token)
+  return getMarkets().filter(item=>item.tokenx.toUpperCase() === token.toUpperCase())
 }
 
 function getTokenSupportedMarket(token) {
@@ -151,11 +131,7 @@ function getTokenSupportedMarkets(token) {
 }
 
 function getMarkets() {
-  const cacheConfigs = STORAGE.settings.getConfigs()
-  if(cacheConfigs && cacheConfigs.markets && cacheConfigs.newMarkets) {
-    return cacheConfigs.markets.concat(cacheConfigs.newMarkets)
-  }
-  return []
+  return STORAGE.settings.getMarketPairs()
 }
 
 function getGasLimitByType(type) {
@@ -177,11 +153,12 @@ function getWallets() {
 }
 
 function getRemoteConfig() {
-  return fetch("https://config.loopring.io/circulr/config.json", {
+  const random = moment().format('YYMMDDhhmm')
+  return fetch(`https://config.loopring.io/circulr/config.json?${random}`, {
     method:'get',
     mode: 'cors',
     headers: {
-      'Accept': 'application/json'
+      'Accept': 'application/json',
     }
   })
     .then(res => {
